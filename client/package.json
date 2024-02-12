@@ -11,18 +11,31 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^4.30.5",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@material-tailwind/react": "^2.1.9",
+    "@mui/icons-material": "^5.15.9",
+    "@mui/material": "^5.15.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.0"
+    "react-icons": "^5.0.1",
+    "react-router-dom": "^6.22.0",
+    "react-scroll": "^1.9.0",
+    "react-slick": "^0.30.1",
+    "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
     "vite": "^5.1.0"
   }
 }
