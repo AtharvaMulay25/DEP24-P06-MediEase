@@ -1,0 +1,6 @@
+.sign-in-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Use the viewport height to ensure full height */
+}

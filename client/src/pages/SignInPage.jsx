@@ -1,9 +1,12 @@
 import React from 'react'
 import { SignIn } from "@clerk/clerk-react";
+import "../styles/SignInPage.css";
 
 const SignInPage = () => {
   return (
-    <SignIn path="/signin" routing="path" signUpUrl="/signup" />
+    <div className="sign-in-container"> 
+      <SignIn path="/signin" routing="path" signUpUrl="/signup" />
+    </div>
   )
 }
 
