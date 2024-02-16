@@ -13,6 +13,7 @@ module.exports = withMT({
         hoverColor: "#FFC000",
         brightColor: "#dd8036",
         backgroundColor: "#12c2ff",
+        sidebarColor: "#0a141f",
       }
     },
   },

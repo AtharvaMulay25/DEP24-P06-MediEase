@@ -3,6 +3,7 @@ import { Link } from "react-scroll";
 import Button from "../layouts/Button";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Contact from "../models/Contact";
+import { UserButton , SignedIn} from "@clerk/clerk-react";
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
@@ -82,7 +83,7 @@ const Navbar = () => {
               Blog
             </Link>
           </nav>
-
+          
           <div className=" hidden lg:flex">
             <button
               className="bg-brightColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
@@ -91,7 +92,10 @@ const Navbar = () => {
               Contact Us
             </button>
           </div>
+          <SignedIn>
+          <UserButton afterSignOutUrl="/signin" />
 
+          </SignedIn>
           {showForm && <Contact closeForm={closeForm} />}
 
           <div className=" lg:hidden flex items-center">
