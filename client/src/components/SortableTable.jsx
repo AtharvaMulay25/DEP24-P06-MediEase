@@ -51,16 +51,20 @@ export function SortableTable() {
           a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
         );
         setData(sorted);
-        setSort({id:"", Purchase_id:"", date:"", Supplier:""});
-        setSort({...sort, [col]: "asc"});
+        
+        let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
+        newSort = {...newSort, [col]: "asc"};
+        setSort(newSort);
       }
       else if(sort[col] == "asc"){
         const sorted = [...data].sort((a,b) =>
           a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
         );
         setData(sorted);
-        setSort({id:"", Purchase_id:"", date:"", Supplier:""});
-        setSort({...sort, [col]: "dsc"});
+
+        let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
+        newSort = {...newSort, [col]: "dsc"};
+        setSort(newSort);
       }
     }
   };
