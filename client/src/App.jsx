@@ -5,6 +5,7 @@ import Sign from "./components/Sign";
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import Dashboard from './pages/Dashboard';
+import AdminHome from './pages/AdminHome';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/signin" element={<SignInPage />}/>
         <Route path="/signup" element={<SignUpPage />}/>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/adminhome" element={<AdminHome />} />
       </Routes>
 
       </BrowserRouter>

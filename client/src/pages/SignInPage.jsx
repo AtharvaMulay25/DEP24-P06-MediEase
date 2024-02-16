@@ -5,7 +5,7 @@ import "../styles/SignInPage.css";
 const SignInPage = () => {
   return (
     <div className="sign-in-container"> 
-      <SignIn path="/signin" routing="path" signUpUrl="/signup" />
+      <SignIn path="/signin" routing="path" />
     </div>
   )
 }
