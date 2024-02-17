@@ -25,6 +25,7 @@ import {
 
 import MockData from "../assets/MOCK_DATA.json";
 import { useEffect, useState } from "react";
+import Pagination from "./Pagination";
 
 const TABLE_HEAD = {
   id: "#",
@@ -41,6 +42,12 @@ export function SortableTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10); 
   const [paginatedData, setPaginatedData] = useState([]);
+
+  const [maxPages, setMaxPages] = useState(Math.ceil((data.length)/itemsPerPage));
+
+  useEffect(() => {
+    setMaxPages(Math.ceil((data.length)/itemsPerPage)); 
+  }, [data]); 
 
   useEffect(() => {
     const indexOfLastPage = currentPage * itemsPerPage;
@@ -257,7 +264,13 @@ export function SortableTable() {
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+      <Pagination 
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        paginate={paginate}
+        maxPages={maxPages}
+      />
+      {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
           Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
         </Typography>
@@ -269,7 +282,7 @@ export function SortableTable() {
             Next
           </Button>
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }
