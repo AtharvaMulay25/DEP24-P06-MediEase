@@ -35,6 +35,8 @@ export default function Pagination({
         {currentPage <= maxPages-2 ? <IconButton {...getItemProps(currentPage+2)}>{currentPage+2}</IconButton> : <EmptyIconButton />}
         {currentPage <= maxPages-3 ? <IconButton {...getItemProps(currentPage+3)}>{currentPage+3}</IconButton> : <EmptyIconButton />}
         {currentPage <= maxPages-4 ? <IconButton {...getItemProps(currentPage+4)}>{currentPage+4}</IconButton> : <EmptyIconButton />}
+        {maxPages >= 5 && currentPage+4 < maxPages && <IconButton variant="text">...</IconButton>}
+        {maxPages >= 5 && currentPage+4 < maxPages && <IconButton {...getItemProps(maxPages)}>{maxPages}</IconButton>}
       </div>
       <Button
         variant="text"
