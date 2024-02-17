@@ -24,7 +24,7 @@ import {
 } from "@material-tailwind/react";
 
 import MockData from "../assets/MOCK_DATA.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const TABLE_HEAD = {
   id: "#",
@@ -37,6 +37,30 @@ const TABLE_HEAD = {
 
 export function SortableTable() {
   const [data, setData] = useState(MockData);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10); 
+  const [paginatedData, setPaginatedData] = useState([]);
+
+  useEffect(() => {
+    const indexOfLastPage = currentPage * itemsPerPage;
+    const indexOfFirstPage = indexOfLastPage - itemsPerPage;
+    const currentItems = data.slice(indexOfFirstPage, Math.min(indexOfLastPage, data.length));
+    setPaginatedData(currentItems);
+  }, [currentPage]);
+
+  const paginate = (act) => {
+    if (act === "inc") {
+      let newPageNum = currentPage + 1;
+      if (newPageNum > Math.ceil(data.length / itemsPerPage)) newPageNum = 1;
+      setCurrentPage(newPageNum);
+    } else {
+      let newPageNum = currentPage - 1;
+      if (newPageNum < 1) newPageNum = 1;
+      setCurrentPage(newPageNum);
+    }  
+  };
+
   const [sort, setSort] = useState({
     id: "asc",
     Purchase_id: "",
@@ -47,20 +71,20 @@ export function SortableTable() {
   const sorting = (col) => {
     if(col !== "date" && col !== "id"){
       if(sort[col] == "" || sort[col] == "dsc"){
-        const sorted = [...data].sort((a,b) =>
+        const sorted = [...paginatedData].sort((a,b) =>
           a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
         );
-        setData(sorted);
+        setPaginatedData(sorted);
         
         let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
         newSort = {...newSort, [col]: "asc"};
         setSort(newSort);
       }
       else if(sort[col] == "asc"){
-        const sorted = [...data].sort((a,b) =>
+        const sorted = [...paginatedData].sort((a,b) =>
           a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
         );
-        setData(sorted);
+        setPaginatedData(sorted);
 
         let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
         newSort = {...newSort, [col]: "dsc"};
@@ -108,7 +132,7 @@ export function SortableTable() {
           </div>
         </div>
       </CardHeader>
-      <CardBody className="flex-1 overflow-y-clip px-4 py-1">
+      <CardBody className="flex-1 overflow-y-scroll px-4 py-1">
         <table className="w-full border table-auto text-left">
           <thead>
             <tr>
@@ -152,7 +176,7 @@ export function SortableTable() {
             </tr>
           </thead>
           <tbody>
-            {data.map(
+            {paginatedData.map(
               //  ["#", "Purchase_id", "Supplier", "Date", "Total Amount", "Action"]
               ({ id, Purchase_id, Supplier, date, total_amount }) => {
                 // const isLast = index === data.length - 1;
@@ -235,13 +259,13 @@ export function SortableTable() {
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
+          Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
+          <Button variant="outlined" size="sm" onClick={() => paginate("dec")}>
             Previous
           </Button>
-          <Button variant="outlined" size="sm">
+          <Button variant="outlined" size="sm" onClick={() => paginate("inc")}>
             Next
           </Button>
         </div>
