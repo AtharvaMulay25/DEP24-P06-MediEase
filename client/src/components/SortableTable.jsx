@@ -43,18 +43,35 @@ export function SortableTable() {
   const [itemsPerPage] = useState(10); 
   const [paginatedData, setPaginatedData] = useState([]);
 
+  const [search, setSearch] = useState("");
+  const [searchList, setSearchList] = useState([]);
+
   const [maxPages, setMaxPages] = useState(Math.ceil((data.length)/itemsPerPage));
 
   useEffect(() => {
     setMaxPages(Math.ceil((data.length)/itemsPerPage)); 
-  }, [data]); 
+  }, [data]);
 
   useEffect(() => {
     const indexOfLastPage = currentPage * itemsPerPage;
     const indexOfFirstPage = indexOfLastPage - itemsPerPage;
     const currentItems = data.slice(indexOfFirstPage, Math.min(indexOfLastPage, data.length));
     setPaginatedData(currentItems);
+    setSearchList(currentItems);
   }, [currentPage]);
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    filterItems(e.target.value);
+  };
+
+  const filterItems = (str) => {
+    const filteredArray = paginatedData.filter(item => 
+      ((item.Supplier).toLowerCase()).includes(str.toLowerCase())
+    );
+    console.log(filteredArray);
+    setSearchList(filteredArray);
+  };
 
   const paginate = (act) => {
     if (act === "inc") {
@@ -78,20 +95,20 @@ export function SortableTable() {
   const sorting = (col) => {
     if(col !== "date" && col !== "id"){
       if(sort[col] == "" || sort[col] == "dsc"){
-        const sorted = [...paginatedData].sort((a,b) =>
+        const sorted = [...searchList].sort((a,b) =>
           a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
         );
-        setPaginatedData(sorted);
+        setSearchList(sorted);
         
         let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
         newSort = {...newSort, [col]: "asc"};
         setSort(newSort);
       }
       else if(sort[col] == "asc"){
-        const sorted = [...paginatedData].sort((a,b) =>
+        const sorted = [...searchList].sort((a,b) =>
           a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
         );
-        setPaginatedData(sorted);
+        setSearchList(sorted);
 
         let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
         newSort = {...newSort, [col]: "dsc"};
@@ -135,6 +152,8 @@ export function SortableTable() {
             <Input
               label="Search"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+              value={search}
+              onChange={(e) => handleSearch(e)}
             />
           </div>
         </div>
@@ -183,7 +202,7 @@ export function SortableTable() {
             </tr>
           </thead>
           <tbody>
-            {paginatedData.map(
+            {searchList.map(
               //  ["#", "Purchase_id", "Supplier", "Date", "Total Amount", "Action"]
               ({ id, Purchase_id, Supplier, date, total_amount }) => {
                 // const isLast = index === data.length - 1;
