@@ -6,6 +6,7 @@ import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import Dashboard from './pages/Dashboard';
 import AdminHome from './pages/AdminHome';
+import AddMedicine from './pages/AddMedicine';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />}/>
         <Route path="/" element={<Dashboard />} />
         <Route path="/adminhome" element={<AdminHome />} />
+        <Route path="/medicine/add_medicine" element={<AddMedicine />} />
       </Routes>
 
       </BrowserRouter>
