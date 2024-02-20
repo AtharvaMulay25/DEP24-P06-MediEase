@@ -12,7 +12,6 @@ import {
   Typography,
   Button,
   CardBody,
-  Chip,
   CardFooter,
   Tabs,
   TabsHeader,
@@ -20,7 +19,8 @@ import {
   Avatar,
   IconButton,
   Tooltip,
-  useAccordion,
+  Select,
+  Option,
 } from "@material-tailwind/react";
 
 import MockData from "../assets/MOCK_DATA.json";
@@ -40,7 +40,7 @@ export function SortableTable() {
   const [data, setData] = useState(MockData);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); 
+  const [itemsPerPage, setItemsPerPage] = useState(10); 
   const [paginatedData, setPaginatedData] = useState([]);
 
   const [search, setSearch] = useState("");
@@ -50,7 +50,7 @@ export function SortableTable() {
 
   useEffect(() => {
     setMaxPages(Math.ceil((data.length)/itemsPerPage)); 
-  }, [data]);
+  }, [data, itemsPerPage]);
 
   useEffect(() => {
     const indexOfLastPage = currentPage * itemsPerPage;
@@ -58,7 +58,7 @@ export function SortableTable() {
     const currentItems = data.slice(indexOfFirstPage, Math.min(indexOfLastPage, data.length));
     setPaginatedData(currentItems);
     setSearchList(currentItems);
-  }, [currentPage]);
+  }, [currentPage, itemsPerPage]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -69,7 +69,6 @@ export function SortableTable() {
     const filteredArray = paginatedData.filter(item => 
       ((item.Supplier).toLowerCase()).includes(str.toLowerCase())
     );
-    console.log(filteredArray);
     setSearchList(filteredArray);
   };
 
@@ -93,27 +92,39 @@ export function SortableTable() {
   });
 
   const sorting = (col) => {
-    if(col !== "date" && col !== "id"){
-      if(sort[col] == "" || sort[col] == "dsc"){
+    if(sort[col] == "" || sort[col] == "dsc"){
+      if(col === 'id'){
+        const sorted = [...searchList].sort((a,b) =>
+          a[col] > b[col] ? 1 : -1
+        );
+        setSearchList(sorted);
+      }
+      else{
         const sorted = [...searchList].sort((a,b) =>
           a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
         );
         setSearchList(sorted);
-        
+      }
         let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
         newSort = {...newSort, [col]: "asc"};
         setSort(newSort);
+    }
+    else if(sort[col] == "asc"){
+      if(col === 'id'){
+        const sorted = [...searchList].sort((a,b) =>
+          a[col] < b[col] ? 1 : -1
+        );
+        setSearchList(sorted);
       }
-      else if(sort[col] == "asc"){
+      else{
         const sorted = [...searchList].sort((a,b) =>
           a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
         );
         setSearchList(sorted);
-
+      }
         let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
         newSort = {...newSort, [col]: "dsc"};
         setSort(newSort);
-      }
     }
   };
 
@@ -139,15 +150,6 @@ export function SortableTable() {
           </div>
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          {/* <Tabs value="all" className="w-full md:w-max">
-            <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
-                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
-                </Tab>
-              ))}
-            </TabsHeader>
-          </Tabs> */}
           <div className="w-full md:w-72">
             <Input
               label="Search"
@@ -185,14 +187,14 @@ export function SortableTable() {
                     {value !== "total_amount" && value !== "action" && sort[value] === "asc" && (
                       <ChevronDownIcon
                         strokeWidth={4}
-                        className="h-2.5 w-3"
+                        className="h-2.5 w-5"
                         onClick={() => sorting(value)}
                       />
                     )}
                     {value !== "total_amount" && value !== "action" && sort[value] === "dsc" && (
                       <ChevronUpIcon
                         strokeWidth={4}
-                        className="h-2.5 w-3"
+                        className="h-2.5 w-5"
                         onClick={() => sorting(value)}
                       />
                     )}
@@ -283,12 +285,27 @@ export function SortableTable() {
           </tbody>
         </table>
       </CardBody>
-      <Pagination 
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        paginate={paginate}
-        maxPages={maxPages}
-      />
+      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-3">
+        <Pagination 
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          paginate={paginate}
+          maxPages={maxPages}
+        />
+        <div className="flex">
+          <Typography color="gray" className="font-normal px-2 mt-2">
+            Items per page
+          </Typography>
+          <div className="">
+          <Select value = {itemsPerPage.toString()} onChange={(value) => setItemsPerPage(value)}>
+            <Option value="10">10</Option>
+            <Option value="25">25</Option>
+            <Option value="50">50</Option>
+            <Option value="100">100</Option>
+          </Select>
+          </div>
+        </div>
+      </CardFooter>
       {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
           Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
