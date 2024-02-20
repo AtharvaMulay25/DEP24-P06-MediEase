@@ -6,6 +6,9 @@ import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import Dashboard from './pages/Dashboard';
 import AdminHome from './pages/AdminHome';
+import PurchaseList from './pages/PurchaseList';
+import Pagination from './components/Pagination';
+
 
 function App() {
   return (
@@ -16,6 +19,8 @@ function App() {
         <Route path="/signup" element={<SignUpPage />}/>
         <Route path="/" element={<Dashboard />} />
         <Route path="/adminhome" element={<AdminHome />} />
+        <Route path="/purchase/list" element={<PurchaseList />} />
+        <Route path="/pagination" element={<Pagination />} />
       </Routes>
 
       </BrowserRouter>
