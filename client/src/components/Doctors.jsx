@@ -116,7 +116,7 @@ const Doctors = () => {
                 <img
                   src={e.img}
                   alt="img"
-                  className=" h-56 rounded-t-xl w-full"
+                  className=" h-56 rounded-t-xl w-full object-contain"
                 />
               </div>
 
