@@ -237,7 +237,7 @@ export function SideTopBar() {
                 </ListItem> */}
                 </List>
             </div>
-            <div class="flex flex-col w-full z-10">
+            <div class="flex flex-col !w-full z-10">
                 <div class="bg-blue-500" style={{ height: '80px' }}>
                     <Bars3Icon className="h-8 w-8 stroke-2 m-3 mt-6" onClick={toggleCollapse}/>
                 </div>
