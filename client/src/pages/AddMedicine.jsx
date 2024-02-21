@@ -5,12 +5,12 @@ const AddMedicine = () => {
   return (
     <>
       <div className="h-screen z-0 flex">
-        <div className="mr-20">
+        <div>
         <SideTopBar />
         </div>
-        <div className="flex-auto p-4 shadow-md mt-20 bg-gray-50 ">
-          <AddMedicineForm />
-        </div>
+        <div className="flex-auto p-4 shadow-md bg-gray-50">
+					<AddMedicineForm />
+				</div>
       </div>
     </>
   );
