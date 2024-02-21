@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SideTopBar } from '../components/SideTopBar';
+import {SideTopBar} from '../components/SideTopBar';
 
 const AdminHome = () => {
     return(
