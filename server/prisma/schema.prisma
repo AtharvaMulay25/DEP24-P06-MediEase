@@ -13,3 +13,63 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Medicine {
+  id           String   @id @default(uuid())
+  name         String
+  genericName  String
+  brandName    String
+  category     String
+  strength     String     
+  Stock        Stock[]    //CHECK
+}
+
+model Supplier {
+  id          String    @id @default(uuid())
+  name        String
+  address     String
+  city        String
+  state       String
+  pinCode     String
+  mobileNumber String
+  email       String
+  Purchase    Purchase[]
+}
+
+model Staff {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  role          Role
+  speciality    String?
+  gender        String
+  shiftSchedule String
+
+  @@map("staff")
+}
+
+enum Role {
+  DOCTOR
+  PHARMACIST
+  NURSE
+  ADMIN
+}
+
+model Stock {
+  id         String   @id @default(uuid())
+  medicineId String
+  netQuantity   Int
+  category   String
+  inQuantity Int
+  outQuantity Int
+  Medicine   Medicine @relation(fields: [medicineId], references: [id])
+  @@map("stock")
+}
+
+model Purchase {
+  id           String   @id @default(uuid())
+  supplierId   String
+  purchaseDate DateTime
+  amount       Float
+  Supplier     Supplier @relation(fields: [supplierId], references: [id])
+  @@map("purchase")
+}
