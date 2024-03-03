@@ -78,46 +78,58 @@ export function AddMedicineForm() {
       <CardBody>
         <form onSubmit={handleSubmit} className="flex flex-wrap gap-6">
           <div className="grid grid-cols-2  gap-y-8 gap-x-56">
-            <div className="flex items-center justify-around p-1">
-              <label htmlFor="medicineName" className="mr-2 w-72">
-                Medicine Name:
-              </label>
+            <div className="flex items-center justify-start p-1 text-left">
+              <div className="flex mr-4 w-72 justify-end">
+                <label htmlFor="medicineName">Medicine Name <span className="text-red-800">*</span>:</label>
+              </div>
               <Input id="medicineName" size="md" label="Medicine Name" />
             </div>
             <div className="flex items-center justify-around p-1">
-              <label htmlFor="strength" className="mr-2 w-72">
+            <div className="flex mr-2 w-72 justify-end">
+              <label htmlFor="strength" >
                 Strength:
               </label>
+              </div>
               <Input id="strength" size="md" label="Strength" />
             </div>
             <div className="flex items-center justify-around p-1">
-              <label htmlFor="genericName" className="mr-2 w-72">
+            <div className="flex mr-2 w-72 justify-end">
+              <label htmlFor="genericName" >
                 Generic Name:
               </label>
+              </div>
               <Input id="genericName" size="md" label="Generic Name" />
             </div>
             <div className="flex items-center justify-around p-1">
-              <label htmlFor="shelf" className="mr-2 w-72">
+            <div className="flex mr-2 w-72 justify-end">
+              <label htmlFor="shelf" >
                 Shelf:
               </label>
+              </div>
               <Input id="shelf" size="md" label="Shelf" />
             </div>
             <div className="flex items-center justify-around p-1">
-              <label htmlFor="shelf" className="mr-2 w-72">
+            <div className="flex mr-2 w-72 justify-end">
+              <label htmlFor="shelf" >
                 Shelf:
               </label>
+              </div>
               <Input id="shelf" size="md" label="Shelf" />
             </div>
             <div className="flex items-center justify-around p-1">
-              <label htmlFor="medicineDetails" className="mr-2 w-72">
+            <div className="flex mr-2 w-72 justify-end">
+              <label htmlFor="medicineDetails" >
                 Medicine Details:
               </label>
+              </div>
               <Input id="medicineDetails" size="md" label="Medicine Details" />
             </div>
             <div className="flex items-center justify-around p-1">
-              <label htmlFor="category" className="mr-2 w-72">
+            <div className="flex mr-2 w-72 justify-end">
+              <label htmlFor="category" >
                 Category:
               </label>
+              </div>
               <Select id="category" label="Select Category">
                 <Option>Injection</Option>
                 <Option>Syrup</Option>
@@ -126,9 +138,11 @@ export function AddMedicineForm() {
               </Select>
             </div>
             <div className="flex items-center justify-around p-1">
-              <label htmlFor="medicineType" className="mr-2 w-72">
+            <div className="flex mr-2 w-72 justify-end">
+              <label htmlFor="medicineType">
                 Medicine Type:
               </label>
+              </div>
               <Select id="medicineType" label="Select Type">
                 <Option>Generic</Option>
                 <Option>Medical Kit</Option>
@@ -137,9 +151,11 @@ export function AddMedicineForm() {
               </Select>
             </div>
             <div className="flex items-center justify-around p-1">
-              <label htmlFor="supplier" className="mr-2 w-72">
+            <div className="flex mr-2 w-72 justify-end">
+              <label htmlFor="supplier">
                 Select Supplier:
               </label>
+              </div>
               <Select id="supplier" label="Select Supplier">
                 <Option>Supplier1</Option>
                 <Option>Supplier2</Option>
@@ -148,9 +164,11 @@ export function AddMedicineForm() {
               </Select>
             </div>
             <div className="flex items-center justify-around p-1">
-              <label htmlFor="boxSize" className="mr-2 w-72">
+            <div className="flex mr-2 w-72 justify-end">
+              <label htmlFor="boxSize" >
                 Box Size:
               </label>
+              </div>
               <Select id="boxSize" label="Select Leaf Pattern">
                 <Option>14 per leaf</Option>
                 <Option>20 per leaf</Option>
