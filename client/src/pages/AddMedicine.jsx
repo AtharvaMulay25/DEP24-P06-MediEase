@@ -1,6 +1,7 @@
 import React from "react";
 import { SideTopBar } from "../components/SideTopBar";
 import {AddMedicineForm} from "../components/AddMedicineForm";
+
 const AddMedicine = () => {
   return (
     <>
