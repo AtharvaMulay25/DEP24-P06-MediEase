@@ -13,49 +13,38 @@ import {
   Button,
   CardBody,
   CardFooter,
-  Tabs,
-  TabsHeader,
-  Tab,
-  Avatar,
   IconButton,
   Tooltip,
   Select,
   Option,
 } from "@material-tailwind/react";
 
-import MockData from "../assets/MOCK_DATA.json";
 import { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 
-const TABLE_HEAD = {
-  id: "#",
-  Purchase_id: "Purchase_id",
-  Supplier: "Supplier",
-  date: "Date",
-  total_amount: "Total Amount",
-  action: "Action",
-};
-
-export function SortableTable() {
-  const [data, setData] = useState(MockData);
-
+export function SortableTable({ tableHead, title, data, detail, text }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10); 
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [paginatedData, setPaginatedData] = useState([]);
 
   const [search, setSearch] = useState("");
   const [searchList, setSearchList] = useState([]);
 
-  const [maxPages, setMaxPages] = useState(Math.ceil((data.length)/itemsPerPage));
+  const [maxPages, setMaxPages] = useState(
+    Math.ceil(data.length / itemsPerPage)
+  );
 
   useEffect(() => {
-    setMaxPages(Math.ceil((data.length)/itemsPerPage)); 
+    setMaxPages(Math.ceil(data.length / itemsPerPage));
   }, [data, itemsPerPage]);
 
   useEffect(() => {
     const indexOfLastPage = currentPage * itemsPerPage;
     const indexOfFirstPage = indexOfLastPage - itemsPerPage;
-    const currentItems = data.slice(indexOfFirstPage, Math.min(indexOfLastPage, data.length));
+    const currentItems = data.slice(
+      indexOfFirstPage,
+      Math.min(indexOfLastPage, data.length)
+    );
     setPaginatedData(currentItems);
     setSearchList(currentItems);
   }, [currentPage, itemsPerPage]);
@@ -66,8 +55,8 @@ export function SortableTable() {
   };
 
   const filterItems = (str) => {
-    const filteredArray = paginatedData.filter(item => 
-      ((item.Supplier).toLowerCase()).includes(str.toLowerCase())
+    const filteredArray = paginatedData.filter((item) =>
+      item.Supplier.toLowerCase().includes(str.toLowerCase())
     );
     setSearchList(filteredArray);
   };
@@ -81,51 +70,39 @@ export function SortableTable() {
       let newPageNum = currentPage - 1;
       if (newPageNum < 1) newPageNum = 1;
       setCurrentPage(newPageNum);
-    }  
+    }
   };
 
-  const [sort, setSort] = useState({
-    id: "asc",
-    Purchase_id: "",
-    Supplier: "",
-    date: "",
+  const [sort, setSort] = useState(() => {
+    const initialSortState = {};
+    Object.keys(tableHead).forEach((key, index) => {
+      if (key !== "action") initialSortState[key] = index === 0 ? "asc" : "";
+    });
+    return initialSortState;
   });
 
   const sorting = (col) => {
-    if(sort[col] == "" || sort[col] == "dsc"){
-      if(col === 'id'){
-        const sorted = [...searchList].sort((a,b) =>
-          a[col] > b[col] ? 1 : -1
-        );
-        setSearchList(sorted);
-      }
-      else{
-        const sorted = [...searchList].sort((a,b) =>
-          a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
-        );
-        setSearchList(sorted);
-      }
-        let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
-        newSort = {...newSort, [col]: "asc"};
-        setSort(newSort);
+    const sortOrder = sort[col] === "asc" ? -1 : 1;
+
+    if (col === "id") {
+      const sorted = [...searchList].sort((a, b) => {
+        if (a[col] < b[col]) return sortOrder;
+        if (a[col] > b[col]) return -sortOrder;
+        return 0;
+      });
+      setSearchList(sorted);
+    } else {
+      const sorted = [...searchList].sort((a, b) => {
+        if (a[col].toLowerCase() < b[col].toLowerCase()) return sortOrder;
+        if (a[col].toLowerCase() > b[col].toLowerCase()) return -sortOrder;
+        return 0;
+      });
+      setSearchList(sorted);
     }
-    else if(sort[col] == "asc"){
-      if(col === 'id'){
-        const sorted = [...searchList].sort((a,b) =>
-          a[col] < b[col] ? 1 : -1
-        );
-        setSearchList(sorted);
-      }
-      else{
-        const sorted = [...searchList].sort((a,b) =>
-          a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
-        );
-        setSearchList(sorted);
-      }
-        let newSort = {id:"", Purchase_id:"", date:"", Supplier:""};
-        newSort = {...newSort, [col]: "dsc"};
-        setSort(newSort);
-    }
+    let newSort = { id: "", Purchase_id: "", date: "", Supplier: "" };
+    if (sort[col] === "asc") newSort = { ...newSort, [col]: "dsc" };
+    else newSort = { ...newSort, [col]: "asc" };
+    setSort(newSort);
   };
 
   return (
@@ -134,10 +111,10 @@ export function SortableTable() {
         <div className="mb-2 flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Purchase List
+              {title}
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
-              See information about all purchases
+              {detail}
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -145,7 +122,7 @@ export function SortableTable() {
             view all
             </Button> */}
             <Button className="flex items-center gap-3" size="sm">
-              <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add purchase
+              <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> {text}
             </Button>
           </div>
         </div>
@@ -160,11 +137,11 @@ export function SortableTable() {
           </div>
         </div>
       </CardHeader>
-      <CardBody className="flex-1 overflow-y-scroll px-4 py-1">
+      <CardBody className="flex-1 overflow-y-auto px-4 py-1">
         <table className="w-full border table-auto text-left">
           <thead>
             <tr>
-              {Object.entries(TABLE_HEAD).map(([value, head]) => (
+              {Object.entries(tableHead).map(([value, head]) => (
                 <th
                   key={head}
                   className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
@@ -175,150 +152,96 @@ export function SortableTable() {
                     className="flex items-center justify-between gap-2 font-bold leading-none"
                   >
                     {head} {""}
-                    {value !== "total_amount" && value !== "action" && sort[value] === "" && (
-                      <div>
-                        <ChevronUpDownIcon
-                          strokeWidth={2}
-                          className="h-5 w-5"
+                    {value !== "total_amount" &&
+                      value !== "action" &&
+                      sort[value] === "" && (
+                        <div>
+                          <ChevronUpDownIcon
+                            strokeWidth={2}
+                            className="h-5 w-5"
+                            onClick={() => sorting(value)}
+                          />
+                        </div>
+                      )}
+                    {value !== "total_amount" &&
+                      value !== "action" &&
+                      sort[value] === "asc" && (
+                        <ChevronDownIcon
+                          strokeWidth={4}
+                          className="h-2.5 w-5"
                           onClick={() => sorting(value)}
                         />
-                      </div>
-                    )}
-                    {value !== "total_amount" && value !== "action" && sort[value] === "asc" && (
-                      <ChevronDownIcon
-                        strokeWidth={4}
-                        className="h-2.5 w-5"
-                        onClick={() => sorting(value)}
-                      />
-                    )}
-                    {value !== "total_amount" && value !== "action" && sort[value] === "dsc" && (
-                      <ChevronUpIcon
-                        strokeWidth={4}
-                        className="h-2.5 w-5"
-                        onClick={() => sorting(value)}
-                      />
-                    )}
+                      )}
+                    {value !== "total_amount" &&
+                      value !== "action" &&
+                      sort[value] === "dsc" && (
+                        <ChevronUpIcon
+                          strokeWidth={4}
+                          className="h-2.5 w-5"
+                          onClick={() => sorting(value)}
+                        />
+                      )}
                   </Typography>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {searchList.map(
-              //  ["#", "Purchase_id", "Supplier", "Date", "Total Amount", "Action"]
-              ({ id, Purchase_id, Supplier, date, total_amount }) => {
-                // const isLast = index === data.length - 1;
-                // const classes = isLast
-                //   ? "p-4 border-2"
-                //   : "p-4 border-b border-2 border-blue-gray-50";
-                const classes = "px-3 border-2 opacity-80";
-
-                return (
-                  <tr key={id} className="even:bg-blue-gray-50/50">
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {id}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {Purchase_id}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {Supplier}
-                      </Typography>
-                    </td>
-                    {/* <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          variant="ghost"
-                          size="sm"
-                          value={online ? "online" : "offline"}
-                          color={online ? "green" : "blue-gray"}
-                        />
-                      </div>
-                    </td> */}
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {date}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {total_amount}
-                      </Typography>
-                    </td>
-
-                    <td className={("", classes)}>
-                      <Tooltip content="Edit Purcahse">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
-                    </td>
-                  </tr>
-                );
-              }
-            )}
+            {searchList.map((rowData) => {
+              const classes = "px-3 border-2 opacity-80";
+              return (
+                <tr className="even:bg-blue-gray-50/50">
+                  {Object.entries(tableHead).map(
+                    ([key, value]) =>
+                      key !== "action" && (
+                        <td className={classes}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {rowData[key]}
+                          </Typography>
+                        </td>
+                      )
+                  )}
+                  <td className={("", classes)}>
+                    <Tooltip content="Edit Purcahse">
+                      <IconButton variant="text">
+                        <PencilIcon className="h-4 w-4" />
+                      </IconButton>
+                    </Tooltip>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-3">
-        <Pagination 
+      <CardFooter className="min-w-0 flex items-center justify-between border-t border-blue-gray-50 p-3">
+        <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           paginate={paginate}
           maxPages={maxPages}
         />
-        <div className="flex">
-          <Typography color="gray" className="font-normal px-2 mt-2">
+        <div className="md:flex md:flex-row flex-col">
+          <Typography color="gray" className="min-w-0 font-normal px-2 mt-2">
             Items per page
           </Typography>
           <div className="">
-          <Select value = {itemsPerPage.toString()} onChange={(value) => setItemsPerPage(value)}>
-            <Option value="10">10</Option>
-            <Option value="25">25</Option>
-            <Option value="50">50</Option>
-            <Option value="100">100</Option>
-          </Select>
+            <Select
+              value={itemsPerPage.toString()}
+              onChange={(value) => setItemsPerPage(value)}
+            >
+              <Option value="10">10</Option>
+              <Option value="25">25</Option>
+              <Option value="50">50</Option>
+              <Option value="100">100</Option>
+            </Select>
           </div>
         </div>
       </CardFooter>
-      {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Typography variant="small" color="blue-gray" className="font-normal">
-          Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
-        </Typography>
-        <div className="flex gap-2">
-          <Button variant="outlined" size="sm" onClick={() => paginate("dec")}>
-            Previous
-          </Button>
-          <Button variant="outlined" size="sm" onClick={() => paginate("inc")}>
-            Next
-          </Button>
-        </div>
-      </CardFooter> */}
     </Card>
   );
 }
