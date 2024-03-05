@@ -7,6 +7,7 @@ import SignUpPage from './pages/SignUpPage';
 import Dashboard from './pages/Dashboard';
 import AdminHome from './pages/AdminHome';
 import AddMedicine from './pages/AddMedicine';
+import AddSupplier from './pages/AddSupplier';
 import PurchaseList from './pages/PurchaseList';
 import PharmaDashboard from './pages/PharmaDashboard';
 import Pagination from './components/Pagination';
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/adminhome" element={<AdminHome />} />
         <Route path="/medicine/add_medicine" element={<AddMedicine />} />
+        <Route path="/supplier/add_supplier" element={<AddSupplier/>} /> 
         <Route path="/purchase/list" element={<PurchaseList />} />
         <Route path="/pharmadashboard" element={<PharmaDashboard />} />
         <Route path="/pagination" element={<Pagination />} />
