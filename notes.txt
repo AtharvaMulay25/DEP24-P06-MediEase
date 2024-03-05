@@ -1,8 +1,12 @@
 To do now:
-
-
+thin up the scrollbar width --done
+add footer --done
+fixed the Mediease name and ham icon on scroll  
+hide the scroll after collapse  --done
+test all the pages and sidebar even after scrolling --done
 
 Remaining:
+sidebar is scrolling even after collapse***  --rem
 
 
 
