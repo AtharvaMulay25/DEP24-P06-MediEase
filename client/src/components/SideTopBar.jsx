@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { GiMedicines } from "react-icons/gi";
 import { MdSpaceDashboard } from "react-icons/md";
 
@@ -17,23 +17,20 @@ import {
   UserGroupIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/solid";
-import {
-  ChevronDownIcon,
-  Bars3Icon,
-} from "@heroicons/react/24/outline";
- 
-export function SideTopBar()  {
-  const [open, setOpen] = React.useState(0); 
+import { ChevronDownIcon, Bars3Icon } from "@heroicons/react/24/outline";
+
+export function SideTopBar() {
+  const [open, setOpen] = React.useState(0);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
-  
+
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
 
   const toggleCollapse = () => {
-    setIsCollapsed(prevState => !prevState);
+    setIsCollapsed((prevState) => !prevState);
   };
 
   return (
@@ -65,7 +62,7 @@ export function SideTopBar()  {
                     <li className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                         hover:bg-blue-gray-50 hover:bg-opacity-80"> 
                         <MdSpaceDashboard className="h-5 w-5 mr-4" />
-                        {!(isCollapsed & !isHovered) && (<Typography className="font-normal">
+                        {!(isCollapsed & !isHovered) && (<Typography className="font-normal" onClick={()=>{navigate("/pharmadashboard")}}>
                         Dashboard
                         </Typography>)}
                     </li>
@@ -107,7 +104,7 @@ export function SideTopBar()  {
                                     <ListItem className="ml-9" onClick = { () => navigate('/medicine/add_medicine') }>
                                         Add Medicine
                                     </ListItem>
-                                    <ListItem className="ml-9">
+                                    <ListItem className="ml-9" onClick={ () => navigate('/medicine/list') }>
                                         Medicine List
                                     </ListItem>
                                 </List>
@@ -181,10 +178,10 @@ export function SideTopBar()  {
                     {!(isCollapsed & !isHovered) && (
                         <AccordionBody className="py-1">
                             <List className="p-0" style = {{ color: '#f1ffea' }}>
-                                <ListItem className="ml-9">
+                                <ListItem className="ml-9" onClick={ () => navigate('/supplier/add_supplier') }>
                                     Add Supplier
                                 </ListItem>
-                                <ListItem className="ml-9">
+                                <ListItem className="ml-9" onClick={ () => navigate('/supplier/list') }>
                                     Supplier List
                                 </ListItem>
                             </List>
@@ -197,5 +194,3 @@ export function SideTopBar()  {
     </>
   );
 }
-
-// export default SideTopBar;

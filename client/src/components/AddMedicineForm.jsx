@@ -54,7 +54,7 @@ export function AddMedicineForm() {
   };
 
   return (
-    <Card className="h-full w-full">
+    <Card className="h-max w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
         <div className="mb-2 flex items-center justify-between gap-8">
           <div>
@@ -77,58 +77,53 @@ export function AddMedicineForm() {
       </CardHeader>
       <CardBody>
         <form onSubmit={handleSubmit} className="flex flex-wrap gap-6">
-          <div className="grid grid-cols-2  gap-y-8 gap-x-56">
-            <div className="flex items-center justify-start p-1 text-left">
+          <div className="grid grid-cols-2  gap-y-8 gap-x-4 w-full">
+            <div className="flex items-center justify-around p-1">
               <div className="flex mr-4 w-72 justify-end">
-                <label htmlFor="medicineName">Medicine Name <span className="text-red-800">*</span>:</label>
+                <label htmlFor="medicineName">
+                  Medicine Name <span className="text-red-800">*</span>:
+                </label>
               </div>
-              <Input id="medicineName" size="md" label="Medicine Name" />
+              <Input
+                id="medicineName"
+                size="md"
+                label="Medicine Name"
+                className="w-full"
+              />
             </div>
             <div className="flex items-center justify-around p-1">
-            <div className="flex mr-2 w-72 justify-end">
-              <label htmlFor="strength" >
-                Strength:
-              </label>
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="strength">Strength:</label>
               </div>
               <Input id="strength" size="md" label="Strength" />
             </div>
             <div className="flex items-center justify-around p-1">
-            <div className="flex mr-2 w-72 justify-end">
-              <label htmlFor="genericName" >
-                Generic Name:
-              </label>
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="genericName">Generic Name:</label>
               </div>
               <Input id="genericName" size="md" label="Generic Name" />
             </div>
             <div className="flex items-center justify-around p-1">
-            <div className="flex mr-2 w-72 justify-end">
-              <label htmlFor="shelf" >
-                Shelf:
-              </label>
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="shelf">Shelf:</label>
               </div>
               <Input id="shelf" size="md" label="Shelf" />
             </div>
             <div className="flex items-center justify-around p-1">
-            <div className="flex mr-2 w-72 justify-end">
-              <label htmlFor="shelf" >
-                Shelf:
-              </label>
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="shelf">Shelf:</label>
               </div>
               <Input id="shelf" size="md" label="Shelf" />
             </div>
             <div className="flex items-center justify-around p-1">
-            <div className="flex mr-2 w-72 justify-end">
-              <label htmlFor="medicineDetails" >
-                Medicine Details:
-              </label>
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="medicineDetails">Medicine Details:</label>
               </div>
               <Input id="medicineDetails" size="md" label="Medicine Details" />
             </div>
             <div className="flex items-center justify-around p-1">
-            <div className="flex mr-2 w-72 justify-end">
-              <label htmlFor="category" >
-                Category:
-              </label>
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="category">Category:</label>
               </div>
               <Select id="category" label="Select Category">
                 <Option>Injection</Option>
@@ -138,10 +133,8 @@ export function AddMedicineForm() {
               </Select>
             </div>
             <div className="flex items-center justify-around p-1">
-            <div className="flex mr-2 w-72 justify-end">
-              <label htmlFor="medicineType">
-                Medicine Type:
-              </label>
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="medicineType">Medicine Type:</label>
               </div>
               <Select id="medicineType" label="Select Type">
                 <Option>Generic</Option>
@@ -151,10 +144,8 @@ export function AddMedicineForm() {
               </Select>
             </div>
             <div className="flex items-center justify-around p-1">
-            <div className="flex mr-2 w-72 justify-end">
-              <label htmlFor="supplier">
-                Select Supplier:
-              </label>
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="supplier">Select Supplier:</label>
               </div>
               <Select id="supplier" label="Select Supplier">
                 <Option>Supplier1</Option>
@@ -164,10 +155,8 @@ export function AddMedicineForm() {
               </Select>
             </div>
             <div className="flex items-center justify-around p-1">
-            <div className="flex mr-2 w-72 justify-end">
-              <label htmlFor="boxSize" >
-                Box Size:
-              </label>
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="boxSize">Box Size:</label>
               </div>
               <Select id="boxSize" label="Select Leaf Pattern">
                 <Option>14 per leaf</Option>
@@ -176,6 +165,94 @@ export function AddMedicineForm() {
                 <Option>25 per leaf</Option>
               </Select>
             </div>
+            <div className="flex items-center justify-around p-1">
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="supplier">Select Supplier:</label>
+              </div>
+              <Select id="supplier" label="Select Supplier">
+                <Option>Supplier1</Option>
+                <Option>Supplier2</Option>
+                <Option>Supplier3</Option>
+                <Option>Supplier4</Option>
+              </Select>
+            </div>
+            <div className="flex items-center justify-around p-1">
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="boxSize">Box Size:</label>
+              </div>
+              <Select id="boxSize" label="Select Leaf Pattern">
+                <Option>14 per leaf</Option>
+                <Option>20 per leaf</Option>
+                <Option>21 per leaf</Option>
+                <Option>25 per leaf</Option>
+              </Select>
+            </div>
+            <div className="flex items-center justify-around p-1">
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="supplier">Select Supplier:</label>
+              </div>
+              <Select id="supplier" label="Select Supplier">
+                <Option>Supplier1</Option>
+                <Option>Supplier2</Option>
+                <Option>Supplier3</Option>
+                <Option>Supplier4</Option>
+              </Select>
+            </div>
+            <div className="flex items-center justify-around p-1">
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="boxSize">Box Size:</label>
+              </div>
+              <Select id="boxSize" label="Select Leaf Pattern">
+                <Option>14 per leaf</Option>
+                <Option>20 per leaf</Option>
+                <Option>21 per leaf</Option>
+                <Option>25 per leaf</Option>
+              </Select>
+            </div>
+            {/* <div className="flex items-center justify-around p-1">
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="supplier">Select Supplier:</label>
+              </div>
+              <Select id="supplier" label="Select Supplier">
+                <Option>Supplier1</Option>
+                <Option>Supplier2</Option>
+                <Option>Supplier3</Option>
+                <Option>Supplier4</Option>
+              </Select>
+            </div>
+            <div className="flex items-center justify-around p-1">
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="boxSize">Box Size:</label>
+              </div>
+              <Select id="boxSize" label="Select Leaf Pattern">
+                <Option>14 per leaf</Option>
+                <Option>20 per leaf</Option>
+                <Option>21 per leaf</Option>
+                <Option>25 per leaf</Option>
+              </Select>
+            </div>
+            <div className="flex items-center justify-around p-1">
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="supplier">Select Supplier:</label>
+              </div>
+              <Select id="supplier" label="Select Supplier">
+                <Option>Supplier1</Option>
+                <Option>Supplier2</Option>
+                <Option>Supplier3</Option>
+                <Option>Supplier4</Option>
+              </Select>
+            </div>
+            <div className="flex items-center justify-around p-1">
+              <div className="flex mr-2 w-72 justify-end">
+                <label htmlFor="boxSize">Box Size:</label>
+              </div>
+              <Select id="boxSize" label="Select Leaf Pattern">
+                <Option>14 per leaf</Option>
+                <Option>20 per leaf</Option>
+                <Option>21 per leaf</Option>
+                <Option>25 per leaf</Option>
+              </Select>
+            </div> */}
           </div>
         </form>
       </CardBody>
