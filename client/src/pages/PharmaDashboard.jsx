@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/PharmaDashboard.css";
 import { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import {
@@ -45,7 +46,12 @@ const PharmaDashboard = () => {
   const chartConfigBar = {
     type: "bar",
     height: 300,
-    width: width * (7 / 12),
+    width:
+      width < 720
+        ? width * (17 / 24)
+        : (width >= 720) & (width <= 1464)
+        ? width * (13 / 24)
+        : width * (13 / 24),
     series: [
       {
         name: "Sales",
@@ -158,8 +164,22 @@ const PharmaDashboard = () => {
 
   const chartConfigPie = {
     type: "pie",
-    width: "100%",
-    height: 280,
+    width:
+      width < 720
+        ? width * (1 / 2)
+        : (width >= 720) & (width <= 1464)
+        ? width * (1 / 3)
+        : (width <= 1464) & (width > 1024)
+        ? width * (1 / 4)
+        : width * (1 / 5),
+    height:
+      width < 720
+        ? width * (1 / 2)
+        : (width >= 720) & (width <= 1024)
+        ? width * (1 / 3)
+        : (width <= 1464) & (width > 1024)
+        ? width * (1 / 4)
+        : width * (1 / 5),
     series: [44, 55, 13, 43, 22],
     options: {
       chart: {
@@ -184,15 +204,15 @@ const PharmaDashboard = () => {
     <>
       <Layout>
         <div>
-          <div className="flex flex-col md:flex-row">
-            <div className="relative flex-col mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+          <div className="md:grid md:grid-cols-4">
+            <div className="col-span-1 mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <GiMedicines
                     className="h-8 w-8 mr-2"
                     style={{ color: "black" }}
                   />
-                  Total Medicines Registered
+                  Total Medicines
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
                   350
@@ -208,7 +228,7 @@ const PharmaDashboard = () => {
                 </button>
               </div>
             </div>
-            <div className="relative flex-col mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+            <div className="col-span-1 mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <ChartBarIcon className="h-7 w-7 mr-2" />
@@ -228,7 +248,7 @@ const PharmaDashboard = () => {
                 </button>
               </div>
             </div>
-            <div className="relative flex-col mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+            <div className="col-span-1 mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <ShoppingCartIcon className="h-7 w-7 mr-2" />
@@ -242,13 +262,13 @@ const PharmaDashboard = () => {
                 <button
                   className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
                   type="button"
-                  onClick={() => navigate("/stock")}
+                  onClick={() => navigate("/purchase/list")}
                 >
                   See Purchase List
                 </button>
               </div>
             </div>
-            <div className="relative flex-col mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+            <div className="col-span-1 mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <UserGroupIcon className="h-7 w-7 mr-2" />
@@ -269,8 +289,8 @@ const PharmaDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="md:grid md:grid-cols-4">
-            <Card className="mt-6 ml-4 col-span-3">
+          <div className="md:grid md:grid-cols-3">
+            <Card className="mt-6 ml-4 col-span-2">
               <CardHeader
                 floated={false}
                 shadow={false}
