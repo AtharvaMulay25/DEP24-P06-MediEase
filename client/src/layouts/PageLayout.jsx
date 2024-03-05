@@ -105,6 +105,7 @@ const Layout = ({ children }) => {
               className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal h-full"
               style={{ color: "#f1ffea" }}
             >
+              <a href="/pharmadashboard">
               <li
                 className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                         hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
@@ -114,6 +115,7 @@ const Layout = ({ children }) => {
                   <Typography className="font-normal">Dashboard</Typography>
                 )}
               </li>
+                </a>
 
               <li
                 className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
