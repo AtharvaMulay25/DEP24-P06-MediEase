@@ -22,7 +22,7 @@ import {
 import { ChevronDownIcon, Bars3Icon } from "@heroicons/react/24/outline";
 
 const Layout = ({ children }) => {
-  const [open, setOpen] = React.useState(0);
+  const [open, setOpen] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
     {
       title: "Contact us",
       items: [
-        "Medical Center, Indian Institute of Technology Ropar, Rupnagar,Punjab - 140001,India",
+        "Medical Center, IIT ROPAR, Punjab - 140001, India",
         "support@care.com,",
         "+91 1234567890",
       ],
@@ -60,13 +60,13 @@ const Layout = ({ children }) => {
       <div className="fixed h-screen z-10 top-0 left-0">
         <div className="flex">
           <div
-            className={`transition-width duration-300 h-screen overflow-x-hidden overflow-y-${
-              isCollapsed & !isHovered ? "hidden" : "auto"
-            }`}
+            className="transition-width duration-300 h-screen overflow-x-hidden"
             style={{
-              width: isCollapsed & !isHovered ? "60px" : "250px",
-              backgroundColor: "#0a141f",
+              width: (isCollapsed && !isHovered) ? "60px" : "250px",
               scrollbarWidth: "thin",
+              overflowY:  (isCollapsed && !isHovered) ? "hidden" : "auto", 
+              backgroundColor: "#0a141f",
+              
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
@@ -76,18 +76,23 @@ const Layout = ({ children }) => {
           >
             <div className="flex p-4" style={{ backgroundColor: "#0a141f" }}>
               <div className="h-12 w-12 flex-shrink-0">
+                <a href="/">
                 <img
                   src="/src/assets/img/logo.png"
                   alt="Logo"
-                  className="-ml-3 -mr-2"
+                  className="-ml-3 -mr-2 cursor-pointer"
                   style={{ width: "100%", height: "100%" }}
+              
                 />
+                </a>
               </div>
               <div className="flex-shrink-0">
-                <Typography variant="h4" className="mt-1">
+                <a href="/">
+                <Typography variant="h4" className="mt-1 cursor-pointer">
                   <span style={{ color: "#0eb8fc" }}>Medi</span>
                   <span style={{ color: "#fe055c" }}>Ease</span>
                 </Typography>
+                </a>
               </div>
             </div>
             <Bars3Icon
@@ -102,7 +107,7 @@ const Layout = ({ children }) => {
             >
               <li
                 className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
-                        hover:bg-blue-gray-50 hover:bg-opacity-80"
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
               >
                 <MdSpaceDashboard className="h-5 w-5 mr-4" />
                 {!(isCollapsed & !isHovered) && (
@@ -112,7 +117,7 @@ const Layout = ({ children }) => {
 
               <li
                 className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
-                         hover:bg-blue-gray-50 hover:bg-opacity-80"
+                         hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
               >
                 <ChartBarIcon className="h-5 w-5 mr-4" />
                 {!(isCollapsed & !isHovered) && (
@@ -286,18 +291,15 @@ const Layout = ({ children }) => {
           </div>
         </div>
       </div>
-      {/* <div className="flex flex-col"> */}
+      
       {/* Content of page */}
       <div
-        className={`flex-auto flex flex-col justify-between p-4 shadow-lg bg-gray-50 h-screen overflow-y-auto  ml-${
-          isCollapsed & !isHovered ? "16" : "64"
-        } transition-all duration-300 ease-in-out}`}
+        className="flex-auto flex flex-col justify-between p-4 shadow-lg bg-gray-50 h-screen overflow-y-auto transition-all duration-300 ease-in-out"
+        style={{ marginLeft: isCollapsed && !isHovered ? "60px" : "250px" }}
       >
         {children}
-        {/* <Card className="h-max w-full mt-5"> */}
-        {/* <CardFooter> */}
         <footer className="w-full mt-5 bg-white">
-          <div className="mx-auto w-full max-w-7xl px-8 py-6">
+          <div className="mx-auto w-full max-w-7xl px-4 py-2">
             <div className="grid grid-cols-1 justify-between gap-4 md:grid-cols-2">
               <Typography variant="h5" className="mb-6">
                 MediEase
@@ -329,10 +331,10 @@ const Layout = ({ children }) => {
               </div>
             </div>
 
-            <div className="mt-12 flex w-full flex-col items-center justify-center border-t border-blue-gray-50 py-4 md:flex-row md:justify-between">
+            <div className="mt-3 flex w-full flex-col items-center justify-center border-t border-blue-gray-50 py-2 md:flex-row md:justify-between">
               <Typography
                 variant="small"
-                className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0"
+                className="mb-0 text-center font-normal text-blue-gray-900 md:mb-0"
               >
                 &copy; {currentYear}{" "}
                 <a href="https://material-tailwind.com/">MediEase</a>. All
@@ -429,13 +431,11 @@ const Layout = ({ children }) => {
             </div>
           </div>
         </footer>
-        {/* </CardFooter> */}
-        {/* </Card> */}
+       
       </div>
 
-      {/* Footer */}
+     
 
-      {/* </div> */}
     </div>
   );
 };

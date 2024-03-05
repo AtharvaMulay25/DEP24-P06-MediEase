@@ -253,58 +253,7 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
-                <label htmlFor="state">State:</label>
-              </div>
-              <Input
-                id="state"
-                size="md"
-                label="State"
-                name="state"
-                value={formData.state}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
-                <label htmlFor="zip">ZIP:</label>
-              </div>
-              <Input
-                id="zip"
-                size="md"
-                label="ZIP"
-                name="zip"
-                value={formData.zip}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
-                <label htmlFor="address1">Address Line 1:</label>
-              </div>
-              <Input
-                id="address1"
-                size="md"
-                label="Address Line 1"
-                name="address1"
-                value={formData.address1}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
-                <label htmlFor="address2">Address Line 2:</label>
-              </div>
-              <Input
-                id="address2"
-                size="md"
-                label="Address Line 2"
-                name="address2"
-                value={formData.address2}
-                onChange={handleChange}
-              />
-            </div>
+            
           </div>
         </form>
       </CardBody>
