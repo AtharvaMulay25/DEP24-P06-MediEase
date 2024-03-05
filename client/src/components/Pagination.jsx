@@ -20,7 +20,7 @@ export default function Pagination({
     };
 
     return (
-    <div className="flex items-center gap-4">
+    <div className="md:flex md:flex-row flex-col items-center gap-4">
       <Button
         variant="text"
         className="flex items-center gap-2"
@@ -38,14 +38,16 @@ export default function Pagination({
         {maxPages >= 5 && currentPage+4 < maxPages && <IconButton variant="text">...</IconButton>}
         {maxPages >= 5 && currentPage+4 < maxPages && <IconButton {...getItemProps(maxPages)}>{maxPages}</IconButton>}
       </div>
-      <Button
-        variant="text"
-        className="flex items-center gap-2"
-        onClick={() => paginate("inc")}
-      >
-        Next
-        <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
-      </Button>
+      <div className="flex justify-end">
+        <Button
+          variant="text"
+          className="flex items-center gap-2"
+          onClick={() => paginate("inc")}
+          >
+          Next
+          <ArrowRightIcon strokeWidth={2} className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
   );
 }

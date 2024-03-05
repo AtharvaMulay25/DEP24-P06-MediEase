@@ -46,7 +46,7 @@ export function AddSupplierForm() {
   return (
     <Card className="h-max w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
-        <div className="mb-2 flex items-center justify-between gap-8">
+        <div className="mb-2 sm:flex sm:flex-row flex-col items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
               Supplier Form
@@ -65,11 +65,11 @@ export function AddSupplierForm() {
           </div>
         </div>
       </CardHeader>
-      <CardBody>
+      <CardBody className="p-3 sm:p-6">
         <form onSubmit={handleSubmit} className="flex flex-wrap gap-6">
-          <div className="grid grid-cols-2 gap-y-8 gap-x-4 w-full">
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-4 w-72 justify-end">
+          <div className="grid  sm:grid-cols-2 gap-y-8 gap-x-4 w-full">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-4 w-full justify-end">
                 <label htmlFor="supplierName">
                   Supplier Name <span className="text-red-800">*</span>:
                 </label>
@@ -84,8 +84,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="mobileNo">Mobile No:</label>
               </div>
               <Input
@@ -97,8 +97,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="email">Email:</label>
               </div>
               <Input
@@ -110,8 +110,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="contact">Contact:</label>
               </div>
               <Input
@@ -123,8 +123,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="phone">Phone:</label>
               </div>
               <Input
@@ -136,8 +136,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="city">City:</label>
               </div>
               <Input
@@ -149,8 +149,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="state">State:</label>
               </div>
               <Input
@@ -162,8 +162,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="zip">ZIP:</label>
               </div>
               <Input
@@ -175,8 +175,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="address1">Address Line 1:</label>
               </div>
               <Input
@@ -188,8 +188,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="address2">Address Line 2:</label>
               </div>
               <Input
@@ -201,8 +201,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="state">State:</label>
               </div>
               <Input
@@ -214,8 +214,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="zip">ZIP:</label>
               </div>
               <Input
@@ -227,8 +227,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="address1">Address Line 1:</label>
               </div>
               <Input
@@ -240,8 +240,8 @@ export function AddSupplierForm() {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-72 justify-end">
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full justify-end">
                 <label htmlFor="address2">Address Line 2:</label>
               </div>
               <Input
@@ -257,7 +257,7 @@ export function AddSupplierForm() {
           </div>
         </form>
       </CardBody>
-      <CardFooter>
+      <CardFooter divider={true}>
         <div className="flex justify-end">
           <Button
             className="flex items-center gap-3"

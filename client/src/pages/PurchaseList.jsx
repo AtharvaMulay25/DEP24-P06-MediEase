@@ -3,7 +3,6 @@ import { SideTopBar } from "../components/SideTopBar";
 
 const TABLE_HEAD = {
   id: "#",
-  Purchase_id: "Purchase_id",
   Supplier: "Supplier",
   date: "Date",
   total_amount: "Total Amount",

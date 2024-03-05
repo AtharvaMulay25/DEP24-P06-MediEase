@@ -108,7 +108,7 @@ export function SortableTable({ tableHead, title, data, detail, text }) {
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
-        <div className="mb-2 flex items-center justify-between gap-8">
+        <div className="mb-2 flex-col sm:flex sm:flex-row items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
               {title}
@@ -218,14 +218,14 @@ export function SortableTable({ tableHead, title, data, detail, text }) {
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="min-w-0 flex items-center justify-between border-t border-blue-gray-50 p-3">
+      <CardFooter className="min-w-0 flex-col lg:flex-row lg:flex items-center justify-between border-t border-blue-gray-50 p-3">
         <Pagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           paginate={paginate}
           maxPages={maxPages}
         />
-        <div className="md:flex md:flex-row flex-col">
+        <div className="md:flex md:flex-row flex-col pt-2 justify-end">
           <Typography color="gray" className="min-w-0 font-normal px-2 mt-2">
             Items per page
           </Typography>

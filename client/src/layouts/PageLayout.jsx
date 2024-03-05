@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GiMedicines } from "react-icons/gi";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -54,10 +54,24 @@ const Layout = ({ children }) => {
     },
   ];
   const currentYear = new Date().getFullYear();
+
+  const [isLargeScreen, setIsLargeScreen] = useState(window.matchMedia('(min-width: 890px)').matches);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 890px)');
+    const handleResize = () => setIsLargeScreen(mediaQuery.matches);
+
+    mediaQuery.addEventListener('change', handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleResize);
+    };
+  }, []);
+
   return (
     <div className="h-screen flex">
       {/* sidebar */}
-      <div className="fixed h-screen z-10 top-0 left-0">
+      <div className="overflow-visible fixed h-screen z-10 top-0 left-0">
         <div className="flex">
           <div
             className="transition-width duration-300 h-screen overflow-x-hidden"
@@ -297,8 +311,11 @@ const Layout = ({ children }) => {
       {/* Content of page */}
       <div
         className="flex-auto flex flex-col justify-between p-4 shadow-lg bg-gray-50 h-screen overflow-y-auto transition-all duration-300 ease-in-out"
-        style={{ marginLeft: isCollapsed && !isHovered ? "60px" : "250px" }}
-      >
+        // style={{ marginLeft: isCollapsed && !isHovered ? "60px" : "250px" }}
+        style={{
+          marginLeft: isLargeScreen ? (isCollapsed && !isHovered ? "60px" : "250px") : "60px",
+        }}      
+        >
         {children}
         <footer className="w-full mt-5 bg-white">
           <div className="mx-auto w-full max-w-7xl px-4 py-2">
