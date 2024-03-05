@@ -1,11 +1,9 @@
 import "./App.css";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Sign from "./components/Sign";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import Dashboard from "./pages/Dashboard";
-import AdminHome from "./pages/AdminHome";
 import AddMedicine from "./pages/AddMedicine";
 import AddSupplier from "./pages/AddSupplier";
 import PurchaseList from "./pages/PurchaseList";
@@ -13,14 +11,7 @@ import PharmaDashboard from "./pages/PharmaDashboard";
 import Pagination from "./components/Pagination";
 import MedicineList from "./pages/MedicineList";
 import SupplierList from "./pages/SupplierList";
-import SignInPage from './pages/SignInPage';
-import SignUpPage from './pages/SignUpPage';
-import Dashboard from './pages/Dashboard';
-import AddMedicine from './pages/AddMedicine';
-import AddSupplier from './pages/AddSupplier';
-import PurchaseList from './pages/PurchaseList';
-import PharmaDashboard from './pages/PharmaDashboard';
-import Pagination from './components/Pagination';
+
 
 function App() {
   return (
