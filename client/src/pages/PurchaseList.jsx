@@ -1,6 +1,7 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState , useEffect} from "react";
 import axios from "axios";
+import { GridLoadingScreen } from "../components/UI/LoadingScreen";
 
 const TABLE_HEAD = {
   id: "#",
@@ -26,7 +27,7 @@ export default function PurchaseList() {
 	  useEffect(() => {
 	const fetchData = async () => {
 		const data = await getPurchaseData();
-		console.log("data out", data);
+		// console.log("data out", data);
 		setPurchase(data);
 		setLoading(false);
 	}
@@ -34,7 +35,7 @@ export default function PurchaseList() {
   }, []);
   return (
 		<Layout>
-			{loading && <p>Loading...</p>}	
+			{loading && <GridLoadingScreen />}	
 			{!loading &&
 			<SortableTable
 				tableHead={TABLE_HEAD}

@@ -1,6 +1,8 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState , useEffect} from "react";
 import axios from "axios";
+import { GridLoadingScreen } from "../components/UI/LoadingScreen";
+
 const TABLE_HEAD = {
   id: "#",
   name: "Supplier Name",
@@ -30,7 +32,7 @@ export default function SupplierList() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getSuppliersData();
-      console.log("data out", data);
+      // console.log("data out", data);
       setSuppliers(data);
       setLoading(false);
     }
@@ -38,7 +40,7 @@ export default function SupplierList() {
   }, []);
   return (
     <Layout>
-      {loading && <p>Loading...</p>}
+      {loading && <GridLoadingScreen />}
       {!loading &&
       <SortableTable
         tableHead={TABLE_HEAD}

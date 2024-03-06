@@ -193,14 +193,14 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
             </tr>
           </thead>
           <tbody>
-            {searchList.map((rowData) => {
+            {searchList.map((rowData, index) => {
               const classes = "px-3 border-2 opacity-80";
               return (
-                <tr className="even:bg-blue-gray-50/50">
+                <tr key={index} className="even:bg-blue-gray-50/50">
                   {Object.entries(tableHead).map(
                     ([key, value]) =>
                       key !== "action" && (
-                        <td className={classes}>
+                        <td className={classes} key={key}>
                           <Typography
                             variant="small"
                             color="blue-gray"
