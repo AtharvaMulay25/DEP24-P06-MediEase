@@ -12,34 +12,26 @@ import {
 } from "@material-tailwind/react";
 
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export function AddMedicineForm() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    status: "",
-    supplierPrice: "",
-    supplier: "",
+    medicineName: "",
     medicineType: "",
-    price: "",
     category: "",
     medicineDetails: "",
-    shelf: "",
-    unit: "",
     boxSize: "",
     genericName: "",
-    strength: "",
-    medicineName: "",
+    brandName: "",
+    strength: ""
   });
 
-  const suppliers = [
-    { id: 1, name: "Supplier 1" },
-    { id: 2, name: "Supplier 2" },
-    { id: 3, name: "Supplier 3" },
-    { id: 4, name: "Supplier 4" },
-  ];
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+
+  const handleChange = (name, value) => {
+    // console.log(e.target);
+    // const { name, value } = e.target;
     console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
@@ -47,10 +39,26 @@ export function AddMedicineForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you can handle the submission of the form
-    console.log(formData);
+    const data = {
+      name: formData.medicineName,
+      medicineType: formData.medicineType,
+      category: formData.category,
+      medicineDetails: formData.medicineDetails,
+      boxSize: formData.boxSize,
+      genericName: formData.genericName,
+      brandName: formData.brandName,
+      strength: formData.strength
+    };
+    try {
+      const response = await axios.post("http://localhost:4000/api/medicine/create", data);
+      console.log(response);
+      navigate("/medicine/list");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -89,127 +97,96 @@ export function AddMedicineForm() {
                 size="md"
                 label="Medicine Name"
                 className="w-full"
+                name="medicineName"
+                value={formData.medicineName}
+                onChange={(e)=>handleChange(e.target.name, e.target.value)}
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end ">
                 <label htmlFor="strength">Strength:</label>
               </div>
-              <Input id="strength" size="md" label="Strength" />
+              <Input id="strength" size="md" label="Strength" 
+              name="strength"
+              value={formData.strength}
+              onChange={(e)=>handleChange(e.target.name, e.target.value)}
+              />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="genericName">Generic Name:</label>
               </div>
-              <Input id="genericName" size="md" label="Generic Name" />
+              <Input id="genericName" size="md" label="Generic Name" 
+              name="genericName"
+              value={formData.genericName}
+              onChange={(e)=>handleChange(e.target.name, e.target.value)}
+              />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="shelf">Shelf:</label>
+                <label htmlFor="brandName">Brand Name <span className="text-red-800">*</span>:</label>
               </div>
-              <Input id="shelf" size="md" label="Shelf" />
-            </div>
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="shelf">Shelf:</label>
-              </div>
-              <Input id="shelf" size="md" label="Shelf" />
+              <Input id="brandName" size="md" label="Brand Name" 
+              name="brandName"
+              value={formData.brandName}
+              onChange={(e)=>handleChange(e.target.name, e.target.value)}
+              />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="medicineDetails">Medicine Details:</label>
               </div>
-              <Input id="medicineDetails" size="md" label="Medicine Details" />
+              <Input id="medicineDetails" size="md" label="Medicine Details" 
+              name="medicineDetails"
+              value={formData.medicineDetails}
+              onChange={(e)=>handleChange(e.target.name, e.target.value)}
+              />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="category">Category:</label>
+                <label htmlFor="category">Category <span className="text-red-800">*</span>:</label>
               </div>
-              <Select id="category" label="Select Category">
-                <Option>Injection</Option>
-                <Option>Syrup</Option>
-                <Option>Tablet</Option>
-                <Option>Capsule</Option>
+              <Select id="category" label="Select Category" 
+              name="category"
+              value={formData.category}
+              onChange={(value) => handleChange("category", value)}
+              >
+                <Option value="Injection">Injection</Option>
+                <Option value="Syrup">Syrup</Option>
+                <Option value="Tablet">Tablet</Option>
+                <Option value="Capsule">Capsule</Option>
               </Select>
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="medicineType">Medicine Type:</label>
               </div>
-              <Select id="medicineType" label="Select Type">
-                <Option>Generic</Option>
-                <Option>Medical Kit</Option>
-                <Option>Injection</Option>
-                <Option>Surgicals</Option>
+              <Select id="medicineType" label="Select Type"
+              name="medicineType"
+              value={formData.medicineType}
+              onChange={(value) => handleChange("medicineType", value)}
+              >
+                <Option value="Generic">Generic</Option>
+                <Option value="Medical Kit">Medical Kit</Option>
+                <Option value="Injection">Injection</Option>
+                <Option value="Surgicals">Surgicals</Option>
               </Select>
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="supplier">Select Supplier:</label>
+                <label htmlFor="boxSize">Box Size <span className="text-red-800">*</span>:</label>
               </div>
-              <Select id="supplier" label="Select Supplier">
-                <Option>Supplier1</Option>
-                <Option>Supplier2</Option>
-                <Option>Supplier3</Option>
-                <Option>Supplier4</Option>
+              <Select id="boxSize" label="Select Leaf Pattern"
+              name="boxSize"
+              value={formData.boxSize}
+              onChange={(value) => handleChange("boxSize", value)}
+              >
+                <Option value="14 per leaf">14 per leaf</Option>
+                <Option value="20 per leaf">20 per leaf</Option>
+                <Option value="21 per leaf">21 per leaf</Option>
+                <Option value="25 per leaf">25 per leaf</Option>
               </Select>
             </div>
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="boxSize">Box Size:</label>
-              </div>
-              <Select id="boxSize" label="Select Leaf Pattern">
-                <Option>14 per leaf</Option>
-                <Option>20 per leaf</Option>
-                <Option>21 per leaf</Option>
-                <Option>25 per leaf</Option>
-              </Select>
-            </div>
-            
-            {/* <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="supplier">Select Supplier:</label>
-              </div>
-              <Select id="supplier" label="Select Supplier">
-                <Option>Supplier1</Option>
-                <Option>Supplier2</Option>
-                <Option>Supplier3</Option>
-                <Option>Supplier4</Option>
-              </Select>
-            </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
-                <label htmlFor="boxSize">Box Size:</label>
-              </div>
-              <Select id="boxSize" label="Select Leaf Pattern">
-                <Option>14 per leaf</Option>
-                <Option>20 per leaf</Option>
-                <Option>21 per leaf</Option>
-                <Option>25 per leaf</Option>
-              </Select>
-            </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
-                <label htmlFor="supplier">Select Supplier:</label>
-              </div>
-              <Select id="supplier" label="Select Supplier">
-                <Option>Supplier1</Option>
-                <Option>Supplier2</Option>
-                <Option>Supplier3</Option>
-                <Option>Supplier4</Option>
-              </Select>
-            </div>
-            <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
-                <label htmlFor="boxSize">Box Size:</label>
-              </div>
-              <Select id="boxSize" label="Select Leaf Pattern">
-                <Option>14 per leaf</Option>
-                <Option>20 per leaf</Option>
-                <Option>21 per leaf</Option>
-                <Option>25 per leaf</Option>
-              </Select>
-            </div> */}
           </div>
         </form>
       </CardBody>

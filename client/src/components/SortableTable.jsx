@@ -21,8 +21,10 @@ import {
 
 import { useEffect, useState } from "react";
 import Pagination from "./Pagination";
+import { useNavigate } from "react-router-dom";
 
-export function SortableTable({ tableHead, title, data, detail, text }) {
+export function SortableTable({ tableHead, title, data, detail, text, addLink }) {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [paginatedData, setPaginatedData] = useState([]);
@@ -37,6 +39,8 @@ export function SortableTable({ tableHead, title, data, detail, text }) {
   useEffect(() => {
     setMaxPages(Math.ceil(data.length / itemsPerPage));
   }, [data, itemsPerPage]);
+
+
 
   useEffect(() => {
     const indexOfLastPage = currentPage * itemsPerPage;
@@ -122,7 +126,7 @@ export function SortableTable({ tableHead, title, data, detail, text }) {
               {/* <Button variant="outlined" size="sm">
               view all
               </Button> */}
-              <Button className="flex items-center gap-3" size="sm">
+              <Button className="flex items-center gap-3" size="sm" onClick={()=>{navigate(addLink)}}>
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> {text}
               </Button>
             </div>

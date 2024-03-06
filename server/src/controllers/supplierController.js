@@ -1,6 +1,7 @@
 //prisma client 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
+const {v4 : uuidv4} = require('uuid')
 
 // @desc    Get Supplier List
 // route    GET /api/supplier/list
@@ -31,9 +32,17 @@ const getSupplierList = async(req, res, next) => {
 // @access  Private (Admin) 
 const createSupplierList = async(req, res, next) => {
     try {
+        const { name, mobileNumber, email, city, state, address1, address2, pinCode } = req.body;
         const createdRecord = await prisma.supplier.create({
             data: {
-                ...req.body
+                id: uuidv4(),
+                name,
+                mobileNumber,
+                email,
+                city,
+                state,
+                address: `${address1} ${address2}`,
+                pinCode
             }
         });
         
@@ -50,7 +59,7 @@ const createSupplierList = async(req, res, next) => {
         return res.status(500).json({
             ok: false,
             data: [],
-            message: "Creating supplier list failed, Please try again later"
+            message: `Creating Supplier list record failed, Please try again later`
         });
     }
 };

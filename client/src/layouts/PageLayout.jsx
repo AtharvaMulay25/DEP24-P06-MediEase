@@ -130,16 +130,17 @@ const Layout = ({ children }) => {
                 )}
               </li>
                 </a>
-
+              <a href="/stock">
               <li
                 className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                          hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
               >
                 <ChartBarIcon className="h-5 w-5 mr-4" />
                 {!(isCollapsed & !isHovered) && (
-                  <Typography className="font-normal" onClick={()=>{navigate("/stock")}}>Stock</Typography>
+                  <Typography className="font-normal">Stock</Typography>
                 )}
               </li>
+              </a>
               <Accordion
                 open={open === 1}
                 icon={

@@ -1,3 +1,8 @@
+/*
+This file contains irredundant operations for stock list like update, delete, create*******
+Also remove category from stock table
+*/
+
 //prisma client 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
@@ -7,13 +12,32 @@ const prisma = new PrismaClient()
 // @access  Private (Admin) 
 const getStockList = async(req, res, next) => {
     try {
-        const stockList = await prisma.stock.findMany({});
-        console.log(stockList);  
+        const stockList = await prisma.stock.findMany({
+            include: {
+              Medicine: {
+                select: {
+                  name: true
+                }
+              }
+            }
+          });
+          
+          // Restructure the data to have `medicineName` outside the `Medicine` object
+          const restructuredStockList = stockList.map(stock => ({
+            id: stock.id,
+            netQuantity: stock.netQuantity,
+            category: stock.category,
+            inQuantity: stock.inQuantity,
+            outQuantity: stock.outQuantity,
+            medicineName: stock.Medicine.name // Access `name` from `Medicine` object
+          }));
+          
+        // console.log(restructuredStockList);
         
         return res.status(200).json({
             ok: true,
-            data: stockList,
-            message: "Puchase List retrieved successfully"
+            data: restructuredStockList,
+            message: "Stock List retrieved successfully"
         });
     } catch (err) {
         console.log(`Stock List Fetching Error : ${err.message}`);
@@ -42,7 +66,7 @@ const createStockList = async(req, res, next) => {
         return res.status(200).json({
             ok: true,
             data: createdRecord,
-            message: "Puchase List record created successfully"
+            message: "Stock List record created successfully"
         });
     } catch (err) {
         console.log(`Stock List Creating Error : ${err.message}`);
@@ -75,7 +99,7 @@ const updateStockList = async(req, res, next) => {
         return res.status(200).json({
             ok: true,
             data: updatedRecord,
-            message: "Puchase List record updated successfully"
+            message: "Stock List record updated successfully"
         });
     } catch (err) {
         console.log(`Stock List Updating Error : ${err.message}`);
@@ -114,7 +138,7 @@ const deleteStockList = async(req, res, next) => {
         return res.status(200).json({
             ok: true,
             data: deletedRecord,
-            message: "Puchase List Record deleted successfully"
+            message: "Stock List Record deleted successfully"
         });
     } catch (err) {
         console.log(`Stock List Deletion Error : ${err.message}`);

@@ -12,6 +12,7 @@ import {
 } from "@material-tailwind/react";
 
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export function AddSupplierForm() {
   const navigate = useNavigate();
@@ -20,8 +21,6 @@ export function AddSupplierForm() {
     supplierName: "",
     mobileNo: "",
     email: "",
-    contact: "",
-    phone: "",
     city: "",
     state: "",
     zip: "",
@@ -37,10 +36,30 @@ export function AddSupplierForm() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const data = {
+      name: formData.supplierName,
+      mobileNumber: formData.mobileNo,
+      email: formData.email,
+      city: formData.city,
+      state: formData.state,
+      pinCode: formData.zip,
+      address1: formData.address1,
+      address2: formData.address2
+    };
+
     // Here you can handle the submission of the form
     console.log(formData);
+    try {
+      const response = await axios.post("http://localhost:4000/api/supplier/create", data);
+      console.log(response);
+      navigate("/supplier/list");
+    } catch (error) {
+      console.error(error);
+    }
+
   };
 
   return (
@@ -86,7 +105,7 @@ export function AddSupplierForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="mobileNo">Mobile No:</label>
+                <label htmlFor="mobileNo">Mobile No <span className="text-red-800">*</span>:</label>
               </div>
               <Input
                 id="mobileNo"
@@ -99,7 +118,7 @@ export function AddSupplierForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="email">Email:</label>
+                <label htmlFor="email">Email <span className="text-red-800">*</span>:</label>
               </div>
               <Input
                 id="email"
@@ -112,33 +131,7 @@ export function AddSupplierForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="contact">Contact:</label>
-              </div>
-              <Input
-                id="contact"
-                size="md"
-                label="Contact"
-                name="contact"
-                value={formData.contact}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="phone">Phone:</label>
-              </div>
-              <Input
-                id="phone"
-                size="md"
-                label="Phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="city">City:</label>
+                <label htmlFor="city">City <span className="text-red-800">*</span>:</label>
               </div>
               <Input
                 id="city"
@@ -177,59 +170,7 @@ export function AddSupplierForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="address1">Address Line 1:</label>
-              </div>
-              <Input
-                id="address1"
-                size="md"
-                label="Address Line 1"
-                name="address1"
-                value={formData.address1}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="address2">Address Line 2:</label>
-              </div>
-              <Input
-                id="address2"
-                size="md"
-                label="Address Line 2"
-                name="address2"
-                value={formData.address2}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="state">State:</label>
-              </div>
-              <Input
-                id="state"
-                size="md"
-                label="State"
-                name="state"
-                value={formData.state}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="zip">ZIP:</label>
-              </div>
-              <Input
-                id="zip"
-                size="md"
-                label="ZIP"
-                name="zip"
-                value={formData.zip}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="address1">Address Line 1:</label>
+                <label htmlFor="address1">Address Line 1 <span className="text-red-800">*</span>:</label>
               </div>
               <Input
                 id="address1"

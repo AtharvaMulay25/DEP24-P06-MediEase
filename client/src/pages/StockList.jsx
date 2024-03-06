@@ -1,4 +1,6 @@
 import { SortableTable } from "../components/SortableTable";
+import { useState , useEffect} from "react";
+import axios from "axios";
 
 const TABLE_HEAD = {
   id: "#",
@@ -10,18 +12,42 @@ const TABLE_HEAD = {
 	action: "Action",
 };
 
+const getStockData = async () => {
+	  try {
+	const response = await axios.get("http://localhost:4000/api/stock/list");
+	return response.data.data;
+  } catch (error) {
+	console.error(error);
+  }
+};
+
 import MockData from "../assets/MOCK_DATA_stock.json";
 import Layout from "../layouts/PageLayout";
 export default function StockList() {
+	  const [stock, setStock] = useState([]);
+	  const [loading, setLoading] = useState(true);
+	  useEffect(() => {
+	const fetchData = async () => {
+		const data = await getStockData();
+		console.log("data out", data);
+		setStock(data);
+		setLoading(false);
+	}
+	fetchData();
+  }, []);
+
   return (
 		<Layout>
+			{loading && <p>Loading...</p>}
+			{!loading &&
 			<SortableTable
 				tableHead={TABLE_HEAD}
 				title="Stock List"
-				data={MockData}
+				data={stock}
 				detail="See information about all stock."
 				text=""
 			/>
+}
 		</Layout>
   );
 }

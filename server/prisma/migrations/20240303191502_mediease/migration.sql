@@ -7,8 +7,7 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('DOCTOR', 'PHARMACIST', 'NURSE', 'ADMIN');
 
--- DropTable
-DROP TABLE "person";
+`
 
 -- CreateTable
 CREATE TABLE "Medicine" (

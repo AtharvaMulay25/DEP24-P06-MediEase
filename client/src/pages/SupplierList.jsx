@@ -1,30 +1,54 @@
 import { SortableTable } from "../components/SortableTable";
-import { SideTopBar } from "../components/SideTopBar";
-
+import { useState , useEffect} from "react";
+import axios from "axios";
 const TABLE_HEAD = {
   id: "#",
-  supplier_name: "Supplier Name",
-  phone_number: "Phone Number",
+  name: "Supplier Name",
+  mobileNumber: "Phone Number",
   email: "Email",
   city: "City",
   state: "State",
   address: "Address",
-  pincode: "Pincode",
+  pinCode: "Pincode",
   action: "Action",
 };
+const getSuppliersData = async () => {
+  try {
+    const response = await axios.get("http://localhost:4000/api/supplier/list");
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 import MockData from "../assets/MOCK_DATA_supplier.json";
 import Layout from "../layouts/PageLayout";
 export default function SupplierList() {
+
+  const [suppliers, setSuppliers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getSuppliersData();
+      console.log("data out", data);
+      setSuppliers(data);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
   return (
     <Layout>
+      {loading && <p>Loading...</p>}
+      {!loading &&
       <SortableTable
         tableHead={TABLE_HEAD}
         title="Supplier List"
-        data={MockData}
+        data={suppliers}
         detail="See information about all suppliers."
         text="Add Supplier"
+        addLink="/supplier/add_supplier"
       />
+}
     </Layout>
   );
 }

@@ -1,3 +1,6 @@
+/*
+THIS PURCHASE TABLE NEEDS TO BE UPDATED AND THEN ALL ITS ROUTES**
+*/
 //prisma client 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
@@ -7,12 +10,36 @@ const prisma = new PrismaClient()
 // @access  Private (Admin) 
 const getPurchaseList = async(req, res, next) => {
     try {
-        const purchaseList = await prisma.purchase.findMany({});
-        console.log(purchaseList);  
+        const purchaseList = await prisma.purchase.findMany({
+            include: {
+            //   Medicine: {
+            //     select: {
+            //       name: true
+            //     }
+            //   },
+              Supplier: {
+                select: {
+                  name: true
+                }
+              }
+            }
+          });
+          
+          // Restructure the data to have `medicineName` and `supplierName` outside the `Medicine` and `Supplier` object
+          const restructuredPurchaseList = purchaseList.map(purchase => ({
+            id: purchase.id,
+            // medicineName: purchase.Medicine.name, // Access `name` from `Medicine` object
+            supplierName: purchase.Supplier.name, // Access `name` from `Supplier` object
+            // quantity: purchase.quantity,
+            totalAmount: purchase.amount,
+            purchaseDate: purchase.purchaseDate
+          }));
+        
+        console.log(restructuredPurchaseList);  
         
         return res.status(200).json({
             ok: true,
-            data: purchaseList,
+            data: restructuredPurchaseList,
             message: "Puchase List retrieved successfully"
         });
     } catch (err) {
