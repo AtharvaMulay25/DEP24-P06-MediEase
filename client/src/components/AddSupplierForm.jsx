@@ -69,7 +69,7 @@ export function AddSupplierForm() {
         <form onSubmit={handleSubmit} className="flex flex-wrap gap-6">
           <div className="grid  sm:grid-cols-2 gap-y-8 gap-x-4 w-full">
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-4 w-full justify-end">
+              <div className="flex mr-4 md:w-72 w-full justify-end">
                 <label htmlFor="supplierName">
                   Supplier Name <span className="text-red-800">*</span>:
                 </label>
@@ -85,7 +85,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="mobileNo">Mobile No:</label>
               </div>
               <Input
@@ -98,7 +98,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="email">Email:</label>
               </div>
               <Input
@@ -111,7 +111,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="contact">Contact:</label>
               </div>
               <Input
@@ -124,7 +124,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="phone">Phone:</label>
               </div>
               <Input
@@ -137,7 +137,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="city">City:</label>
               </div>
               <Input
@@ -150,7 +150,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="state">State:</label>
               </div>
               <Input
@@ -163,7 +163,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="zip">ZIP:</label>
               </div>
               <Input
@@ -176,7 +176,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="address1">Address Line 1:</label>
               </div>
               <Input
@@ -189,7 +189,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="address2">Address Line 2:</label>
               </div>
               <Input
@@ -202,7 +202,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="state">State:</label>
               </div>
               <Input
@@ -215,7 +215,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="zip">ZIP:</label>
               </div>
               <Input
@@ -228,7 +228,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="address1">Address Line 1:</label>
               </div>
               <Input
@@ -241,7 +241,7 @@ export function AddSupplierForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="address2">Address Line 2:</label>
               </div>
               <Input

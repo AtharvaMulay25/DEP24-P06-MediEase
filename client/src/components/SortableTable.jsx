@@ -4,7 +4,7 @@ import {
   ChevronUpIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, UserPlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -117,14 +117,16 @@ export function SortableTable({ tableHead, title, data, detail, text }) {
               {detail}
             </Typography>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            {/* <Button variant="outlined" size="sm">
-            view all
-            </Button> */}
-            <Button className="flex items-center gap-3" size="sm">
-              <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> {text}
-            </Button>
-          </div>
+          {text != "" && (
+            <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+              {/* <Button variant="outlined" size="sm">
+              view all
+              </Button> */}
+              <Button className="flex items-center gap-3" size="sm">
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> {text}
+              </Button>
+            </div>
+          )}
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="w-full md:w-72">
@@ -206,11 +208,18 @@ export function SortableTable({ tableHead, title, data, detail, text }) {
                       )
                   )}
                   <td className={("", classes)}>
-                    <Tooltip content="Edit Purcahse">
-                      <IconButton variant="text">
-                        <PencilIcon className="h-4 w-4" />
-                      </IconButton>
-                    </Tooltip>
+                    <div className="flex gap-0.5">
+                      <Tooltip content="Edit Purcahse">
+                        <IconButton variant="text">
+                          <PencilIcon className="h-4 w-4" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip content="Delete">
+                        <IconButton variant="text">
+                          <TrashIcon className="h-4 w-4" />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
                   </td>
                 </tr>
               );

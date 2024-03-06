@@ -79,7 +79,7 @@ export function AddMedicineForm() {
         <form onSubmit={handleSubmit} className="flex flex-wrap gap-6">
           <div className="grid md:grid-cols-2 gap-y-8 gap-x-4 w-full">
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-4 w-full justify-end">
+              <div className="flex mr-4 w-full md:w-72 justify-end">
                 <label htmlFor="medicineName">
                   Medicine Name <span className="text-red-800">*</span>:
                 </label>
@@ -92,37 +92,37 @@ export function AddMedicineForm() {
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end ">
+              <div className="flex mr-2 w-full md:w-72 justify-end ">
                 <label htmlFor="strength">Strength:</label>
               </div>
               <Input id="strength" size="md" label="Strength" />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="genericName">Generic Name:</label>
               </div>
               <Input id="genericName" size="md" label="Generic Name" />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="shelf">Shelf:</label>
               </div>
               <Input id="shelf" size="md" label="Shelf" />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="shelf">Shelf:</label>
               </div>
               <Input id="shelf" size="md" label="Shelf" />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="medicineDetails">Medicine Details:</label>
               </div>
               <Input id="medicineDetails" size="md" label="Medicine Details" />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="category">Category:</label>
               </div>
               <Select id="category" label="Select Category">
@@ -133,7 +133,7 @@ export function AddMedicineForm() {
               </Select>
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="medicineType">Medicine Type:</label>
               </div>
               <Select id="medicineType" label="Select Type">
@@ -144,7 +144,7 @@ export function AddMedicineForm() {
               </Select>
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="supplier">Select Supplier:</label>
               </div>
               <Select id="supplier" label="Select Supplier">
@@ -155,7 +155,7 @@ export function AddMedicineForm() {
               </Select>
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="boxSize">Box Size:</label>
               </div>
               <Select id="boxSize" label="Select Leaf Pattern">
@@ -167,7 +167,7 @@ export function AddMedicineForm() {
             </div>
             
             {/* <div className="flex items-center justify-around p-1">
-              <div className="flex mr-2 w-full justify-end">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="supplier">Select Supplier:</label>
               </div>
               <Select id="supplier" label="Select Supplier">

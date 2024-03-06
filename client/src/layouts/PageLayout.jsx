@@ -137,7 +137,7 @@ const Layout = ({ children }) => {
               >
                 <ChartBarIcon className="h-5 w-5 mr-4" />
                 {!(isCollapsed & !isHovered) && (
-                  <Typography className="font-normal">Stock</Typography>
+                  <Typography className="font-normal" onClick={()=>{navigate("/stock")}}>Stock</Typography>
                 )}
               </li>
               <Accordion

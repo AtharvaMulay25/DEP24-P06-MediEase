@@ -11,6 +11,7 @@ import PurchaseList from "./pages/PurchaseList";
 import AddSupplier from "./pages/AddSupplier";
 import SupplierList from "./pages/SupplierList";
 import Pagination from "./components/Pagination";
+import StockList from "./pages/StockList";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/purchase/list" element={<PurchaseList />} />
           <Route path="/supplier/add_supplier" element={<AddSupplier />} />
           <Route path="/supplier/list" element={<SupplierList />} />
+          <Route path="/stock" element={<StockList />} />
           <Route path="/pagination" element={<Pagination />} />
         </Routes>
       </BrowserRouter>
