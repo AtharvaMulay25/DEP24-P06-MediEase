@@ -68,6 +68,7 @@ export default function MedicineList() {
             detail="See information about all medicines."
             text="Add Medicine"
             addLink="/medicine/add_medicine"
+            handleDelete={handleMedicineDelete}
           />
         </Layout>
       )}

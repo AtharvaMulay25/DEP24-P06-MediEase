@@ -36,6 +36,26 @@ export default function PurchaseList() {
     };
     fetchData();
   }, []);
+
+  const handlePurchaseDelete = async(e, id) => {
+    try {
+      const res = await axios.delete("http://localhost:4000/api/purchase/delete", {
+        data: { id }
+      });
+
+      const { data } = res;
+      
+      if (data?.ok) {
+        console.log(`MESSAGE : ${data?.message}`);
+        setPurchase((prev) => prev.filter(p => p.id !== id));
+      } else {
+        // TODO: show an error message
+        console.log(`ERROR (purchase_list_delete): ${data.message}`);
+      }
+    } catch (err) {
+      console.error(`ERROR (purchase_list_delete): ${err.message}`);
+    }
+  };
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -48,6 +68,7 @@ export default function PurchaseList() {
             detail="See information about all purchases."
             text="Add Purchase"
             addLink="/purchase/add_purchase"
+			handleDelete={handlePurchaseDelete}
           />
         </Layout>
       )}
