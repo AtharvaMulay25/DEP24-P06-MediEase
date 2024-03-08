@@ -3,9 +3,11 @@ import { Link } from "react-scroll";
 import Button from "../layouts/Button";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Contact from "../models/Contact";
-import { UserButton , SignedIn} from "@clerk/clerk-react";
+import { UserButton , SignedIn, SignedOut} from "@clerk/clerk-react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
@@ -27,9 +29,10 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" fixed w-full z-10 text-white">
+    <div className=" fixed top-0 w-full z-10 text-white">
       <div>
-        <div className=" flex flex-row justify-between p-5 md:px-32 px-5 bg-backgroundColor shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+        {/* <div className=" flex flex-row justify-between p-5 md:px-32 px-5 bg-backgroundColor shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"> */}
+        <div className=" flex flex-row justify-between p-5 md:px-32 px-5 text-white font-light bg-gray-800 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
           <div className=" flex flex-row items-center cursor-pointer">
             <Link to="home" spy={true} smooth={true} duration={500}>
               <h1 className=" text-2xl font-semibold">MediEase</h1>
@@ -37,6 +40,15 @@ const Navbar = () => {
           </div>
 
           <nav className=" hidden lg:flex flex-row items-center text-lg font-medium gap-8">
+            <Link
+              spy={true}
+              smooth={true}
+              duration={500}
+              className=" hover:text-hoverColor transition-all cursor-pointer"
+              onClick={() => navigate("/pharmadashboard")}
+            >
+              Dashboard
+            </Link>
             <Link
               to="home"
               spy={true}
@@ -83,15 +95,17 @@ const Navbar = () => {
               Blog
             </Link>
           </nav>
-          
+          <SignedOut>
           <div className=" hidden lg:flex">
             <button
-              className="bg-brightColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
-              onClick={openForm}
+              className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
+              // onClick={openForm}
+              onClick={() => navigate("/signin")}
             >
-              Contact Us
+              Login
             </button>
           </div>
+          </SignedOut>
           <SignedIn>
           <UserButton afterSignOutUrl="/signin" />
 
@@ -164,10 +178,11 @@ const Navbar = () => {
 
           <div className=" lg:hidden">
             <button
-              className="bg-brightColor text-white px-4 py-2 rounded-md hover:bg-hoverColor transition duration-300 ease-in-out"
-              onClick={openForm}
+              className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
+              // onClick={openForm}
+              onClick={() => navigate("/signin")}
             >
-              Contact Us
+              Login
             </button>
           </div>
         </div>

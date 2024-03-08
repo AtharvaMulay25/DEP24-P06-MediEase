@@ -60,10 +60,13 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
 
   const filterItems = (str) => {
     const filteredArray = paginatedData.filter((item) =>
-      item.Supplier.toLowerCase().includes(str.toLowerCase())
+      {
+        if (item.supplierName) return item.supplierName.toLowerCase().includes(str.toLowerCase())
+        else if (item.name) return item.name.toLowerCase().includes(str.toLowerCase())
+      } 
     );
     setSearchList(filteredArray);
-  };
+  };
 
   const paginate = (act) => {
     if (act === "inc") {
@@ -213,7 +216,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
                   )}
                   <td className={("", classes)}>
                     <div className="flex gap-0.5">
-                      <Tooltip content="Edit Purcahse">
+                      <Tooltip content="Edit">
                         <IconButton variant="text">
                           <PencilIcon className="h-4 w-4" />
                         </IconButton>

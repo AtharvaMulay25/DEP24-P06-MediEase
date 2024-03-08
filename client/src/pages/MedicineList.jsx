@@ -1,7 +1,7 @@
 import { SortableTable } from "../components/SortableTable";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { GridLoadingScreen } from "../components/UI/LoadingScreen";
+import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
 const TABLE_HEAD = {
   id: "#",
@@ -24,7 +24,6 @@ const getMedicinesData = async () => {
 import MockData from "../assets/MOCK_DATA_medicine.json";
 import Layout from "../layouts/PageLayout";
 export default function MedicineList() {
-
   const [medicines, setMedicines] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -33,23 +32,25 @@ export default function MedicineList() {
       // console.log("data out", data);
       setMedicines(data);
       setLoading(false);
-    }
+    };
     fetchData();
   }, []);
 
   return (
-    <Layout>
-      {loading && <GridLoadingScreen />}
-      {!loading &&
-      <SortableTable
-        tableHead={TABLE_HEAD}
-        title="Medicine List"
-        data={medicines}
-        detail="See information about all medicines."
-        text="Add Medicine"
-        addLink="/medicine/add_medicine"
-      />
-}
-    </Layout>
+    <>
+      {loading && <SyncLoadingScreen />}
+      {!loading && (
+        <Layout>
+          <SortableTable
+            tableHead={TABLE_HEAD}
+            title="Medicine List"
+            data={medicines}
+            detail="See information about all medicines."
+            text="Add Medicine"
+            addLink="/medicine/add_medicine"
+          />
+        </Layout>
+      )}
+    </>
   );
 }
