@@ -71,7 +71,8 @@ export default function StockList() {
             data={stock}
             detail="See information about all stock."
             text=""
-			handleDelete={handleStockDelete}
+			      handleDelete={handleStockDelete}
+            searchKey="medicineName"
           />
         </Layout>
       )}

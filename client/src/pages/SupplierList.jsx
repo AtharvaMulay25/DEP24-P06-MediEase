@@ -73,6 +73,7 @@ export default function SupplierList() {
         text="Add Supplier"
         addLink="/supplier/add_supplier"
         handleDelete={handleSupplierDelete}
+        searchKey="name"
       />
     </Layout>
         }

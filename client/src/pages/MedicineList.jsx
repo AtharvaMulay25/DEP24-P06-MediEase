@@ -69,6 +69,7 @@ export default function MedicineList() {
             text="Add Medicine"
             addLink="/medicine/add_medicine"
             handleDelete={handleMedicineDelete}
+            searchKey={"name"}
           />
         </Layout>
       )}

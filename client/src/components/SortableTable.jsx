@@ -23,14 +23,18 @@ import { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
 
-export function SortableTable({ tableHead, title, data, detail, text, addLink, handleDelete }) {
+export function SortableTable({ tableHead, title, data, detail, text, addLink, handleDelete, searchKey }) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [paginatedData, setPaginatedData] = useState([]);
 
   const [search, setSearch] = useState("");
-  const [searchList, setSearchList] = useState([]);
+  const [searchList, setSearchList] = useState(data);
+
+  useEffect(() => {
+    filterItems("");
+  }, [data]);
 
   const [maxPages, setMaxPages] = useState(
     Math.ceil(data.length / itemsPerPage)
@@ -38,18 +42,18 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
 
   useEffect(() => {
     setMaxPages(Math.ceil(data.length / itemsPerPage));
-  }, [data, itemsPerPage]);
+  }, [searchList, itemsPerPage]);
 
   useEffect(() => {
     const indexOfLastPage = currentPage * itemsPerPage;
     const indexOfFirstPage = indexOfLastPage - itemsPerPage;
-    const currentItems = data.slice(
+    const currentItems = searchList.slice(
       indexOfFirstPage,
-      Math.min(indexOfLastPage, data.length)
+      Math.min(indexOfLastPage, searchList.length)
     );
     setPaginatedData(currentItems);
-    setSearchList(currentItems);
-  }, [currentPage, itemsPerPage, data]);
+    // setSearchList(currentItems);
+  }, [currentPage, itemsPerPage, searchList]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -57,19 +61,14 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
   };
 
   const filterItems = (str) => {
-    const filteredArray = paginatedData.filter((item) =>
-      {
-        if (item.supplierName) return item.supplierName.toLowerCase().includes(str.toLowerCase())
-        else if (item.name) return item.name.toLowerCase().includes(str.toLowerCase())
-      } 
-    );
+    const filteredArray = data.filter(item => item[searchKey].toLowerCase().includes(str.toLowerCase()));
     setSearchList(filteredArray);
   };
 
   const paginate = (act) => {
     if (act === "inc") {
       let newPageNum = currentPage + 1;
-      if (newPageNum > Math.ceil(data.length / itemsPerPage)) newPageNum = 1;
+      if (newPageNum > Math.ceil(searchList.length / itemsPerPage)) newPageNum = 1;
       setCurrentPage(newPageNum);
     } else {
       let newPageNum = currentPage - 1;
@@ -90,19 +89,19 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
     const sortOrder = sort[col] === "asc" ? -1 : 1;
 
     if (col === "id") {
-      const sorted = [...searchList].sort((a, b) => {
+      const sorted = [...paginatedData].sort((a, b) => {
         if (a[col] < b[col]) return sortOrder;
         if (a[col] > b[col]) return -sortOrder;
         return 0;
       });
-      setSearchList(sorted);
+      setPaginatedData(sorted);
     } else {
-      const sorted = [...searchList].sort((a, b) => {
+      const sorted = [...paginatedData].sort((a, b) => {
         if (a[col].toLowerCase() < b[col].toLowerCase()) return sortOrder;
         if (a[col].toLowerCase() > b[col].toLowerCase()) return -sortOrder;
         return 0;
       });
-      setSearchList(sorted);
+      setPaginatedData(sorted);
     }
     let newSort = { id: "", Purchase_id: "", date: "", Supplier: "" };
     if (sort[col] === "asc") newSort = { ...newSort, [col]: "dsc" };
@@ -194,7 +193,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
             </tr>
           </thead>
           <tbody>
-            {searchList.map((rowData, index) => {
+            {paginatedData.map((rowData, index) => {
               const classes = "px-3 border-2 opacity-80";
               return (
                 <tr key={index} className="even:bg-blue-gray-50/50">
