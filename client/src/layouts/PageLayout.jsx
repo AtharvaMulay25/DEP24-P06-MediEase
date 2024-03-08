@@ -19,7 +19,7 @@ import {
   UserGroupIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/solid";
-import { ChevronDownIcon, Bars3Icon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, Bars3Icon , XMarkIcon} from "@heroicons/react/24/outline";
 
 const Layout = ({ children }) => {
   const [open, setOpen] = useState(0);
@@ -109,11 +109,17 @@ const Layout = ({ children }) => {
                 </a>
               </div>
             </div>
-            <Bars3Icon
+            
+           
+              {isCollapsed ?  <Bars3Icon
               className="h-8 w-8 stroke-2 m-3 mt-6  hover:bg-blue-gray-50 hover:bg-opacity-80 rounded"
               onClick={toggleCollapse}
               style={{ color: "#f1ffea" }}
-            />
+            />: 
+            <XMarkIcon className="h-8 w-8 stroke-2 m-3 mt-6  hover:bg-blue-gray-50 hover:bg-opacity-80 rounded"
+            onClick={toggleCollapse}
+            style={{ color: "#f1ffea" }} /> }
+           
 
             <ul
               className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal h-full"

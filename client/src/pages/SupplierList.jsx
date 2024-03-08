@@ -1,7 +1,7 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState , useEffect} from "react";
 import axios from "axios";
-import { GridLoadingScreen } from "../components/UI/LoadingScreen";
+import { GridLoadingScreen, SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
 const TABLE_HEAD = {
   id: "#",
@@ -61,9 +61,10 @@ export default function SupplierList() {
   };
 
   return (
-    <Layout>
-      {loading && <GridLoadingScreen />}
+    <>
+      {loading && <SyncLoadingScreen />}
       {!loading &&
+    <Layout>
       <SortableTable
         tableHead={TABLE_HEAD}
         title="Supplier List"
@@ -73,7 +74,8 @@ export default function SupplierList() {
         addLink="/supplier/add_supplier"
         handleDelete={handleSupplierDelete}
       />
-}
     </Layout>
+        }
+    </>
   );
 }

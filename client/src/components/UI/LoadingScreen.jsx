@@ -1,4 +1,4 @@
-import { GridLoader, HashLoader } from "react-spinners"
+import { GridLoader, HashLoader , SyncLoader} from "react-spinners"
 
 import "../../styles/UI/LoadingScreen.css";
 
@@ -32,10 +32,27 @@ const HashLoadingScreen = ({ message, loaderColor, messageColor }) => {
                 className="loader"
                 size={60}
             />
-          <p className="hashLoadingText" style={{ color: messageColor }}>{message || "Loading..."}</p> 
+          <p className="syncLoadingText" style={{ color: messageColor }}>{message || "Loading..."}</p> 
       </div>
   </>
 )
 }
 
-export { GridLoadingScreen, HashLoadingScreen };
+const SyncLoadingScreen = ({ message, loaderColor, messageColor }) => {
+  return (
+  <>
+      <div className="syncLoadingContainer">
+            <SyncLoader
+                color={loaderColor || "#000"}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+                className="loader py-20"
+                size={25}
+            />
+          <p className="syncLoadingText" style={{ color: messageColor }}>{message || "Loading..."}</p> 
+      </div>
+  </>
+)
+}
+
+export { GridLoadingScreen, HashLoadingScreen , SyncLoadingScreen};
