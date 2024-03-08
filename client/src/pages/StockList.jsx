@@ -37,6 +37,26 @@ export default function StockList() {
 	fetchData();
   }, []);
 
+  const handleStockDelete = async(e, id) => {
+    try {
+      const res = await axios.delete("http://localhost:4000/api/stock/delete", {
+        data: { id }
+      });
+
+      const { data } = res;
+      
+      if (data?.ok) {
+        console.log(`MESSAGE : ${data?.message}`);
+        setStock((prev) => prev.filter(p => p.id !== id));
+      } else {
+        // TODO: show an error message
+        console.log(`ERROR (stock_list_delete): ${data.message}`);
+      }
+    } catch (err) {
+      console.error(`ERROR (stock_list_delete): ${err.message}`);
+    }
+  };
+
   return (
 		<Layout>
 			{loading && <GridLoadingScreen />}
@@ -47,6 +67,7 @@ export default function StockList() {
 				data={stock}
 				detail="See information about all stock."
 				text=""
+				handleDelete={handleStockDelete}
 			/>
 }
 		</Layout>

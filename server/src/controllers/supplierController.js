@@ -9,7 +9,7 @@ const {v4 : uuidv4} = require('uuid')
 const getSupplierList = async(req, res, next) => {
     try {
         const supplierList = await prisma.supplier.findMany({});
-        console.log(supplierList);  
+        // console.log(supplierList);  
         
         return res.status(200).json({
             ok: true,
@@ -46,7 +46,7 @@ const createSupplierList = async(req, res, next) => {
             }
         });
         
-        console.log(createdRecord);  
+        // console.log(createdRecord);  
         
         return res.status(200).json({
             ok: true,
@@ -79,7 +79,7 @@ const updateSupplierList = async(req, res, next) => {
             },
         });
 
-        console.log(updatedRecord);  
+        // console.log(updatedRecord);  
         
         return res.status(200).json({
             ok: true,

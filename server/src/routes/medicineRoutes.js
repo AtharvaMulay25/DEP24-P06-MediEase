@@ -10,7 +10,7 @@ const {
 
 router.get('/list', getMedicineList);
 router.post('/create', createMedicineList);
-// router.put('/update', updateMedicineList);
-// router.delete('/delete', deleteMedicineList);
+router.put('/update', updateMedicineList);
+router.delete('/delete', deleteMedicineList);
 
 module.exports = router;

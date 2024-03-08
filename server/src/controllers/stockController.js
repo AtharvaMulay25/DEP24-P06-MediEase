@@ -61,7 +61,7 @@ const createStockList = async(req, res, next) => {
             }
         });
         
-        console.log(createdRecord);  
+        // console.log(createdRecord);  
         
         return res.status(200).json({
             ok: true,
@@ -94,7 +94,7 @@ const updateStockList = async(req, res, next) => {
             },
         });
 
-        console.log(updatedRecord);  
+        // console.log(updatedRecord);  
         
         return res.status(200).json({
             ok: true,

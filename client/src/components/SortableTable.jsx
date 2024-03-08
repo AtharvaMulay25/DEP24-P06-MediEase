@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
 
-export function SortableTable({ tableHead, title, data, detail, text, addLink }) {
+export function SortableTable({ tableHead, title, data, detail, text, addLink, handleDelete }) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -40,8 +40,6 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
     setMaxPages(Math.ceil(data.length / itemsPerPage));
   }, [data, itemsPerPage]);
 
-
-
   useEffect(() => {
     const indexOfLastPage = currentPage * itemsPerPage;
     const indexOfFirstPage = indexOfLastPage - itemsPerPage;
@@ -51,7 +49,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
     );
     setPaginatedData(currentItems);
     setSearchList(currentItems);
-  }, [currentPage, itemsPerPage]);
+  }, [currentPage, itemsPerPage, data]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -126,7 +124,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
               {/* <Button variant="outlined" size="sm">
               view all
               </Button> */}
-              <Button className="flex items-center gap-3" size="sm" onClick={()=>{navigate(addLink)}}>
+              <Button className="flex items-center gap-3" size="sm" onClick={() => { navigate(addLink) }}>
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> {text}
               </Button>
             </div>
@@ -219,7 +217,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
                         </IconButton>
                       </Tooltip>
                       <Tooltip content="Delete">
-                        <IconButton variant="text">
+                        <IconButton variant="text" onClick={(e) => handleDelete(e, rowData.id)}>
                           <TrashIcon className="h-4 w-4" />
                         </IconButton>
                       </Tooltip>

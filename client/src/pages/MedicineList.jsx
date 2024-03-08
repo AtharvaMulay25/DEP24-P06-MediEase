@@ -37,6 +37,26 @@ export default function MedicineList() {
     fetchData();
   }, []);
 
+  const handleMedicineDelete = async(e, id) => {
+    try {
+      const res = await axios.delete("http://localhost:4000/api/medicine/delete", {
+        data: { id }
+      });
+
+      const { data } = res;
+      
+      if (data?.ok) {
+        console.log(`MESSAGE : ${data?.message}`);
+        setMedicines((prev) => prev.filter(p => p.id !== id));
+      } else {
+        // TODO: show an error message
+        console.log(`ERROR (medicine_list_delete): ${data.message}`);
+      }
+    } catch (err) {
+      console.error(`ERROR (medicine_list_delete): ${err.message}`);
+    }
+  };
+
   return (
     <Layout>
       {loading && <GridLoadingScreen />}
@@ -48,6 +68,7 @@ export default function MedicineList() {
         detail="See information about all medicines."
         text="Add Medicine"
         addLink="/medicine/add_medicine"
+        handleDelete={handleMedicineDelete}
       />
 }
     </Layout>

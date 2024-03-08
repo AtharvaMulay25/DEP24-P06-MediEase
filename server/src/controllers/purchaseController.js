@@ -35,7 +35,7 @@ const getPurchaseList = async(req, res, next) => {
             purchaseDate: purchase.purchaseDate
           }));
         
-        console.log(restructuredPurchaseList);  
+        // console.log(restructuredPurchaseList);  
         
         return res.status(200).json({
             ok: true,
@@ -64,7 +64,7 @@ const createPurchaseList = async(req, res, next) => {
             }
         });
         
-        console.log(createdRecord);  
+        // console.log(createdRecord);  
         
         return res.status(200).json({
             ok: true,
@@ -97,7 +97,7 @@ const updatePurchaseList = async(req, res, next) => {
             },
         });
 
-        console.log(updatedRecord);  
+        // console.log(updatedRecord);  
         
         return res.status(200).json({
             ok: true,
@@ -130,6 +130,7 @@ const updatePurchaseList = async(req, res, next) => {
 // @access  Private (Admin) 
 const deletePurchaseList = async(req, res, next) => {
     try {
+        console.log("req.body : ", req.body);
         const { id } = req.body;
         
         const deletedRecord = await prisma.purchase.delete({

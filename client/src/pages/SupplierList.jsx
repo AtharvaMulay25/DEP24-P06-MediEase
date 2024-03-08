@@ -38,6 +38,28 @@ export default function SupplierList() {
     }
     fetchData();
   }, []);
+
+
+  const handleSupplierDelete = async(e, id) => {
+    try {
+      const res = await axios.delete("http://localhost:4000/api/supplier/delete", {
+        data: { id }
+      });
+
+      const { data } = res;
+      
+      if (data?.ok) {
+        console.log(`MESSAGE : ${data?.message}`);
+        setSuppliers((prev) => prev.filter(p => p.id !== id));
+      } else {
+        // TODO: show an error message
+        console.log(`ERROR (supplier_list_delete): ${data.message}`);
+      }
+    } catch (err) {
+      console.error(`ERROR (supplier_list_delete): ${err.message}`);
+    }
+  };
+
   return (
     <Layout>
       {loading && <GridLoadingScreen />}
@@ -49,6 +71,7 @@ export default function SupplierList() {
         detail="See information about all suppliers."
         text="Add Supplier"
         addLink="/supplier/add_supplier"
+        handleDelete={handleSupplierDelete}
       />
 }
     </Layout>
