@@ -70,7 +70,7 @@ export default function MedicineList() {
         addLink="/medicine/add_medicine"
         handleDelete={handleMedicineDelete}
       />
-}
+      }
     </Layout>
   );
 }

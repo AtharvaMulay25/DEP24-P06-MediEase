@@ -1,7 +1,7 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState , useEffect} from "react";
 import axios from "axios";
-import { GridLoadingScreen } from "../components/UI/LoadingScreen";
+import { SyncLoadingScreen, GridLoadingScreen } from "../components/UI/LoadingScreen";
 
 const TABLE_HEAD = {
   id: "#",
@@ -57,19 +57,20 @@ export default function PurchaseList() {
 	}; 
 
     return (
-		<Layout>
-			{loading && <GridLoadingScreen />}	
-			{!loading &&
-			<SortableTable
+		<>
+			{loading && <SyncLoadingScreen />}
+			{!loading && (
+			<Layout>
+				<SortableTable
 				tableHead={TABLE_HEAD}
 				title="Purchase List"
 				data={purchase}
 				detail="See information about all purchases."
 				text="Add Purchase"
 				addLink="/purchase/add_purchase"
-                handleDelete={handlePurchaseDelete} 
-			/>
-}
-		</Layout>
-  );
+				/>
+			</Layout>
+			)}
+		</>
+    );
 }
