@@ -48,7 +48,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
     setMaxPages(Math.ceil(data.length / itemsPerPage));
   }, [data, itemsPerPage]);
 
-
+  let csvData = [];
 
   useEffect(() => {
     const indexOfLastPage = currentPage * itemsPerPage;
@@ -118,7 +118,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
       ...dataToExport
     ];
     // const csvDataArray = csvData.map(row => row.join(','));
-    console.log(csvData);
+    // const csvDataString = csvDataArray.join('\n');
     return csvData;
 
 
@@ -136,7 +136,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
     });
     doc.save(`${title}.pdf`);
   };
-  
+
   const copyToClipboard = async() => {
     if (!tableRef.current) return;
 
@@ -258,7 +258,10 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink })
                 </Tooltip>
                 <Tooltip content="Export to CSV">
                         <IconButton variant="text">                          
-                          <CSVLink data={exportToCSV()} filename={`${title}.csv`}  > <DocumentTextIcon className="h-4 w-4" /></CSVLink>
+                        
+                        {(csvData = exportToCSV()) &&                          
+                          <CSVLink data={csvData} filename={`${title}.csv`}  > <DocumentTextIcon className="h-4 w-4" /> </CSVLink>                        
+                        }
                         </IconButton>
                 </Tooltip>
                 <Tooltip content="Save as PDF">
