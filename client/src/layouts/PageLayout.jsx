@@ -187,6 +187,18 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
+                        onClick={() => navigate("/medicine/category/add_category")}
+                      >
+                        Add Category
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/medicine/category/list")}
+                      >
+                        Category List
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
                         onClick={() => navigate("/medicine/add_medicine")}
                       >
                         Add Medicine

@@ -5,7 +5,9 @@ const {
     getMedicineList, 
     deleteMedicineList, 
     updateMedicineList, 
-    createMedicineList 
+    createMedicineList, 
+    getCategoryList,
+    createCategory
 } = require('../controllers/medicineController');
 
 router.get('/list', getMedicineList);

@@ -12,6 +12,9 @@ import AddSupplier from "./pages/AddSupplier";
 import SupplierList from "./pages/SupplierList";
 import Pagination from "./components/Pagination";
 import StockList from "./pages/StockList";
+import AddPurchase from "./pages/AddPurchase";
+import AddCategory from "./pages/AddCategory";
+import CategoryList from "./pages/CategoryList";
 
 
 function App() {
@@ -25,6 +28,9 @@ function App() {
           <Route path="/pharmadashboard" element={<PharmaDashboard />} />
           <Route path="/medicine/add_medicine" element={<AddMedicine />} />
           <Route path="/medicine/list" element={<MedicineList />} />
+          <Route path="/medicine/category/add_category" element={<AddCategory />} />
+          <Route path="/medicine/category/list" element={<CategoryList />} />
+          <Route path="/purchase/add_purchase" element={<AddPurchase />} />
           <Route path="/purchase/list" element={<PurchaseList />} />
           <Route path="/supplier/add_supplier" element={<AddSupplier />} />
           <Route path="/supplier/list" element={<SupplierList />} />
