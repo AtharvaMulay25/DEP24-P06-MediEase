@@ -108,6 +108,7 @@ export function AddCategoryForm() {
               >
                 <Option value="mg">mg</Option>
                 <Option value="ml">ml</Option>
+                <Option value="grams">grams</Option>
                 <Option value="other">Other</Option>
               </Select>
             </div>

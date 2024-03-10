@@ -132,6 +132,7 @@ export function AddPurchaseForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    /* ALSO CLEAR THE PURCHASE LIST DATA ON SUBMITTING THE FORM ****** */
 
     const data = {
       purchaseDate: formData.purchaseDate,
