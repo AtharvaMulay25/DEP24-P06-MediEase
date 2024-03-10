@@ -7,7 +7,7 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('DOCTOR', 'PHARMACIST', 'NURSE', 'ADMIN');
 
-`
+
 
 -- CreateTable
 CREATE TABLE "Medicine" (
