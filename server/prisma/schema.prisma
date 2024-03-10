@@ -93,12 +93,11 @@ model Category {
 
 model Purchase {
   id             String    @id @default(uuid())
-  invoiceNo      String //CHECK   ------ Redundant to store
   purchaseListId String
   medicineId     String
   mfgDate        DateTime?
   expiryDate     DateTime
-  batchNo        BigInt //CHECK 
+  batchNo        BigInt 
   quantity       Int
 
   Medicine     Medicine     @relation(fields: [medicineId], references: [id])
@@ -145,21 +144,6 @@ model Checkup {
   @@map("checkup")
 }
 
-enum MedicineCategory {
-  CAPUSLE
-  TABLET
-  OINTMENT
-  LOTION
-  SYRUP
-  SACHET
-  NASAL_SPRAY
-  EYE_DROP
-  EAR_DROP
-  INHALER
-  VACCINE
-  POWDER
-}
-
 enum Role {
   DOCTOR
   PARAMEDICAL
@@ -175,5 +159,4 @@ enum PatientCategory {
 enum Gender {
   MALE
   FEMALE
-  OTHERS
 }
