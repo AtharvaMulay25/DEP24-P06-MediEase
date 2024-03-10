@@ -20,8 +20,11 @@ model Medicine {
   categoryId String
 
   Stock    Stock[]
-  Checkup  Checkup[]
+  Checkups  Checkup[] @relation("CheckupMedicines")
+  Purchases Purchase[]
   Category Category  @relation(fields: [categoryId], references: [id])
+
+   @@map("medicine")
 }
 
 model Supplier {
@@ -35,6 +38,7 @@ model Supplier {
   email        String?
 
   PurchaseList PurchaseList[]
+   @@map("supplier")
 }
 
 model Staff {
@@ -44,8 +48,8 @@ model Staff {
   role           Role
   speciality     String?
   gender         Gender
-  shiftSchedule  String
-  DoctorCheckups Checkup[] @relation("DoctorCheckups")
+  shiftSchedule  String  
+  DoctorCheckups Checkup[] @relation("DoctorCheckups", references: [id])
   StaffCheckups  Checkup[] @relation("StaffCheckups")
 
   @@map("staff")
@@ -67,7 +71,7 @@ model PurchaseList {
   supplierId   String
   purchaseDate DateTime
   invoiceNo    String
-
+  Details      String?
   Supplier Supplier @relation(fields: [supplierId], references: [id])
 
   @@map("purchaseList")
@@ -75,8 +79,8 @@ model PurchaseList {
 
 model Category {
   id           String           @id @default(uuid())
-  categoryName MedicineCategory
-  strengthType String?
+  categoryName String
+  strengthType String
 
   Medicine Medicine[]
 
@@ -89,9 +93,10 @@ model Purchase {
   medicineId String
   mfgDate    DateTime?
   expiryDate DateTime
-  batchNo    String //CHECK 
+  batchNo    BigInt //CHECK 
   quantity   Int
 
+  Medicine Medicine @relation(fields:[medicineId], references:[id])
   @@map("purchase")
 }
 
@@ -101,7 +106,7 @@ model Patient {
   department         String?
   dob                DateTime
   age                Int
-  email              String
+  email              String     @unique
   bloodGroup         String
   program            String?
   fatherOrSpouseName String?
@@ -120,13 +125,12 @@ model Checkup {
   bloodPressure  String?
   symptoms       String?
   diseaseOrCause String
-  doctorId       String
-  medicineId     String
+  doctorId       String?
   staffId        String
 
   Patient  Patient  @relation(fields: [patientId], references: [id])
-  Doctor   Staff    @relation("DoctorCheckups", fields: [doctorId], references: [id])
-  Medicine Medicine @relation(fields: [medicineId], references: [id])
+  Doctor   Staff    @relation("DoctorCheckups", references: [id])
+  Medicines      Medicine[] @relation("CheckupMedicines")
   Staff    Staff    @relation("StaffCheckups", fields: [staffId], references: [id])
 
   @@map("checkup")
