@@ -12,6 +12,8 @@ import AddSupplier from "./pages/AddSupplier";
 import SupplierList from "./pages/SupplierList";
 import Pagination from "./components/Pagination";
 import StockList from "./pages/StockList";
+import { AddPatient } from "./pages/AddPatient";
+import PatientList from "./pages/PatientList";
 
 
 function App() {
@@ -30,6 +32,8 @@ function App() {
           <Route path="/supplier/list" element={<SupplierList />} />
           <Route path="/stock" element={<StockList />} />
           <Route path="/pagination" element={<Pagination />} />
+          <Route path="/patient/add_patient" element={<AddPatient />} />
+          <Route path="/patient/list" element={<PatientList />} />
         </Routes>
       </BrowserRouter>
     </>
