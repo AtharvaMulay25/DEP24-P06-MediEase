@@ -354,14 +354,14 @@ export function SortableTable({
                       )
                       if(key === "purchaseItems") return (
                         <div className="flex justify-center">
-                      <td className={("", classes)}>
-                        <Tooltip content="View">
-                        <IconButton variant="text">
-                          <EyeIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>                      
-                      </td>
-                      </div>
+                        <td className="px-3 border-0 opacity-80">
+                          <Tooltip content="View">
+                          <IconButton variant="text">
+                            <EyeIcon className="h-4 w-4" />
+                          </IconButton>
+                        </Tooltip>                      
+                        </td>
+                        </div>
                       )
                       if( key !== "action" ) return (
                         <td className={classes} key={key}>
