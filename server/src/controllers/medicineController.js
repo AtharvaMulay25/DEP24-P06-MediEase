@@ -8,12 +8,23 @@ const {v4 : uuidv4} = require('uuid')
 // @access  Private (Admin)
 const getMedicineList = async(req, res, next) => {
     try {
-        const medicineList = await prisma.medicine.findMany({});
-        // console.log(medicineList);  
+        const medicineList = await prisma.medicine.findMany({
+            include: {
+                Category: true // Include the category information
+            }
+        });
+        
+        // Extract the required fields from the result and construct the response
+        const responseData = medicineList.map(medicine => ({
+            id: medicine.id,
+            brandName: medicine.brandName,
+            saltName: medicine.saltName,
+            categoryName: medicine.Category.categoryName // Access the categoryName from the category information
+        }));
         
         return res.status(200).json({
             ok: true,
-            data: medicineList,
+            data: responseData,
             message: "Medicine List retrieved successfully"
         });
     } catch (err) {
@@ -33,19 +44,29 @@ const getMedicineList = async(req, res, next) => {
 const createMedicineList = async(req, res, next) => {
     try {
         // console.log(req.body);
-        const { name, genericName, brandName, category , strength} = req.body;
-        const createdRecord = await prisma.medicine.create({
-            data: {
-                id: uuidv4(),
-                name,
-                genericName,
-                brandName,
-                category,
-                strength
+        const { saltName, brandName, categoryId} = req.body;
+        // Check if categoryId exists in the database
+        const category = await prisma.category.findUnique({
+            where: {
+                id: categoryId
             }
         });
-        
-        // console.log(createdRecord);  
+
+        if (!category) {
+            return res.status(404).json({
+                ok: false,
+                message: `Category with id ${categoryId} not found`
+            });
+        }
+
+        // Create medicine record
+        const createdRecord = await prisma.medicine.create({
+            data: {
+                saltName,
+                brandName,
+                categoryId
+            }
+        });  
         
         return res.status(200).json({
             ok: true,
@@ -180,13 +201,12 @@ const createCategory = async(req, res, next) => {
         const { categoryName, strengthType } = req.body;
         const createdRecord = await prisma.category.create({
             data: {
-                id: uuidv4(),
                 categoryName,
                 strengthType
             }
         });
         
-        console.log(createdRecord);  
+        // console.log(createdRecord);  
         
         return res.status(200).json({
             ok: true,

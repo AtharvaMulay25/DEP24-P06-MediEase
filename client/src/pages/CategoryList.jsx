@@ -5,7 +5,7 @@ import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
 const TABLE_HEAD = {
   id: "#",
-  name: "Category Name",
+  categoryName: "Category Name",
   strengthType: "Strength Type",
   action: "Action"
 };
@@ -13,6 +13,7 @@ const TABLE_HEAD = {
 const  getCategoriesData = async () => {
     try {
         const response = await axios.get("http://localhost:4000/api/medicine/category/list");
+        console.log(response.data.data);
         return response.data.data;
     } catch (error) {
         console.error(error);
@@ -46,6 +47,7 @@ export default function CategoryList() {
             detail="See information about all medicines categories."
             text="Add Category"
             addLink="/medicine/category/add_category"
+            searchKey={"categoryName"}
           />
         </Layout>
       )}

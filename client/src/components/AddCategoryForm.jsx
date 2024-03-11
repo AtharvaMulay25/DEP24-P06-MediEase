@@ -45,14 +45,15 @@ export function AddCategoryForm() {
 
 
     // Here you can handle the submission of the form
-    console.log(data);
-    // try {
-    //   const response = await axios.post("http://localhost:4000/api/supplier/create", formData);
-    //   console.log(response);
-    //   navigate("/supplier/list");
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    // console.log(data);
+    try {
+      const response = await axios.post("http://localhost:4000/api/medicine/category/create", data);
+      console.log(response);
+      navigate("/medicine/category/list");
+    } catch (error) {
+      console.error(error);
+    }
+
 
   };
 
@@ -115,7 +116,7 @@ export function AddCategoryForm() {
             {formData.strengthType === "other" && (
                     <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                         <div className="flex mr-2 w-full md:w-72 justify-end">
-                            <label htmlFor="otherStrengthType">Other Strength Type:</label>
+                            <label htmlFor="otherStrengthType">Other <span className="text-red-800">*</span>:</label>
                         </div>
                         <Input
                             id="otherStrengthType"

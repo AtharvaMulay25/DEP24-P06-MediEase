@@ -118,7 +118,7 @@
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 md:w-72 w-full justify-end">
-                  <label htmlFor="email">Email <span className="text-red-800">*</span>:</label>
+                  <label htmlFor="email">Email :</label>
                 </div>
                 <Input
                   id="email"
@@ -131,7 +131,7 @@
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 md:w-72 w-full justify-end">
-                  <label htmlFor="city">City <span className="text-red-800">*</span>:</label>
+                  <label htmlFor="city">City :</label>
                 </div>
                 <Input
                   id="city"
@@ -144,7 +144,7 @@
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 md:w-72 w-full justify-end">
-                  <label htmlFor="state">State:</label>
+                  <label htmlFor="state">State <span className="text-red-800">*</span>:</label>
                 </div>
                 <Input
                   id="state"

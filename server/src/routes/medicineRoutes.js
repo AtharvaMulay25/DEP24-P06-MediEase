@@ -14,5 +14,7 @@ router.get('/list', getMedicineList);
 router.post('/create', createMedicineList);
 router.put('/update', updateMedicineList);
 router.delete('/delete', deleteMedicineList);
+router.get('/category/list', getCategoryList);
+router.post('/category/create', createCategory);
 
 module.exports = router;

@@ -134,16 +134,22 @@ export function AddPurchaseForm() {
     e.preventDefault();
     /* ALSO CLEAR THE PURCHASE LIST DATA ON SUBMITTING THE FORM ****** */
 
-    const data = {
-      purchaseDate: formData.purchaseDate,
+    const purchaseListEntry = {
+      purchaseDate: formData.purchaseDate + "T00:00:00Z",
       invoiceNo: formData.invoiceNo,
       supplierId: formData.supplier.value, // Assuming supplier object has a unique identifier 'value'  //will be passing supplier id to backend
       purchaseDetails: formData.purchaseDetails,
     };
+    const purchaseItems = dataArray.map((data) => ({
+      medicineId: data.medicine.value, // Assuming medicine object has a unique identifier 'value'  //will be passing medicine id to backend
+      batchNo: data.batchNo,
+      mfgDate: data.mfgDate + "T00:00:00Z",
+      expiryDate: data.expDate + "T00:00:00Z",
+      quantity: (parseInt(data.quantity) || 0), // Assuming quantity is a number
+    }));
 
     // Here you can handle the submission of the form
-    console.log(formData);
-
+    const data = {purchaseListEntry, purchaseItems};
     //***DON'T LET THE FORM SUBMIT IF ANY OF MANDATORY ITEMS IS MISSING OR ANY LIST ROW FIELD IS EMPTY */
     try {
       const response = await axios.post(
@@ -296,8 +302,8 @@ export function AddPurchaseForm() {
                   <div className="flex items-center gap-3">
                   <Select
                     options={medicines.map((medicine) => ({
-                      value: medicine.id, // Assuming supplier object has a unique identifier 'id'
-                      label: medicine.name, // Assuming supplier object has a property 'name'
+                      value: medicine.id, // Assuming medicine object has a unique identifier 'id'
+                      label: medicine.brandName,  // Assuming medicine object has a property 'brandName'
                     }))}
                     value={data["medicine"]}
                     onChange={(selectedMedicine) => handleMedicineChange(selectedMedicine, index)}

@@ -5,9 +5,9 @@ import {
   ChevronDownIcon,
   DocumentIcon,
   ArrowDownTrayIcon,
-  DocumentTextIcon,
+  DocumentTextIcon
 } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, UserPlusIcon, TrashIcon , EyeIcon} from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -39,6 +39,8 @@ export function SortableTable({
   detail,
   text,
   addLink,
+  handleDelete,
+  searchKey
 }) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -338,8 +340,19 @@ export function SortableTable({
               return (
                 <tr key={index} className="even:bg-blue-gray-50/50">
                   {Object.entries(tableHead).map(
-                    ([key, value]) =>
-                      key !== "action" && (
+                    ([key, value]) =>{
+                      if(key === "purchaseItems") return (
+                        <div className="flex justify-center">
+                      <td className={("", classes)}>
+                        <Tooltip content="View">
+                        <IconButton variant="text">
+                          <EyeIcon className="h-4 w-4" />
+                        </IconButton>
+                      </Tooltip>                      
+                      </td>
+                      </div>
+                      )
+                      if( key !== "action" ) return (
                         <td className={classes} key={key}>
                           <Typography
                             variant="small"
@@ -350,7 +363,7 @@ export function SortableTable({
                           </Typography>
                         </td>
                       )
-                  )}
+                      })}
                   <td className={("", classes)}>
                     <div className="flex gap-0.5">
                       <Tooltip content="Edit">
