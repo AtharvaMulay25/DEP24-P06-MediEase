@@ -89,8 +89,8 @@ const updateSupplierList = async(req, res, next) => {
     } catch (err) {
         console.log(`Supplier List Updating Error : ${err.message}`);
         
-        const errMsg = "Updating Supplier list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Updating Supplier list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {
@@ -128,8 +128,8 @@ const deleteSupplierList = async(req, res, next) => {
     } catch (err) {
         console.log(`Supplier List Deletion Error : ${err.message}`);
         
-        const errMsg = "Deleting Supplier list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Deleting Supplier list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {

@@ -110,8 +110,8 @@ const updateMedicineList = async(req, res, next) => {
     } catch (err) {
         console.log(`Medicine List Updating Error : ${err.message}`);
         
-        const errMsg = "Updating medicine list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Updating medicine list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {
@@ -150,8 +150,8 @@ const deleteMedicineList = async(req, res, next) => {
     } catch (err) {
         console.log(`Medicine List Deletion Error : ${err.message}`);
         
-        const errMsg = "Deleting medicine list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Deleting medicine list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {

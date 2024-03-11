@@ -104,8 +104,8 @@ const updateStockList = async(req, res, next) => {
     } catch (err) {
         console.log(`Stock List Updating Error : ${err.message}`);
         
-        const errMsg = "Updating stock list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Updating stock list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {
@@ -143,8 +143,8 @@ const deleteStockList = async(req, res, next) => {
     } catch (err) {
         console.log(`Stock List Deletion Error : ${err.message}`);
         
-        const errMsg = "Deleting stock list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Deleting stock list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {

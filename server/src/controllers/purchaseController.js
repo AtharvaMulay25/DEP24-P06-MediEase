@@ -135,8 +135,8 @@ const updatePurchaseList = async(req, res, next) => {
     } catch (err) {
         console.log(`Purchase List Updating Error : ${err.message}`);
         
-        const errMsg = "Updating purchase list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Updating purchase list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {
@@ -175,8 +175,8 @@ const deletePurchaseList = async(req, res, next) => {
     } catch (err) {
         console.log(`Purchase List Deletion Error : ${err.message}`);
         
-        const errMsg = "Deleting purchase list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Deleting purchase list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {
