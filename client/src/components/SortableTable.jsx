@@ -341,6 +341,17 @@ export function SortableTable({
                 <tr key={index} className="even:bg-blue-gray-50/50">
                   {Object.entries(tableHead).map(
                     ([key, value]) =>{
+                      if(key === "id") return (
+                        <td className={classes} key={key}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {index+1}
+                          </Typography>
+                        </td>
+                      )
                       if(key === "purchaseItems") return (
                         <div className="flex justify-center">
                       <td className={("", classes)}>
