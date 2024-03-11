@@ -5,16 +5,25 @@ const {
     getMedicineList, 
     deleteMedicineList, 
     updateMedicineList, 
-    createMedicineList, 
+    createMedicineList,
+    getCategory, 
     getCategoryList,
-    createCategory
+    createCategory,
+    updateCategory,
+    deleteCategory
 } = require('../controllers/medicineController');
 
+//medicines routes
 router.get('/list', getMedicineList);
 router.post('/create', createMedicineList);
 router.put('/update', updateMedicineList);
 router.delete('/delete', deleteMedicineList);
+
+//category routes
 router.get('/category/list', getCategoryList);
+router.get('/category/:id', getCategory);
 router.post('/category/create', createCategory);
+router.post('/category/update', updateCategory);
+router.post('/category/delete', deleteCategory);
 
 module.exports = router;

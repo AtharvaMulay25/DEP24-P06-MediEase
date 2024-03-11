@@ -174,7 +174,7 @@ const deleteMedicineList = async(req, res, next) => {
 const getCategoryList = async(req, res, next) => {
     try {
         const categoryList = await prisma.category.findMany({});
-        console.log(categoryList);  
+        // console.log(categoryList);  
         
         return res.status(200).json({
             ok: true,
@@ -188,6 +188,35 @@ const getCategoryList = async(req, res, next) => {
             ok: false,
             data: [],
             message: "Fetching Category list failed, Please try again later"
+        });
+    }
+}
+
+// @desc    Get Single Category 
+// route    GET /api/medicine/category/:id
+// @access  Private (Admin)
+const getCategory = async(req, res, next) => {
+    try {
+        const { id } = req.params;
+        const category = await prisma.category.findUnique({
+            where: {
+                id: id
+            }
+        });
+        // console.log(category);  
+        
+        return res.status(200).json({
+            ok: true,
+            data: category,
+            message: "Category retrieved successfully"
+        });
+    } catch (err) {
+        console.log(`Category Fetching Error : ${err.message}`);
+        
+        return res.status(500).json({
+            ok: false,
+            data: [],
+            message: "Fetching Category failed, Please try again later"
         });
     }
 }
@@ -225,5 +254,98 @@ const createCategory = async(req, res, next) => {
 };
 
 
+// @desc    Update Category List Record
+// route    PUT /api/medicine/category/update
+// @access  Private (Admin) 
+const updateCategory = async(req, res, next) => {
+    try {
+        const { id } = req.body;
+        const updatedRecord = await prisma.category.update({
+            where: {
+                id,
+            },
+            data: {
+                ...req.body
+            },
+        });
 
-module.exports = {getMedicineList, createMedicineList, getCategoryList, createCategory, updateMedicineList, deleteMedicineList};
+        // console.log(updatedRecord);  
+        
+        return res.status(200).json({
+            ok: true,
+            data: updatedRecord,
+            message: "Category List record updated successfully"
+        });
+    } catch (err) {
+        console.log(`Category List Updating Error : ${err.message}`);
+        
+        const errMsg = "Updating category list record failed, Please try again later";
+        const errCode = 500;
+
+        //record does not exist
+        if (err.code === 'P2025') {
+            errMsg = "Record does not exist"
+            errCode = 404;
+        }
+
+        return res.status(errCode).json({
+            ok: false,
+            data: [],
+            message: errMsg,
+        });
+    }
+};
+
+
+// @desc    Delete Category List Record
+// route    DELETE /api/medicine/category/delete
+// @access  Private (Admin) 
+const deleteCategory = async(req, res, next) => {
+    try {
+        // console.log("req.body : ", req.body);
+        const { id } = req.body;
+        
+        const deletedRecord = await prisma.category.delete({
+            where: {
+              id: id,
+            },
+        });
+          
+        return res.status(200).json({
+            ok: true,
+            data: deletedRecord,
+            message: "Category List Record deleted successfully"
+        });
+    } catch (err) {
+        console.log(`Category List Deletion Error : ${err.message}`);
+        
+        const errMsg = "Deleting category list record failed, Please try again later";
+        const errCode = 500;
+
+        //record does not exist
+        if (err.code === 'P2025') {
+            errMsg = "Record does not exist"
+            errCode = 404;
+        }
+
+        return res.status(errCode).json({
+            ok: false,
+            data: [],
+            message: errMsg,
+        });
+    }
+};
+
+
+
+module.exports = {
+    getMedicineList, 
+    createMedicineList, 
+    updateMedicineList, 
+    deleteMedicineList,
+    getCategory,
+    getCategoryList, 
+    createCategory, 
+    updateCategory,
+    deleteCategory
+};
