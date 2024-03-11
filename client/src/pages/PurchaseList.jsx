@@ -8,15 +8,18 @@ import {
 
 const TABLE_HEAD = {
   id: "#",
+  invoiceNo: "Invoice No",
   supplierName: "Supplier",
   purchaseDate: "Date",
-  totalAmount: "Total Amount",
+  details: "Details",
+  purchaseItems: "Medicines",
   action: "Action",
 };
 
 const getPurchaseData = async () => {
   try {
     const response = await axios.get("http://localhost:4000/api/purchase/list");
+    console.log("response", response.data.data)
     return response.data.data;
   } catch (error) {
     console.error(error);

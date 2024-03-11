@@ -10,13 +10,13 @@ const prisma = new PrismaClient()
 // @access  Private (Admin) 
 const getPurchaseList = async(req, res, next) => {
     try {
-        const purchaseList = await prisma.purchase.findMany({
+        BigInt.prototype.toJSON = function () {
+            return this.toString();
+          };
+
+        const purchaseList = await prisma.purchaseList.findMany({
             include: {
-            //   Medicine: {
-            //     select: {
-            //       name: true
-            //     }
-            //   },
+              Purchase: true, 
               Supplier: {
                 select: {
                   name: true
@@ -25,17 +25,16 @@ const getPurchaseList = async(req, res, next) => {
             }
           });
           
-          // Restructure the data to have `medicineName` and `supplierName` outside the `Medicine` and `Supplier` object
           const restructuredPurchaseList = purchaseList.map(purchase => ({
             id: purchase.id,
-            // medicineName: purchase.Medicine.name, // Access `name` from `Medicine` object
-            supplierName: purchase.Supplier.name, // Access `name` from `Supplier` object
-            // quantity: purchase.quantity,
-            totalAmount: purchase.amount,
-            purchaseDate: purchase.purchaseDate
+            supplierName: purchase.Supplier.name, 
+            purchaseDate: purchase.purchaseDate,
+            invoiceNo: purchase.invoiceNo, 
+            details: purchase.Details,
+            // purchaseItems: purchase.Purchase
           }));
         
-        // console.log(restructuredPurchaseList);  
+        console.log(restructuredPurchaseList);  
         
         return res.status(200).json({
             ok: true,
@@ -58,14 +57,43 @@ const getPurchaseList = async(req, res, next) => {
 // @access  Private (Admin) 
 const createPurchaseList = async(req, res, next) => {
     try {
-        const createdRecord = await prisma.purchase.create({
-            data: {
-                ...req.body
+        const {purchaseListEntry, purchaseItems} = req.body;
+        const {purchaseDate, invoiceNo, supplierId, purchaseDetails} = purchaseListEntry;
+        console.log(purchaseListEntry)
+        console.log(purchaseItems)
+        
+        const supplier = await prisma.supplier.findUnique({
+            where: {
+                id: supplierId
             }
         });
+
+        if (!supplier) {
+            return res.status(404).json({
+                ok: false,
+                message: `Supplier with id ${supplierId} not found`
+            });
+        }
+
         
-        // console.log(createdRecord);  
-        
+        const createdRecord = await prisma.purchaseList.create({
+                data: {
+                    purchaseDate,
+                    invoiceNo,
+                    supplierId,
+                    Details: purchaseDetails,           //change Details name to details in schema*******
+                    Purchase: {
+                        create: purchaseItems.map(item => ({
+                            medicineId: item.medicineId,
+                            quantity: item.quantity,
+                            batchNo: BigInt(item.batchNo) || 0,
+                            mfgDate: item.mfgDate,
+                            expiryDate: item.expiryDate, 
+                        }))
+                    }
+                }
+            });
+
         return res.status(200).json({
             ok: true,
             data: createdRecord,
@@ -107,8 +135,8 @@ const updatePurchaseList = async(req, res, next) => {
     } catch (err) {
         console.log(`Purchase List Updating Error : ${err.message}`);
         
-        const errMsg = "Updating purchase list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Updating purchase list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {
@@ -147,8 +175,8 @@ const deletePurchaseList = async(req, res, next) => {
     } catch (err) {
         console.log(`Purchase List Deletion Error : ${err.message}`);
         
-        const errMsg = "Deleting purchase list record failed, Please try again later";
-        const errCode = 500;
+        let errMsg = "Deleting purchase list record failed, Please try again later";
+        let errCode = 500;
 
         //record does not exist
         if (err.code === 'P2025') {

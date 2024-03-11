@@ -14,62 +14,149 @@ datasource db {
 }
 
 model Medicine {
-  id           String   @id @default(uuid())
-  name         String
-  genericName  String
-  brandName    String
-  category     String
-  strength     String     
-  Stock        Stock[]    //CHECK
+  id         String @id @default(uuid())
+  brandName  String
+  saltName   String
+  categoryId String
+
+  Stock     Stock[]
+  Checkups  Checkup[]  @relation("CheckupMedicines")
+  Purchases Purchase[]
+
+  Category Category @relation(fields: [categoryId], references: [id])
+
+  @@map("medicine")
 }
 
 model Supplier {
-  id          String    @id @default(uuid())
-  name        String
-  address     String
-  city        String
-  state       String
-  pinCode     String
+  id           String  @id @default(uuid())
+  name         String
+  address      String
+  city         String?
+  state        String
+  pinCode      String?
   mobileNumber String
-  email       String
-  Purchase    Purchase[]
+  email        String?
+
+  PurchaseList PurchaseList[]
+
+  @@map("supplier")
 }
 
 model Staff {
-  id            String   @id @default(uuid())
-  name          String
-  email         String   @unique
-  role          Role
-  speciality    String?
-  gender        String
-  shiftSchedule String
+  id             String    @id @default(uuid())
+  name           String
+  email          String    @unique
+  role           Role
+  speciality     String?
+  gender         Gender
+  shiftSchedule  String
+  DoctorCheckups Checkup[] @relation("DoctorCheckups")
+  StaffCheckups  Checkup[] @relation("StaffCheckups")
 
   @@map("staff")
 }
 
-enum Role {
-  DOCTOR
-  PHARMACIST
-  NURSE
-  ADMIN
-}
-
 model Stock {
-  id         String   @id @default(uuid())
-  medicineId String
-  netQuantity   Int
-  category   String
-  inQuantity Int
+  id          String   @id @default(uuid())
+  medicineId  String
+  stock       Int
+  inQuantity  Int
   outQuantity Int
-  Medicine   Medicine @relation(fields: [medicineId], references: [id])
+  Medicine    Medicine @relation(fields: [medicineId], references: [id])
+
   @@map("stock")
 }
 
-model Purchase {
+model PurchaseList {
   id           String   @id @default(uuid())
   supplierId   String
   purchaseDate DateTime
-  amount       Float
-  Supplier     Supplier @relation(fields: [supplierId], references: [id])
+  invoiceNo    String   @unique
+  Details      String?
+
+  Supplier Supplier   @relation(fields: [supplierId], references: [id])
+  Purchase Purchase[]
+
+  @@map("purchaseList")
+}
+
+model Category {
+  id           String @id @default(uuid())
+  categoryName String
+  strengthType String
+
+  Medicine Medicine[]
+
+  @@map("category")
+}
+
+model Purchase {
+  id             String    @id @default(uuid())
+  purchaseListId String
+  medicineId     String
+  mfgDate        DateTime?
+  expiryDate     DateTime
+  batchNo        BigInt 
+  quantity       Int
+
+  Medicine     Medicine     @relation(fields: [medicineId], references: [id])
+  PurchaseList PurchaseList @relation(fields: [purchaseListId], references: [id])
+
   @@map("purchase")
+}
+
+model Patient {
+  id                 String          @id @default(uuid())
+  name               String
+  department         String?
+  dob                DateTime
+  age                Int
+  email              String          @unique
+  bloodGroup         String
+  program            String?
+  fatherOrSpouseName String?
+  category           PatientCategory
+  gender             Gender
+  Checkup            Checkup[]
+
+  @@map("patient")
+}
+
+model Checkup {
+  id             String   @id @default(uuid())
+  patientId      String
+  temperature    Float?
+  date           DateTime
+  bloodPressure  String?
+  symptoms       String?
+  diseaseOrCause String
+  doctorId       String?
+  staffId        String
+
+  Patient Patient @relation(fields: [patientId], references: [id])
+
+  Doctor Staff? @relation("DoctorCheckups", fields: [doctorId], references: [id])
+  Staff  Staff  @relation("StaffCheckups", fields: [staffId], references: [id])
+
+  Medicines Medicine[] @relation("CheckupMedicines")
+
+  @@map("checkup")
+}
+
+enum Role {
+  DOCTOR
+  PARAMEDICAL
+}
+
+enum PatientCategory {
+  STUDENT
+  FACULTY
+  STAFF
+  VISITOR
+}
+
+enum Gender {
+  MALE
+  FEMALE
 }

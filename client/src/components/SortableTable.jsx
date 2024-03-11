@@ -3,8 +3,11 @@ import {
   ChevronUpDownIcon,
   ChevronUpIcon,
   ChevronDownIcon,
+  DocumentIcon,
+  ArrowDownTrayIcon,
+  DocumentTextIcon
 } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, UserPlusIcon, TrashIcon , EyeIcon} from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -18,12 +21,27 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-
-import { useEffect, useState } from "react";
+import { saveAs } from "file-saver";
+import * as XLSX from "xlsx";
+import { CSVLink } from "react-csv";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileExcel } from "@fortawesome/free-regular-svg-icons";
+import { useEffect, useState, useRef } from "react";
 import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
 
-export function SortableTable({ tableHead, title, data, detail, text, addLink, handleDelete, searchKey }) {
+export function SortableTable({
+  tableHead,
+  title,
+  data,
+  detail,
+  text,
+  addLink,
+  handleDelete,
+  searchKey
+}) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -40,9 +58,13 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
     Math.ceil(data.length / itemsPerPage)
   );
 
+  const tableRef = useRef(null);
   useEffect(() => {
     setMaxPages(Math.ceil(data.length / itemsPerPage));
   }, [searchList, itemsPerPage]);
+
+
+  let csvData = [];
 
   useEffect(() => {
     const indexOfLastPage = currentPage * itemsPerPage;
@@ -55,6 +77,89 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
     // setSearchList(currentItems);
   }, [currentPage, itemsPerPage, searchList]);
 
+  const getDataToExport = () => {
+    const dataToExport = data.map((rowData) => {
+      const tableContent = [];
+      Object.keys(tableHead).forEach((key, idx) => {
+        if (idx !== Object.keys(tableHead).length - 1) {
+          tableContent.push(rowData[key]);
+        }
+      });
+      return tableContent;
+    });
+    return dataToExport;
+  };
+  const exportToExcel = () => {
+    // Implement Excel export logic here
+    if (!tableRef.current) return;
+    const dataToExport = getDataToExport();
+    const excelData = [Object.values(tableHead).slice(0, -1), ...dataToExport];
+    // Create a worksheet from the data
+    const ws = XLSX.utils.aoa_to_sheet(excelData);
+    /* ***** NEED TO STYLE/ BOLD  THE HEADERS IN EXCEL SHEET ****** */
+
+    // Make the first row bold (header row)
+    // const headerCellStyle = { font: { bold: true } };
+    // Object.keys(tableHead).forEach((key, index) => {
+    //   const headerCellAddress = XLSX.utils.encode_cell({ r: 0, c: index });
+    //   const cell = ws[headerCellAddress];
+    //   ws[headerCellAddress] = { ...cell, s: { ...(cell.s || {}), ...headerCellStyle } };
+    // });
+
+    // Create a workbook and add the worksheet
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    // Convert the workbook to an Excel buffer
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+
+    // Create a blob from the buffer and save it
+    const fileType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+    const data = new Blob([excelBuffer], { type: fileType });
+    saveAs(data, `${title}${fileExtension}`);
+  };
+
+  const exportToCSV = () => {
+    // Implement CSV export logic here
+    if (!tableRef.current) return;
+    const dataToExport = getDataToExport();
+
+    const csvData = [Object.values(tableHead).slice(0, -1), ...dataToExport];
+    // const csvDataArray = csvData.map(row => row.join(','));
+    // const csvDataString = csvDataArray.join('\n');
+    return csvData;
+  };
+
+  const exportToPDF = () => {
+    if (!tableRef.current) return;
+    // Implement PDF export logic here
+    const doc = new jsPDF();
+    const tableData = getDataToExport();
+    // console.log(tableData);
+    doc.autoTable({
+      head: [Object.values(tableHead).slice(0, -1)],
+      body: tableData,
+    });
+    doc.save(`${title}.pdf`);
+  };
+
+  const copyToClipboard = async () => {
+    if (!tableRef.current) return;
+
+    const dataToExport = getDataToExport(); // Get data to export
+    const formattedData = dataToExport.map((row) => row.join("\t")).join("\n");
+
+    try {
+      await navigator.clipboard.writeText(formattedData);
+      console.log("Copied to clipboard");
+      /* ***** NEED TO SHOW A SUCCESS MESSAGE HERE ****** */
+    } catch (err) {
+      console.error("Failed to copy to clipboard", err);
+      /* ***** NEED TO SHOW AN ERROR MESSAGE HERE ****** */
+    }
+  };
   const handleSearch = (e) => {
     setSearch(e.target.value);
     filterItems(e.target.value);
@@ -63,7 +168,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
   const filterItems = (str) => {
     const filteredArray = data.filter(item => item[searchKey].toLowerCase().includes(str.toLowerCase()));
     setSearchList(filteredArray);
-  };
+  };
 
   const paginate = (act) => {
     if (act === "inc") {
@@ -129,13 +234,19 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
               {/* <Button variant="outlined" size="sm">
               view all
               </Button> */}
-              <Button className="flex items-center gap-3" size="sm" onClick={() => { navigate(addLink) }}>
+              <Button
+                className="flex items-center gap-3"
+                size="sm"
+                onClick={() => {
+                  navigate(addLink);
+                }}
+              >
                 <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> {text}
               </Button>
             </div>
           )}
         </div>
-        <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="flex flex-col items-center justify-start gap-4 md:flex-row">
           <div className="w-full md:w-72">
             <Input
               label="Search"
@@ -144,10 +255,41 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
               onChange={(e) => handleSearch(e)}
             />
           </div>
+          <div className="flex justify-evenly md:justify-normal w-full md:w-72">
+            <Tooltip content="Copy to Clipboard">
+              <IconButton variant="text" onClick={copyToClipboard}>
+                <DocumentIcon className="h-4 w-4" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip content="Export to Excel">
+              <IconButton variant="text" onClick={exportToExcel}>
+                <FontAwesomeIcon icon={faFileExcel} className="h-4 w-4" />
+                {/* <FontAwesomeIcon icon="fa-light fa-file-excel" /> */}
+              </IconButton>
+            </Tooltip>
+            <Tooltip content="Export to CSV">
+              <IconButton variant="text">
+                {(csvData = exportToCSV()) && (
+                  <CSVLink data={csvData} filename={`${title}.csv`}>
+                    {" "}
+                    <DocumentTextIcon className="h-4 w-4" />{" "}
+                  </CSVLink>
+                )}
+              </IconButton>
+            </Tooltip>
+            <Tooltip content="Save as PDF">
+              <IconButton variant="text" onClick={exportToPDF}>
+                <ArrowDownTrayIcon className="h-4 w-4" />
+              </IconButton>
+            </Tooltip>
+          </div>
         </div>
+        {/* <div className="flex items-center justify-between gap-4 md:flex-row">
+         
+        </div> */}
       </CardHeader>
       <CardBody className="flex-1 overflow-y-auto px-4 py-1">
-        <table className="w-full border table-auto text-left">
+        <table ref={tableRef} className="w-full border table-auto text-left">
           <thead>
             <tr>
               {Object.entries(tableHead).map(([value, head]) => (
@@ -201,8 +343,30 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
               return (
                 <tr key={index} className="even:bg-blue-gray-50/50">
                   {Object.entries(tableHead).map(
-                    ([key, value]) =>
-                      key !== "action" && (
+                    ([key, value]) =>{
+                      if(key === "id") return (
+                        <td className={classes} key={key}>
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {index+1}
+                          </Typography>
+                        </td>
+                      )
+                      if(key === "purchaseItems") return (
+                        <div className="flex justify-center">
+                        <td className="px-3 border-0 opacity-80">
+                          <Tooltip content="View">
+                          <IconButton variant="text">
+                            <EyeIcon className="h-4 w-4" />
+                          </IconButton>
+                        </Tooltip>                      
+                        </td>
+                        </div>
+                      )
+                      if( key !== "action" ) return (
                         <td className={classes} key={key}>
                           <Typography
                             variant="small"
@@ -213,7 +377,7 @@ export function SortableTable({ tableHead, title, data, detail, text, addLink, h
                           </Typography>
                         </td>
                       )
-                  )}
+                      })}
                   <td className={("", classes)}>
                     <div className="flex gap-0.5">
                       <Tooltip content="Edit">

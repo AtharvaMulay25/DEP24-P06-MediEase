@@ -5,16 +5,16 @@ import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
 const TABLE_HEAD = {
   id: "#",
-  name: "Medicine Name",
-  genericName: "Generic Name",
   brandName: "Brand Name",
-  category: "Category",
+  saltName: "Salt Name",
+  categoryName: "Category",
   action: "Action",
 };
 
 const getMedicinesData = async () => {
   try {
     const response = await axios.get("http://localhost:4000/api/medicine/list");
+    // console.log(response.data.data);
     return response.data.data;
   } catch (error) {
     console.error(error);
@@ -69,7 +69,7 @@ export default function MedicineList() {
             text="Add Medicine"
             addLink="/medicine/add_medicine"
             handleDelete={handleMedicineDelete}
-            searchKey={"name"}
+            searchKey={"brandName"}
           />
         </Layout>
       )}
