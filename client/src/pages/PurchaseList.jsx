@@ -18,7 +18,7 @@ const TABLE_HEAD = {
 
 const getPurchaseData = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/api/purchase/list");
+    const response = await axios.get("http://localhost:4000/api/purchase");
     console.log("response", response.data.data)
     return response.data.data;
   } catch (error) {
@@ -42,7 +42,7 @@ export default function PurchaseList() {
 
   const handlePurchaseDelete = async(e, id) => {
     try {
-      const res = await axios.delete("http://localhost:4000/api/purchase/delete", {
+      const res = await axios.delete("http://localhost:4000/api/purchase", {
         data: { id }
       });
 

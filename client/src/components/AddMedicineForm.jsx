@@ -37,7 +37,7 @@ export function AddMedicineForm() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/medicine/category/list");
+      const response = await axios.get("http://localhost:4000/api/medicine/category");
       console.log(response.data.data)
       setCategories(response.data.data);
     } catch (error) {
@@ -75,7 +75,7 @@ export function AddMedicineForm() {
     };
     // console.log(data);
     try {
-      const response = await axios.post("http://localhost:4000/api/medicine/create", data);
+      const response = await axios.post("http://localhost:4000/api/medicine", data);
       console.log(response);
       navigate("/medicine/list");
     } catch (error) {

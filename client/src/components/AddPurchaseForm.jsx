@@ -42,7 +42,7 @@ export function AddPurchaseForm() {
   const fetchSuppliers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/supplier/list"
+        "http://localhost:4000/api/supplier"
       );
       // console.log(response.data);
       setSuppliers(response.data.data); // Assuming the response is an array of suppliers
@@ -54,7 +54,7 @@ export function AddPurchaseForm() {
   const fetchMedicines = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/medicine/list"
+        "http://localhost:4000/api/medicine"
       );
       // console.log(response.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
@@ -153,7 +153,7 @@ export function AddPurchaseForm() {
     //***DON'T LET THE FORM SUBMIT IF ANY OF MANDATORY ITEMS IS MISSING OR ANY LIST ROW FIELD IS EMPTY */
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/purchase/create",
+        "http://localhost:4000/api/purchase",
         data
       );
       console.log(response);

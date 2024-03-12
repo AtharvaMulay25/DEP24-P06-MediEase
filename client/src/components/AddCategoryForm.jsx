@@ -47,7 +47,7 @@ export function AddCategoryForm() {
     // Here you can handle the submission of the form
     // console.log(data);
     try {
-      const response = await axios.post("http://localhost:4000/api/medicine/category/create", data);
+      const response = await axios.post("http://localhost:4000/api/medicine/category", data);
       console.log(response);
       navigate("/medicine/category/list");
     } catch (error) {

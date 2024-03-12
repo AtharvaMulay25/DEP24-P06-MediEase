@@ -13,7 +13,7 @@ const TABLE_HEAD = {
 
 const getMedicinesData = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/api/medicine/list");
+    const response = await axios.get("http://localhost:4000/api/medicine");
     // console.log(response.data.data);
     return response.data.data;
   } catch (error) {
@@ -38,7 +38,7 @@ export default function MedicineList() {
 
   const handleMedicineDelete = async(e, id) => {
     try {
-      const res = await axios.delete("http://localhost:4000/api/medicine/delete", {
+      const res = await axios.delete("http://localhost:4000/api/medicine", {
         data: { id }
       });
 

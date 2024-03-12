@@ -12,7 +12,7 @@ const TABLE_HEAD = {
 
 const  getCategoriesData = async () => {
     try {
-        const response = await axios.get("http://localhost:4000/api/medicine/category/list");
+        const response = await axios.get("http://localhost:4000/api/medicine/category");
         console.log(response.data.data);
         return response.data.data;
     } catch (error) {
@@ -35,6 +35,26 @@ export default function CategoryList() {
         fetchData();
     }, []);
 
+    const handleCategoryDelete = async(e, id) => {
+      try {
+        const res = await axios.delete("http://localhost:4000/api/medicine/category", {
+          data: { id }
+        });
+  
+        const { data } = res;
+        
+        if (data?.ok) {
+          console.log(`MESSAGE : ${data?.message}`);
+          setCategories((prev) => prev.filter(p => p.id !== id));
+        } else {
+          // TODO: show an error message
+          console.log(`ERROR (category_list_delete): ${data.message}`);
+        }
+      } catch (err) {
+        console.error(`ERROR (category_list_delete): ${err.message}`);
+      }
+    };
+
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -48,6 +68,7 @@ export default function CategoryList() {
             text="Add Category"
             addLink="/medicine/category/add_category"
             searchKey={"categoryName"}
+            handleDelete={handleCategoryDelete}
           />
         </Layout>
       )}

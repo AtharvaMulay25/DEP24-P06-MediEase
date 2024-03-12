@@ -9,9 +9,9 @@ const {
     createSupplierList 
 } = require('../controllers/supplierController');
 
-router.get('/list', getSupplierList);
-router.post('/create', createSupplierList);
-router.put('/update', updateSupplierList);
-router.delete('/delete', deleteSupplierList);
+router.get('/', getSupplierList);
+router.post('/', createSupplierList);
+router.put('/', updateSupplierList);
+router.delete('/', deleteSupplierList);
 
 module.exports = router;

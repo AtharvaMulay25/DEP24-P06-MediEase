@@ -9,9 +9,9 @@ const {
     createStockList 
 } = require('../controllers/stockController');
 
-router.get('/list', getStockList);
-router.post('/create', createStockList);
-router.put('/update', updateStockList);
-router.delete('/delete', deleteStockList);
+router.get('/', getStockList);
+router.post('/', createStockList);
+router.put('/', updateStockList);
+router.delete('/', deleteStockList);
 
 module.exports = router;

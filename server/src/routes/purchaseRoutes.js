@@ -9,9 +9,9 @@ const {
     createPurchaseList 
 } = require('../controllers/purchaseController');
 
-router.get('/list', getPurchaseList);
-router.post('/create', createPurchaseList);
-router.put('/update', updatePurchaseList);
-router.delete('/delete', deletePurchaseList);
+router.get('/', getPurchaseList);
+router.post('/', createPurchaseList);
+router.put('/', updatePurchaseList);
+router.delete('/', deletePurchaseList);
 
 module.exports = router;

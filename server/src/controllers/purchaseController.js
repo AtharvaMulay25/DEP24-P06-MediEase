@@ -77,22 +77,22 @@ const createPurchaseList = async(req, res, next) => {
 
         
         const createdRecord = await prisma.purchaseList.create({
-                data: {
-                    purchaseDate,
-                    invoiceNo,
-                    supplierId,
-                    Details: purchaseDetails,           //change Details name to details in schema*******
-                    Purchase: {
-                        create: purchaseItems.map(item => ({
-                            medicineId: item.medicineId,
-                            quantity: item.quantity,
-                            batchNo: BigInt(item.batchNo) || 0,
-                            mfgDate: item.mfgDate,
-                            expiryDate: item.expiryDate, 
-                        }))
-                    }
+            data: {
+                purchaseDate,
+                invoiceNo,
+                supplierId,
+                Details: purchaseDetails,           //change Details name to details in schema*******
+                Purchase: {
+                    create: purchaseItems.map(item => ({
+                        medicineId: item.medicineId,
+                        quantity: item.quantity,
+                        batchNo: BigInt(item.batchNo) || 0,
+                        mfgDate: item.mfgDate,
+                        expiryDate: item.expiryDate, 
+                    }))
                 }
-            });
+            }
+        });
 
         return res.status(200).json({
             ok: true,

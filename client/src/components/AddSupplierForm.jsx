@@ -53,7 +53,7 @@
       // Here you can handle the submission of the form
       console.log(formData);
       try {
-        const response = await axios.post("http://localhost:4000/api/supplier/create", data);
+        const response = await axios.post("http://localhost:4000/api/supplier", data);
         console.log(response);
         navigate("/supplier/list");
       } catch (error) {

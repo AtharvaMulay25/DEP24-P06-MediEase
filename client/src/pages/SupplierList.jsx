@@ -16,7 +16,7 @@ const TABLE_HEAD = {
 };
 const getSuppliersData = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/api/supplier/list");
+    const response = await axios.get("http://localhost:4000/api/supplier");
     return response.data.data;
   } catch (error) {
     console.error(error);
@@ -42,7 +42,7 @@ export default function SupplierList() {
 
   const handleSupplierDelete = async(e, id) => {
     try {
-      const res = await axios.delete("http://localhost:4000/api/supplier/delete", {
+      const res = await axios.delete("http://localhost:4000/api/supplier", {
         data: { id }
       });
 
