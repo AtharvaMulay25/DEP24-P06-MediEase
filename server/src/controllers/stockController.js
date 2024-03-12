@@ -16,23 +16,28 @@ const getStockList = async(req, res, next) => {
             include: {
               Medicine: {
                 select: {
-                  name: true
-                }
-              }
-            }
+                  brandName: true,
+                  Category: {
+                    select: {
+                      categoryName: true,
+                    },
+                  },
+                },
+              },
+            },
           });
           
           // Restructure the data to have `medicineName` outside the `Medicine` object
           const restructuredStockList = stockList.map(stock => ({
             id: stock.id,
-            netQuantity: stock.netQuantity,
-            category: stock.category,
+            netQuantity: (stock.inQuantity-stock.outQuantity),
+            category: stock.Medicine.Category.categoryName,
             inQuantity: stock.inQuantity,
             outQuantity: stock.outQuantity,
-            medicineName: stock.Medicine.name // Access `name` from `Medicine` object
+            medicineName: stock.Medicine.brandName // Access `name` from `Medicine` object
           }));
           
-        // console.log(restructuredStockList);
+        console.log("restructuredStockList : ", restructuredStockList);
         
         return res.status(200).json({
             ok: true,
