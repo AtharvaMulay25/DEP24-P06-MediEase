@@ -17,6 +17,7 @@ import AddCategory from "./pages/AddCategory";
 import CategoryList from "./pages/CategoryList";
 import { AddPatient } from "./pages/AddPatient";
 import PatientList from "./pages/PatientList";
+import { AddPrescription } from "./pages/AddPrescription";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path="/pagination" element={<Pagination />} />
           <Route path="/patient/add_patient" element={<AddPatient />} />
           <Route path="/patient/list" element={<PatientList />} />
+          <Route path="/prescription/add_prescription" element={<AddPrescription />} />
         </Routes>
       </BrowserRouter>
     </>
