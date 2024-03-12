@@ -253,7 +253,10 @@ export function SortableTable({
       });
       setPaginatedData(sorted);
     }
-    let newSort = { id: "", Purchase_id: "", date: "", Supplier: "" };
+    let newSort = {};
+    Object.keys(tableHead).forEach((key, index) => {
+      if (key !== "action") newSort[key] = "";
+    });
     if (sort[col] === "asc") newSort = { ...newSort, [col]: "dsc" };
     else newSort = { ...newSort, [col]: "asc" };
     setSort(newSort);
