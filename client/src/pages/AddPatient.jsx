@@ -21,7 +21,7 @@ export function AddPatient() {
   const [formData, setFormData] = useState({
     patientName: "",
     bloodGroup: "",
-    sex: "",
+    gender: "",
     dob: "",
     category: "",
     patientAge: "",
@@ -54,7 +54,7 @@ export function AddPatient() {
       program: formData.program,
       fatherOrSpouseName: formData.fatherName,
       category: formData.category.toUpperCase(),
-      gender: formData.sex.toUpperCase(),
+      gender: formData.gender.toUpperCase(),
     };
 
     try {
@@ -184,16 +184,16 @@ export function AddPatient() {
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
-                  <label htmlFor="sex">
-                    Sex <span className="text-red-800">*</span>
+                  <label htmlFor="gender">
+                    Gender <span className="text-red-800">*</span>
                   </label>
                 </div>
                 <Select
-                  id="sex"
+                  id="gender"
                   label="Select"
-                  name="sex"
-                  value={formData.sex}
-                  onChange={(value) => handleChange("sex", value)}
+                  name="gender"
+                  value={formData.gender}
+                  onChange={(value) => handleChange("gender", value)}
                 >
                   <Option value="Male">Male</Option>
                   <Option value="Female">Female</Option>

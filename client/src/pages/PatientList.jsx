@@ -2,7 +2,6 @@ import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  GridLoadingScreen,
   SyncLoadingScreen,
 } from "../components/UI/LoadingScreen";
 
@@ -16,7 +15,7 @@ const TABLE_HEAD = {
   bloodGroup: "Blood Group",
   category: "Category",
   program: "Program",
-  fatherName: "Father Name",
+  fatherOrSpouseName: "Father Name",
   gender: "Gender",
   action: "Action",
 };
@@ -26,11 +25,11 @@ const TABLE_HEAD = {
 import Layout from "../layouts/PageLayout";
 
 export default function PatientList() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [patients, setPatients] = useState([]);
  
   useEffect(() => {
-    setLoading(true);
+    // setLoading(true);
 
     const fetchPatientList = async () => {
       try {

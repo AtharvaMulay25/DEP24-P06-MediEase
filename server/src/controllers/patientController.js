@@ -7,10 +7,11 @@ const prisma = new PrismaClient()
 // @access  Private (Admin) 
 const getPatientList = async (req, res, next) => {
     try {
-        const patientList = await prisma.patient.findMany({});
+        let patientList = await prisma.patient.findMany({});
 
         // console.log("patientList : ", patientList);
-
+        patientList = patientList.map((patient) => ({...patient, dob: patient.dob.toISOString().split('T')[0] }));
+        
         return res.status(200).json({
             ok: true,
             data: patientList,
