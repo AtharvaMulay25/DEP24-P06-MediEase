@@ -18,6 +18,7 @@ import {
   ShoppingCartIcon,
   UserGroupIcon,
   ChartBarIcon,
+  UserIcon
 } from "@heroicons/react/24/solid";
 import { ChevronDownIcon, Bars3Icon , XMarkIcon} from "@heroicons/react/24/outline";
 
@@ -317,6 +318,60 @@ const Layout = ({ children }) => {
                         onClick={() => navigate("/supplier/list")}
                       >
                         Supplier List
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
+              <Accordion
+                open={open === 4}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 4 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 4}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(4)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <UserIcon
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Patient
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/patient/add_patient")}
+                      >
+                        Add Patient
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/patient/list")}
+                      >
+                        Patient List
                       </ListItem>
                     </List>
                   </AccordionBody>
