@@ -20,6 +20,10 @@ import {
   Tooltip,
   Select,
   Option,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
 } from "@material-tailwind/react";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
@@ -32,6 +36,39 @@ import { useEffect, useState, useRef } from "react";
 import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
 
+export function DialogDefault({ open, setOpen, handleDelete, deletedRecordId, setDeletedRecordId }) {
+  
+  const handleDialogResponse = () => {
+    setOpen(false);
+    setDeletedRecordId(null); 
+  };
+
+  return (
+    <>
+      <Dialog open={open}>
+        <DialogHeader className="text-1xl">Are you sure you want to delete this record.</DialogHeader>
+        <DialogBody></DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="green"
+            onClick={() => handleDialogResponse()}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button variant="gradient" onClick={(e) => {
+            handleDelete(e, deletedRecordId)
+            setOpen(false)
+          }}>
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+    </>
+  );
+}
+
 export function SortableTable({
   tableHead,
   title,
@@ -42,6 +79,9 @@ export function SortableTable({
   handleDelete,
   searchKey
 }) {
+  const [open, setOpen] = useState(false);
+  const [deletedRecordId, setDeletedRecordId] = useState(null);
+
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -76,6 +116,11 @@ export function SortableTable({
     setPaginatedData(currentItems);
     // setSearchList(currentItems);
   }, [currentPage, itemsPerPage, searchList]);
+
+  const handleDialogDelete = (e, id) => {
+    setDeletedRecordId(id);
+    setOpen(!open);
+  };
 
   const getDataToExport = () => {
     const dataToExport = data.map((rowData) => {
@@ -383,7 +428,7 @@ export function SortableTable({
                         </IconButton>
                       </Tooltip>
                       <Tooltip content="Delete">
-                        <IconButton variant="text" onClick={(e) => handleDelete(e, rowData.id)}>
+                        <IconButton variant="text" onClick={(e) => handleDialogDelete(e, rowData["id"])}>
                           <TrashIcon className="h-4 w-4" />
                         </IconButton>
                       </Tooltip>
@@ -419,6 +464,13 @@ export function SortableTable({
           </div>
         </div>
       </CardFooter>
+      <DialogDefault 
+        open={open}
+        setOpen={setOpen}
+        handleDelete={handleDelete}
+        deletedRecordId={deletedRecordId}
+        setDeletedRecordId={setDeletedRecordId}
+      />
     </Card>
   );
 }
