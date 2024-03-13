@@ -1,5 +1,4 @@
 import "./App.css";
-
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -15,7 +14,7 @@ import StockList from "./pages/StockList";
 import AddPurchase from "./pages/AddPurchase";
 import AddCategory from "./pages/AddCategory";
 import CategoryList from "./pages/CategoryList";
-
+import DoctorDashboard from "./pages/DoctorDashboard";
 
 function App() {
   return (
@@ -36,6 +35,7 @@ function App() {
           <Route path="/supplier/list" element={<SupplierList />} />
           <Route path="/stock" element={<StockList />} />
           <Route path="/pagination" element={<Pagination />} />
+          <Route path="/doctordashboard" element={<DoctorDashboard />} />
         </Routes>
       </BrowserRouter>
     </>
