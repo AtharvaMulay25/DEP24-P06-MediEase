@@ -53,7 +53,7 @@ const PharmaDashboard = () => {
         : width * (13 / 24),
     series: [
       {
-        name: "Sales",
+        name: "Checkups",
         data: [
           50, 40, 30, 32, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
           0, 0, 0, 0, 0, 0, 0, 0, 0,
