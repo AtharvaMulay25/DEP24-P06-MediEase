@@ -71,12 +71,12 @@ const DoctorDashboard = () => {
         show: "",
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
       },
       colors: ["#020617"],
       plotOptions: {
         bar: {
-          columnWidth: "40%",
+          columnWidth: "60%",
           borderRadius: 5,
         },
       },
@@ -192,7 +192,7 @@ const DoctorDashboard = () => {
       labels: ["Dolo", "Crocin", "Combiflam", "Ibuprofen", "Omeprazole"],
       colors: ["#020617", "#ff8f00", "#00897b", "#1e88e5", "#d81b60"],
       legend: {
-        show: false,
+        show: true,
       },
     },
   };

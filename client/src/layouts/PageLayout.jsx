@@ -119,7 +119,7 @@ const Layout = ({ children }) => {
               className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal"
               style={{ color: "#f1ffea" }}
             >
-              <a href="/pharmadashboard">
+              <a href="/doctordashboard">
                 <li className="flex items-center w-full p-1 rounded-lg text-start leading-tight transition-all cursor-pointer">
                   <UserCircleIcon className="h-8 w-8 mr-4" />
                   <div>
