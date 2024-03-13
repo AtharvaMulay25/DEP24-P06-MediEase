@@ -10,9 +10,10 @@ import {
 import {
   UserGroupIcon,
   ShoppingCartIcon,
-  ChartBarIcon,
+  PresentationChartBarIcon,
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
+import { FaUserDoctor } from "react-icons/fa6";
 import Layout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
 
@@ -38,7 +39,7 @@ function useWindowDimensions() {
   return windowDimensions;
 }
 
-const PharmaDashboard = () => {
+const DoctorDashboard = () => {
   const { height, width } = useWindowDimensions();
   const navigate = useNavigate();
 
@@ -199,7 +200,7 @@ const PharmaDashboard = () => {
   return (
     <>
       <Layout>
-        <div className="dummy">
+        <div>
           <div className="md:grid md:grid-cols-4">
             <div
               className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
@@ -212,7 +213,7 @@ const PharmaDashboard = () => {
                     className="h-8 w-8 mr-2"
                     style={{ color: "black" }}
                   />
-                  Total Medicines
+                  Medicines Provided
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
                   350
@@ -235,8 +236,8 @@ const PharmaDashboard = () => {
             >
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                  <ChartBarIcon className="h-7 w-7 mr-2" />
-                  Current Stock
+                  <UserGroupIcon className="h-7 w-7 mr-2" />
+                  Checkups Done
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
                   350
@@ -248,7 +249,7 @@ const PharmaDashboard = () => {
                   type="button"
                   onClick={() => navigate("/stock")}
                 >
-                  See Stock
+                  See Patients
                 </button>
               </div>
             </div>
@@ -259,11 +260,11 @@ const PharmaDashboard = () => {
             >
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                  <ShoppingCartIcon className="h-7 w-7 mr-2" />
-                  Purchase Details
+                  <FaUserDoctor className="h-7 w-7 mr-2" />
+                  Doctor Details
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                  All the purchases done.
+                  All the doctors present in campus.
                 </p>
               </div>
               <div className="p-6 pt-0">
@@ -272,7 +273,7 @@ const PharmaDashboard = () => {
                   type="button"
                   onClick={() => navigate("/purchase/list")}
                 >
-                  See Purchase List
+                  See Doctors List
                 </button>
               </div>
             </div>
@@ -283,11 +284,11 @@ const PharmaDashboard = () => {
             >
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                  <UserGroupIcon className="h-7 w-7 mr-2" />
-                  Supplier Details
+                  <PresentationChartBarIcon className="h-7 w-7 mr-2" />
+                  Current Schedule
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                  All the faithful suppliers.
+                  See current schedule.
                 </p>
               </div>
               <div className="p-6 pt-0">
@@ -296,7 +297,7 @@ const PharmaDashboard = () => {
                   type="button"
                   onClick={() => navigate("/supplier/list")}
                 >
-                  See Supplier List
+                  See my schedule
                 </button>
               </div>
             </div>
@@ -349,7 +350,7 @@ const PharmaDashboard = () => {
                     color="gray"
                     className="max-w-sm font-normal"
                   >
-                    Top medicines currently present in our stock.
+                    Top medicines provided by me.
                   </Typography>
                 </div>
               </CardHeader>
@@ -368,4 +369,4 @@ const PharmaDashboard = () => {
   );
 };
 
-export default PharmaDashboard;
+export default DoctorDashboard;

@@ -1,5 +1,4 @@
 import "./App.css";
-
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -15,7 +14,7 @@ import StockList from "./pages/StockList";
 import AddPurchase from "./pages/AddPurchase";
 import AddCategory from "./pages/AddCategory";
 import CategoryList from "./pages/CategoryList";
-import { AddPatient } from "./pages/AddPatient";
+import DoctorDashboard from "./pages/DoctorDashboard";import { AddPatient } from "./pages/AddPatient";
 import PatientList from "./pages/PatientList";
 
 
@@ -38,6 +37,7 @@ function App() {
           <Route path="/supplier/list" element={<SupplierList />} />
           <Route path="/stock" element={<StockList />} />
           <Route path="/pagination" element={<Pagination />} />
+          <Route path="/doctordashboard" element={<DoctorDashboard />} />
           <Route path="/patient/add_patient" element={<AddPatient />} />
           <Route path="/patient/list" element={<PatientList />} />
         </Routes>

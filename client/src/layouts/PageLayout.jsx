@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { MdSpaceDashboard } from "react-icons/md";
 
@@ -20,7 +21,11 @@ import {
   ChartBarIcon,
   UserIcon
 } from "@heroicons/react/24/solid";
-import { ChevronDownIcon, Bars3Icon , XMarkIcon} from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  Bars3Icon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 
 const Layout = ({ children }) => {
   const [open, setOpen] = useState(0);
@@ -56,16 +61,18 @@ const Layout = ({ children }) => {
   ];
   const currentYear = new Date().getFullYear();
 
-  const [isLargeScreen, setIsLargeScreen] = useState(window.matchMedia('(min-width: 890px)').matches);
+  const [isLargeScreen, setIsLargeScreen] = useState(
+    window.matchMedia("(min-width: 890px)").matches
+  );
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 890px)');
+    const mediaQuery = window.matchMedia("(min-width: 890px)");
     const handleResize = () => setIsLargeScreen(mediaQuery.matches);
 
-    mediaQuery.addEventListener('change', handleResize);
+    mediaQuery.addEventListener("change", handleResize);
 
     return () => {
-      mediaQuery.removeEventListener('change', handleResize);
+      mediaQuery.removeEventListener("change", handleResize);
     };
   }, []);
 
@@ -77,11 +84,10 @@ const Layout = ({ children }) => {
           <div
             className="transition-width duration-300 h-screen overflow-x-hidden"
             style={{
-              width: (isCollapsed && !isHovered) ? "60px" : "250px",
+              width: isCollapsed && !isHovered ? "60px" : "250px",
               scrollbarWidth: "thin",
-              overflowY:  (isCollapsed && !isHovered) ? "hidden" : "auto", 
+              overflowY: "hidden",
               backgroundColor: "#0a141f",
-              
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
@@ -92,61 +98,84 @@ const Layout = ({ children }) => {
             <div className="flex p-4" style={{ backgroundColor: "#0a141f" }}>
               <div className="h-12 w-12 flex-shrink-0">
                 <a href="/">
-                <img
-                  src="/src/assets/img/logo.png"
-                  alt="Logo"
-                  className="-ml-3 -mr-2 cursor-pointer"
-                  style={{ width: "100%", height: "100%" }}
-              
-                />
+                  <img
+                    src="/src/assets/img/logo.png"
+                    alt="Logo"
+                    className="-ml-3 -mr-2 cursor-pointer"
+                    style={{ width: "100%", height: "100%" }}
+                  />
                 </a>
               </div>
               <div className="flex-shrink-0">
                 <a href="/">
-                <Typography variant="h4" className="mt-1 cursor-pointer">
-                  <span style={{ color: "#0eb8fc" }}>Medi</span>
-                  <span style={{ color: "#fe055c" }}>Ease</span>
-                </Typography>
+                  <Typography variant="h4" className="mt-1 cursor-pointer">
+                    <span style={{ color: "#0eb8fc" }}>Medi</span>
+                    <span style={{ color: "#fe055c" }}>Ease</span>
+                  </Typography>
                 </a>
               </div>
             </div>
-            
-           
-              {isCollapsed ?  <Bars3Icon
-              className="h-8 w-8 stroke-2 m-3 mt-6  hover:bg-blue-gray-50 hover:bg-opacity-80 rounded"
-              onClick={toggleCollapse}
-              style={{ color: "#f1ffea" }}
-            />: 
-            <XMarkIcon className="h-8 w-8 stroke-2 m-3 mt-6  hover:bg-blue-gray-50 hover:bg-opacity-80 rounded"
-            onClick={toggleCollapse}
-            style={{ color: "#f1ffea" }} /> }
-           
-
             <ul
-              className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal h-full"
+              className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal"
               style={{ color: "#f1ffea" }}
             >
               <a href="/pharmadashboard">
-              <li
-                className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
-                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
-              >
-                <MdSpaceDashboard className="h-5 w-5 mr-4" />
-                {!(isCollapsed & !isHovered) && (
-                  <Typography className="font-normal">Dashboard</Typography>
-                )}
-              </li>
-                </a>
+                <li className="flex items-center w-full p-1 rounded-lg text-start leading-tight transition-all cursor-pointer">
+                  <UserCircleIcon className="h-8 w-8 mr-4" />
+                  <div>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography className="font-semibold text-lg">
+                        Atharva Mulay
+                      </Typography>
+                    )}
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography className="font-normal text-xs">
+                        Pharmaceutical Staff
+                      </Typography>
+                    )}
+                  </div>
+                </li>
+              </a>
+            </ul>
+            {isCollapsed ? (
+              <Bars3Icon
+                className="h-8 w-8 stroke-2 m-3 mt-6  hover:bg-blue-gray-50 hover:bg-opacity-80 rounded cursor-pointer"
+                onClick={toggleCollapse}
+                style={{ color: "#f1ffea" }}
+              />
+            ) : (
+              <XMarkIcon
+                className="h-8 w-8 stroke-2 m-3 mt-6  hover:bg-blue-gray-50 hover:bg-opacity-80 rounded cursor-pointer"
+                onClick={toggleCollapse}
+                style={{ color: "#f1ffea" }}
+              />
+            )}
+
+            <ul
+              className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal overflow-y-auto"
+              style={{ color: "#f1ffea" }}
+            >
+              <a href="/pharmadashboard">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full scroll-auto overflow-y-auto"
+                >
+                  <MdSpaceDashboard className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Dashboard</Typography>
+                  )}
+                </li>
+              </a>
               <a href="/stock">
-              <li
-                className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                          hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
-              >
-                <ChartBarIcon className="h-5 w-5 mr-4" />
-                {!(isCollapsed & !isHovered) && (
-                  <Typography className="font-normal">Stock</Typography>
-                )}
-              </li>
+                >
+                  <ChartBarIcon className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Stock</Typography>
+                  )}
+                </li>
               </a>
               <Accordion
                 open={open === 1}
@@ -188,7 +217,9 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/medicine/category/add_category")}
+                        onClick={() =>
+                          navigate("/medicine/category/add_category")
+                        }
                       >
                         Add Category
                       </ListItem>
@@ -381,15 +412,19 @@ const Layout = ({ children }) => {
           </div>
         </div>
       </div>
-      
+
       {/* Content of page */}
       <div
         className="flex-auto flex flex-col justify-between p-4 shadow-lg bg-gray-50 h-screen overflow-y-auto transition-all duration-300 ease-in-out"
         // style={{ marginLeft: isCollapsed && !isHovered ? "60px" : "250px" }}
         style={{
-          marginLeft: isLargeScreen ? (isCollapsed && !isHovered ? "60px" : "250px") : "60px",
-        }}      
-        >
+          marginLeft: isLargeScreen
+            ? isCollapsed && !isHovered
+              ? "60px"
+              : "250px"
+            : "60px",
+        }}
+      >
         {children}
         <footer className="w-full mt-5 bg-white">
           <div className="mx-auto w-full max-w-7xl px-4 py-2">
@@ -524,11 +559,7 @@ const Layout = ({ children }) => {
             </div>
           </div>
         </footer>
-       
       </div>
-
-     
-
     </div>
   );
 };
