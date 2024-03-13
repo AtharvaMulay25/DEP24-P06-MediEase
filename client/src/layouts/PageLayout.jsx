@@ -157,7 +157,7 @@ const Layout = ({ children }) => {
               <a href="/pharmadashboard">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
-                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full scroll-auto overflow-y-auto"
                 >
                   <MdSpaceDashboard className="h-5 w-5 mr-4" />
                   {!(isCollapsed & !isHovered) && (
