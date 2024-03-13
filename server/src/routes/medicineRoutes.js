@@ -23,7 +23,7 @@ router.delete('/delete', deleteMedicineList);
 router.get('/category/list', getCategoryList);
 router.get('/category/:id', getCategory);
 router.post('/category/create', createCategory);
-router.post('/category/update', updateCategory);
-router.post('/category/delete', deleteCategory);
+router.put('/category/update', updateCategory);
+router.delete('/category/delete', deleteCategory);
 
 module.exports = router;
