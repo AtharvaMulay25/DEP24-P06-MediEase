@@ -130,7 +130,7 @@ model Checkup {
   date           DateTime
   bloodPressure  String?
   symptoms       String?
-  diseaseOrCause String
+  diagnosis      String
   doctorId       String?
   staffId        String
 

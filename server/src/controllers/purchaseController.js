@@ -28,7 +28,7 @@ const getPurchaseList = async(req, res, next) => {
           const restructuredPurchaseList = purchaseList.map(purchase => ({
             id: purchase.id,
             supplierName: purchase.Supplier.name, 
-            purchaseDate: purchase.purchaseDate,
+            purchaseDate: purchase.purchaseDate.toISOString().split('T')[0],
             invoiceNo: purchase.invoiceNo, 
             details: purchase.Details,
             // purchaseItems: purchase.Purchase

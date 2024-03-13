@@ -9,6 +9,7 @@ const {v4 : uuidv4} = require('uuid')
 const getSupplierList = async(req, res, next) => {
     try {
         const supplierList = await prisma.supplier.findMany({});
+        
         // console.log(supplierList);  
         
         return res.status(200).json({

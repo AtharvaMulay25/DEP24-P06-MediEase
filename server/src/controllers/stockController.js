@@ -37,7 +37,7 @@ const getStockList = async(req, res, next) => {
             medicineName: stock.Medicine.brandName // Access `name` from `Medicine` object
           }));
           
-        console.log("restructuredStockList : ", restructuredStockList);
+        // console.log("restructuredStockList : ", restructuredStockList);
         
         return res.status(200).json({
             ok: true,

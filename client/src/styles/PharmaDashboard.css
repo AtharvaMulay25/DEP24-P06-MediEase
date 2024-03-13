@@ -1,5 +1,0 @@
-@media only screen and (max-width: 1464px) and (min-width: 720px) {
-    .md\:grid > * {
-        grid-column: span 2;
-    }
-}

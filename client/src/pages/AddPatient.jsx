@@ -21,7 +21,7 @@ export function AddPatient() {
   const [formData, setFormData] = useState({
     patientName: "",
     bloodGroup: "",
-    sex: "",
+    gender: "",
     dob: "",
     category: "",
     patientAge: "",
@@ -34,7 +34,7 @@ export function AddPatient() {
   const handleChange = (name, value) => {
     // console.log(e.target);
     // const { name, value } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -44,18 +44,33 @@ export function AddPatient() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you can handle the submission of the form
-    const data = {
+    const sendData = {
       name: formData.patientName,
-      bloodGroup: formData.bloodGroup,
-      sex: formData.sex,
-      dob: formData.dob,
-      category: formData.category,
-      patientAge: formData.patientAge,
-      email: formData.email,
-      program: formData.program,
-      fatherName: formData.fatherName,
       department: formData.department,
+      dob: new Date(formData.dob),
+      age: parseInt(formData.patientAge),
+      email: formData.email,
+      bloodGroup: formData.bloodGroup,
+      program: formData.program,
+      fatherOrSpouseName: formData.fatherName,
+      category: formData.category.toUpperCase(),
+      gender: formData.gender.toUpperCase(),
     };
+
+    try {
+      const res = await axios.post('http://localhost:4000/api/patient', sendData);
+      console.log("res : ", res);
+
+      const data = res?.data;
+      if (data && data?.ok) {
+        console.log("patient record saved successfully");
+        navigate("/patient/list");
+      } else {
+        console.log(`ERROR (create-patient-record): ${data?.message || "NO-DATA"}`);
+      }
+    } catch (err) {
+      console.log(`ERROR (create-patient-record): ${err.message}`);
+    }
   };
 
   return (
@@ -169,20 +184,20 @@ export function AddPatient() {
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
-                  <label htmlFor="sex">
-                    Sex <span className="text-red-800">*</span>
+                  <label htmlFor="gender">
+                    Gender <span className="text-red-800">*</span>
                   </label>
                 </div>
                 <Select
-                  id="sex"
+                  id="gender"
                   label="Select"
-                  name="sex"
-                  value={formData.sex}
-                  onChange={(value) => handleChange("sex", value)}
+                  name="gender"
+                  value={formData.gender}
+                  onChange={(value) => handleChange("gender", value)}
                 >
                   <Option value="Male">Male</Option>
                   <Option value="Female">Female</Option>
-                  <Option value="Other">Other</Option>
+                  {/* <Option value="Other">Other</Option> */}
                 </Select>
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
@@ -242,7 +257,7 @@ export function AddPatient() {
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
                   <label htmlFor="fatherName">
-                    Father's Name 
+                    Father's or Spouse's Name 
                   </label>
                 </div>
                 <Input
