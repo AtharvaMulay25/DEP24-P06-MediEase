@@ -70,7 +70,7 @@ export default function SupplierList() {
         data={suppliers}
         detail="See information about all suppliers."
         text="Add Supplier"
-        addLink="/supplier/add_supplier"
+        addLink="/supplier/add"
         handleDelete={handleSupplierDelete}
         searchKey="name"
       />

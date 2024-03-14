@@ -66,7 +66,7 @@ export default function MedicineList() {
             data={medicines}
             detail="See information about all medicines."
             text="Add Medicine"
-            addLink="/medicine/add_medicine"
+            addLink="/medicine/add"
             handleDelete={handleMedicineDelete}
             searchKey={"brandName"}
           />

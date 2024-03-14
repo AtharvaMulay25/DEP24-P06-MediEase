@@ -67,7 +67,7 @@ export default function CategoryList() {
             data={categories || MOCK_DATA}
             detail="See information about all medicines categories."
             text="Add Category"
-            addLink="/medicine/category/add_category"
+            addLink="/medicine/category/add"
             searchKey={"categoryName"}
             handleDelete={handleCategoryDelete}
           />

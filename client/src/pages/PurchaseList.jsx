@@ -69,7 +69,7 @@ export default function PurchaseList() {
             data={purchase}
             detail="See information about all purchases."
             text="Add Purchase"
-            addLink="/purchase/add_purchase"
+            addLink="/purchase/add"
 			      handleDelete={handlePurchaseDelete}
             searchKey="supplierName"
           />
