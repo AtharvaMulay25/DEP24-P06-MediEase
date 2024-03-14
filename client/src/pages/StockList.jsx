@@ -18,7 +18,7 @@ const TABLE_HEAD = {
 
 const getStockData = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/api/stock/list");
+    const response = await axios.get("http://localhost:4000/api/stock");
     return response.data.data;
   } catch (error) {
     console.error(error);

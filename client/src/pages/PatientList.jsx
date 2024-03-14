@@ -54,11 +54,7 @@ export default function PatientList() {
 
   const handlePatientDelete = async (e, id) => {
     try {
-      const res = await axios.delete('http://localhost:4000/api/patient', {
-        data: {
-          id
-        }
-      });
+      const res = await axios.delete('http://localhost:4000/api/patient' + "/" + id);
       if (res) {
         const data = res?.data;
         if (data && data.ok) {

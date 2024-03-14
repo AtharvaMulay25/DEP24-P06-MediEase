@@ -12,7 +12,7 @@ const TABLE_HEAD = {
 
 const  getCategoriesData = async () => {
     try {
-        const response = await axios.get("http://localhost:4000/api/medicine/category/list");
+        const response = await axios.get("http://localhost:4000/api/category");
         console.log(response.data.data);
         return response.data.data;
     } catch (error) {
@@ -37,9 +37,7 @@ export default function CategoryList() {
 
     const handleCategoryDelete = async(e, id) => {
       try {
-        const res = await axios.delete("http://localhost:4000/api/medicine/category/delete", {
-          data: { id }
-        });
+        const res = await axios.delete("http://localhost:4000/api/category" + "/" + id);
 
         console.log("res : ", res); 
   

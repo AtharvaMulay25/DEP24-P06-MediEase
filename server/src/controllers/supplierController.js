@@ -7,7 +7,6 @@ const {v4 : uuidv4} = require('uuid')
 // route    GET /api/supplier/list
 // @access  Private (Admin) 
 const getSupplierList = async(req, res, next) => {
-    try {
         const supplierList = await prisma.supplier.findMany({});
         
         // console.log(supplierList);  
@@ -17,22 +16,13 @@ const getSupplierList = async(req, res, next) => {
             data: supplierList,
             message: "Supplier List retrieved successfully"
         });
-    } catch (err) {
-        console.log(`Supplier List Fetching Error : ${err.message}`);
-        
-        return res.status(500).json({
-            ok: false,
-            data: [],
-            message: "Fetching Supplier list failed, Please try again later"
-        });
-    }
+    
 };
 
 // @desc    Create Supplier List Records
 // route    POST /api/supplier/create
 // @access  Private (Admin) 
-const createSupplierList = async(req, res, next) => {
-    try {
+const createSupplier = async(req, res, next) => {
         const { name, mobileNumber, email, city, state, address1, address2, pinCode } = req.body;
         const createdRecord = await prisma.supplier.create({
             data: {
@@ -54,29 +44,21 @@ const createSupplierList = async(req, res, next) => {
             data: createdRecord,
             message: "Supplier List record created successfully"
         });
-    } catch (err) {
-        console.log(`Supplier List Creating Error : ${err.message}`);
-        
-        return res.status(500).json({
-            ok: false,
-            data: [],
-            message: `Creating Supplier list record failed, Please try again later`
-        });
-    }
+   
 };
 
 // @desc    Update Supplier List Record
 // route    PUT /api/supplier/update
 // @access  Private (Admin) 
-const updateSupplierList = async(req, res, next) => {
+const updateSupplier = async(req, res, next) => {
     try {
-        const { id } = req.body;
+        const {id} = req.params;        
         const updatedRecord = await prisma.supplier.update({
             where: {
                 id,
             },
             data: {
-                ...req.body
+                ...req.body  //may give error here concat address
             },
         });
 
@@ -111,10 +93,9 @@ const updateSupplierList = async(req, res, next) => {
 // @desc    Delete Supplier List Record
 // route    DELETE /api/supplier/delete
 // @access  Private (Admin) 
-const deleteSupplierList = async(req, res, next) => {
+const deleteSupplier = async(req, res, next) => {
     try {
-        const { id } = req.body;
-        
+        const {id} = req.params;        
         const deletedRecord = await prisma.supplier.delete({
             where: {
               id: id,
@@ -149,7 +130,7 @@ const deleteSupplierList = async(req, res, next) => {
 
 module.exports = {
     getSupplierList, 
-    createSupplierList,
-    updateSupplierList,
-    deleteSupplierList
+    createSupplier,
+    updateSupplier,
+    deleteSupplier
 };

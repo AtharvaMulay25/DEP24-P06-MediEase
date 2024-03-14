@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const catchAsync = require('../utils/catchAsync');
+// const {validateStockList} = require('../middlewares');
 
 //controllers 
 const { 
@@ -9,9 +11,9 @@ const {
     createStockList 
 } = require('../controllers/stockController');
 
-router.get('/list', getStockList);
-router.post('/create', createStockList);
-router.put('/update', updateStockList);
-router.delete('/delete', deleteStockList);
+router.get('/', catchAsync(getStockList));
+// router.post('/create', createStockList);
+// router.put('/', updateStockList);
+// router.delete('/', deleteStockList);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-
+const catchAsync = require('../utils/catchAsync');
+const {validatePurchaseList} = require('../middlewares');
 //controllers 
 const { 
     getPurchaseList, 
@@ -9,9 +10,9 @@ const {
     createPurchaseList 
 } = require('../controllers/purchaseController');
 
-router.get('/list', getPurchaseList);
-router.post('/create', createPurchaseList);
-router.put('/update', updatePurchaseList);
-router.delete('/delete', deletePurchaseList);
+router.get('/', catchAsync(getPurchaseList));
+router.post('/', validatePurchaseList, catchAsync(createPurchaseList));
+router.put('/:id', validatePurchaseList, catchAsync(updatePurchaseList));
+router.delete('/:id', catchAsync(deletePurchaseList));
 
 module.exports = router;

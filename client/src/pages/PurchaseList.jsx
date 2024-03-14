@@ -18,7 +18,7 @@ const TABLE_HEAD = {
 
 const getPurchaseData = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/api/purchase/list");
+    const response = await axios.get("http://localhost:4000/api/purchase");
     console.log("response", response.data.data)
     return response.data.data;
   } catch (error) {
@@ -42,12 +42,10 @@ export default function PurchaseList() {
 
   const handlePurchaseDelete = async(e, id) => {
     try {
-      const res = await axios.delete("http://localhost:4000/api/purchase/delete", {
-        data: { id }
-      });
+      const res = await axios.delete("http://localhost:4000/api/purchase" + "/" + id);
 
       const { data } = res;
-      
+      console.log(data)
       if (data?.ok) {
         console.log(`MESSAGE : ${data?.message}`);
         setPurchase((prev) => prev.filter(p => p.id !== id));
@@ -55,7 +53,8 @@ export default function PurchaseList() {
         // TODO: show an error message
         console.log(`ERROR (purchase_list_delete): ${data.message}`);
       }
-    } catch (err) {
+    }
+     catch (err) {
       console.error(`ERROR (purchase_list_delete): ${err.message}`);
     }
   };
