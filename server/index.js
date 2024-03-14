@@ -29,10 +29,14 @@ app.all('*', (req, res) => {
 });
 
 
-app.use((err, req, res, next)=>
-{
+app.use((err, req, res, next) => {
+    console.log(err);
     const {statusCode = 500, message = "Something went wrong"} = err;
-    res.status(statusCode).json({ok: false, data:[],  message});
+    res.status(statusCode).json({
+        ok: false, 
+        data:[],  
+        message
+    });
 })
 app.listen(port, () => {
     console.log("Server is running on port 4000");
