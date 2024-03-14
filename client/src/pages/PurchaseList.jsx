@@ -2,7 +2,6 @@ import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  GridLoadingScreen,
   SyncLoadingScreen,
 } from "../components/UI/LoadingScreen";
 
@@ -25,7 +24,7 @@ const getPurchaseData = async () => {
     console.error(error);
   }
 };
-import MockData from "../assets/MOCK_DATA_purchase.json";
+// import MockData from "../assets/MOCK_DATA_purchase.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 export default function PurchaseList() {

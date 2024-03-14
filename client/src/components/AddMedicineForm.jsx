@@ -78,7 +78,7 @@ export function AddMedicineForm() {
     try {
       const response = await axios.post(apiRoutes.medicine, data);
       console.log(response);
-      navigate("/medicine/list");
+      navigate("/medicine");
     } catch (error) {
       console.error(error);
     }
@@ -98,7 +98,7 @@ export function AddMedicineForm() {
               className="flex items-center gap-3"
               size="md"
               onClick={() => {
-                navigate("/medicine/list");
+                navigate("/medicine");
               }}
             >
               Medicine List

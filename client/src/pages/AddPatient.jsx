@@ -65,7 +65,7 @@ export function AddPatient() {
       const data = res?.data;
       if (data && data?.ok) {
         console.log("patient record saved successfully");
-        navigate("/patient/list");
+        navigate("/patient");
       } else {
         console.log(`ERROR (create-patient-record): ${data?.message || "NO-DATA"}`);
       }
@@ -93,7 +93,7 @@ export function AddPatient() {
                 className="flex items-center gap-3"
                 size="md"
                 onClick={() => {
-                  navigate("/patient/list");
+                  navigate("/patient");
                 }}
               >
                 Patient List

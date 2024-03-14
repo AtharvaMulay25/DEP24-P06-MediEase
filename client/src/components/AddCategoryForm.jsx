@@ -50,7 +50,7 @@ export function AddCategoryForm() {
     try {
       const response = await axios.post(apiRoutes.category, data);
       console.log(response);
-      navigate("/medicine/category/list");
+      navigate("/medicine/category");
     } catch (error) {
       console.error(error);
     }
@@ -72,7 +72,7 @@ export function AddCategoryForm() {
               className="flex items-center gap-3"
               size="md"
               onClick={() => {
-                navigate("/medicine/category/list");
+                navigate("/medicine/category");
               }}
             >
               Category List

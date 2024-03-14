@@ -158,7 +158,7 @@ export function AddPurchaseForm() {
         data
       );
       console.log(response);
-      navigate("/purchase/list");
+      navigate("/purchase");
     } catch (error) {
       console.error(error);
     }
@@ -186,7 +186,7 @@ export function AddPurchaseForm() {
               className="flex items-center gap-3"
               size="md"
               onClick={() => {
-                navigate("/purchase/list");
+                navigate("/purchase");
               }}
             >
               Purchase List

@@ -56,7 +56,7 @@ import { apiRoutes } from "../utils/apiRoutes";
       try {
         const response = await axios.post(apiRoutes.supplier, data);
         console.log(response);
-        navigate("/supplier/list");
+        navigate("/supplier");
       } catch (error) {
         console.error(error);
       }
@@ -77,7 +77,7 @@ import { apiRoutes } from "../utils/apiRoutes";
                 className="flex items-center gap-3"
                 size="md"
                 onClick={() => {
-                  navigate("/supplier/list");
+                  navigate("/supplier");
                 }}
               >
                 Supplier List

@@ -218,26 +218,26 @@ const Layout = ({ children }) => {
                       <ListItem
                         className="ml-9"
                         onClick={() =>
-                          navigate("/medicine/category/add_category")
+                          navigate("/medicine/category/add")
                         }
                       >
                         Add Category
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/medicine/category/list")}
+                        onClick={() => navigate("/medicine/category")}
                       >
                         Category List
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/medicine/add_medicine")}
+                        onClick={() => navigate("/medicine/add")}
                       >
                         Add Medicine
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/medicine/list")}
+                        onClick={() => navigate("/medicine")}
                       >
                         Medicine List
                       </ListItem>
@@ -286,13 +286,13 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/purchase/add_purchase")}
+                        onClick={() => navigate("/purchase/add")}
                       >
                         Add Purchase
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/purchase/list")}
+                        onClick={() => navigate("/purchase")}
                       >
                         Purchase List
                       </ListItem>
@@ -340,13 +340,13 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/supplier/add_supplier")}
+                        onClick={() => navigate("/supplier/add")}
                       >
                         Add Supplier
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/supplier/list")}
+                        onClick={() => navigate("/supplier")}
                       >
                         Supplier List
                       </ListItem>
@@ -394,13 +394,13 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/patient/add_patient")}
+                        onClick={() => navigate("/patient/add")}
                       >
                         Add Patient
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/patient/list")}
+                        onClick={() => navigate("/patient")}
                       >
                         Patient List
                       </ListItem>
