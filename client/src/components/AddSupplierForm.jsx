@@ -13,6 +13,7 @@
 
   import { useNavigate } from "react-router-dom";
   import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
   export function AddSupplierForm() {
     const navigate = useNavigate();
@@ -53,7 +54,7 @@
       // Here you can handle the submission of the form
       console.log(formData);
       try {
-        const response = await axios.post("http://localhost:4000/api/supplier/create", data);
+        const response = await axios.post(apiRoutes.supplier, data);
         console.log(response);
         navigate("/supplier/list");
       } catch (error) {

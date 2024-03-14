@@ -18,7 +18,7 @@ const TABLE_HEAD = {
 
 const getPurchaseData = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/api/purchase");
+    const response = await axios.get(apiRoutes.purchase);
     console.log("response", response.data.data)
     return response.data.data;
   } catch (error) {
@@ -27,6 +27,7 @@ const getPurchaseData = async () => {
 };
 import MockData from "../assets/MOCK_DATA_purchase.json";
 import Layout from "../layouts/PageLayout";
+import { apiRoutes } from "../utils/apiRoutes";
 export default function PurchaseList() {
   const [purchase, setPurchase] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +43,7 @@ export default function PurchaseList() {
 
   const handlePurchaseDelete = async(e, id) => {
     try {
-      const res = await axios.delete("http://localhost:4000/api/purchase" + "/" + id);
+      const res = await axios.delete(`${apiRoutes.purchase}/${id}`);
 
       const { data } = res;
       console.log(data)

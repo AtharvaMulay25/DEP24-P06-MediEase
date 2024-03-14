@@ -23,6 +23,7 @@ const TABLE_HEAD = {
 
 // import MockData from "../assets/MOCK_DATA_patient.json";
 import Layout from "../layouts/PageLayout";
+import { apiRoutes } from "../utils/apiRoutes";
 
 export default function PatientList() {
   const [loading, setLoading] = useState(true);
@@ -33,7 +34,7 @@ export default function PatientList() {
 
     const fetchPatientList = async () => {
       try {
-        const res = await axios.get('http://localhost:4000/api/patient');
+        const res = await axios.get(apiRoutes.patient);
         if (res) {
           const data = res?.data;
           if (data && data.ok) {
@@ -54,7 +55,7 @@ export default function PatientList() {
 
   const handlePatientDelete = async (e, id) => {
     try {
-      const res = await axios.delete('http://localhost:4000/api/patient' + "/" + id);
+      const res = await axios.delete(`${apiRoutes.patient}/${id}`);
       if (res) {
         const data = res?.data;
         if (data && data.ok) {
@@ -78,7 +79,7 @@ export default function PatientList() {
             title="Patient List"
             data={patients}
             detail="See information about all patients."
-            text=""
+            text="Add Patient"
             addLink="/patient/add_patient"
             handleDelete={handlePatientDelete}
             searchKey="name"

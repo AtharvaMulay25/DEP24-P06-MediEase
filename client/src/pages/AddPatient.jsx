@@ -14,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Layout from "../layouts/PageLayout";
+import { apiRoutes } from "../utils/apiRoutes";
 
 export function AddPatient() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ export function AddPatient() {
     };
 
     try {
-      const res = await axios.post('http://localhost:4000/api/patient', sendData);
+      const res = await axios.post(apiRoutes.patient, sendData);
       console.log("res : ", res);
 
       const data = res?.data;

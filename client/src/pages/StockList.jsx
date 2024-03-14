@@ -18,7 +18,7 @@ const TABLE_HEAD = {
 
 const getStockData = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/api/stock");
+    const response = await axios.get(apiRoutes.stock);
     return response.data.data;
   } catch (error) {
     console.error(error);
@@ -27,6 +27,7 @@ const getStockData = async () => {
 
 import MockData from "../assets/MOCK_DATA_stock.json";
 import Layout from "../layouts/PageLayout";
+import { apiRoutes } from "../utils/apiRoutes";
 export default function StockList() {
   const [stock, setStock] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,9 +43,7 @@ export default function StockList() {
 
   const handleStockDelete = async(e, id) => {
     try {
-      const res = await axios.delete("http://localhost:4000/api/stock/delete", {
-        data: { id }
-      });
+      const res = await axios.delete(`${apiRoutes.stock}/${id}`);
 
       const { data } = res;
       

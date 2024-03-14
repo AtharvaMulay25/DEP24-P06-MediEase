@@ -13,6 +13,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
 export function AddCategoryForm() {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ export function AddCategoryForm() {
     // Here you can handle the submission of the form
     // console.log(data);
     try {
-      const response = await axios.post("http://localhost:4000/api/medicine/category/create", data);
+      const response = await axios.post(apiRoutes.category, data);
       console.log(response);
       navigate("/medicine/category/list");
     } catch (error) {

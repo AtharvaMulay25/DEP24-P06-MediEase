@@ -15,6 +15,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
 export function AddPurchaseForm() {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ export function AddPurchaseForm() {
   const fetchSuppliers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/supplier"
+        apiRoutes.supplier
       );
       // console.log(response.data);
       setSuppliers(response.data.data); // Assuming the response is an array of suppliers
@@ -54,7 +55,7 @@ export function AddPurchaseForm() {
   const fetchMedicines = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/medicine"
+        apiRoutes.medicine
       );
       // console.log(response.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
@@ -153,7 +154,7 @@ export function AddPurchaseForm() {
     //***DON'T LET THE FORM SUBMIT IF ANY OF MANDATORY ITEMS IS MISSING OR ANY LIST ROW FIELD IS EMPTY */
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/purchase",
+        apiRoutes.purchase,
         data
       );
       console.log(response);

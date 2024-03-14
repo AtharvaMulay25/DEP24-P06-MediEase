@@ -14,6 +14,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
 export function AddMedicineForm() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export function AddMedicineForm() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/medicine/category/list");
+      const response = await axios.get(apiRoutes.category);
       console.log(response.data.data)
       setCategories(response.data.data);
     } catch (error) {
@@ -75,7 +76,7 @@ export function AddMedicineForm() {
     };
     // console.log(data);
     try {
-      const response = await axios.post("http://localhost:4000/api/medicine/create", data);
+      const response = await axios.post(apiRoutes.medicine, data);
       console.log(response);
       navigate("/medicine/list");
     } catch (error) {

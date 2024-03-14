@@ -16,7 +16,7 @@ const TABLE_HEAD = {
 };
 const getSuppliersData = async () => {
   try {
-    const response = await axios.get("http://localhost:4000/api/supplier");
+    const response = await axios.get(apiRoutes.supplier);
     return response.data.data;
   } catch (error) {
     console.error(error);
@@ -25,6 +25,7 @@ const getSuppliersData = async () => {
 
 import MockData from "../assets/MOCK_DATA_supplier.json";
 import Layout from "../layouts/PageLayout";
+import { apiRoutes } from "../utils/apiRoutes";
 export default function SupplierList() {
 
   const [suppliers, setSuppliers] = useState([]);
@@ -42,7 +43,7 @@ export default function SupplierList() {
 
   const handleSupplierDelete = async(e, id) => {
     try {
-      const res = await axios.delete("http://localhost:4000/api/supplier" + "/" + id);
+      const res = await axios.delete(`${apiRoutes.supplier}/${id}`);
 
       const { data } = res;
       
