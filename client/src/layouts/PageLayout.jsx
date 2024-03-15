@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserCircleIcon, ClipboardDocumentListIcon } from "@heroicons/react/24/solid";
+import { UserCircleIcon, ClipboardDocumentListIcon, DocumentTextIcon, UserPlusIcon } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { MdSpaceDashboard } from "react-icons/md";
-import { UserButton, SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import {
   Typography,
   List,
@@ -33,7 +32,6 @@ const Layout = ({ children }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
-  const { firstName, lastName } = useUser();
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
@@ -127,7 +125,6 @@ const Layout = ({ children }) => {
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-semibold text-lg">
                         Atharva Mulay
-                        <UserButton />
                       </Typography>
                     )} 
                     {!(isCollapsed & !isHovered) && (
@@ -418,7 +415,7 @@ const Layout = ({ children }) => {
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
                       className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 3 ? "rotate-180" : ""
+                        open === 5 ? "rotate-180" : ""
                       }`}
                     />
                   )
@@ -459,6 +456,114 @@ const Layout = ({ children }) => {
                         onClick={() => navigate("/prescription")}
                       >
                         Prescription List
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
+              <Accordion
+                open={open === 6}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 6 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 6}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(6)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <ShoppingCartIcon
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Doctor
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/doctor/add")}
+                      >
+                        Add Doctor
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/doctor")}
+                      >
+                        Doctor List
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
+              <Accordion
+                open={open === 7}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 7 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 7}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(7)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <UserPlusIcon
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Schedule
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/schedule/add")}
+                      >
+                        Add Schedule
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/schedule")}
+                      >
+                        Schedule List
                       </ListItem>
                     </List>
                   </AccordionBody>
