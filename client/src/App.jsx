@@ -15,6 +15,7 @@ import AddCategory from "./pages/AddCategory";
 import CategoryList from "./pages/CategoryList";
 import DoctorDashboard from "./pages/DoctorDashboard";import { AddPatient } from "./pages/AddPatient";
 import PatientList from "./pages/PatientList";
+import { AddPrescription } from "./pages/AddPrescription";
 
 
 function App() {
@@ -38,6 +39,9 @@ function App() {
           <Route path="/patient/add" element={<AddPatient />} />
           <Route path="/patient" element={<PatientList />} />
           <Route path="/doctordashboard" element={<DoctorDashboard />} />
+          <Route path="/patient/add_patient" element={<AddPatient />} />
+          <Route path="/patient/list" element={<PatientList />} />
+          <Route path="/prescription/add_prescription" element={<AddPrescription />} />
         </Routes>
       </BrowserRouter>
     </>
