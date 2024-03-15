@@ -199,7 +199,7 @@ const PharmaDashboard = () => {
   return (
     <>
       <Layout>
-        <div className="dummy">
+        <div>
           <div className="md:grid md:grid-cols-4">
             <div
               className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
@@ -358,9 +358,6 @@ const PharmaDashboard = () => {
                 <Chart {...chartConfigPie} />
               </CardBody>
             </Card>
-          </div>
-          <div>
-            <Card></Card>
           </div>
         </div>
       </Layout>

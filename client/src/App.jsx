@@ -16,7 +16,10 @@ import CategoryList from "./pages/CategoryList";
 import DoctorDashboard from "./pages/DoctorDashboard";import { AddPatient } from "./pages/AddPatient";
 import PatientList from "./pages/PatientList";
 import { AddPrescription } from "./pages/AddPrescription";
-
+import ScheduleList from "./pages/ScheduleList";
+import AddSchedule from "./pages/AddSchedule";
+import DoctorList from "./pages/DoctorList";
+import AddDoctor from "./pages/AddDoctor";
 
 function App() {
   return (
@@ -42,6 +45,10 @@ function App() {
           <Route path="/patient/add_patient" element={<AddPatient />} />
           <Route path="/patient/list" element={<PatientList />} />
           <Route path="/prescription/add_prescription" element={<AddPrescription />} />
+          <Route path="/schedule" element={<ScheduleList />} />
+          <Route path="/schedule/add" element={<AddSchedule />} />
+          <Route path="/doctor" element={<DoctorList />} />
+          <Route path="/doctor/add" element={<AddDoctor />} />
         </Routes>
       </BrowserRouter>
     </>

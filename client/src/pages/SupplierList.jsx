@@ -14,6 +14,7 @@ const TABLE_HEAD = {
   pinCode: "Pincode",
   action: "Action",
 };
+
 const getSuppliersData = async () => {
   try {
     const response = await axios.get(apiRoutes.supplier);
