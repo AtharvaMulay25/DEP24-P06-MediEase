@@ -27,7 +27,7 @@ export function AddCategoryForm() {
   const handleChange = (name, value) => {
     // console.log(e.target);
     // const { name, value } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -52,7 +52,7 @@ export function AddCategoryForm() {
       console.log(response);
       navigate("/medicine/category");
     } catch (error) {
-      console.error(error);
+      console.error(`ERROR (add-category): ${error?.response?.data?.message}`);
     }
   };
 

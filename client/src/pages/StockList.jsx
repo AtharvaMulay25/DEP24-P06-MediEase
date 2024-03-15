@@ -21,7 +21,7 @@ const getStockData = async () => {
     const response = await axios.get(apiRoutes.stock);
     return response.data.data;
   } catch (error) {
-    console.error(error?.response?.data?.message);
+    console.error(`ERROR (get-stock-list): ${error?.response?.data?.message}`);
   }
 };
 

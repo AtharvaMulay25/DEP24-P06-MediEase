@@ -58,7 +58,7 @@ import { apiRoutes } from "../utils/apiRoutes";
         console.log(response);
         navigate("/supplier");
       } catch (error) {
-        console.error(error);
+        console.error(`ERROR (add-supplier): ${error?.response?.data?.message}`);
       }
 
     };

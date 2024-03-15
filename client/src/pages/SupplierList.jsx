@@ -18,8 +18,8 @@ const getSuppliersData = async () => {
   try {
     const response = await axios.get(apiRoutes.supplier);
     return response.data.data;
-  } catch (err) {
-    console.error(err?.response?.data?.message);
+  } catch (error) {
+    console.error(`ERROR (get-supplier-list): ${error?.response?.data?.message}`);
   }
 }
 

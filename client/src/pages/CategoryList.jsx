@@ -13,10 +13,10 @@ const TABLE_HEAD = {
 const  getCategoriesData = async () => {
     try {
         const response = await axios.get(apiRoutes.category);
-        console.log(response.data.data);
+        // console.log(response.data.data);
         return response.data.data;
     } catch (error) {
-        console.error(error?.response?.data?.message);
+      console.error(`ERROR (get-category-list): ${error?.response?.data?.message}`);
     }
 };
 
@@ -40,7 +40,7 @@ export default function CategoryList() {
       try {
         const res = await axios.delete(`${apiRoutes.category}/${id}`);
 
-        console.log("res : ", res); 
+        // console.log("res : ", res); 
   
         const { data } = res;
         

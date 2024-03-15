@@ -68,8 +68,8 @@ export default function AddPatientForm() {
         } else {
           console.log(`ERROR (create-patient-record): ${data?.message || "NO-DATA"}`);
         }
-      } catch (err) {
-        console.log(`ERROR (create-patient-record): ${err?.response?.data?.message}`);
+      } catch (error) {
+        console.error(`ERROR (create-patient-record): ${error?.response?.data?.message}`);
       }
     };
     return (
@@ -130,17 +130,33 @@ export default function AddPatientForm() {
                 />
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-                <div className="flex mr-2 w-full md:w-72 justify-end ">
-                  <label htmlFor="department">Department</label>
+                <div className="flex mr-2 w-full md:w-72 justify-end">
+                  <label htmlFor="department">
+                   Department 
+                  </label>
                 </div>
-                <Input
+                <Select
                   id="department"
-                  size="md"
-                  label="Department"
+                  label="Select"
                   name="department"
                   value={formData.department}
-                  onChange={(e) => handleChange(e.target.name, e.target.value)}
-                />
+                  onChange={(value) => handleChange("department", value)}
+                >
+                  <Option value="COMPUTER SCIENCE">Computer Science</Option>
+                  <Option value="ELECTRICAL">Electrical</Option>
+                  <Option value="MECHANICAL">Mechanical</Option>
+                  <Option value="MATHEMATICS & COMPUTING">Mathematics & Computing</Option>
+                  <Option value="CHEMICAL">Chemical</Option>
+                  <Option value="CIVIL">Civil</Option>
+                  <Option value="METALLURGY">Metallurgy</Option>
+                  <Option value="ENGINEERING PHYSICS">Engineering Physics</Option>
+                  <Option value="PHYSICS">Physics</Option>
+                  <Option value="CHEMISTRY">Chemistry</Option>
+                  <Option value="BIOLOGY">Biology</Option>
+                  <Option value="MATHEMATICS">Mathematics</Option>
+                  <Option value="HUMANITIES">Humanities</Option>
+                  
+                </Select>
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
@@ -176,6 +192,8 @@ export default function AddPatientForm() {
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                 />
               </div>
+
+              {/* CHECK : dob is redundant */}
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
                   <label htmlFor="dob">
@@ -252,17 +270,21 @@ export default function AddPatientForm() {
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
                   <label htmlFor="program">
-                    Program 
+                    Program
                   </label>
                 </div>
-                <Input
+                <Select
                   id="program"
-                  size="md"
-                  label="Program"
+                  label="Select"
                   name="program"
                   value={formData.program}
-                  onChange={(e) => handleChange(e.target.name, e.target.value)}
-                />
+                  onChange={(value) => handleChange("program", value)}
+                >
+                  <Option value="BTECH">BTech</Option>
+                  <Option value="MTECH">MTech</Option>
+                  <Option value="DUAL DEGREE">Dual Degree</Option>
+                  <Option value="PHD">PHD</Option>
+                </Select>
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">

@@ -42,7 +42,7 @@ export function AddMedicineForm() {
       console.log(response.data.data)
       setCategories(response.data.data);
     } catch (error) {
-      console.error(error);
+      console.error(`ERROR (add-medicine): ${error?.response?.data?.message}`);
     }
   };
 

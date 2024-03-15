@@ -48,7 +48,7 @@ export function AddPurchaseForm() {
       // console.log(response.data);
       setSuppliers(response.data.data); // Assuming the response is an array of suppliers
     } catch (error) {
-      console.error(error);
+      console.error(`ERROR (fetch-supplier-in-add-purchase): ${error?.response?.data?.message}`);
     }
   };
 
@@ -60,7 +60,7 @@ export function AddPurchaseForm() {
       // console.log(response.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
-      console.error(error);
+      console.error(`ERROR (fetch-medicines-in-add-purchase): ${error?.response?.data?.message}`);
     }
   };
   const handleNetQtyChange = ()=>
@@ -157,10 +157,10 @@ export function AddPurchaseForm() {
         apiRoutes.purchase,
         data
       );
-      console.log(response);
+      console.log("add purchase submit response = ", response);
       navigate("/purchase");
     } catch (error) {
-      console.error(error);
+      console.error(`ERROR (add-purchase): ${error?.response?.data?.message}`);
     }
   };
 
