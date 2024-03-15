@@ -44,7 +44,7 @@ export default function PatientList() {
           }
         }
       } catch (err) {
-        console.error(`ERROR (get-patient-list): ${err.message}`);
+        console.error(`ERROR (get-patient-list): ${err?.response?.data?.message}`);
       } 
       
     };
@@ -66,7 +66,7 @@ export default function PatientList() {
         }
       }
     } catch (err) {
-        console.error(`ERROR (delete-patient): ${err.message}`);
+        console.error(`ERROR (delete-patient): ${err?.response?.data?.message}`);
     } 
   };
   return (
@@ -80,7 +80,7 @@ export default function PatientList() {
             data={patients}
             detail="See information about all patients."
             text="Add Patient"
-            addLink="/patient/add_patient"
+            addLink="/patient/add"
             handleDelete={handlePatientDelete}
             searchKey="name"
           />

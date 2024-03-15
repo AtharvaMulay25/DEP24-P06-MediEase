@@ -64,12 +64,12 @@ export default function AddPatientForm() {
         const data = res?.data;
         if (data && data?.ok) {
           console.log("patient record saved successfully");
-          navigate("/patient/list");
+          navigate("/patient");
         } else {
           console.log(`ERROR (create-patient-record): ${data?.message || "NO-DATA"}`);
         }
       } catch (err) {
-        console.log(`ERROR (create-patient-record): ${err.message}`);
+        console.log(`ERROR (create-patient-record): ${err?.response?.data?.message}`);
       }
     };
     return (
@@ -90,7 +90,7 @@ export default function AddPatientForm() {
                 className="flex items-center gap-3"
                 size="md"
                 onClick={() => {
-                  navigate("/patient/list");
+                  navigate("/patient");
                 }}
               >
                 Patient List

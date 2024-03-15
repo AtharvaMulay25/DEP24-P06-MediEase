@@ -21,7 +21,7 @@ const getPurchaseData = async () => {
     console.log("response", response.data.data)
     return response.data.data;
   } catch (error) {
-    console.error(error);
+    console.error(error?.response?.data?.message);
   }
 };
 // import MockData from "../assets/MOCK_DATA_purchase.json";
@@ -55,7 +55,7 @@ export default function PurchaseList() {
       }
     }
      catch (err) {
-      console.error(`ERROR (purchase_list_delete): ${err.message}`);
+      console.error(`ERROR (purchase_list_delete): ${err?.response?.data?.message}`);
     }
   };
   return (
@@ -69,7 +69,7 @@ export default function PurchaseList() {
             data={purchase}
             detail="See information about all purchases."
             text="Add Purchase"
-            addLink="/purchase/add_purchase"
+            addLink="/purchase/add"
 			      handleDelete={handlePurchaseDelete}
             searchKey="supplierName"
           />

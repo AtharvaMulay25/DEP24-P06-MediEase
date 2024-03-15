@@ -18,8 +18,8 @@ const getSuppliersData = async () => {
   try {
     const response = await axios.get(apiRoutes.supplier);
     return response.data.data;
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err?.response?.data?.message);
   }
 }
 
@@ -55,7 +55,7 @@ export default function SupplierList() {
         console.log(`ERROR (supplier_list_delete): ${data.message}`);
       }
     } catch (err) {
-      console.error(`ERROR (supplier_list_delete): ${err.message}`);
+      console.error(`ERROR (supplier_list_delete): ${err?.response?.data?.message}`);
     }
   };
 
@@ -70,7 +70,7 @@ export default function SupplierList() {
         data={suppliers}
         detail="See information about all suppliers."
         text="Add Supplier"
-        addLink="/supplier/add_supplier"
+        addLink="/supplier/add"
         handleDelete={handleSupplierDelete}
         searchKey="name"
       />

@@ -21,7 +21,7 @@ const getStockData = async () => {
     const response = await axios.get(apiRoutes.stock);
     return response.data.data;
   } catch (error) {
-    console.error(error);
+    console.error(error?.response?.data?.message);
   }
 };
 
@@ -55,7 +55,7 @@ export default function StockList() {
         console.log(`ERROR (stock_list_delete): ${data.message}`);
       }
     } catch (err) {
-      console.error(`ERROR (stock_list_delete): ${err.message}`);
+      console.error(`ERROR (stock_list_delete): ${err?.response?.data?.message}`);
     }
   };
 

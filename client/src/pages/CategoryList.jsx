@@ -16,7 +16,7 @@ const  getCategoriesData = async () => {
         console.log(response.data.data);
         return response.data.data;
     } catch (error) {
-        console.error(error);
+        console.error(error?.response?.data?.message);
     }
 };
 
@@ -52,7 +52,7 @@ export default function CategoryList() {
           console.log(`ERROR (category_list_delete): ${data.message}`);
         }
       } catch (err) {
-        console.error(`ERROR (category_list_delete): ${err.message}`);
+        console.error(`ERROR (category_list_delete): ${err?.response?.data?.message}`);
       }
     };
 
@@ -67,7 +67,7 @@ export default function CategoryList() {
             data={categories || MOCK_DATA}
             detail="See information about all medicines categories."
             text="Add Category"
-            addLink="/medicine/category/add_category"
+            addLink="/medicine/category/add"
             searchKey={"categoryName"}
             handleDelete={handleCategoryDelete}
           />
