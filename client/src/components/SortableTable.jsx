@@ -267,15 +267,34 @@ export function SortableTable({
       <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
         <div className="mb-2 flex-col sm:flex sm:flex-row items-center justify-between gap-8">
           <div>
+            <div className="flex flex-row items-center justify-between gap-8">
+
             <Typography variant="h5" color="blue-gray">
               {title}
-            </Typography>
+            </Typography>       
+            {text != "" && (
+            <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:hidden">
+              {/* <Button variant="outlined" size="sm">
+              view all
+              </Button> */}
+              <Button
+                className="flex items-center gap-3"
+                size="sm"
+                onClick={() => {
+                  navigate(addLink);
+                }}
+              >
+                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> {text}
+              </Button>
+            </div>
+          )}
+            </div>
             <Typography color="gray" className="mt-1 font-normal">
               {detail}
             </Typography>
           </div>
           {text != "" && (
-            <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+            <div className="hidden sm:flex shrink-0 flex-col gap-2 sm:flex-row">
               {/* <Button variant="outlined" size="sm">
               view all
               </Button> */}

@@ -15,42 +15,37 @@ const TABLE_HEAD = {
   bloodGroup: "Blood Group",
   category: "Category",
   program: "Program",
-  fatherOrSpouseName: "Father Name",
+  fatherOrSpouseName: "Father/Spouse",
   gender: "Gender",
   action: "Action",
 };
 
+const getPatientsData = async()=>
+{
+  try {
+    const response = await axios.get(apiRoutes.patient);
+    console.log(response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 // import MockData from "../assets/MOCK_DATA_patient.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 
 export default function PatientList() {
-  const [loading, setLoading] = useState(true);
   const [patients, setPatients] = useState([]);
+  const [loading, setLoading] = useState(true);
  
   useEffect(() => {
-    // setLoading(true);
-
-    const fetchPatientList = async () => {
-      try {
-        const res = await axios.get(apiRoutes.patient);
-        if (res) {
-          const data = res?.data;
-          if (data && data.ok) {
-            setPatients(data.data);
-          } else {
-            console.log(`ERROR (get-patient-list): ${data?.message || "NO DATA"}`);
-          }
-        }
-      } catch (err) {
-        console.error(`ERROR (get-patient-list): ${err?.response?.data?.message}`);
-      } 
-      
+    const fetchPatientList = async () => {      
+        const data = await getPatientsData();
+        setPatients(data);
+        setLoading(false);      
     };
     fetchPatientList();
-
-    setLoading(false);
   }, []);
 
   const handlePatientDelete = async (e, id) => {

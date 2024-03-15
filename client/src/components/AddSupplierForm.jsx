@@ -66,25 +66,41 @@ import { apiRoutes } from "../utils/apiRoutes";
     return (
       <Card className="h-max w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
-          <div className="mb-2 sm:flex sm:flex-row flex-col items-center justify-between gap-8">
-            <div>
+        <div className="mb-2 sm:flex sm:flex-row flex-col items-center justify-between gap-8">
+          <div>
+            <div className="flex flex-row items-center justify-between gap-8">
               <Typography variant="h5" color="blue-gray">
                 Supplier Form
               </Typography>
+              <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:hidden">
+                <Button
+                  className="flex items-center gap-3"
+                  size="md"
+                  onClick={() => {
+                    navigate("/supplier");
+                  }}
+                >
+                  Supplier List
+                </Button>
+              </div>
             </div>
-            <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-              <Button
-                className="flex items-center gap-3"
-                size="md"
-                onClick={() => {
-                  navigate("/supplier");
-                }}
-              >
-                Supplier List
-              </Button>
-            </div>
+            <Typography color="gray" className="mt-1 font-normal">
+              Add a new supplier to the list.
+            </Typography>
           </div>
-        </CardHeader>
+          <div className="hidden sm:flex shrink-0 flex-col gap-2 sm:flex-row">
+            <Button
+              className="flex items-center gap-3"
+              size="md"
+              onClick={() => {
+                navigate("/supplier");
+              }}
+            >
+              Supplier List
+            </Button>
+          </div>
+        </div>
+      </CardHeader>
         <CardBody className="p-3 sm:p-6">
           <form onSubmit={handleSubmit} className="flex flex-wrap gap-6">
             <div className="grid  sm:grid-cols-2 gap-y-8 gap-x-4 w-full">
