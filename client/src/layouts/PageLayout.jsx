@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { MdSpaceDashboard } from "react-icons/md";
-
+import { UserButton, SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import {
   Typography,
   List,
@@ -19,7 +19,7 @@ import {
   ShoppingCartIcon,
   UserGroupIcon,
   ChartBarIcon,
-  UserIcon
+  UserIcon,
 } from "@heroicons/react/24/solid";
 import {
   ChevronDownIcon,
@@ -33,6 +33,7 @@ const Layout = ({ children }) => {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
+  const { firstName, lastName } = useUser();
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
@@ -126,8 +127,9 @@ const Layout = ({ children }) => {
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-semibold text-lg">
                         Atharva Mulay
+                        <UserButton />
                       </Typography>
-                    )}
+                    )} 
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-normal text-xs">
                         Pharmaceutical Staff
