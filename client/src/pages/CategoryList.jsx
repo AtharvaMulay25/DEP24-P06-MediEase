@@ -35,6 +35,28 @@ export default function CategoryList() {
         fetchData();
     }, []);
 
+    const handleCategoryDelete = async(e, id) => {
+      try {
+        const res = await axios.delete("http://localhost:4000/api/medicine/category/delete", {
+          data: { id }
+        });
+
+        console.log("res : ", res); 
+  
+        const { data } = res;
+        
+        if (data?.ok) {
+          console.log(`MESSAGE : ${data?.message}`);
+          setCategories((prev) => prev.filter(p => p.id !== id));
+        } else {
+          // TODO: show an error message
+          console.log(`ERROR (category_list_delete): ${data.message}`);
+        }
+      } catch (err) {
+        console.error(`ERROR (category_list_delete): ${err.message}`);
+      }
+    };
+
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -48,6 +70,7 @@ export default function CategoryList() {
             text="Add Category"
             addLink="/medicine/category/add_category"
             searchKey={"categoryName"}
+            handleDelete={handleCategoryDelete}
           />
         </Layout>
       )}
