@@ -481,7 +481,7 @@ const Layout = ({ children }) => {
                     className="border-b-0 p-3"
                   >
                     <ListItemPrefix>
-                      <ShoppingCartIcon
+                      <UserPlusIcon
                         className="h-5 w-5"
                         style={{ color: "#f1ffea" }}
                       />
@@ -535,7 +535,7 @@ const Layout = ({ children }) => {
                     className="border-b-0 p-3"
                   >
                     <ListItemPrefix>
-                      <UserPlusIcon
+                      <DocumentTextIcon
                         className="h-5 w-5"
                         style={{ color: "#f1ffea" }}
                       />
