@@ -2,7 +2,6 @@ import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  GridLoadingScreen,
   SyncLoadingScreen,
 } from "../components/UI/LoadingScreen";
 
@@ -36,7 +35,7 @@ export default function PrescriptionList() {
             data={MockData}
             detail="See information about all OPDs."
             text="Add Prescription"
-            addLink="/prescription/add_prescription"
+            addLink="/prescription/add"
             handleDelete={handlePrescriptionDelete}
             searchKey="patientName"
           />

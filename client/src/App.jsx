@@ -15,8 +15,8 @@ import AddCategory from "./pages/AddCategory";
 import CategoryList from "./pages/CategoryList";
 import DoctorDashboard from "./pages/DoctorDashboard";import { AddPatient } from "./pages/AddPatient";
 import PatientList from "./pages/PatientList";
-import { AddPrescription } from "./pages/AddPrescription";
-
+import AddPrescription from "./pages/AddPrescription";
+import PrescriptionList from "./pages/PrescriptionList";
 
 function App() {
   return (
@@ -41,7 +41,8 @@ function App() {
           <Route path="/doctordashboard" element={<DoctorDashboard />} />
           <Route path="/patient/add_patient" element={<AddPatient />} />
           <Route path="/patient/list" element={<PatientList />} />
-          <Route path="/prescription/add_prescription" element={<AddPrescription />} />
+          <Route path="/prescription" element={<PrescriptionList />} />
+          <Route path="/prescription/add" element={<AddPrescription />} />
         </Routes>
       </BrowserRouter>
     </>
