@@ -1,0 +1,93 @@
+[
+    {
+      "id": 1,
+      "name": "Dr. John Doe",
+      "department": "Cardiology",
+      "email": "john.doe@example.com",
+      "day": "Monday",
+      "shift": "Morning",
+      "action": "View"
+    },
+    {
+      "id": 2,
+      "name": "Dr. Jane Smith",
+      "department": "Neurology",
+      "email": "jane.smith@example.com",
+      "day": "Tuesday",
+      "shift": "Afternoon",
+      "action": "View"
+    },
+    {
+      "id": 3,
+      "name": "Dr. Michael Johnson",
+      "department": "Orthopedics",
+      "email": "michael.johnson@example.com",
+      "day": "Wednesday",
+      "shift": "Evening",
+      "action": "View"
+    },
+    {
+      "id": 4,
+      "name": "Dr. Emily Wilson",
+      "department": "Pediatrics",
+      "email": "emily.wilson@example.com",
+      "day": "Thursday",
+      "shift": "Morning",
+      "action": "View"
+    },
+    {
+      "id": 5,
+      "name": "Dr. David Brown",
+      "department": "Oncology",
+      "email": "david.brown@example.com",
+      "day": "Friday",
+      "shift": "Afternoon",
+      "action": "View"
+    },
+    {
+      "id": 6,
+      "name": "Dr. Sarah Lee",
+      "department": "Dermatology",
+      "email": "sarah.lee@example.com",
+      "day": "Monday",
+      "shift": "Evening",
+      "action": "View"
+    },
+    {
+      "id": 7,
+      "name": "Dr. William Taylor",
+      "department": "Gynecology",
+      "email": "william.taylor@example.com",
+      "day": "Tuesday",
+      "shift": "Morning",
+      "action": "View"
+    },
+    {
+      "id": 8,
+      "name": "Dr. Olivia Clark",
+      "department": "Psychiatry",
+      "email": "olivia.clark@example.com",
+      "day": "Wednesday",
+      "shift": "Afternoon",
+      "action": "View"
+    },
+    {
+      "id": 9,
+      "name": "Dr. James Anderson",
+      "department": "Urology",
+      "email": "james.anderson@example.com",
+      "day": "Thursday",
+      "shift": "Evening",
+      "action": "View"
+    },
+    {
+      "id": 10,
+      "name": "Dr. Sophia Martinez",
+      "department": "Endocrinology",
+      "email": "sophia.martinez@example.com",
+      "day": "Friday",
+      "shift": "Morning",
+      "action": "View"
+    }
+  ]
+  
