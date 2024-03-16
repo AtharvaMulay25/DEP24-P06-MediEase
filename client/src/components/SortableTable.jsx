@@ -100,7 +100,7 @@ export function SortableTable({
 
   const tableRef = useRef(null);
   useEffect(() => {
-    setMaxPages(Math.ceil(data.length / itemsPerPage));
+    setMaxPages(Math.ceil(searchList.length / itemsPerPage));
   }, [searchList, itemsPerPage]);
 
 
@@ -213,6 +213,7 @@ export function SortableTable({
   const filterItems = (str) => {
     const filteredArray = data.filter(item => item[searchKey].toLowerCase().includes(str.toLowerCase()));
     setSearchList(filteredArray);
+    sorting("action");
   };
 
   const paginate = (act) => {
@@ -236,22 +237,36 @@ export function SortableTable({
   });
 
   const sorting = (col) => {
-    const sortOrder = sort[col] === "asc" ? -1 : 1;
+    if (col === "action") {
+      let newSort = {};
+      Object.keys(tableHead).forEach((key, index) => {
+        if (key !== "action") newSort[key] = "";
+      });
+      setSort(newSort);
+      return;
+    }
+    const sortOrder = sort[col] === "asc" ? 1 : -1;
 
-    if (col === "id") {
-      const sorted = [...paginatedData].sort((a, b) => {
+    if (col === "id" || col === "temperature") {
+      const sorted = [...searchList].sort((a, b) => {
+        if(a[col] === null) return -sortOrder;
+        if(b[col] === null) return sortOrder;
         if (a[col] < b[col]) return sortOrder;
         if (a[col] > b[col]) return -sortOrder;
         return 0;
       });
-      setPaginatedData(sorted);
+      // setPaginatedData(sorted);
+      setSearchList(sorted);
     } else {
-      const sorted = [...paginatedData].sort((a, b) => {
+      const sorted = [...searchList].sort((a, b) => {
+        if(a[col] === null) return -sortOrder;
+        if(b[col] === null) return sortOrder;
         if (a[col].toLowerCase() < b[col].toLowerCase()) return sortOrder;
         if (a[col].toLowerCase() > b[col].toLowerCase()) return -sortOrder;
         return 0;
       });
-      setPaginatedData(sorted);
+      // setPaginatedData(sorted);
+      setSearchList(sorted);
     }
     let newSort = {};
     Object.keys(tableHead).forEach((key, index) => {
