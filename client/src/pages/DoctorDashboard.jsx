@@ -8,9 +8,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import {
-  UserGroupIcon,
-  ShoppingCartIcon,
-  PresentationChartBarIcon,
+  DocumentTextIcon,
+  ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -236,7 +235,7 @@ const DoctorDashboard = () => {
             >
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                  <UserGroupIcon className="h-7 w-7 mr-2" />
+                  <ClipboardDocumentCheckIcon className="h-7 w-7 mr-2" />
                   Checkups Done
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
@@ -284,7 +283,7 @@ const DoctorDashboard = () => {
             >
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                  <PresentationChartBarIcon className="h-7 w-7 mr-2" />
+                  <DocumentTextIcon className="h-7 w-7 mr-2" />
                   Current Schedule
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
@@ -311,7 +310,7 @@ const DoctorDashboard = () => {
                 className="flex flex-col gap-4 rounded-none md:flex-row md:items-center"
               >
                 <div className="w-max rounded-lg bg-gray-900 p-3 text-white">
-                  <ShoppingCartIcon className="h-6 w-6" />
+                  <ClipboardDocumentCheckIcon className="h-6 w-6" />
                 </div>
                 <div>
                   <Typography variant="h6" color="blue-gray">
@@ -350,7 +349,7 @@ const DoctorDashboard = () => {
                     color="gray"
                     className="max-w-sm font-normal"
                   >
-                    Top medicines provided by me.
+                    Top medicines provided by you.
                   </Typography>
                 </div>
               </CardHeader>
