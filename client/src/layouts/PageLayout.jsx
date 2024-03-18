@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserCircleIcon, ClipboardDocumentListIcon, DocumentTextIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import {
+  UserCircleIcon,
+  ClipboardDocumentListIcon,
+  DocumentTextIcon,
+} from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
+import { FaUserDoctor } from "react-icons/fa6";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
   Typography,
@@ -11,8 +16,6 @@ import {
   Accordion,
   AccordionHeader,
   AccordionBody,
-  Card,
-  CardFooter,
 } from "@material-tailwind/react";
 import {
   ShoppingCartIcon,
@@ -78,14 +81,15 @@ const Layout = ({ children }) => {
   return (
     <div className="h-screen flex">
       {/* sidebar */}
-      <div className="overflow-visible fixed h-screen z-10 top-0 left-0">
+      <div className="fixed h-screen z-10 top-0 left-0">
         <div className="flex">
           <div
-            className="transition-width duration-300 h-screen overflow-x-hidden"
+            className={`transition-width duration-300 h-screen overflow-x-hidden overflow-y-${
+              isCollapsed && !isHovered ? "hidden" : "auto"
+            }`}
             style={{
               width: isCollapsed && !isHovered ? "60px" : "250px",
               scrollbarWidth: "thin",
-              overflowY: "hidden",
               backgroundColor: "#0a141f",
             }}
             onMouseEnter={() => setIsHovered(true)}
@@ -126,7 +130,7 @@ const Layout = ({ children }) => {
                       <Typography className="font-semibold text-lg">
                         Atharva Mulay
                       </Typography>
-                    )} 
+                    )}
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-normal text-xs">
                         Pharmaceutical Staff
@@ -157,7 +161,7 @@ const Layout = ({ children }) => {
               <a href="/pharmadashboard">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
-                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full scroll-auto overflow-y-auto"
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
                 >
                   <MdSpaceDashboard className="h-5 w-5 mr-4" />
                   {!(isCollapsed & !isHovered) && (
@@ -216,9 +220,7 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() =>
-                          navigate("/medicine/category/add")
-                        }
+                        onClick={() => navigate("/medicine/category/add")}
                       >
                         Add Category
                       </ListItem>
@@ -481,7 +483,7 @@ const Layout = ({ children }) => {
                     className="border-b-0 p-3"
                   >
                     <ListItemPrefix>
-                      <UserPlusIcon
+                      <FaUserDoctor
                         className="h-5 w-5"
                         style={{ color: "#f1ffea" }}
                       />

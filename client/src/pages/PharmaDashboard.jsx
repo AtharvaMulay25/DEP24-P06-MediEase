@@ -11,6 +11,7 @@ import {
   UserGroupIcon,
   ShoppingCartIcon,
   ChartBarIcon,
+  ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import Layout from "../layouts/PageLayout";
@@ -310,7 +311,7 @@ const PharmaDashboard = () => {
                 className="flex flex-col gap-4 rounded-none md:flex-row md:items-center"
               >
                 <div className="w-max rounded-lg bg-gray-900 p-3 text-white">
-                  <ShoppingCartIcon className="h-6 w-6" />
+                  <ClipboardDocumentCheckIcon className="h-6 w-6" />
                 </div>
                 <div>
                   <Typography variant="h6" color="blue-gray">
