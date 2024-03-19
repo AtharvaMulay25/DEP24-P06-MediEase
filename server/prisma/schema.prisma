@@ -14,13 +14,18 @@ datasource db {
 }
 
 model User {
-  id     String    @id @default(uuid())
-  email  String    @unique
-  role   UserRole
-  otp    String?
-  expiry DateTime?
+  id    String   @id @default(uuid())
+  email String   @unique
+  role  UserRole
 
   @@map("user")
+}
+
+model Verification {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  otp        String
+  expiryTime DateTime
 }
 
 model Medicine {

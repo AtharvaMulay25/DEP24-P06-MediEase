@@ -4,15 +4,13 @@ const sendMail = require("../utils/sendMail.js");
 const generateOtp = require("../utils/generateOtp.js");
 const ExpressError = require("../utils/ExpressError.js");
 
-//email to otp map 
-const otpEmailMap = new Map();
-
 const sendOtp = async (req, res, next) => {
     const { email, action } = req.body;
 
     if (!email) {
         const error = new ExpressError("Email is required", 400);
         next(error)
+        return;
     }
 
     if (action === "SIGNUP") {
@@ -25,12 +23,33 @@ const sendOtp = async (req, res, next) => {
         if (userExists) {
             const error = new ExpressError("User already exists", 400);
             next(error);
+            return;
         }
     }
 
     const { otp, expiry } = generateOtp();
 
-    otpEmailMap.set(email, { otp, expiry });
+    //setting up otp details in the verification model 
+    const otpDetail = await prisma.verification.upsert({
+        where: {
+            email
+        },
+        update: {
+            otp: otp,
+            expiryTime: expiry
+        },
+        create: {
+            email: email,
+            otp: otp,
+            expiryTime: expiry
+        }
+    });
+
+    if (!otpDetail) {
+        const error = new ExpressError("Error in sending OTP, Please try again later", 500);
+        next(error);
+        return ;
+    }
 
     const mailOptions = {
         from: "dep2024.p06@gmail.com",
@@ -63,35 +82,48 @@ const verifyOtp = async (req, res, next) => {
     if (!email || !otp) {
         const error = new ExpressError("Email and OTP are required", 400);
         next(error);
+        return ;
     }
-
-    const user = await prisma.user.findUnique({
+    
+    const otpInfo = await prisma.verification.findUnique({
         where: {
-            email: email
+            email
         }
     });
 
-    if (!user) {
-        const error = new ExpressError("User not found", 404);
-        next(error);
-    }
+    console.log("otpInfo : ", otpInfo)
 
+    if (!otpInfo) {
+        const error = new ExpressError("No OTP found. Please try again later", 404);
+        next(error);
+        return ;
+    }
+    
     const now = new Date();
-    if (user.expiry < now) {
-        const error = new ExpressError("OTP expired", 401);
+    if (otpInfo.expiryTime < now) {
+        const error = new ExpressError("OTP expired, Please try again", 400);
         next(error);
-    };
-
-    if (user.otp !== otp) {
-        const error = new ExpressError("Invalid OTP", 401);
-        next(error);
+        return ;
     }
+
+    if (otpInfo.otp !== otp) {
+        const error = new ExpressError("OTP invalid.", 401);
+        next(error);
+        return ;
+    }
+
+    //deleting the verification record for the user email
+    const deletedPrisma = await prisma.verification.delete({
+        where: {
+            email
+        }
+    });
 
     return res.status(200).json({
         ok: true,
         message: "OTP verified successfully",
         data: {
-            email: user.email
+            email
         }
     });
 };
