@@ -1,6 +1,7 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {toast} from 'sonner';
 import {
   SyncLoadingScreen,
 } from "../components/UI/LoadingScreen";
@@ -25,9 +26,11 @@ const getPatientsData = async()=>
   try {
     const response = await axios.get(apiRoutes.patient);
     console.log(response.data.data);
+    toast.success('Patient List fetched successfully')
     return response.data.data;
   } catch (error) {
     console.error(`ERROR (get-patient-list): ${error?.response?.data?.message}`);
+    toast.error('Failed to fetch Patient List')
   }
 }
 

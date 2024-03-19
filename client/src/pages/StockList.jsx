@@ -1,5 +1,6 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
+import {toast} from 'sonner';
 import axios from "axios";
 import {
   GridLoadingScreen,
@@ -19,9 +20,11 @@ const TABLE_HEAD = {
 const getStockData = async () => {
   try {
     const response = await axios.get(apiRoutes.stock);
+    toast.success('Stock List fetched successfully')
     return response.data.data;
   } catch (error) {
     console.error(`ERROR (get-stock-list): ${error?.response?.data?.message}`);
+    toast.error('Failed to fetch Stock List')
   }
 };
 

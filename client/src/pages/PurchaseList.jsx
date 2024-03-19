@@ -1,5 +1,6 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
+import {toast} from 'sonner';
 import axios from "axios";
 import {
   SyncLoadingScreen,
@@ -19,9 +20,11 @@ const getPurchaseData = async () => {
   try {
     const response = await axios.get(apiRoutes.purchase);
     console.log("response", response.data.data)
+    toast.success('Purchase List fetched successfully')
     return response.data.data;
   } catch (error) {
     console.error(`ERROR (get-purchase-list): ${error?.response?.data?.message}`);
+    toast.error('Failed to fetch Purchase List')
   }
 };
 // import MockData from "../assets/MOCK_DATA_purchase.json";

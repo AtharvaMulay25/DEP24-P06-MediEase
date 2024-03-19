@@ -13,13 +13,17 @@ import StockList from "./pages/StockList";
 import AddPurchase from "./pages/AddPurchase";
 import AddCategory from "./pages/AddCategory";
 import CategoryList from "./pages/CategoryList";
-import DoctorDashboard from "./pages/DoctorDashboard";import { AddPatient } from "./pages/AddPatient";
+import DoctorDashboard from "./pages/DoctorDashboard";
+import { AddPatient } from "./pages/AddPatient";
 import PatientList from "./pages/PatientList";
 import AddPrescription from "./pages/AddPrescription";
 import ScheduleList from "./pages/ScheduleList";
 import AddSchedule from "./pages/AddSchedule";
-import DoctorList from "./pages/DoctorList";
-import AddDoctor from "./pages/AddDoctor";import PrescriptionList from "./pages/PrescriptionList";
+import StaffList from "./pages/StaffList";
+import AddStaff from "./pages/AddStaff";
+import PrescriptionList from "./pages/PrescriptionList";
+import CompleteProfilePatient from "./pages/CompleteProfilePatient";
+import CompleteProfileStaff from "./pages/CompleteProfileStaff";
 
 function App() {
   return (
@@ -44,12 +48,14 @@ function App() {
           <Route path="/doctordashboard" element={<DoctorDashboard />} />
           <Route path="/patient/add_patient" element={<AddPatient />} />
           <Route path="/patient/list" element={<PatientList />} />
+          <Route path="/patient/profile" element={<CompleteProfilePatient />} />
           <Route path="/prescription" element={<PrescriptionList />} />
           <Route path="/prescription/add" element={<AddPrescription />} />
           <Route path="/schedule" element={<ScheduleList />} />
           <Route path="/schedule/add" element={<AddSchedule />} />
-          <Route path="/doctor" element={<DoctorList />} />
-          <Route path="/doctor/add" element={<AddDoctor />} />
+          <Route path="/staff" element={<StaffList />} />
+          <Route path="/staff/add" element={<AddStaff />} />
+          <Route path="/staff/profile" element={<CompleteProfileStaff />} />
         </Routes>
       </BrowserRouter>
     </>
