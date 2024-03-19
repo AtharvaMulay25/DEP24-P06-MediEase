@@ -16,6 +16,7 @@ const medicineRoutes = require('./src/routes/medicineRoutes.js');
 const stockRoutes = require('./src/routes/stockRoutes.js');
 const patientRoutes = require('./src/routes/patientRoutes.js');
 const categoryRoutes = require('./src/routes/categoryRoutes.js');
+const scheduleRoutes = require('./src/routes/scheduleRoutes.js');
 const ExpressError = require('./src/utils/ExpressError.js');
 
 app.use('/api/purchase', purchaseRoutes);
@@ -24,6 +25,7 @@ app.use('/api/medicine', medicineRoutes);
 app.use('/api/stock', stockRoutes);
 app.use('/api/patient', patientRoutes);
 app.use('/api/category',categoryRoutes);
+app.use('/api/schedule',scheduleRoutes);
 app.all('*', (req, res) => {
     throw new ExpressError('Page Not Found', 404);
 });
