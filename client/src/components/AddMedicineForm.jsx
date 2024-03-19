@@ -11,7 +11,7 @@ import {
   Option,
   Select as MaterialSelect
 } from "@material-tailwind/react";
-
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
@@ -20,12 +20,12 @@ export function AddMedicineForm() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    medicineType: "",
-    category: "",
-    medicineDetails: "",
-    saltName: "",
-    brandName: "",
-    strength: ""
+    medicineType: '',
+    category: '',
+    medicineDetails: '',
+    saltName: '',
+    brandName: '',
+    strength: ''
   });
 
   const [categories, setCategories] = useState([]);
@@ -43,6 +43,7 @@ export function AddMedicineForm() {
       setCategories(response.data.data);
     } catch (error) {
       console.error(`ERROR (add-medicine): ${error?.response?.data?.message}`);
+      toast.error(error?.response?.data?.message || 'Failed to fetch Categories');
     }
   };
 
@@ -66,6 +67,7 @@ export function AddMedicineForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData)
     // Here you can handle the submission of the form
     const data = {
       // medicineType: formData.medicineType,
@@ -78,9 +80,13 @@ export function AddMedicineForm() {
     try {
       const response = await axios.post(apiRoutes.medicine, data);
       console.log(response);
-      navigate("/medicine");
+      toast.success('Medicine added successfully');
+      setTimeout(() => {
+        navigate("/medicine");
+      }, 1000);
     } catch (error) {
       console.error(error);
+      toast.error(error?.response?.data?.message || 'Failed to add Medicine');
     }
   };
 

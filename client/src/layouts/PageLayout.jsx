@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
 import {
   UserCircleIcon,
@@ -493,7 +494,7 @@ const Layout = ({ children }) => {
                         style={{ color: "#f1ffea" }}
                         className="mr-auto font-normal"
                       >
-                        Doctor
+                        Staff
                       </Typography>
                     )}
                   </AccordionHeader>
@@ -503,15 +504,15 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/doctor/add")}
+                        onClick={() => navigate("/staff/add")}
                       >
-                        Add Doctor
+                        Add Staff
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/doctor")}
+                        onClick={() => navigate("/staff")}
                       >
-                        Doctor List
+                        Staff List
                       </ListItem>
                     </List>
                   </AccordionBody>
@@ -723,6 +724,8 @@ const Layout = ({ children }) => {
           </div>
         </footer>
       </div>
+
+      <Toaster richColors closeButton expand={false} position="top-center" />
     </div>
   );
 };

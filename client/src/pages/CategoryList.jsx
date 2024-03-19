@@ -2,7 +2,7 @@ import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
-
+import {toast} from 'sonner';
 const TABLE_HEAD = {
   id: "#",
   categoryName: "Category Name",
@@ -14,9 +14,11 @@ const  getCategoriesData = async () => {
     try {
         const response = await axios.get(apiRoutes.category);
         // console.log(response.data.data);
+        toast.success('Category List fetched successfully')
         return response.data.data;
     } catch (error) {
       console.error(`ERROR (get-category-list): ${error?.response?.data?.message}`);
+      toast.error('Failed to fetch Category List')
     }
 };
 

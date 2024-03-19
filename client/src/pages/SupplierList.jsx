@@ -1,5 +1,6 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState , useEffect} from "react";
+import {toast} from 'sonner';
 import axios from "axios";
 import { GridLoadingScreen, SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
@@ -18,9 +19,11 @@ const TABLE_HEAD = {
 const getSuppliersData = async () => {
   try {
     const response = await axios.get(apiRoutes.supplier);
+    toast.success('Supplier List fetched successfully')
     return response.data.data;
   } catch (error) {
     console.error(`ERROR (get-supplier-list): ${error?.response?.data?.message}`);
+    toast.error('Failed to fetch Supplier List')
   }
 }
 
