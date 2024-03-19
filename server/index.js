@@ -16,8 +16,10 @@ const medicineRoutes = require('./src/routes/medicineRoutes.js');
 const stockRoutes = require('./src/routes/stockRoutes.js');
 const patientRoutes = require('./src/routes/patientRoutes.js');
 const categoryRoutes = require('./src/routes/categoryRoutes.js');
+const authRoutes = require('./src/routes/authRoutes.js');
 const ExpressError = require('./src/utils/ExpressError.js');
 
+app.use('/api/auth', authRoutes);
 app.use('/api/purchase', purchaseRoutes);
 app.use('/api/supplier', supplierRoutes);
 app.use('/api/medicine', medicineRoutes);
