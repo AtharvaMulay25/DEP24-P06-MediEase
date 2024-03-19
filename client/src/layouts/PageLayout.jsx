@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
 import {
   UserCircleIcon,
@@ -723,6 +724,8 @@ const Layout = ({ children }) => {
           </div>
         </footer>
       </div>
+
+      <Toaster richColors closeButton expand={false} position="top-center"/>
     </div>
   );
 };
