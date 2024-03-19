@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   CardBody,
   Input,
@@ -14,7 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function AddStaffForm() {
+export default function CompleteProfileStaff() {
   const navigate = useNavigate();
 
   const departments = ["Ayurvedic", "Gynecology", "Homeopathy"];
@@ -51,45 +51,26 @@ export default function AddStaffForm() {
   };
 
   return (
-    <div className="bg-gray-50 h-full mt-1">
-      <Card className="h-max w-full">
+    <div className="bg-gray-50 min-h-screen flex justify-center items-center">
+      <Card
+        style={{
+          display: "flex",
+          margin: "auto",
+          justifyContent: "center",
+        }}
+      >
         <CardHeader
           floated={false}
           shadow={false}
-          className="rounded-none pb-3"
+          className="flex rounded-lg pb-3 pt-3 justify-center bg-black h-28"
         >
           <div className="mb-2 sm:flex sm:flex-row flex-col items-center justify-between gap-8">
             <div>
               <div className="flex flex-row items-center justify-between gap-8">
-                <Typography variant="h5" color="blue-gray">
-                  Add Staff
+                <Typography variant="h3" color="white">
+                  Staff Profile
                 </Typography>
-                <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:hidden">
-                  <Button
-                    className="flex items-center gap-3"
-                    size="md"
-                    onClick={() => {
-                      navigate("/staff");
-                    }}
-                  >
-                    Staff List
-                  </Button>
-                </div>
               </div>
-              <Typography color="gray" className="mt-1 font-normal">
-                Add a new staff.
-              </Typography>
-            </div>
-            <div className="hidden sm:flex shrink-0 flex-col gap-2 sm:flex-row">
-              <Button
-                className="flex items-center gap-3"
-                size="md"
-                onClick={() => {
-                  navigate("/staff");
-                }}
-              >
-                Staff List
-              </Button>
             </div>
           </div>
         </CardHeader>

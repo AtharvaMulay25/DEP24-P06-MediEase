@@ -81,17 +81,23 @@ export default function CompleteProfilePatient() {
     }
   };
   return (
-    <div className="bg-gray-50 h-full mt-1">
-      <Card className="h-max w-full ">
+    <div className="bg-gray-50 min-h-screen flex justify-center items-center">
+      <Card
+        style={{
+          display: "flex",
+          margin: "auto",
+          justifyContent: "center",
+        }}
+      >
         <CardHeader
           floated={false}
           shadow={false}
-          className="rounded-none pb-3"
+          className="flex rounded-lg pb-3 pt-3 justify-center bg-black h-28"
         >
           <div className="mb-2 sm:flex sm:flex-row flex-col items-center justify-between gap-8">
             <div>
               <div className="flex flex-row items-center justify-between gap-8">
-                <Typography variant="h5" color="blue-gray">
+                <Typography variant="h3" color="white">
                   Patient Profile
                 </Typography>
               </div>
