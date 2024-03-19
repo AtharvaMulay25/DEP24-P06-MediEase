@@ -17,6 +17,8 @@ model User {
   id    String   @id @default(uuid())
   email String
   role  UserRole
+
+  @@map("user")
 }
 
 model Medicine {
@@ -71,6 +73,8 @@ model Schedule {
   day     Day
 
   Staff Staff @relation(fields: [staffId], references: [id])
+
+  @@map("schedule")
 }
 
 model Stock {

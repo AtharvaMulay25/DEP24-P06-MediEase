@@ -1,18 +1,13 @@
-const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
+const ExpressError = require("../utils/ExpressError");
+const { generateToken, verifyToken } = require("../utils/handleJWT.js");
 
 // @desc     User Signup
 // route     POST /api/auth/signup
 // @access   Public
 const signup = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
-
-    const validationRes = userValidation(username, email, password, "signup");
-    if (!validationRes.valid) {
-      const error = new CustomError(validationRes.error, 400, "signup");
-      next(error);
-    }
+    const { email, role } = req.body;
 
     const userAlreadyExists = await prisma.user.findUnique({
       where: {
@@ -21,22 +16,15 @@ const signup = async (req, res, next) => {
     });
 
     if (userAlreadyExists) {
-      const error = new CustomError("User already exists.", 400, "signup");
+      const error = new ExpressError("User already exists.", 409);
       next(error);
     }
-
-    //hashing the password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const user = await prisma.user.create({
       data: {
         id: uuidv4(),
-        username,
         email,
-        password: hashedPassword,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        role 
       },
     });
 
@@ -49,23 +37,23 @@ const signup = async (req, res, next) => {
       );
 
       res.cookie("token", token, { httpOnly: true, secure: true });
+      res.cookie("role", role, { httpOnly: true, secure: true });
 
       return res.status(201).json({
         ok: true,
         message: "User registered successfully.",
         data: {
           user: {
-            username: user.username,
             email: user.email,
           },
         },
       });
     }
 
-    const error = new CustomError("User Registration failed.", 400, "signup");
+    const error = new ExpressError("User Registration failed.", 400);
     next(error);
   } catch (err) {
-    const error = new CustomError(err.message, 500, "signup");
+    const error = new ExpressError(err.message, 500);
     next(error);
   }
 };
@@ -73,37 +61,23 @@ const signup = async (req, res, next) => {
 // @desc     User Login
 // route     POST /api/auth/login
 // @access   Public
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-
-    const validationRes = userValidation("", email, password, "login");
-    if (!validationRes.valid) {
-      const error = new CustomError(validationRes.error, 400, "login");
-      next(error);
-    }
+    const { email, role } = req.body;
 
     const user = await prisma.user.findUnique({
       where: {
-        email: email,
+        email,
+        role
       },
     });
 
     if (!user) {
-      const err = new CustomError("Incorrect email or password", 400, "login");
+      const err = new ExpressError("Incorrect email or password", 400);
       next(err);
     }
 
-    const checkPassword = await bcrypt.compare(password, user.password);
-
-    if (!checkPassword) {
-      const error = new CustomError(
-        "Incorrect email or password",
-        401,
-        "login"
-      );
-      next(error);
-    }
+    //TODO: SEND OTP 
 
     const token = generateToken(
       {
@@ -113,19 +87,19 @@ const login = async (req, res) => {
     );
 
     res.cookie("token", token, { httpOnly: true, secure: true });
+    res.cookie("role", role, { httpOnly: true, secure: true });
 
     return res.status(200).json({
       ok: true,
       message: "User logged in successfully.",
       data: {
         user: {
-          username: user.username,
           email: user.email,
         },
       },
     });
   } catch (err) {
-    const error = new CustomError(err.message, 500, "login");
+    const error = new ExpressError(err.message, 500);
     next(error);
   }
 };
