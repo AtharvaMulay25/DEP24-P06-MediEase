@@ -13,9 +13,9 @@ import {
   Option,
   Tooltip,
   IconButton,
-  Textarea
+  Textarea,
 } from "@material-tailwind/react";
-
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
@@ -33,7 +33,7 @@ export default function AddPrescriptionForm() {
     pulseRate: "",
     spO2: "",
     symptoms: "",
-    diagnosis: ""
+    diagnosis: "",
   });
 
   const doctors = ["Dr. John Doe", "Dr. Jane Doe", "Dr. John Smith"];
@@ -67,13 +67,16 @@ export default function AddPrescriptionForm() {
 
   const fetchMedicines = async () => {
     try {
-      const response = await axios.get(
-        apiRoutes.medicine
-      );
+      const response = await axios.get(apiRoutes.medicine);
       // console.log(response.data.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
-      console.error(`ERROR (fetch-medicines-in-add-purchase): ${error?.response?.data?.message}`);
+      console.error(
+        `ERROR (fetch-medicines-in-add-purchase): ${error?.response?.data?.message}`
+      );
+      toast.error(
+        error?.response?.data?.message || "Failed to fetch Medicines"
+      );
     }
   };
 
@@ -89,7 +92,7 @@ export default function AddPrescriptionForm() {
     // console.log(dataArray)
     console.log(key, index, value);
     const updatedArray = [...dataArray];
-    console.log(updatedArray)
+    console.log(updatedArray);
     updatedArray[index][key] = value;
     setDataArray(updatedArray);
   };
@@ -147,11 +150,7 @@ export default function AddPrescriptionForm() {
 
   return (
     <Card className="h-max w-full">
-      <CardHeader
-        floated={false}
-        shadow={false}
-        className="rounded-none pb-3"
-      >
+      <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
         <div className="mb-2 sm:flex sm:flex-row flex-col items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
@@ -334,9 +333,7 @@ export default function AddPrescriptionForm() {
 
             <div className="flex-col md:flex md:flex-row items-start justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="date">
-                  Symptoms:
-                </label>
+                <label htmlFor="date">Symptoms:</label>
               </div>
               <Textarea
                 id="symptoms"
@@ -350,8 +347,6 @@ export default function AddPrescriptionForm() {
               />
             </div>
           </div>
-
-
 
           <div className="w-full ">
             <table className="w-full min-w-max table-auto text-left">
@@ -401,7 +396,9 @@ export default function AddPrescriptionForm() {
                           label: medicine.brandName,
                         }))}
                         value={data["name"]}
-                        onChange={(selectedMedicine) => handleMedicineChange(selectedMedicine, index)}
+                        onChange={(selectedMedicine) =>
+                          handleMedicineChange(selectedMedicine, index)
+                        }
                         isClearable={true}
                         placeholder="Select Medicine"
                         className="w-full"
@@ -414,7 +411,7 @@ export default function AddPrescriptionForm() {
                         placeholder="Dosage"
                         value={data["dosage"]}
                         onChange={(e) =>
-                          handleInputChange('dosage', index, e.target.value)
+                          handleInputChange("dosage", index, e.target.value)
                         }
                       />
                     </td>
@@ -428,7 +425,7 @@ export default function AddPrescriptionForm() {
                           className="w-full"
                           value={data["frequency"]}
                           onChange={(value) =>
-                            handleInputChange('frequency', index, value)
+                            handleInputChange("frequency", index, value)
                           }
                         >
                           {frequencyList.map((frequency) => (
@@ -462,7 +459,7 @@ export default function AddPrescriptionForm() {
                   </tr>
                 ))}
                 <tr>
-                  <td colSpan="4" className="p-4" >
+                  <td colSpan="4" className="p-4">
                     <div className="flex justify-center items-center gap-2">
                       <Tooltip content="Add">
                         <IconButton variant="text" onClick={handleAddRow}>

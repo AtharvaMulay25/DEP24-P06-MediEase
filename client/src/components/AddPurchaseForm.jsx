@@ -12,7 +12,7 @@ import {
   Tooltip,
   IconButton,
 } from "@material-tailwind/react";
-
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
@@ -28,7 +28,7 @@ export function AddPurchaseForm() {
   });
 
   const [dataArray, setDataArray] = useState([
-    { medicine: "", batchNo: "", mfgDate: "", expDate: "", quantity: "" }
+    { medicine: "", batchNo: "", mfgDate: "", expDate: "", quantity: "" },
   ]);
   const [netQty, setNetQty] = useState(0);
   const [suppliers, setSuppliers] = useState([]);
@@ -42,60 +42,64 @@ export function AddPurchaseForm() {
 
   const fetchSuppliers = async () => {
     try {
-      const response = await axios.get(
-        apiRoutes.supplier
-      );
+      const response = await axios.get(apiRoutes.supplier);
       // console.log(response.data);
       setSuppliers(response.data.data); // Assuming the response is an array of suppliers
     } catch (error) {
-      console.error(`ERROR (fetch-supplier-in-add-purchase): ${error?.response?.data?.message}`);
+      console.error(
+        `ERROR (fetch-supplier-in-add-purchase): ${error?.response?.data?.message}`
+      );
+      toast.error(
+        error?.response?.data?.message || "Failed to fetch Suppliers"
+      );
     }
   };
 
   const fetchMedicines = async () => {
     try {
-      const response = await axios.get(
-        apiRoutes.medicine
-      );
+      const response = await axios.get(apiRoutes.medicine);
       // console.log(response.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
-      console.error(`ERROR (fetch-medicines-in-add-purchase): ${error?.response?.data?.message}`);
+      console.error(
+        `ERROR (fetch-medicines-in-add-purchase): ${error?.response?.data?.message}`
+      );
+      toast.error(
+        error?.response?.data?.message || "Failed to fetch Medicines"
+      );
     }
   };
-  const handleNetQtyChange = ()=>
-  {
+  const handleNetQtyChange = () => {
     let curNetQty = 0;
-      dataArray.map((data)=>{
-    
-        curNetQty = curNetQty + (parseInt(data['quantity']) || 0);
-      }      
-      )
-      setNetQty(curNetQty);
-  }
+    dataArray.map((data) => {
+      curNetQty = curNetQty + (parseInt(data["quantity"]) || 0);
+    });
+    setNetQty(curNetQty);
+  };
 
   const handleInputChange = (key, index, value) => {
     // console.log(dataArray)
     console.log(key, index, value);
     const updatedArray = [...dataArray];
-    console.log(updatedArray)
+    console.log(updatedArray);
     updatedArray[index][key] = value;
     setDataArray(updatedArray);
-    if(key == 'quantity')
-    {
+    if (key == "quantity") {
       handleNetQtyChange();
     }
   };
 
   const handleDeleteRow = (index) => {
-    console.log(index)
+    console.log(index);
     if (dataArray.length == 1) return; // Prevent deleting the first row
     //**** GIVE ERROR MSG HERE
     const updatedArray = [...dataArray];
     updatedArray.splice(index, 1);
     console.log(updatedArray);
     setDataArray(updatedArray);
-    setNetQty((prevQty) => prevQty - (parseInt(dataArray[index]['quantity']) || 0));
+    setNetQty(
+      (prevQty) => prevQty - (parseInt(dataArray[index]["quantity"]) || 0)
+    );
   };
 
   const handleAddRow = () => {
@@ -146,21 +150,22 @@ export function AddPurchaseForm() {
       batchNo: data.batchNo,
       mfgDate: data.mfgDate + "T00:00:00Z",
       expiryDate: data.expDate + "T00:00:00Z",
-      quantity: (parseInt(data.quantity) || 0), // Assuming quantity is a number
+      quantity: parseInt(data.quantity) || 0, // Assuming quantity is a number
     }));
 
     // Here you can handle the submission of the form
-    const data = {purchaseListEntry, purchaseItems};
+    const data = { purchaseListEntry, purchaseItems };
     //***DON'T LET THE FORM SUBMIT IF ANY OF MANDATORY ITEMS IS MISSING OR ANY LIST ROW FIELD IS EMPTY */
     try {
-      const response = await axios.post(
-        apiRoutes.purchase,
-        data
-      );
+      const response = await axios.post(apiRoutes.purchase, data);
       console.log("add purchase submit response = ", response);
-      navigate("/purchase");
+      toast.success("Purchase added successfully");
+      setTimeout(() => {
+        navigate("/purchase");
+      }, 1000);
     } catch (error) {
       console.error(`ERROR (add-purchase): ${error?.response?.data?.message}`);
+      toast.error(error?.response?.data?.message || "Failed to add Purchase");
     }
   };
 
@@ -169,12 +174,12 @@ export function AddPurchaseForm() {
     "Batch No.",
     "Mfg. Date",
     "Exp. Date",
-    "Total Quantity"
+    "Total Quantity",
   ];
 
   return (
     <Card className="h-max w-full">
-     <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
+      <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
         <div className="mb-2 sm:flex sm:flex-row flex-col items-center justify-between gap-8">
           <div>
             <div className="flex flex-row items-center justify-between gap-8">
@@ -295,8 +300,10 @@ export function AddPurchaseForm() {
                     color="blue-gray"
                     className="font-normal leading-none opacity-70"
                   >
-                    {head} 
-                  {(head != 'Mfg. Date') && <span className="text-red-900"> *</span>}
+                    {head}
+                    {head != "Mfg. Date" && (
+                      <span className="text-red-900"> *</span>
+                    )}
                   </Typography>
                 </th>
               ))}
@@ -312,23 +319,23 @@ export function AddPurchaseForm() {
             </tr>
           </thead>
           <tbody>
-           
             {dataArray.map((data, index) => (
               <tr key={index}>
                 <td key="medicine" className="p-4 border-b border-blue-gray-50">
                   <div className="flex items-center gap-3">
-                  <Select
-                    options={medicines.map((medicine) => ({
-                      value: medicine.id, // Assuming medicine object has a unique identifier 'id'
-                      label: medicine.brandName,  // Assuming medicine object has a property 'brandName'
-                    }))}
-                    value={data["medicine"]}
-                    onChange={(selectedMedicine) => handleMedicineChange(selectedMedicine, index)}
-                    isClearable={true}
-                    placeholder="Select Medicine"
-                    className="w-full"
-                  />
-                    
+                    <Select
+                      options={medicines.map((medicine) => ({
+                        value: medicine.id, // Assuming medicine object has a unique identifier 'id'
+                        label: medicine.brandName, // Assuming medicine object has a property 'brandName'
+                      }))}
+                      value={data["medicine"]}
+                      onChange={(selectedMedicine) =>
+                        handleMedicineChange(selectedMedicine, index)
+                      }
+                      isClearable={true}
+                      placeholder="Select Medicine"
+                      className="w-full"
+                    />
                   </div>
                 </td>
                 <td key="batchNo" className="p-4 border-b border-blue-gray-50">
@@ -338,49 +345,42 @@ export function AddPurchaseForm() {
                       min={1}
                       value={data["batchNo"]}
                       onChange={(e) =>
-                        handleInputChange('batchNo', index,  e.target.value)
+                        handleInputChange("batchNo", index, e.target.value)
                       }
-                    
                     />
                   </div>
                 </td>
                 <td key="mfgDate" className="p-4 border-b border-blue-gray-50">
-                    <div className="flex items-center gap-3">
-                     
-                        <Input
-                          type="date"
-                          value={data['mfgDate']}
-                          onChange={(e) =>
-                            handleInputChange('mfgDate' ,index,  e.target.value)
-                          }
-                        />
-                      
-                    </div>
-                  </td>
-                  <td key="expDate" className="p-4 border-b border-blue-gray-50">
-                    <div className="flex items-center gap-3">
-                     
-                        <Input
-                          type="date"
-                          value={data['expDate']}
-                          onChange={(e) =>
-                            handleInputChange('expDate' ,index,  e.target.value)
-                          }
-                        />
-                      
-                    </div>
-                  </td>
-                  <td key="quantity" className="p-4 border-b border-blue-gray-50">
+                  <div className="flex items-center gap-3">
+                    <Input
+                      type="date"
+                      value={data["mfgDate"]}
+                      onChange={(e) =>
+                        handleInputChange("mfgDate", index, e.target.value)
+                      }
+                    />
+                  </div>
+                </td>
+                <td key="expDate" className="p-4 border-b border-blue-gray-50">
+                  <div className="flex items-center gap-3">
+                    <Input
+                      type="date"
+                      value={data["expDate"]}
+                      onChange={(e) =>
+                        handleInputChange("expDate", index, e.target.value)
+                      }
+                    />
+                  </div>
+                </td>
+                <td key="quantity" className="p-4 border-b border-blue-gray-50">
                   <div className="flex items-center gap-3">
                     <Input
                       type="number"
                       min={1}
                       value={data["quantity"]}
                       onChange={(e) =>
-                        handleInputChange('quantity', index,  e.target.value)
-                       
+                        handleInputChange("quantity", index, e.target.value)
                       }
-                    
                     />
                   </div>
                 </td>

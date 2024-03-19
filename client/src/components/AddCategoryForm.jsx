@@ -10,7 +10,7 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
@@ -50,9 +50,15 @@ export function AddCategoryForm() {
     try {
       const response = await axios.post(apiRoutes.category, data);
       console.log(response);
-      navigate("/medicine/category");
+      toast.success("Medicine Category added successfully");
+      setTimeout(() => {
+        navigate("/medicine/category");
+      }, 1000);
     } catch (error) {
       console.error(`ERROR (add-category): ${error?.response?.data?.message}`);
+      toast.error(
+        error?.response?.data?.message || "Failed to add Medicine Category"
+      );
     }
   };
 
