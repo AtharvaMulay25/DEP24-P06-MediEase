@@ -9,6 +9,7 @@ import {
 const TABLE_HEAD = {
   id: "#",
   name: "Name",
+  role: "Role",
   department: "Department",
   gender: "Gender",
   email: "Email",
@@ -16,10 +17,10 @@ const TABLE_HEAD = {
   action: "Action",
 };
 
-import MockData from "../assets/MOCK_DATA_doctor.json";
+import MockData from "../assets/MOCK_DATA_staff.json";
 import Layout from "../layouts/PageLayout";
 
-export default function DoctorList() {
+export default function StaffList() {
   //   const [loading, setLoading] = useState(true);
   return (
     <>
@@ -28,11 +29,11 @@ export default function DoctorList() {
       <Layout>
         <SortableTable
           tableHead={TABLE_HEAD}
-          title="Doctor List"
+          title="Staff List"
           data={MockData}
-          detail="See all the doctors available."
-          text="Add Doctor"
-          addLink="/doctor/add"
+          detail="See all the staff available."
+          text="Add Staff"
+          addLink="/staff/add"
           searchKey="name"
         />
       </Layout>
