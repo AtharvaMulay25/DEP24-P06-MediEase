@@ -51,18 +51,24 @@ const VerifyOTP = ({email, setIsOtpSent, handler, otpSubmitHandler}) => {
             toast.success(response.data.message);  //toast messages are not yet integrated**** (no toaster in this branch)
             console.log("verified");
             await handler();
+            setIsOtpSent(false);
           }
           else
           {
             toast.error(response.data.message);
+            console.log("here");
           }
         }
         catch(err)
         {
           console.log(err);
           toast.error(err?.response?.data?.message);
+          if(err.response.status<400 && err.response.status>=500)  //in else case, problem with the request of client 
+          {
+            setIsOtpSent(false);
+          }
         }
-        setIsOtpSent(false);
+        
         setLoading(false);
         
       }

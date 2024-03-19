@@ -18,8 +18,7 @@ const signup = async (req, res, next) => {
     });
 
     if (userAlreadyExists) {
-      const error = new ExpressError("User already exists.", 409);
-      next(error);
+      throw new ExpressError("User already exists.", 409);
     }
 
     const user = await prisma.user.create({
@@ -52,11 +51,10 @@ const signup = async (req, res, next) => {
       });
     }
 
-    const error = new ExpressError("User Registration failed.", 400);
-    next(error);
+   throw new ExpressError("User Registration failed.", 400);
+
   } catch (err) {
-    const error = new ExpressError(err.message, 500);
-    next(error);
+    throw new ExpressError(err.message, 500);
   }
 };
 
@@ -75,8 +73,7 @@ const login = async (req, res, next) => {
     });
 
     if (!user) {
-      const err = new ExpressError("User does not exists", 400);
-      next(err);
+      throw new ExpressError("User does not exists", 400);
     }
 
     const token = generateToken(
@@ -99,8 +96,7 @@ const login = async (req, res, next) => {
       },
     });
   } catch (err) {
-    const error = new ExpressError(err.message, 500);
-    next(error);
+    throw new ExpressError(err.message, 500);
   }
 };
 

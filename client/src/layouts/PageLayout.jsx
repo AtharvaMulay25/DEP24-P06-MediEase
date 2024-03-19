@@ -725,7 +725,7 @@ const Layout = ({ children }) => {
         </footer>
       </div>
 
-      <Toaster richColors closeButton expand={false} position="top-center" />
+      <Toaster richColors closeButton  position="top-center" />
     </div>
   );
 };

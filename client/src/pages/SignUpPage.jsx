@@ -14,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {toast} from "sonner";
+import Toaster from "../components/UI/Toaster";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
 export default function SignUpPage() {
@@ -124,7 +125,6 @@ export default function SignUpPage() {
             value={registrationData.role}
             onChange={(value) => handleChange("role", value)}
           >
-            <Option value="ADMIN">Admin</Option>
             <Option value="DOCTOR">Doctor</Option>
             <Option value="PARAMEDICAL">Paramedical Staff</Option>
             <Option value="PATIENT">Patient</Option>
@@ -155,6 +155,7 @@ export default function SignUpPage() {
       )}
       </>
     )} 
+     <Toaster richColors position="top-center"/>
     </>
     
   );

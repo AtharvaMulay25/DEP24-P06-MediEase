@@ -113,6 +113,18 @@ const checkupSchema = Joi.object({
 //   Medicines: Joi.array().items(Joi.object()),
 });
 
+const sendOtpSchema = Joi.object({
+  email: Joi.string().email().required(),
+  role: Joi.string().required().valid('DOCTOR', 'PATIENT', 'ADMIN', 'PARAMEDICAL'), 
+  action: Joi.string().valid('LOGIN', 'SIGNUP').required()
+})
+
+const verifyOtpSchema = Joi.object({
+  email: Joi.string().email().required(),
+  otp: Joi.string().required()  //can do number().integer() if needed
+  
+})
+
 module.exports = {
   medicineSchema,
   supplierSchema,
@@ -123,4 +135,6 @@ module.exports = {
   purchaseSchema,
   patientSchema,
   checkupSchema,
+  sendOtpSchema, 
+  verifyOtpSchema
 };
