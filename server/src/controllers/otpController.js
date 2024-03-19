@@ -3,9 +3,10 @@ const prisma = new PrismaClient()
 const sendMail = require("../utils/sendMail.js");
 const generateOtp = require("../utils/generateOtp.js");
 const ExpressError = require("../utils/ExpressError.js");
+const { OTP_MAIL_TEMPLATE } = require('../../constants.js');
 
 const sendOtp = async (req, res, next) => {
-    const { email, action } = req.body;
+    const { email, action, role } = req.body;
 
     if (!email) {
         const error = new ExpressError("Email is required", 400);
@@ -13,18 +14,28 @@ const sendOtp = async (req, res, next) => {
         return;
     }
 
-    if (action === "SIGNUP") {
-        const userExists = await prisma.user.findUnique({
-            where: {
-                email: email
-            }
-        });
-
-        if (userExists) {
-            const error = new ExpressError("User already exists", 400);
-            next(error);
-            return;
+    const userExists = await prisma.user.findUnique({
+        where: {
+            email: email
         }
+    });
+
+    if (action === "SIGNUP" && userExists) {
+        const error = new ExpressError("User already exists, Please Login", 409);
+        next(error);
+        return ;
+    } 
+
+    if (action === "LOGIN" && !userExists) {
+        const error = new ExpressError("User does not exists, Please Signup", 404);
+        next(error);
+        return ;
+    }
+
+    if (action === "LOGIN" && userExists.role !== role) {
+        const error = new ExpressError("Role does not match", 401);
+        next(error);
+        return ;
     }
 
     const { otp, expiry } = generateOtp();
@@ -51,11 +62,12 @@ const sendOtp = async (req, res, next) => {
         return ;
     }
 
+    const mailTemplate = OTP_MAIL_TEMPLATE(otp);
     const mailOptions = {
         from: "dep2024.p06@gmail.com",
         to: email,
         subject: "Mediease - Signup",
-        html: `<h2>Hi!</h2>\n<h1>Welcome to <span style="color:blue;">Mediease</span>.</h1>\nYour OTP is: <strong>${otp}</strong>. Please use this OTP to verify your email address. The OTP is valid for <strong>10 minutes</strong>.<h4>Regards,\nDEP_P06_2024</h4>`,
+        html: mailTemplate,
         text: ""
     };
 
