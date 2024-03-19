@@ -3,7 +3,7 @@ const Joi = require('joi');
 // Medicine Schema
 const medicineSchema = Joi.object({
   brandName: Joi.string().required(),
-  saltName: Joi.string().required(),
+  saltName: Joi.string().pattern(/^[a-zA-Z]+$/).required(),
   categoryId: Joi.string().required(),
 //   Stock: Joi.array().items(Joi.object()),
 //   Checkups: Joi.array().items(Joi.object()),
