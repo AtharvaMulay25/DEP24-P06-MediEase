@@ -95,7 +95,7 @@ const Navbar = () => {
               Blog
             </Link>
           </nav>
-          <SignedOut>
+          {/* <SignedOut> */}
           <div className=" hidden lg:flex">
             <button
               className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
@@ -105,11 +105,11 @@ const Navbar = () => {
               Login
             </button>
           </div>
-          </SignedOut>
-          <SignedIn>
-          <UserButton afterSignOutUrl="/signin" />
+          {/* </SignedOut> */}
+          {/* <SignedIn> */}
+          {/* <UserButton afterSignOutUrl="/signin" /> */}
 
-          </SignedIn>
+          {/* </SignedIn> */}
           {showForm && <Contact closeForm={closeForm} />}
 
           <div className=" lg:hidden flex items-center">
