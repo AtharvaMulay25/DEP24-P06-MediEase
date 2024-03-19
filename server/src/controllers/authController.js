@@ -75,11 +75,9 @@ const login = async (req, res, next) => {
     });
 
     if (!user) {
-      const err = new ExpressError("Incorrect email or password", 400);
+      const err = new ExpressError("User does not exists", 400);
       next(err);
     }
-
-    //TODO: SEND OTP 
 
     const token = generateToken(
       {

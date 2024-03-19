@@ -31,6 +31,7 @@ const authMiddleware = (role) => {
                 },
             });
             req.recievedToken = token;
+            req.role = req.user?.role;
 
             if (!req.user || (req.user.role !== role)) {
                 const error = new ExpressError(
