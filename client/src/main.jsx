@@ -4,12 +4,14 @@ import App from './App.jsx'
 import './index.css'
 import { ThemeProvider } from "@material-tailwind/react";
 
- 
+import { AuthContextProvider } from './contexts/AuthContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <AuthContextProvider>
       <ThemeProvider>
         <App />
       </ThemeProvider>
+    </AuthContextProvider>
   </React.StrictMode>,
 )

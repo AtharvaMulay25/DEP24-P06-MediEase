@@ -24,15 +24,17 @@ import AddStaff from "./pages/AddStaff";
 import PrescriptionList from "./pages/PrescriptionList";
 import CompleteProfilePatient from "./pages/CompleteProfilePatient";
 import CompleteProfileStaff from "./pages/CompleteProfileStaff";
+import { useAuthContext } from "./hooks/useAuthContext";
 
 function App() {
+  const { userRole } = useAuthContext();
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/signin" element={<SignInPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/signin" element={!userRole ? <SignInPage /> : <Dashboard/>} />
+          <Route path="/signup" element={!userRole ? <SignUpPage /> : <Dashboard/>} />
           <Route path="/pharmadashboard" element={<PharmaDashboard />} />
           <Route path="/medicine/add" element={<AddMedicine />} />
           <Route path="/medicine" element={<MedicineList />} />

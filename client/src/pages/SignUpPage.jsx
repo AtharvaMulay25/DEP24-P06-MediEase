@@ -16,7 +16,11 @@ import axios from "axios";
 import {toast} from "sonner";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
+import { useAuthContext } from "../hooks/useAuthContext.jsx";
+import Cookies from "js-cookie";
+
 export default function SignUpPage() {
+  const { userRole, dispatch } = useAuthContext();
   const [registrationData, setRegistrationData] = useState({
     email: "",
     role: "",
@@ -40,6 +44,11 @@ export default function SignUpPage() {
         
       })
   }
+
+  if (userRole) {
+    navigate("/");
+  } 
+
   const signUp = async() =>
   {
     const user = {email:registrationData.email, role: registrationData.role};
@@ -47,6 +56,15 @@ export default function SignUpPage() {
       const response = await axios.post('http://localhost:4000/api/auth/signup', user);
       if(response.data.ok)
       {
+        //dispatching loggin action 
+        dispatch({
+          type: "LOGIN",
+          payload: response.data.data.user.role,
+        })
+
+        //saving the data into cookies 
+        Cookies.set("user-role", response.data.data.user.role, {expires: 7});
+
         toast.success(response.data.message);
         await asyncTimeout(2000);
       }

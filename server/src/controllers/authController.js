@@ -47,6 +47,7 @@ const signup = async (req, res, next) => {
         data: {
           user: {
             email: user.email,
+            role: user.role
           },
         },
       });
@@ -95,6 +96,7 @@ const login = async (req, res, next) => {
       data: {
         user: {
           email: user.email,
+          role: user.role
         },
       },
     });

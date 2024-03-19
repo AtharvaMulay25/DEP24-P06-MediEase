@@ -16,7 +16,13 @@ import axios from "axios";
 import { toast } from "sonner";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
+import { useAuthContext } from "../hooks/useAuthContext.jsx";
+import Cookies from "js-cookie";
+
+
 export default function SignInPage() {
+  const { userRole, dispatch } = useAuthContext();
+
   const [loading, setLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const navigate = useNavigate();
@@ -24,6 +30,10 @@ export default function SignInPage() {
     email: "",
     role: "",
   });
+
+  if (userRole) {
+    navigate("/");
+  }
 
   const handleChange = (name, value) => {
     setLoginData((prevData) => ({
@@ -50,35 +60,39 @@ export default function SignInPage() {
       user
     );
     if (response.data.ok) {
-     toast.success(response.data.message);
-     await asyncTimeout(2000);
-    }else
-    {
+      //dispatching loggin action 
+      dispatch({
+        type: "LOGIN",
+        payload: response.data.data.user.role,
+      })
+
+      //saving the data into cookies 
+      Cookies.set("user-role", response.data.data.user.role, { expires: 7 });
+      toast.success(response.data.message);
+      await asyncTimeout(2000);
+    } else {
       toast.error(response.data.message);
     }
   };
-  const handleSubmit = async(e)=>
-  {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //handle Validation  *****
 
     setLoading(true);
 
-    try{
-      const data = {...loginData, action:"LOGIN"};
+    try {
+      const data = { ...loginData, action: "LOGIN" };
       console.log(data);
       const response = await axios.post("http://localhost:4000/api/otp/send", data);
-      if(response.data.ok){
+      if (response.data.ok) {
         setIsOtpSent(true);
         toast.success(response.data.message);
       }
-      else
-      {
+      else {
         toast.error(response.data.message);
-      }      
+      }
     }
-    catch(err)
-    {
+    catch (err) {
       console.error(`ERROR (login): ${err?.response?.data?.message}`);
       toast.error(err?.response?.data?.message);
     }

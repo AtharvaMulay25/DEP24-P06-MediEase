@@ -5,8 +5,10 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Contact from "../models/Contact";
 import { UserButton , SignedIn, SignedOut} from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Navbar = () => {
+  const { userRole } = useAuthContext();
   const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -96,7 +98,7 @@ const Navbar = () => {
             </Link>
           </nav>
           {/* <SignedOut> */}
-          <div className=" hidden lg:flex">
+          {!userRole && <div className=" hidden lg:flex">
             <button
               className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
               // onClick={openForm}
@@ -104,7 +106,7 @@ const Navbar = () => {
             >
               Login
             </button>
-          </div>
+          </div>}
           {/* </SignedOut> */}
           {/* <SignedIn> */}
           {/* <UserButton afterSignOutUrl="/signin" /> */}

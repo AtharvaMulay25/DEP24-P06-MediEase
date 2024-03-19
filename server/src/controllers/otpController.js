@@ -14,6 +14,18 @@ const sendOtp = async (req, res, next) => {
         return;
     }
 
+    if (role === "") {
+        const error = new ExpressError("Role is required", 400);
+        next(error)
+        return;
+    }
+
+    if (role !== "ADMIN" && role !== "DOCTOR" && role !== "PHARMACIST" && role !== "PATIENT") {
+        const error = new ExpressError("Role should be valid", 400);
+        next(error)
+        return;
+    }
+
     const userExists = await prisma.user.findUnique({
         where: {
             email: email
