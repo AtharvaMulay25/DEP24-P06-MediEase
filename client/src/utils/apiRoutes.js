@@ -8,6 +8,6 @@ export const apiRoutes = {
   patient: `${baseUrl}/patient`,
   category: `${baseUrl}/category`,
   admin: `${baseUrl}/admin`,
-    otp: `${baseUrl}/otp`,
-    auth: `${baseUrl}/auth`,
+  otp: `${baseUrl}/otp`,
+  auth: `${baseUrl}/auth`,
 };
