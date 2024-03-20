@@ -37,10 +37,10 @@ const getAdminList = async (req, res, next) => {
 const createAdmin = async (req, res, next) => {
   try {
     console.log(req.body);
-    const { adminName, email } = req.body;
+    const { name, email } = req.body;
     const createdRecord = await prisma.user.create({
       data: {
-        adminName,
+        name,
         email,
         role: "ADMIN",
       },

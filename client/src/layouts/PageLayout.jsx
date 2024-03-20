@@ -613,13 +613,13 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/schedule/add")}
+                        onClick={() => navigate("/admin/add")}
                       >
                         Add Admin
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/schedule")}
+                        onClick={() => navigate("/admin")}
                       >
                         Admin List
                       </ListItem>

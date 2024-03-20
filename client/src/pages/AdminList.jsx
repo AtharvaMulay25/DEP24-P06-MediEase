@@ -6,7 +6,7 @@ import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
 const TABLE_HEAD = {
   id: "#",
-  // name: "Name",
+  name: "Name",
   email: "Email",
   action: "Action",
 };
@@ -71,7 +71,7 @@ export default function AdminList() {
             text="Add Admin"
             addLink="/admin/add"
             handleDelete={handleAdminDelete}
-            searchKey="email"
+            searchKey="name"
           />
         </Layout>
       )}
