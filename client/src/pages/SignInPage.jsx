@@ -58,9 +58,9 @@ export default function SignInPage() {
       toast.error(response.data.message);
     }
   };
-  const handleSubmit = async(e)=>
+  const handleSubmit = async()=>
   {
-    e.preventDefault();
+    // e.preventDefault();
     //handle Validation  *****
 
     setLoading(true);
