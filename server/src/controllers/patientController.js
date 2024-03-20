@@ -6,11 +6,7 @@ const prisma = new PrismaClient()
 // route    GET /api/patient
 // @access  Private (Admin) 
 const getPatientList = async (req, res, next) => {
-        let patientList = await prisma.patient.findMany({});
-
-        // console.log("patientList : ", patientList);
-        patientList = patientList.map((patient) => ({...patient, dob: patient.dob.toISOString().split('T')[0] }));
-        
+        let patientList = await prisma.patient.findMany({});     
         return res.status(200).json({
             ok: true,
             data: patientList,
@@ -23,6 +19,7 @@ const getPatientList = async (req, res, next) => {
 // route    POST /api/patient
 // @access  Private (Admin) 
 const createPatient = async (req, res, next) => {
+        console.log(req.body);
         const createdRecord = await prisma.patient.create({
             data: {
                 ...req.body

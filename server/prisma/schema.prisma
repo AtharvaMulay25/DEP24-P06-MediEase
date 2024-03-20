@@ -137,7 +137,6 @@ model Patient {
   id                 String          @id @default(uuid())
   name               String
   department         Department?
-  dob                DateTime?
   age                Int
   email              String          @unique
   bloodGroup         String

@@ -21,7 +21,8 @@ export default function AddPatientForm() {
     patientName: "",
     bloodGroup: "",
     gender: "",
-    dob: "",
+    // dob: "",
+    allergy: "",
     category: "",
     patientAge: "",
     email: "",
@@ -46,10 +47,11 @@ export default function AddPatientForm() {
     const sendData = {
       name: formData.patientName,
       department: formData.department,
-      dob: new Date(formData.dob),
+      // dob: new Date(formData.dob),
       age: parseInt(formData.patientAge),
       email: formData.email,
       bloodGroup: formData.bloodGroup,
+      allergy: formData.allergy,
       program: formData.program,
       fatherOrSpouseName: formData.fatherName,
       category: formData.category.toUpperCase(),
@@ -147,16 +149,16 @@ export default function AddPatientForm() {
                 value={formData.department}
                 onChange={(value) => handleChange("department", value)}
               >
-                <Option value="COMPUTER SCIENCE">Computer Science</Option>
+                <Option value="COMPUTER_SCIENCE">Computer Science</Option>
                 <Option value="ELECTRICAL">Electrical</Option>
                 <Option value="MECHANICAL">Mechanical</Option>
-                <Option value="MATHEMATICS & COMPUTING">
+                <Option value="MATHEMATICS_COMPUTING">
                   Mathematics & Computing
                 </Option>
                 <Option value="CHEMICAL">Chemical</Option>
                 <Option value="CIVIL">Civil</Option>
                 <Option value="METALLURGY">Metallurgy</Option>
-                <Option value="ENGINEERING PHYSICS">Engineering Physics</Option>
+                <Option value="ENGINEERING_PHYSICS">Engineering Physics</Option>
                 <Option value="PHYSICS">Physics</Option>
                 <Option value="CHEMISTRY">Chemistry</Option>
                 <Option value="BIOLOGY">Biology</Option>
@@ -200,7 +202,7 @@ export default function AddPatientForm() {
             </div>
 
             {/* CHECK : dob is redundant */}
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+            {/* <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="dob">
                   Date of Birth <span className="text-red-800">*</span>:
@@ -213,6 +215,20 @@ export default function AddPatientForm() {
                 name="dob"
                 type="date"
                 value={formData.dob}
+                onChange={(e) => handleChange(e.target.name, e.target.value)}
+              />
+            </div> */}
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
+                <label htmlFor="allergy">Allergies(if any):</label>
+              </div>
+              <Input
+                id="allergy"
+                size="md"
+                label="Allergies"
+                name="allergy"
+                type="allergy"
+                value={formData.allergy}
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
               />
             </div>

@@ -84,10 +84,11 @@ const purchaseSchema = Joi.object({
 const patientSchema = Joi.object({
 
   name: Joi.string().required(),
-  department: Joi.string().valid('COMPUTER SCIENCE', 'ELECTRICAL', 'MECHANICAL', 'MATHEMATICS & COMPUTING', 'CHEMICAL', 'CIVIL', 'METALLURGY', 'ENGINEERING PHYSICS', 'PHYSICS', 'CHEMISTRY', 'BIOLOGY', 'MATHEMATICS', 'HUMANITIES').optional(),
-  dob: Joi.date().iso().required(),
+  department: Joi.string().valid('COMPUTER_SCIENCE', 'ELECTRICAL', 'MECHANICAL', 'MATHEMATICS_COMPUTING', 'CHEMICAL', 'CIVIL', 'METALLURGY', 'ENGINEERING_PHYSICS', 'PHYSICS', 'CHEMISTRY', 'BIOLOGY', 'MATHEMATICS', 'HUMANITIES').optional(),
+  // dob: Joi.date().iso().required(),
   age: Joi.number().integer().required(),
   email: Joi.string().email().required(),
+  allergy: Joi.string().optional(),
   bloodGroup: Joi.string().required(),
   program: Joi.string().valid('BTECH', 'MTECH', 'DUAL DEGREE', 'PHD').optional(),
   fatherOrSpouseName: Joi.string().optional(),
