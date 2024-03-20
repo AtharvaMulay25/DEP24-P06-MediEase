@@ -123,10 +123,16 @@ export function SortableTable({
   };
 
   const getDataToExport = () => {
-    const dataToExport = data.map((rowData) => {
+    //removing action field from each row and returning an array of arrays 
+    //updating uuid of first col entry of each row to its row Idx
+    const dataToExport = data.map((rowData, rowIdx) => {
       const tableContent = [];
       Object.keys(tableHead).forEach((key, idx) => {
-        if (idx !== Object.keys(tableHead).length - 1) {
+        if(idx == 0)
+        {
+          tableContent.push(rowIdx+1);
+        }
+        else if (idx !== Object.keys(tableHead).length - 1) {
           tableContent.push(rowData[key]);
         }
       });
@@ -430,7 +436,7 @@ export function SortableTable({
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {index+1}
+                            {(currentPage-1)*itemsPerPage +index+1}
                           </Typography>
                         </td>
                       )
