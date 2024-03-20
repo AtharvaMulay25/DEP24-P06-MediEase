@@ -24,6 +24,8 @@ import AddStaff from "./pages/AddStaff";
 import PrescriptionList from "./pages/PrescriptionList";
 import CompleteProfilePatient from "./pages/CompleteProfilePatient";
 import CompleteProfileStaff from "./pages/CompleteProfileStaff";
+import AddAdmin from "./pages/AddAdmin";
+import AdminList from "./pages/AdminList";
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
           <Route path="/staff" element={<StaffList />} />
           <Route path="/staff/add" element={<AddStaff />} />
           <Route path="/staff/profile" element={<CompleteProfileStaff />} />
+          <Route path="/admin" element={<AdminList />} />
+          <Route path="/admin/add" element={<AddAdmin />} />
         </Routes>
       </BrowserRouter>
     </>
