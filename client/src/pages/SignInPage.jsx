@@ -17,13 +17,13 @@ import { toast } from "sonner";
 import Toaster from "../components/UI/Toaster";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
+import { apiRoutes } from "../utils/apiRoutes";
 export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
-    email: "",
-    role: "",
+    email: ""
   });
 
   const handleChange = (name, value) => {
@@ -47,7 +47,7 @@ export default function SignInPage() {
     console.log(user);
 
     const response = await axios.post(
-      "http://localhost:4000/api/auth/login",
+      `${apiRoutes.auth}/login`,
       user
     );
     if (response.data.ok) {
@@ -68,7 +68,7 @@ export default function SignInPage() {
     try{
       const data = {...loginData, action:"LOGIN"};
       console.log(data);
-      const response = await axios.post("http://localhost:4000/api/otp/send", data);
+      const response = await axios.post(`${apiRoutes.otp}/send`, data);
       if(response.data.ok){
         setIsOtpSent(true);
         toast.success(response.data.message);
@@ -125,24 +125,6 @@ export default function SignInPage() {
                       handleChange(e.target.name, e.target.value);
                     }}
                   />
-                  <Typography
-                    color="blue-gray"
-                    className="-mb-2 ml-2 font-medium"
-                  >
-                    Role<span className="text-red-800">*</span> :
-                  </Typography>
-                  <Select
-                    label="Select Role"
-                    size="lg"
-                    name="role"
-                    value={loginData.role}
-                    onChange={(value) => handleChange("role", value)}
-                  >
-                    <Option value="ADMIN">Admin</Option>
-                    <Option value="DOCTOR">Doctor</Option>
-                    <Option value="PARAMEDICAL">Paramedical Staff</Option>
-                    <Option value="PATIENT">Patient</Option>
-                  </Select>
                   <div className="-ml-2.5">
                     <Checkbox label="Remember Me" />
                   </div>

@@ -6,7 +6,7 @@ const ExpressError = require("../utils/ExpressError.js");
 const { OTP_MAIL_TEMPLATE } = require("../../constants.js");
 
 const sendOtp = async (req, res, next) => {
-  const { email, action, role } = req.body;
+  const { email, action} = req.body;
 
   const userExists = await prisma.user.findUnique({
     where: {
@@ -22,9 +22,9 @@ const sendOtp = async (req, res, next) => {
     throw new ExpressError("User does not exists, Please Signup", 404);
   }
 
-  if (action === "LOGIN" && userExists.role !== role) {
-    throw new ExpressError("Role does not match", 401);
-  }
+  // if (action === "LOGIN" && userExists.role !== role) {
+  //   throw new ExpressError("Role does not match", 401);
+  // }
 
   const { otp, expiry } = generateOtp();
 

@@ -116,7 +116,7 @@ const checkupSchema = Joi.object({
 
 const sendOtpSchema = Joi.object({
   email: Joi.string().email().required(),
-  role: Joi.string().required().valid('DOCTOR', 'PATIENT', 'ADMIN', 'PARAMEDICAL'), 
+  // role: Joi.string().required().valid('DOCTOR', 'PATIENT', 'ADMIN', 'PARAMEDICAL'), 
   action: Joi.string().valid('LOGIN', 'SIGNUP').required()
 })
 

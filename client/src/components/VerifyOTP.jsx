@@ -14,6 +14,7 @@ import {
 import { SyncLoadingScreen } from "./UI/LoadingScreen";
 import axios from "axios";
 import {toast} from "sonner";
+import { apiRoutes } from "../utils/apiRoutes";
 const VerifyOTP = ({email, setIsOtpSent, handler, otpSubmitHandler}) => {
     const [data, setData] = useState(
         {
@@ -46,7 +47,7 @@ const VerifyOTP = ({email, setIsOtpSent, handler, otpSubmitHandler}) => {
         setLoading(true);
         try
         {
-          const response = await axios.post('http://localhost:4000/api/otp/verify', {email: email, otp: data.otp});
+          const response = await axios.post(`${apiRoutes.otp}/verify`, {email: email, otp: data.otp});
           if(response.data.ok){
             toast.success(response.data.message);  //toast messages are not yet integrated**** (no toaster in this branch)
             console.log("verified");

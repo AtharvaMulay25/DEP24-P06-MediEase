@@ -9,7 +9,7 @@ const { generateToken } = require("../utils/handleJWT.js");
 // @access   Public
 const signup = async (req, res, next) => {
   try {
-    const { email, role } = req.body;
+    const { email, role , name} = req.body;
 
     const userAlreadyExists = await prisma.user.findUnique({
       where: {
@@ -25,7 +25,8 @@ const signup = async (req, res, next) => {
       data: {
         id: uuidv4(),
         email,
-        role 
+        role, 
+        name
       },
     });
 
@@ -63,12 +64,11 @@ const signup = async (req, res, next) => {
 // @access   Public
 const login = async (req, res, next) => {
   try {
-    const { email, role } = req.body;
+    const { email} = req.body;
 
     const user = await prisma.user.findUnique({
       where: {
-        email,
-        role
+        email
       },
     });
 
@@ -84,11 +84,11 @@ const login = async (req, res, next) => {
     );
 
     res.cookie("token", token, { httpOnly: true, secure: true });
-    res.cookie("role", role, { httpOnly: true, secure: true });
+    res.cookie("role", user.role, { httpOnly: true, secure: true });
 
     return res.status(200).json({
       ok: true,
-      message: "User logged in successfully.",
+      message: `Logged in successfully as ${user.role}`,
       data: {
         user: {
           email: user.email,

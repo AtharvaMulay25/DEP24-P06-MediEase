@@ -12,6 +12,7 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import { apiRoutes } from "../utils/apiRoutes";
 import axios from "axios";
 import { toast } from "sonner";
 import Toaster from "../components/UI/Toaster";
@@ -21,6 +22,7 @@ export default function SignUpPage() {
   const [registrationData, setRegistrationData] = useState({
     email: "",
     role: "",
+    name: ""
   });
   const [loading, setLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -39,10 +41,10 @@ export default function SignUpPage() {
     });
   };
   const signUp = async () => {
-    const user = { email: registrationData.email, role: registrationData.role };
+    const user = {...registrationData};
     console.log(user);
     const response = await axios.post(
-      "http://localhost:4000/api/auth/signup",
+      `${apiRoutes.auth}/signup`,
       user
     );
     if (response.data.ok) {
@@ -59,10 +61,9 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      const data = { ...registrationData, action: "SIGNUP" };
+      const data = { email: registrationData.email, action: "SIGNUP" };  //not passing name to /otp/send
       console.log(data);
-      const response = await axios.post(
-        "http://localhost:4000/api/otp/send",
+      const response = await axios.post(`${apiRoutes.otp}/send`,
         data
       );
       if (response.data.ok) {
@@ -113,10 +114,10 @@ export default function SignUpPage() {
                     label="Name"
                     size="lg"
                     name="name"
-                    // value={registrationData.name}
-                    // onChange={(e) => {
-                    //   handleChange(e.target.name, e.target.value);
-                    // }}
+                    value={registrationData.name}
+                    onChange={(e) => {
+                      handleChange(e.target.name, e.target.value);
+                    }}
                   />
                   <Typography
                     color="blue-gray"
