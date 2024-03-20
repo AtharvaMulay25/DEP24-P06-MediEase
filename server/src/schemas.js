@@ -125,7 +125,11 @@ const verifyOtpSchema = Joi.object({
   otp: Joi.string().required()  //can do number().integer() if needed
   
 })
-
+const userSchema = Joi.object({
+  email: Joi.string().email().required(),
+  name: Joi.string().required(),
+  role: Joi.string().required().valid('DOCTOR', 'PATIENT', 'ADMIN', 'PARAMEDICAL')
+})
 module.exports = {
   medicineSchema,
   supplierSchema,
@@ -137,5 +141,6 @@ module.exports = {
   patientSchema,
   checkupSchema,
   sendOtpSchema, 
-  verifyOtpSchema
+  verifyOtpSchema,
+  userSchema
 };
