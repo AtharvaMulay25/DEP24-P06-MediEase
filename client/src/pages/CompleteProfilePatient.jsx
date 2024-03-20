@@ -22,7 +22,8 @@ export default function CompleteProfilePatient() {
     patientName: "",
     bloodGroup: "",
     gender: "",
-    dob: "",
+    // dob: "",
+    allergy: "",
     category: "",
     patientAge: "",
     email: "",
@@ -47,10 +48,11 @@ export default function CompleteProfilePatient() {
     const sendData = {
       name: formData.patientName,
       department: formData.department,
-      dob: new Date(formData.dob),
+      // dob: new Date(formData.dob),
       age: parseInt(formData.patientAge),
       email: formData.email,
       bloodGroup: formData.bloodGroup,
+      allergy: formData.allergy,
       program: formData.program,
       fatherOrSpouseName: formData.fatherName,
       category: formData.category.toUpperCase(),
@@ -187,21 +189,17 @@ export default function CompleteProfilePatient() {
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                 />
               </div>
-
-              {/* CHECK : dob is redundant */}
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
-                  <label htmlFor="dob">
-                    Date of Birth <span className="text-red-800">*</span>:
-                  </label>
+                  <label htmlFor="allergy">Allergies(if any):</label>
                 </div>
                 <Input
-                  id="dob"
+                  id="allergy"
                   size="md"
-                  label="Date of Birth"
-                  name="dob"
-                  type="date"
-                  value={formData.dob}
+                  label="Allergies"
+                  name="allergy"
+                  type="allergy"
+                  value={formData.allergy}
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                 />
               </div>

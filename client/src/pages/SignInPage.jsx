@@ -36,7 +36,7 @@ export default function SignInPage() {
   const asyncTimeout = (delay) => {
     return new Promise(() => {
       setTimeout(() => {
-        navigate("/");
+        navigate("/pharmadashboard");
       }, delay);
     });
   };
