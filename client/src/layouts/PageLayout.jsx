@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
-import { GrUserAdmin } from "react-icons/gr";
+import { FaUserCog } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
   Typography,
@@ -593,7 +593,7 @@ const Layout = ({ children }) => {
                     className="border-b-0 p-3"
                   >
                     <ListItemPrefix>
-                      <GrUserAdmin
+                      <FaUserCog
                         className="h-5 w-5"
                         style={{ color: "#f1ffea" }}
                       />
