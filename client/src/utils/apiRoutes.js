@@ -7,7 +7,7 @@ export const apiRoutes = {
   stock: `${baseUrl}/stock`,
   patient: `${baseUrl}/patient`,
   category: `${baseUrl}/category`,
-  admin: `${baseUrl}/admin`,,
-    otp: `${baseUrl}/otp`,
-    auth: `${baseUrl}/auth`,
+  admin: `${baseUrl}/admin`,
+  otp: `${baseUrl}/otp`,
+  auth: `${baseUrl}/auth`,
 };
