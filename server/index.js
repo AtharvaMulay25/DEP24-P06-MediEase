@@ -37,7 +37,7 @@ app.all('*', (req, res) => {
 
 
 app.use((err, req, res, next) => {
-    // console.log(err);
+    console.log(err);
     const {statusCode = 500, message = "Something went wrong"} = err;
     res.status(statusCode).json({
         ok: false, 

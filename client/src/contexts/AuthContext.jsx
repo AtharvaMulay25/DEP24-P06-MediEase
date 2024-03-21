@@ -19,16 +19,21 @@ export const authReducer = (state, action) => {
 
 export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, {
-        userRole: null
+        userRole: null,
+        userEmail: null,
     }); 
 
     useEffect(() => {
-        const user = Cookies.get('user-role');
+        const userRole = Cookies.get('user-role');
+        const userEmail = Cookies.get('user-email');
         
-        if (user) {
+        if (userRole && userEmail) {
             dispatch({
                 type: "LOGIN", 
-                payload: user
+                payload: {
+                    userRole,
+                    userEmail
+                }
             });
         }
 

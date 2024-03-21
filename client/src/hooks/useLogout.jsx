@@ -8,8 +8,10 @@ export const useLogout = () => {
        
     const logout = (tokenExpired = false) => {
         Cookies.removeItem('user-role');    
+        Cookies.removeItem('user-email');
+
         authDispatch({ type: "LOGOUT" });
-        navigate("/login", { state: { loggedOut: true, tokenExpired: tokenExpired }})        
+        // navigate("/signin", { state: { loggedOut: true, tokenExpired: tokenExpired }})        
     };
 
     return { logout };

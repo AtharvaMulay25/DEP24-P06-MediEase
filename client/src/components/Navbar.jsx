@@ -6,9 +6,11 @@ import Contact from "../models/Contact";
 import { UserButton , SignedIn, SignedOut} from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useLogout";
 
 const Navbar = () => {
   const { userRole } = useAuthContext();
+  const { logout } = useLogout();
   const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -28,6 +30,11 @@ const Navbar = () => {
 
   const closeForm = () => {
     setShowForm(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/signin");
   };
 
   return (
@@ -98,7 +105,14 @@ const Navbar = () => {
             </Link>
           </nav>
           {/* <SignedOut> */}
-          {!userRole && <div className=" hidden lg:flex">
+          {userRole ? <div className=" hidden lg:flex">
+            <button
+              className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
+              onClick={() => handleLogout()}
+            >
+              Logout
+            </button>
+          </div> : <div className=" hidden lg:flex">
             <button
               className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
               // onClick={openForm}
