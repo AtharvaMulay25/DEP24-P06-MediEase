@@ -5,9 +5,16 @@ import {
   ChevronDownIcon,
   DocumentIcon,
   ArrowDownTrayIcon,
-  DocumentTextIcon
+  DocumentTextIcon,
 } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon, TrashIcon , EyeIcon} from "@heroicons/react/24/solid";
+import {
+  PencilIcon,
+  UserPlusIcon,
+  TrashIcon,
+  EyeIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
 import {
   Card,
   CardHeader,
@@ -36,17 +43,24 @@ import { useEffect, useState, useRef } from "react";
 import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
 
-export function DialogDefault({ open, setOpen, handleDelete, deletedRecordId, setDeletedRecordId }) {
-  
+export function DialogDefault({
+  open,
+  setOpen,
+  handleDelete,
+  deletedRecordId,
+  setDeletedRecordId,
+}) {
   const handleDialogResponse = () => {
     setOpen(false);
-    setDeletedRecordId(null); 
+    setDeletedRecordId(null);
   };
 
   return (
     <>
       <Dialog open={open}>
-        <DialogHeader className="text-1xl">Are you sure you want to delete this record.</DialogHeader>
+        <DialogHeader className="text-1xl">
+          Are you sure you want to delete this record.
+        </DialogHeader>
         <DialogBody></DialogBody>
         <DialogFooter>
           <Button
@@ -57,10 +71,13 @@ export function DialogDefault({ open, setOpen, handleDelete, deletedRecordId, se
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" onClick={(e) => {
-            handleDelete(e, deletedRecordId)
-            setOpen(false)
-          }}>
+          <Button
+            variant="gradient"
+            onClick={(e) => {
+              handleDelete(e, deletedRecordId);
+              setOpen(false);
+            }}
+          >
             <span>Confirm</span>
           </Button>
         </DialogFooter>
@@ -77,7 +94,7 @@ export function SortableTable({
   text,
   addLink,
   handleDelete,
-  searchKey
+  searchKey,
 }) {
   const [open, setOpen] = useState(false);
   const [deletedRecordId, setDeletedRecordId] = useState(null);
@@ -103,7 +120,6 @@ export function SortableTable({
     setMaxPages(Math.ceil(searchList.length / itemsPerPage));
   }, [searchList, itemsPerPage]);
 
-
   let csvData = [];
 
   useEffect(() => {
@@ -123,16 +139,14 @@ export function SortableTable({
   };
 
   const getDataToExport = () => {
-    //removing action field from each row and returning an array of arrays 
+    //removing action field from each row and returning an array of arrays
     //updating uuid of first col entry of each row to its row Idx
     const dataToExport = data.map((rowData, rowIdx) => {
       const tableContent = [];
       Object.keys(tableHead).forEach((key, idx) => {
-        if(idx == 0)
-        {
-          tableContent.push(rowIdx+1);
-        }
-        else if (idx !== Object.keys(tableHead).length - 1) {
+        if (idx == 0) {
+          tableContent.push(rowIdx + 1);
+        } else if (idx !== Object.keys(tableHead).length - 1) {
           tableContent.push(rowData[key]);
         }
       });
@@ -217,7 +231,9 @@ export function SortableTable({
   };
 
   const filterItems = (str) => {
-    const filteredArray = data.filter(item => item[searchKey].toLowerCase().includes(str.toLowerCase()));
+    const filteredArray = data.filter((item) =>
+      item[searchKey].toLowerCase().includes(str.toLowerCase())
+    );
     setSearchList(filteredArray);
     sorting("action");
   };
@@ -225,7 +241,8 @@ export function SortableTable({
   const paginate = (act) => {
     if (act === "inc") {
       let newPageNum = currentPage + 1;
-      if (newPageNum > Math.ceil(searchList.length / itemsPerPage)) newPageNum = 1;
+      if (newPageNum > Math.ceil(searchList.length / itemsPerPage))
+        newPageNum = 1;
       setCurrentPage(newPageNum);
     } else {
       let newPageNum = currentPage - 1;
@@ -255,8 +272,8 @@ export function SortableTable({
 
     if (col === "id" || col === "temperature") {
       const sorted = [...searchList].sort((a, b) => {
-        if(a[col] === null) return -sortOrder;
-        if(b[col] === null) return sortOrder;
+        if (a[col] === null) return -sortOrder;
+        if (b[col] === null) return sortOrder;
         if (a[col] < b[col]) return sortOrder;
         if (a[col] > b[col]) return -sortOrder;
         return 0;
@@ -265,8 +282,8 @@ export function SortableTable({
       setSearchList(sorted);
     } else {
       const sorted = [...searchList].sort((a, b) => {
-        if(a[col] === null) return -sortOrder;
-        if(b[col] === null) return sortOrder;
+        if (a[col] === null) return -sortOrder;
+        if (b[col] === null) return sortOrder;
         if (a[col].toLowerCase() < b[col].toLowerCase()) return sortOrder;
         if (a[col].toLowerCase() > b[col].toLowerCase()) return -sortOrder;
         return 0;
@@ -289,26 +306,25 @@ export function SortableTable({
         <div className="mb-2 flex-col sm:flex sm:flex-row items-center justify-between gap-8">
           <div>
             <div className="flex flex-row items-center justify-between gap-8">
-
-            <Typography variant="h5" color="blue-gray">
-              {title}
-            </Typography>       
-            {text != "" && (
-            <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:hidden">
-              {/* <Button variant="outlined" size="sm">
+              <Typography variant="h5" color="blue-gray">
+                {title}
+              </Typography>
+              {text != "" && (
+                <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:hidden">
+                  {/* <Button variant="outlined" size="sm">
               view all
               </Button> */}
-              <Button
-                className="flex items-center gap-3"
-                size="sm"
-                onClick={() => {
-                  navigate(addLink);
-                }}
-              >
-                <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> {text}
-              </Button>
-            </div>
-          )}
+                  <Button
+                    className="flex items-center gap-3"
+                    size="sm"
+                    onClick={() => {
+                      navigate(addLink);
+                    }}
+                  >
+                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> {text}
+                  </Button>
+                </div>
+              )}
             </div>
             <Typography color="gray" className="mt-1 font-normal">
               {detail}
@@ -340,34 +356,36 @@ export function SortableTable({
               onChange={(e) => handleSearch(e)}
             />
           </div>
-          <div className="flex justify-evenly md:justify-normal w-full md:w-72">
-            <Tooltip content="Copy to Clipboard">
-              <IconButton variant="text" onClick={copyToClipboard}>
-                <DocumentIcon className="h-4 w-4" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip content="Export to Excel">
-              <IconButton variant="text" onClick={exportToExcel}>
-                <FontAwesomeIcon icon={faFileExcel} className="h-4 w-4" />
-                {/* <FontAwesomeIcon icon="fa-light fa-file-excel" /> */}
-              </IconButton>
-            </Tooltip>
-            <Tooltip content="Export to CSV">
-              <IconButton variant="text">
-                {(csvData = exportToCSV()) && (
-                  <CSVLink data={csvData} filename={`${title}.csv`}>
-                    {" "}
-                    <DocumentTextIcon className="h-4 w-4" />{" "}
-                  </CSVLink>
-                )}
-              </IconButton>
-            </Tooltip>
-            <Tooltip content="Save as PDF">
-              <IconButton variant="text" onClick={exportToPDF}>
-                <ArrowDownTrayIcon className="h-4 w-4" />
-              </IconButton>
-            </Tooltip>
-          </div>
+          {title !== "Pending Request List" && (
+            <div className="flex justify-evenly md:justify-normal w-full md:w-72">
+              <Tooltip content="Copy to Clipboard">
+                <IconButton variant="text" onClick={copyToClipboard}>
+                  <DocumentIcon className="h-4 w-4" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip content="Export to Excel">
+                <IconButton variant="text" onClick={exportToExcel}>
+                  <FontAwesomeIcon icon={faFileExcel} className="h-4 w-4" />
+                  {/* <FontAwesomeIcon icon="fa-light fa-file-excel" /> */}
+                </IconButton>
+              </Tooltip>
+              <Tooltip content="Export to CSV">
+                <IconButton variant="text">
+                  {(csvData = exportToCSV()) && (
+                    <CSVLink data={csvData} filename={`${title}.csv`}>
+                      {" "}
+                      <DocumentTextIcon className="h-4 w-4" />{" "}
+                    </CSVLink>
+                  )}
+                </IconButton>
+              </Tooltip>
+              <Tooltip content="Save as PDF">
+                <IconButton variant="text" onClick={exportToPDF}>
+                  <ArrowDownTrayIcon className="h-4 w-4" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          )}
         </div>
         {/* <div className="flex items-center justify-between gap-4 md:flex-row">
          
@@ -427,31 +445,33 @@ export function SortableTable({
               const classes = "px-3 border-2 opacity-80";
               return (
                 <tr key={index} className="even:bg-blue-gray-50/50">
-                  {Object.entries(tableHead).map(
-                    ([key, value]) =>{
-                      if(key === "id") return (
+                  {Object.entries(tableHead).map(([key, value]) => {
+                    if (key === "id")
+                      return (
                         <td className={classes} key={key}>
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {(currentPage-1)*itemsPerPage +index+1}
+                            {(currentPage - 1) * itemsPerPage + index + 1}
                           </Typography>
                         </td>
-                      )
-                      if(key === "purchaseItems") return (
+                      );
+                    if (key === "purchaseItems")
+                      return (
                         <div className="flex justify-center">
-                        <td className="px-3 border-0 opacity-80">
-                          <Tooltip content="View">
-                          <IconButton variant="text">
-                            <EyeIcon className="h-4 w-4" />
-                          </IconButton>
-                        </Tooltip>                      
-                        </td>
+                          <td className="px-3 border-0 opacity-80">
+                            <Tooltip content="View">
+                              <IconButton variant="text">
+                                <EyeIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                          </td>
                         </div>
-                      )
-                      if( key !== "action" ) return (
+                      );
+                    if (key !== "action")
+                      return (
                         <td className={classes} key={key}>
                           <Typography
                             variant="small"
@@ -461,20 +481,46 @@ export function SortableTable({
                             {rowData[key]}
                           </Typography>
                         </td>
-                      )
-                      })}
+                      );
+                  })}
                   <td className={("", classes)}>
                     <div className="flex gap-0.5">
-                      <Tooltip content="Edit">
-                        <IconButton variant="text">
-                          <PencilIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip content="Delete">
-                        <IconButton variant="text" onClick={(e) => handleDialogDelete(e, rowData["id"])}>
-                          <TrashIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip>
+                      {title !== "Pending Request List" ? (
+                        <>
+                          <Tooltip content="Edit">
+                            <IconButton variant="text">
+                              <PencilIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip content="Delete">
+                            <IconButton
+                              variant="text"
+                              onClick={(e) => handleDelete(e, rowData["id"])}
+                            >
+                              <TrashIcon className="h-4 w-4" />
+                            </IconButton>
+                          </Tooltip>
+                        </>
+                      ) : (
+                        <>
+                          <Tooltip content="Approve">
+                            <IconButton variant="text">
+                              <CheckCircleIcon
+                                className="h-6 w-6"
+                                style={{ color: "green" }}
+                              />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip content="Reject">
+                            <IconButton variant="text">
+                              <XCircleIcon
+                                className="h-6 w-6"
+                                style={{ color: "red" }}
+                              />
+                            </IconButton>
+                          </Tooltip>
+                        </>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -507,7 +553,7 @@ export function SortableTable({
           </div>
         </div>
       </CardFooter>
-      <DialogDefault 
+      <DialogDefault
         open={open}
         setOpen={setOpen}
         handleDelete={handleDelete}
