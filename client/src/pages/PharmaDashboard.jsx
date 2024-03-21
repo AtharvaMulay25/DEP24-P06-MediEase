@@ -1,4 +1,5 @@
 import React from "react";
+import "../index.css";
 import { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import {
@@ -49,9 +50,9 @@ const PharmaDashboard = () => {
     width:
       width < 720
         ? width * (18 / 24)
-        : (width >= 720) & (width <= 1150)
-        ? width * (19 / 24)
-        : width * (13 / 24),
+        : (width >= 720) & (width <= 1200)
+        ? width * (16 / 24)
+        : width * (10 / 24),
     series: [
       {
         name: "Checkups",
@@ -164,8 +165,8 @@ const PharmaDashboard = () => {
 
   const chartConfigPie = {
     type: "pie",
-    width: width < 720 ? 330 : (width >= 720) & (width <= 1150) ? 400 : 340,
-    height: width < 720 ? 330 : (width >= 720) & (width <= 1150) ? 400 : 340,
+    width: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
+    height: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
     series: [44, 55, 13, 43, 22],
     options: {
       chart: {
@@ -191,10 +192,8 @@ const PharmaDashboard = () => {
     <>
       <Layout>
         <div>
-          <div className={`md:grid md:grid-cols-${width <= 1150 ? "2" : "4"}`}>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-1`}
-            >
+          <div className="grid-container -mt-7">
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <GiMedicines
@@ -217,9 +216,7 @@ const PharmaDashboard = () => {
                 </button>
               </div>
             </div>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-1`}
-            >
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <ChartBarIcon className="h-7 w-7 mr-2" />
@@ -239,9 +236,7 @@ const PharmaDashboard = () => {
                 </button>
               </div>
             </div>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-1`}
-            >
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <ShoppingCartIcon className="h-7 w-7 mr-2" />
@@ -261,9 +256,7 @@ const PharmaDashboard = () => {
                 </button>
               </div>
             </div>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-1`}
-            >
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <UserGroupIcon className="h-7 w-7 mr-2" />
@@ -284,8 +277,8 @@ const PharmaDashboard = () => {
               </div>
             </div>
           </div>
-          <div className={`md:grid md:grid-cols-${width <= 1150 ? "2" : "3"}`}>
-            <Card className={`mt-6 ml-4 col-span-2`}>
+          <div className="grid-container2">
+            <Card className="mt-4 ml-4 grid-item21">
               <CardHeader
                 floated={false}
                 shadow={false}
@@ -313,7 +306,7 @@ const PharmaDashboard = () => {
                 <Chart {...chartConfigBar} />
               </CardBody>
             </Card>
-            <Card className={`mt-6 ml-4 col-span-1`}>
+            <Card className="mt-4 ml-4 grid-item22">
               <CardHeader
                 floated={false}
                 shadow={false}

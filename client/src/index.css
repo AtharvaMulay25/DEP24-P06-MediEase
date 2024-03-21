@@ -1,14 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .slick-slide > div {
   margin: 0 10px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+}
+
+.grid-item {
+  border: 0;
+}
+
+.grid-container2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+}
+
+.grid-item21 {
+  border: 0;
+}
+
+.grid-item22 {
+  border: 0;
+}
+
+@media (max-width: 1200px) {
+  .grid-item {
+    grid-column: span 2;
+  }
+  .grid-item21 {
+    grid-column: span 3;
+  }
+  .grid-item22 {
+    grid-column: span 3;
+  }
+}
+
+@media (min-width: 1201px) {
+  .grid-item {
+    grid-column: span 1;
+  }
+  .grid-item21 {
+    grid-column: span 2;
+  }
+  .grid-item22 {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 719px) {
+  .grid-item {
+    grid-column: span 4; 
+  }
 }

@@ -9,10 +9,10 @@ const PENDING_MAIL_TEMPLATE_ADMIN = (email, name, role) => {
   return `<h1><span style="color:blue;">Mediease</span></h1><p> User ${name} with ID ${email} has requested approval for ${role}. Check at ${process.env.CLIENT_URL}/requests </p>`;
 };
 const APPROVED_MAIL_TEMPLATE = (role) => {
-  return `<h1><span style="color:blue;">Mediease</span>.</h1><p>You are <b>approved</b> for your designated role ${role}. Complete your profile now!</p>`;
+  return `<h1><span style="color:blue;">Mediease</span></h1><p>You are <b>approved</b> for your designated role ${role}. Complete your profile now!</p>`;
 };
 const REJECTED_MAIL_TEMPLATE = (role) => {
-  return `<h1><span style="color:blue;">Mediease</span>.</h1><p>You are <b>rejected</b> from your applied role ${role}.</p>`;
+  return `<h1><span style="color:blue;">Mediease</span></h1><p>You are <b>rejected</b> from your applied role ${role}.</p>`;
 };
 module.exports = {
     OTP_EXPIRY_TIME,
