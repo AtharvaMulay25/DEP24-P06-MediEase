@@ -163,18 +163,8 @@ const DoctorDashboard = () => {
 
   const chartConfigPie = {
     type: "pie",
-    width:
-      width < 720
-        ? width * (1 / 2)
-        : (width >= 720) & (width <= 1150)
-        ? width * (1 / 3)
-        : width * (1 / 5),
-    height:
-      width < 720
-        ? width * (1 / 2)
-        : (width >= 720) & (width <= 1150)
-        ? width * (1 / 3)
-        : width * (1 / 5),
+    width: width < 720 ? 330 : (width >= 720) & (width <= 1150) ? 400 : 340,
+    height: width < 720 ? 330 : (width >= 720) & (width <= 1150) ? 400 : 340,
     series: [44, 55, 13, 43, 22],
     options: {
       chart: {
@@ -200,11 +190,9 @@ const DoctorDashboard = () => {
     <>
       <Layout>
         <div>
-          <div className="md:grid md:grid-cols-4">
+          <div className={`md:grid md:grid-cols-${width <= 1150 ? "2" : "4"}`}>
             <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
+              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-1`}
             >
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
@@ -229,9 +217,7 @@ const DoctorDashboard = () => {
               </div>
             </div>
             <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
+              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-1`}
             >
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
@@ -253,9 +239,7 @@ const DoctorDashboard = () => {
               </div>
             </div>
             <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
+              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-1`}
             >
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
@@ -277,9 +261,7 @@ const DoctorDashboard = () => {
               </div>
             </div>
             <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
+              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-1`}
             >
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
@@ -301,8 +283,8 @@ const DoctorDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="md:grid md:grid-cols-3">
-            <Card className={`mt-6 ml-4 col-span-${width > 1150 ? "2" : "3"}`}>
+          <div className={`md:grid md:grid-cols-${width <= 1150 ? "2" : "3"}`}>
+            <Card className={`mt-6 ml-4 col-span-2`}>
               <CardHeader
                 floated={false}
                 shadow={false}
@@ -330,7 +312,7 @@ const DoctorDashboard = () => {
                 <Chart {...chartConfigBar} />
               </CardBody>
             </Card>
-            <Card className={`mt-6 ml-4 col-span-${width > 1150 ? "1" : "3"}`}>
+            <Card className={`mt-6 ml-4 col-span-1`}>
               <CardHeader
                 floated={false}
                 shadow={false}
