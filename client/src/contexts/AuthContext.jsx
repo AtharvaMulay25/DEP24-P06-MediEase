@@ -41,6 +41,7 @@ export const AuthContextProvider = ({ children }) => {
                 }
             });
         }
+        console.log(userEmail, userName, userRole);
 
     }, []);
 

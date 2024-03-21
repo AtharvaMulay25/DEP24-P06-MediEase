@@ -19,12 +19,14 @@ const categoryRoutes = require("./src/routes/categoryRoutes.js");
 const adminRoutes = require("./src/routes/adminRoutes.js");
 const authRoutes = require("./src/routes/authRoutes.js");
 const otpRoutes = require("./src/routes/otpRoutes.js");
+const mailRoutes = require("./src/routes/mailRoutes.js");
 const staffRoutes = require("./src/routes/staffRoutes.js");
 const scheduleRoutes = require('./src/routes/scheduleRoutes.js');
 const ExpressError = require("./src/utils/ExpressError.js");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/otp", otpRoutes);
+app.use("/api/mail", mailRoutes);
 app.use("/api/purchase", purchaseRoutes);
 app.use("/api/supplier", supplierRoutes);
 app.use("/api/medicine", medicineRoutes);

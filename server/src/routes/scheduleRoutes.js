@@ -10,8 +10,8 @@ const {
 } = require('../controllers/scheduleController');
 //schedule routes
 router.get('/', catchAsync(getScheduleList));
-router.post('/', validateSchedule, catchAsync(createSchedule));
-router.put('/:id', validateSchedule, catchAsync(updateSchedule));
+router.post('/', catchAsync(createSchedule));
+router.put('/:id', catchAsync(updateSchedule));
 router.delete('/:id', catchAsync(deleteSchedule));
 
 module.exports = router;

@@ -27,7 +27,7 @@ const sendOtp = async (req, res, next) => {
   // }
 
   const { otp, expiry } = generateOtp();
-
+  console.log(otp);
   //setting up otp details in the verification model
   const otpDetail = await prisma.verification.upsert({
     where: {

@@ -37,10 +37,12 @@ export default function SignUpPage() {
       [name]: value,
     }));
   };
-  const asyncTimeout = (delay) => {
+  const asyncTimeout = (delay, role) => {
     return new Promise(() => {
       setTimeout(() => {
-        navigate("/pharmadashboard");
+        if(role !== "PATIENT")
+        navigate("/staff/profile");
+        else navigate("/patient/profile")
       }, delay);
     });
   };
@@ -64,7 +66,7 @@ export default function SignUpPage() {
       Cookies.set("user-name", resData.data.user.name, { expires: 7 });
 
       toast.success(response.data.message);
-      await asyncTimeout(2000);
+      await asyncTimeout(2000, user.role);
     } else {
       toast.error(response.data.message);
     }
@@ -179,7 +181,7 @@ export default function SignUpPage() {
                     variant="small"
                     className="mt-6 flex justify-center"
                   >
-                    Have have an account?
+                    Already have an account?
                     <Typography
                       as="a"
                       href="/signin"

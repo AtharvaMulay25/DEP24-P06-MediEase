@@ -11,23 +11,26 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { toast } from "sonner";
+import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
-
+import { useAuthContext } from "../hooks/useAuthContext";
 export default function CompleteProfilePatient() {
   const navigate = useNavigate();
-
+  const { userName , userEmail} = useAuthContext();
+  console.log(userName, userEmail)
   const [formData, setFormData] = useState({
-    patientName: "",
+    name: userName,
+    department:"",
+    age : "",
+    email: userEmail,
     bloodGroup: "",
-    gender: "",
-    // dob: "",
     allergy: "",
+    program:"", 
+    fatherOrSpouseName:"", 
     category: "",
-    patientAge: "",
-    email: "",
-    department: "",
+    gender: ""
   });
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -46,19 +49,18 @@ export default function CompleteProfilePatient() {
     e.preventDefault();
     // Here you can handle the submission of the form
     const sendData = {
-      name: formData.patientName,
-      department: formData.department,
-      // dob: new Date(formData.dob),
-      age: parseInt(formData.patientAge),
-      email: formData.email,
+      name: userName,
+      age: parseInt(formData.age),
+      email: userEmail,
       bloodGroup: formData.bloodGroup,
-      allergy: formData.allergy,
-      program: formData.program,
-      fatherOrSpouseName: formData.fatherName,
       category: formData.category.toUpperCase(),
       gender: formData.gender.toUpperCase(),
     };
-
+    if(formData.department) sendData.department = formData.department;
+    if(formData.allergy) sendData.allergy = formData.allergy;
+    if(formData.program) sendData.program = formData.program;
+    if(formData.fatherOrSpouseName) sendData.fatherOrSpouseName = formData.fatherOrSpouseName;
+    
     try {
       const res = await axios.post(apiRoutes.patient, sendData);
       console.log("res : ", res);
@@ -66,23 +68,25 @@ export default function CompleteProfilePatient() {
       const data = res?.data;
       if (data && data?.ok) {
         console.log("patient record saved successfully");
-        toast.success("Patient added successfully");
+        toast.success("Profile updated successfully.");
         setTimeout(() => {
-          navigate("/patient");
+          navigate("/");
         }, 1000);
       } else {
         console.error(
           `ERROR (create-patient-record): ${data?.message || "NO-DATA"}`
         );
-        toast.error(error?.response?.data?.message || "Failed to add Patient");
       }
     } catch (error) {
       console.error(
-        `ERROR (create-patient-record): ${error?.response?.data?.message}`
-      );
+        `ERROR (create-patient-record): ${error?.response?.data?.message}`        
+        );
+      toast.error(error?.response?.data?.message || "Failed to update profile.");
     }
   };
   return (
+    <>
+     
     <div className="bg-gray-50 min-h-screen flex justify-center items-center">
       <Card
         style={{
@@ -111,19 +115,19 @@ export default function CompleteProfilePatient() {
             <div className="grid md:grid-cols-2 gap-y-8 gap-x-4 w-full">
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-4 w-full md:w-72 justify-end">
-                  <label htmlFor="patientName">
+                  <label htmlFor="name">
                     Full Name <span className="text-red-800">*</span>:
                   </label>
                 </div>
                 <Input
-                  id="patientName"
+                  id="name"
                   size="md"
-                  label="Full Name"
+                  label="Name"
                   className="w-full"
-                  name="patientName"
-                  value={formData.patientName}
-                  onChange={(e) => handleChange(e.target.name, e.target.value)}
-                />
+                  name="name"
+                  value={userName}
+                  disabled
+                  />
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
@@ -136,16 +140,16 @@ export default function CompleteProfilePatient() {
                   value={formData.department}
                   onChange={(value) => handleChange("department", value)}
                 >
-                  <Option value="COMPUTER SCIENCE">Computer Science</Option>
+                  <Option value="COMPUTER_SCIENCE">Computer Science</Option>
                   <Option value="ELECTRICAL">Electrical</Option>
                   <Option value="MECHANICAL">Mechanical</Option>
-                  <Option value="MATHEMATICS & COMPUTING">
+                  <Option value="MATHEMATICS_COMPUTING">
                     Mathematics & Computing
                   </Option>
                   <Option value="CHEMICAL">Chemical</Option>
                   <Option value="CIVIL">Civil</Option>
                   <Option value="METALLURGY">Metallurgy</Option>
-                  <Option value="ENGINEERING PHYSICS">
+                  <Option value="ENGINEERING_PHYSICS">
                     Engineering Physics
                   </Option>
                   <Option value="PHYSICS">Physics</Option>
@@ -157,19 +161,19 @@ export default function CompleteProfilePatient() {
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
-                  <label htmlFor="patientAge">
+                  <label htmlFor="age">
                     Age <span className="text-red-800">*</span>:
                   </label>
                 </div>
                 <Input
-                  id="patientAge"
+                  id="age"
                   size="md"
                   label="Age"
                   type="number"
                   min={1}
                   max={100}
-                  name="patientAge"
-                  value={formData.patientAge}
+                  name="age"
+                  value={formData.age}
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                 />
               </div>
@@ -185,8 +189,8 @@ export default function CompleteProfilePatient() {
                   label="Email"
                   name="email"
                   type="email"
-                  value={formData.email}
-                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  value={userEmail}
+                  disabled
                 />
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
@@ -279,14 +283,14 @@ export default function CompleteProfilePatient() {
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
-                  <label htmlFor="fatherName">Father's/Spouse's Name</label>:
+                  <label htmlFor="fatherOrSpouseName">Father's/Spouse's Name</label>:
                 </div>
                 <Input
-                  id="fatherName"
+                  id="fatherOrSpouseName"
                   size="md"
                   label="Father's Name"
-                  name="fatherName"
-                  value={formData.fatherName}
+                  name="fatherOrSpouseName"
+                  value={formData.fatherOrSpouseName}
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                 />
               </div>
@@ -306,5 +310,7 @@ export default function CompleteProfilePatient() {
         </CardFooter>
       </Card>
     </div>
+    <Toaster position="top-center" richColors/>
+    </>
   );
 }

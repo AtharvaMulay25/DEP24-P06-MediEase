@@ -7,6 +7,7 @@ import { UserButton , SignedIn, SignedOut} from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const { userRole } = useAuthContext();
@@ -34,7 +35,10 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/signin");
+    toast.success("Logged Out Successfully");
+    setTimeout(() => {
+      navigate("/signin");
+    }, 1000);
   };
 
   return (

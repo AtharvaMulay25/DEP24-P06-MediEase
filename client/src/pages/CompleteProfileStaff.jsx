@@ -10,22 +10,25 @@ import {
   Select as MaterialSelect,
   Option,
 } from "@material-tailwind/react";
-
+import {toast} from "sonner";
+import Toaster from "../components/UI/Toaster";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
 export default function CompleteProfileStaff() {
   const navigate = useNavigate();
-
+  const { userName , userEmail, userRole} = useAuthContext();
   const departments = ["Ayurvedic", "Gynecology", "Homeopathy"];
   const roles = ["Doctor", "Paramedical Staff"];
 
   const [formData, setFormData] = useState({
-    staffName: "",
-    role: "",
+    staffName: userName,
+    role: userRole,
     department: "",
     gender: "",
-    email: "",
+    email: userEmail,
     mobileNumber: "",
   });
 
@@ -41,16 +44,35 @@ export default function CompleteProfileStaff() {
     e.preventDefault();
 
     const data = {
-      staffName: formData.staffName,
-      role: formData.role,
-      department: formData.department,
-      email: formData.email,
-      gender: formData.gender,
-      mobileNumber: formData.mobileNumber,
+      name: userName,
+      role: userRole,      
+      email: userEmail,
+      gender: formData.gender.toUpperCase(),
     };
+    if(formData.department) data.department = formData.department.toUpperCase();
+    if(formData.mobileNumber) data.mobileNumber = formData.mobileNumber;
+    console.log(data);
+    try {
+      const response = await axios.post(apiRoutes.staff, data);
+      console.log(response);
+      if (response.data.ok) {
+        console.log("Staff Profile Created");
+        toast.success("Staff Profile Updated Successfully!"); 
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
+    } catch (error) {
+      console.error(
+        `ERROR (create-staff-record): ${error?.response?.data?.message}`        
+        );
+      toast.error(error?.response?.data?.message|| "Failed to update Staff Profile");
+    }
   };
 
   return (
+    <>
+    
     <div className="bg-gray-50 min-h-screen flex justify-center items-center">
       <Card
         style={{
@@ -89,8 +111,8 @@ export default function CompleteProfileStaff() {
                   label="Staff Name"
                   className="w-full"
                   name="staffName"
-                  value={formData.staffName}
-                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  value={userName}
+                  disabled
                 />
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
@@ -104,8 +126,8 @@ export default function CompleteProfileStaff() {
                   size="md"
                   name="role"
                   label="Role"
-                  value={formData.role}
-                  onChange={(value) => handleChange("role", value)}
+                  value={userRole}
+                  disabled
                 >
                   {roles.map((group) => (
                     <Option key={group} value={group}>
@@ -145,8 +167,8 @@ export default function CompleteProfileStaff() {
                   label="Email"
                   className="w-full"
                   name="email"
-                  value={formData.email}
-                  onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  value={userEmail}
+                  disabled
                 />
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
@@ -196,5 +218,7 @@ export default function CompleteProfileStaff() {
         </CardFooter>
       </Card>
     </div>
+    <Toaster richColors position="top-center"/>
+    </>
   );
 }
