@@ -10,4 +10,5 @@ export const apiRoutes = {
   admin: `${baseUrl}/admin`,
   otp: `${baseUrl}/otp`,
   auth: `${baseUrl}/auth`,
+  staff: `${baseUrl}/staff`,
 };

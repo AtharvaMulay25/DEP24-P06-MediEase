@@ -10,15 +10,16 @@ import {
   Select as MaterialSelect,
   Option,
 } from "@material-tailwind/react";
-
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
 export default function AddStaffForm() {
   const navigate = useNavigate();
 
   const departments = ["Ayurvedic", "Gynecology", "Homeopathy"];
-  const roles = ["Doctor", "Paramedical Staff"];
+  const roles = ["Doctor", "Paramedical"];
 
   const [formData, setFormData] = useState({
     staffName: "",
@@ -41,13 +42,25 @@ export default function AddStaffForm() {
     e.preventDefault();
 
     const data = {
-      staffName: formData.staffName,
-      role: formData.role,
-      department: formData.department,
+      name: formData.staffName,
+      role: formData.role.toUpperCase(),
+      department: formData.department.toUpperCase(),
       email: formData.email,
-      gender: formData.gender,
+      gender: formData.gender.toUpperCase(),
       mobileNumber: formData.mobileNumber,
     };
+
+    try {
+      const response = await axios.post(apiRoutes.staff, data);
+      console.log(response);
+      toast.success("Staff added successfully");
+      setTimeout(() => {
+        navigate("/staff");
+      }, 1000);
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.response?.data?.message || "Failed to add Staff");
+    }
   };
 
   return (
