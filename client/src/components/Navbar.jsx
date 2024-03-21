@@ -34,8 +34,11 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout();
+    console.log("logged out successfully");
     navigate("/signin");
   };
+
+  console.log("user-role : ", userRole);
 
   return (
     <div className=" fixed top-0 w-full z-10 text-white">

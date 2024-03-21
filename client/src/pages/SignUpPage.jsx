@@ -40,7 +40,8 @@ export default function SignUpPage() {
   const asyncTimeout = (delay) => {
     return new Promise(() => {
       setTimeout(() => {
-        navigate("/pharmadashboard");
+        if (userRole === "PARAMEDICAL") navigate("/pharmadashboard");
+        else navigate("/doctordashboard");
       }, delay);
     });
   };
@@ -52,6 +53,15 @@ export default function SignUpPage() {
       user
     );
     if (response.data.ok) {
+      const resData = response.data;
+      //setting up cookies 
+      Cookies.set("user-role", resData.data.user.role);
+      Cookies.set("user-email", resData.data.user.email);
+      Cookies.set("user-name", resData.data.user.name);
+
+      //dispatching action 
+      dispatch({ type: "LOGIN", payload: resData.data.user });
+
       toast.success(response.data.message);
       await asyncTimeout(2000);
     } else {

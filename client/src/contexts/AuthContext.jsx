@@ -6,7 +6,7 @@ export const AuthContext = createContext();
 export const authReducer = (state, action) => {
     switch (action.type) {
         case 'LOGIN': return {
-            userRole: action.payload
+            ...action.payload
         }
         case 'LOGOUT': return {
             userRole: null
@@ -21,18 +21,22 @@ export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, {
         userRole: null,
         userEmail: null,
+        userName: "",
     }); 
 
     useEffect(() => {
         const userRole = Cookies.get('user-role');
         const userEmail = Cookies.get('user-email');
+        const userName = Cookies.get('user-name');
         
-        if (userRole && userEmail) {
+        console.log(userRole, userEmail, userName);
+        if (userRole && userEmail && userName) {
             dispatch({
                 type: "LOGIN", 
                 payload: {
                     userRole,
-                    userEmail
+                    userEmail,
+                    userName
                 }
             });
         }

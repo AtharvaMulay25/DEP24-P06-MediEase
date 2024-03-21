@@ -31,11 +31,26 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 
+const roleMap = new Map([
+  ["ADMIN", ["PHARMA_DASHBOARD", "DOCTOR_DASHBOARD", "STOCK", "MEDICINE", "PURCHASE", "SUPPLIER", "PATIENT", "PRESCRIPTION", "STAFF", "SCHEDULE", "ADMIN"]],
+  ["DOCTOR", ["DOCTOR_DASHBOARD", "STOCK", "MEDICINE", "PATIENT", "PRESCRIPTION", "STAFF", "SCHEDULE"]],
+  ["PATIENT", ["DOCTOR_DASHBOARD", "SCHEDULE"]],
+  ["PARAMEDICAL", ["DASHBOARD", "STOCK", "MEDICINE", "PURCHASE", "SUPPLIER", "PATIENT", "PRESCRIPTION", "STAFF", "SCHEDULE"]]
+]);
+
+import { useAuthContext } from "../hooks/useAuthContext";
+
 const Layout = ({ children }) => {
+  const { userRole, userName } = useAuthContext(); 
+
   const [open, setOpen] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const [roleArray, setRoleArray] = useState([]);
+
   const navigate = useNavigate();
+
+  
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
@@ -79,6 +94,13 @@ const Layout = ({ children }) => {
       mediaQuery.removeEventListener("change", handleResize);
     };
   }, []);
+
+
+  useEffect(() => {
+    // console.log("userRole: ", userRole);
+    // console.log("roleArray: ",  roleMap.get(userRole));
+    if (roleMap.has(userRole)) setRoleArray(roleMap.get(userRole));
+  }, [userRole]);
 
   return (
     <div className="h-screen flex">
@@ -130,12 +152,12 @@ const Layout = ({ children }) => {
                   <div>
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-semibold text-lg">
-                        Atharva Mulay
+                        {userName}
                       </Typography>
                     )}
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-normal text-xs">
-                        Pharmaceutical Staff
+                        {userRole}
                       </Typography>
                     )}
                   </div>
@@ -160,18 +182,29 @@ const Layout = ({ children }) => {
               className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal overflow-y-auto"
               style={{ color: "#f1ffea" }}
             >
-              <a href="/pharmadashboard">
+              {roleArray.includes("PHARMA_DASHBOARD") && <a href="/pharmadashboard">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                         hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
                 >
                   <MdSpaceDashboard className="h-5 w-5 mr-4" />
                   {!(isCollapsed & !isHovered) && (
-                    <Typography className="font-normal">Dashboard</Typography>
+                    <Typography className="font-normal">Pharma Dashboard</Typography>
                   )}
                 </li>
-              </a>
-              <a href="/stock">
+              </a>}
+              {roleArray.includes("DOCTOR_DASHBOARD") && <a href="/doctordashboard">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
+                >
+                  <MdSpaceDashboard className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Doctor Dashboard</Typography>
+                  )}
+                </li>
+              </a>}
+              {roleArray.includes("STOCK") && <a href="/stock">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                          hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
@@ -181,8 +214,8 @@ const Layout = ({ children }) => {
                     <Typography className="font-normal">Stock</Typography>
                   )}
                 </li>
-              </a>
-              <Accordion
+              </a>}
+              {roleArray.includes("MEDICINE") && <Accordion
                 open={open === 1}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -247,9 +280,9 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
+              </Accordion>}
 
-              <Accordion
+              {roleArray.includes("PURCHASE") && <Accordion
                 open={open === 2}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -302,8 +335,9 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              
+              {roleArray.includes("SUPPLIER") && <Accordion
                 open={open === 3}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -356,8 +390,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArray.includes("PATIENT") && <Accordion
                 open={open === 4}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -410,8 +444,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArray.includes("PRESCRIPTION") && <Accordion
                 open={open === 5}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -464,8 +498,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArray.includes("STAFF") && <Accordion
                 open={open === 6}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -518,8 +552,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArray.includes("SCHEDULE") && <Accordion
                 open={open === 7}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -572,8 +606,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArray.includes("ADMIN") && <Accordion
                 open={open === 8}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -626,7 +660,7 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
+              </Accordion>}
             </ul>
           </div>
         </div>

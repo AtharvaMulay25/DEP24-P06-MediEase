@@ -32,10 +32,6 @@ export default function SignInPage() {
     email: ""
   });
 
-  if (userRole) {
-    navigate("/");
-  }
-
   const handleChange = (name, value) => {
     setLoginData((prevData) => ({
       ...prevData,
@@ -46,7 +42,8 @@ export default function SignInPage() {
   const asyncTimeout = (delay) => {
     return new Promise(() => {
       setTimeout(() => {
-        navigate("/pharmadashboard");
+        if (userRole === "PARAMEDICAL") navigate("/pharmadashboard");
+        else navigate("/doctordashboard");
       }, delay);
     });
   };
@@ -61,14 +58,15 @@ export default function SignInPage() {
       user
     );
     if (response.data.ok) {
-      //dispatching loggin action 
-      dispatch({
-        type: "LOGIN",
-        payload: response.data.data.user.role,
-      })
+      const resData = response.data;
+      //setting up cookies 
+      Cookies.set("user-role", resData.data.user.role, { expires: 1 });
+      Cookies.set("user-email", resData.data.user.email, { expires: 1 });
+      Cookies.set("user-name", resData.data.user.name, { expires: 1 });
 
-      //saving the data into cookies 
-      Cookies.set("user-role", response.data.data.user.role, { expires: 7 });
+      //dispatching action 
+      dispatch({ type: "LOGIN", payload: resData.data.user });
+
       toast.success(response.data.message);
       await asyncTimeout(2000);
     } else {
