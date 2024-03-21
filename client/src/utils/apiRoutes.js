@@ -11,4 +11,5 @@ export const apiRoutes = {
   otp: `${baseUrl}/otp`,
   auth: `${baseUrl}/auth`,
   staff: `${baseUrl}/staff`,
+  schedule: `${baseUrl}/schedule`,
 };

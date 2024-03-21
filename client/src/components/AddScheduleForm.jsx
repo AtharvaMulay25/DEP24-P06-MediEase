@@ -69,14 +69,32 @@ export default function AddScheduleForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // console.log("selected staff : ", selectedStaff);
+    
     const data = {
-      doctorName: formData.doctorName,
-      department: formData.department,
-      email: formData.email,
+      staffId: selectedStaff.value.id,
       day: formData.day,
       shift: formData.shift,
     };
+
+    try {
+      const response = await axios.post(apiRoutes.schedule, data);
+      const resData = response.data;
+      
+      if (resData.ok) {
+        console.log("Schedule added successfully");
+        toast.success(resData.message); 
+        setTimeout(() => {
+          navigate("/schedule");
+        }, 1000);
+      } else {
+        console.log("Adding Schedule Failed : ", response?.data?.data?.message);
+        toast.error(response?.data?.data?.message); 
+      }
+    } catch (err) {
+      console.log(`ERROR (add-schedule): ${err?.response?.data?.data?.message}`);
+      toast.error(err?.response?.data?.data?.message); 
+    }
   };
 
   return (
@@ -161,7 +179,7 @@ export default function AddScheduleForm() {
                 disabled
                 name="role"
                 label="Role"
-                value={selectedStaff.role}
+                value={selectedStaff?.value?.role || "Role"}
                 // onChange={(e) => handleChange(e.target.name, e.target.value)}
               />
             </div>

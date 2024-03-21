@@ -141,7 +141,7 @@ export default function AddStaffForm() {
                 ))}
               </MaterialSelect>
             </div>
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+            {formData.role === "Doctor" && <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 md:w-72 w-full justify-end">
                 <label htmlFor="mobileNo">Department :</label>
               </div>
@@ -159,7 +159,7 @@ export default function AddStaffForm() {
                   </Option>
                 ))}
               </MaterialSelect>
-            </div>
+            </div>}
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="day">
