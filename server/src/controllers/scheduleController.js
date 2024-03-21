@@ -8,12 +8,25 @@ const ExpressError = require("../utils/ExpressError");
 // @access  Private (Admin)
 const getScheduleList = async (req, res, next) => {
   try {
-    const scheduleList = await prisma.schedule.findMany({});
-    // console.log(scheduleList);
+    const scheduleList = await prisma.schedule.findMany({
+      include: {
+        Staff: true
+      }
+    });
+    // console.log("Schedule list : ", scheduleList);
+
+    const sendScheduleList = scheduleList.map((schedule) => ({
+      staffId: schedule.staffId,
+      day: schedule.day,
+      shift: schedule.shift,
+      name: schedule.Staff.name,
+      department: schedule.Staff.department,
+      email: schedule.Staff.email
+    }));
 
     return res.status(200).json({
       ok: true,
-      data: scheduleList,
+      data: sendScheduleList,
       message: "Schedule List retrieved successfully",
     });
   } catch (err) {
@@ -108,8 +121,8 @@ const updateSchedule = async (req, res, next) => {
 // @access  Private (Admin)
 const deleteSchedule = async (req, res, next) => {
   try {
-    // console.log("req.body : ", req.body);
     const { id } = req.params;
+    console.log("id : ", id);
 
     const deletedRecord = await prisma.schedule.delete({
       where: {

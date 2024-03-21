@@ -27,15 +27,22 @@ const supplierSchema = Joi.object({
 
 // Staff Schema
 const staffSchema = Joi.object({
-
   name: Joi.string().required(),
   email: Joi.string().email().required(),
+  mobileNumber: Joi.string().optional(),
   role: Joi.string().valid('DOCTOR', 'PARAMEDICAL').required(),
-  speciality: Joi.string().optional(),
+  department: Joi.string().optional(),
   gender: Joi.string().valid('MALE', 'FEMALE').required(),
-  shiftSchedule: Joi.string().required(),
+  // shiftSchedule: Joi.string().required(),
 //   DoctorCheckups: Joi.array().items(Joi.object()),
 //   StaffCheckups: Joi.array().items(Joi.object()),
+});
+
+// Staff Schema
+const scheduleSchema = Joi.object({
+  staffId: Joi.string().required(),
+  shift: Joi.string().valid('MORNING', 'AFTERNOON', 'NIGHT').required(),
+  day: Joi.string().valid('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY').required(),
 });
 
 // Stock Schema
@@ -134,6 +141,7 @@ module.exports = {
   medicineSchema,
   supplierSchema,
   staffSchema,
+  scheduleSchema,
   stockSchema,
   purchaseListSchema,
   categorySchema,

@@ -1,6 +1,8 @@
 const express = require('express'); 
 const router = express.Router();
-//controllers
+const catchAsync = require('../utils/catchAsync');
+
+const { validateStaff } = require('../middlewares');
 const { 
     getStaffList,
     createStaff,
@@ -8,12 +10,10 @@ const {
     deleteStaff
 } = require('../controllers/staffController');
 
-// const {  } = require('../middlewares');
-const catchAsync = require('../utils/catchAsync');
-//medicines routes
+
 router.get('/', catchAsync(getStaffList));
-router.post('/', catchAsync(createStaff));
-router.put('/:id', catchAsync(updateStaff));
+router.post('/', validateStaff, catchAsync(createStaff));
+router.put('/:id', validateStaff, catchAsync(updateStaff));
 router.delete('/:id', catchAsync(deleteStaff));
 
 module.exports = router;

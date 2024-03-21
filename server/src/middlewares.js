@@ -3,6 +3,7 @@ const {
   medicineSchema,
   supplierSchema,
   staffSchema,
+  scheduleSchema,
   stockSchema,
   patientSchema,
   purchaseListSchema,
@@ -38,6 +39,17 @@ module.exports.validateSupplier = (req, res, next) => {
 
 module.exports.validateStaff = (req, res, next) => {
   const { error } = staffSchema.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((e) => e.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+}
+
+module.exports.validateSchedule = (req, res, next) => {
+  const { error } = scheduleSchema.validate(req.body);
 
   if (error) {
     const msg = error.details.map((e) => e.message).join(",");
