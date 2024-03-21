@@ -14,7 +14,7 @@ body {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Grid with 4 columns */
+  grid-template-columns: repeat(4, 1fr); 
 }
 
 .grid-item {
@@ -23,7 +23,7 @@ body {
 
 .grid-container2 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Grid with 4 columns */
+  grid-template-columns: repeat(3, 1fr); 
 }
 
 .grid-item21 {
@@ -34,10 +34,9 @@ body {
   border: 0;
 }
 
-/* Media query for screens with width less than or equal to 1150px */
 @media (max-width: 1200px) {
   .grid-item {
-    grid-column: span 2; /* Set col-span-2 for all grid items */
+    grid-column: span 2;
   }
   .grid-item21 {
     grid-column: span 3;
@@ -47,10 +46,9 @@ body {
   }
 }
 
-/* Media query for screens with width greater than 1150px */
 @media (min-width: 1201px) {
   .grid-item {
-    grid-column: span 1; /* Set col-span-1 for all grid items */
+    grid-column: span 1;
   }
   .grid-item21 {
     grid-column: span 2;
@@ -60,9 +58,8 @@ body {
   }
 }
 
-/* Media query for screens with minimum width of 720px */
-@media (max-width: 720px) {
+@media (max-width: 719px) {
   .grid-item {
-    grid-column: span 4; /* Set col-span-1 for all grid items */
+    grid-column: span 4; 
   }
 }

@@ -50,9 +50,9 @@ const PharmaDashboard = () => {
     width:
       width < 720
         ? width * (18 / 24)
-        : (width >= 720) & (width <= 1150)
-        ? width * (19 / 24)
-        : width * (13 / 24),
+        : (width >= 720) & (width <= 1200)
+        ? width * (16 / 24)
+        : width * (10 / 24),
     series: [
       {
         name: "Checkups",
@@ -165,8 +165,8 @@ const PharmaDashboard = () => {
 
   const chartConfigPie = {
     type: "pie",
-    width: width < 720 ? 330 : (width >= 720) & (width <= 1150) ? 400 : 340,
-    height: width < 720 ? 330 : (width >= 720) & (width <= 1150) ? 400 : 340,
+    width: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
+    height: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
     series: [44, 55, 13, 43, 22],
     options: {
       chart: {

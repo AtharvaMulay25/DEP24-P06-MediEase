@@ -48,7 +48,7 @@ const DoctorDashboard = () => {
     width:
       width < 720
         ? width * (18 / 24)
-        : (width >= 720) & (width <= 1150)
+        : (width >= 720) & (width <= 1200)
         ? width * (19 / 24)
         : width * (13 / 24),
     series: [
@@ -163,8 +163,8 @@ const DoctorDashboard = () => {
 
   const chartConfigPie = {
     type: "pie",
-    width: width < 720 ? 330 : (width >= 720) & (width <= 1150) ? 400 : 340,
-    height: width < 720 ? 330 : (width >= 720) & (width <= 1150) ? 400 : 340,
+    width: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
+    height: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
     series: [44, 55, 13, 43, 22],
     options: {
       chart: {
