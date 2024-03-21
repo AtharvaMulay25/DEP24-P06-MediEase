@@ -27,6 +27,7 @@ import CompleteProfileStaff from "./pages/CompleteProfileStaff";
 import AddAdmin from "./pages/AddAdmin";
 import AdminList from "./pages/AdminList";
 import { useAuthContext } from "./hooks/useAuthContext";
+import RequestList from "./pages/RequestList";
 
 function App() {
   const { userRole } = useAuthContext();
@@ -61,6 +62,7 @@ function App() {
           <Route path="/staff/profile" element={<CompleteProfileStaff />} />
           <Route path="/admin" element={<AdminList />} />
           <Route path="/admin/add" element={<AddAdmin />} />
+          <Route path="/requests" element={<RequestList />} />
         </Routes>
       </BrowserRouter>
     </>

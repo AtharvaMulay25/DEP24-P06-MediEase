@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
-import { FaUserCog } from "react-icons/fa";
+import { FaUserCog, FaExclamation } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
   Typography,
@@ -171,6 +171,17 @@ const Layout = ({ children }) => {
                   <MdSpaceDashboard className="h-5 w-5 mr-4" />
                   {!(isCollapsed & !isHovered) && (
                     <Typography className="font-normal">Dashboard</Typography>
+                  )}
+                </li>
+              </a>
+              <a href="/requests">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
+                >
+                  <FaExclamation className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Requests</Typography>
                   )}
                 </li>
               </a>
@@ -783,7 +794,7 @@ const Layout = ({ children }) => {
         </footer>
       </div>
 
-      <Toaster richColors closeButton  position="top-center" />
+      <Toaster richColors closeButton position="top-center" />
     </div>
   );
 };
