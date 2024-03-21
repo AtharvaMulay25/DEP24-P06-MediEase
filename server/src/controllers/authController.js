@@ -9,7 +9,7 @@ const { generateToken } = require("../utils/handleJWT.js");
 // @access   Public
 const signup = async (req, res, next) => {
   try {
-    const { email, role , name} = req.body;
+    const { email, role, name } = req.body;
 
     const userAlreadyExists = await prisma.user.findUnique({
       where: {
@@ -25,7 +25,7 @@ const signup = async (req, res, next) => {
       data: {
         id: uuidv4(),
         email,
-        role, 
+        role,
         name
       },
     });
@@ -47,13 +47,14 @@ const signup = async (req, res, next) => {
         data: {
           user: {
             email: user.email,
-            role: user.role
+            role: user.role,
+            name: user.name
           },
         },
       });
     }
 
-   throw new ExpressError("User Registration failed.", 400);
+    throw new ExpressError("User Registration failed.", 400);
 
   } catch (err) {
     throw new ExpressError(err.message, 500);
@@ -65,7 +66,7 @@ const signup = async (req, res, next) => {
 // @access   Public
 const login = async (req, res, next) => {
   try {
-    const { email} = req.body;
+    const { email } = req.body;
 
     const user = await prisma.user.findUnique({
       where: {
@@ -93,7 +94,8 @@ const login = async (req, res, next) => {
       data: {
         user: {
           email: user.email,
-          role: user.role
+          role: user.role,
+          name: user.name,
         },
       },
     });
