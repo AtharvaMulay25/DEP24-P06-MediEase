@@ -30,8 +30,11 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Layout = ({ children }) => {
+  const { userRole, userName } = useAuthContext();
+
   const [open, setOpen] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -130,12 +133,12 @@ const Layout = ({ children }) => {
                   <div>
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-semibold text-lg">
-                        Atharva Mulay
+                        {userName}
                       </Typography>
                     )}
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-normal text-xs">
-                        Pharmaceutical Staff
+                        {userRole}
                       </Typography>
                     )}
                   </div>

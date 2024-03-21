@@ -62,13 +62,17 @@ export default function SignInPage() {
     );
     if (response.data.ok) {
       //dispatching loggin action 
+      const resData = response.data;
       dispatch({
         type: "LOGIN",
-        payload: response.data.data.user.role,
+        payload: resData.data.user,
       })
 
       //saving the data into cookies 
-      Cookies.set("user-role", response.data.data.user.role, { expires: 7 });
+      Cookies.set("user-role", resData.data.user.role, { expires: 7 });
+      Cookies.set("user-email", resData.data.user.email, { expires: 7 });
+      Cookies.set("user-name", resData.data.user.name, { expires: 7 });
+      
       toast.success(response.data.message);
       await asyncTimeout(2000);
     } else {

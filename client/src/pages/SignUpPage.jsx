@@ -52,6 +52,17 @@ export default function SignUpPage() {
       user
     );
     if (response.data.ok) {
+      const resData = response.data;
+      dispatch({
+        type: "LOGIN",
+        payload: resData.data.user,
+      })
+
+      //saving the data into cookies 
+      Cookies.set("user-role", resData.data.user.role, { expires: 7 });
+      Cookies.set("user-email", resData.data.user.email, { expires: 7 });
+      Cookies.set("user-name", resData.data.user.name, { expires: 7 });
+
       toast.success(response.data.message);
       await asyncTimeout(2000);
     } else {

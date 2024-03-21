@@ -40,6 +40,7 @@ const signup = async (req, res, next) => {
 
       res.cookie("token", token, { httpOnly: true, secure: true });
       res.cookie("role", role, { httpOnly: true, secure: true });
+      res.cookie("name", user.name, { httpOnly: true, secure: true });
 
       return res.status(201).json({
         ok: true,
@@ -87,6 +88,7 @@ const login = async (req, res, next) => {
 
     res.cookie("token", token, { httpOnly: true, secure: true });
     res.cookie("role", user.role, { httpOnly: true, secure: true });
+    res.cookie("name", user.name, { httpOnly: true, secure: true });
 
     return res.status(200).json({
       ok: true,
