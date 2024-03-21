@@ -21,6 +21,14 @@ model User {
   @@map("user")
 }
 
+model Requests{
+  id    String   @id @default(uuid())
+  email String   @unique
+  name  String
+  role  UserRole
+  @@map("requests")
+}
+
 model Verification {
   id         String   @id @default(uuid())
   email      String   @unique

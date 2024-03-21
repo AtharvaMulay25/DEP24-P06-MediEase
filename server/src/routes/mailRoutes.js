@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 //controllers
-const {sendMailController} = require("../controllers/mailController.js");
+const {approveRequestController, rejectRequestController, pendingRequestController} = require("../controllers/mailController.js");
 const catchAsync = require('../utils/catchAsync');
 
-router.post("/send", catchAsync(sendMailController));
+router.post("/approve", catchAsync(approveRequestController));
+router.post("/reject", catchAsync(rejectRequestController));
+router.post("/pending", catchAsync(pendingRequestController));
 
 module.exports = router;

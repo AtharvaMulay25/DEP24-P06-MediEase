@@ -26,7 +26,6 @@ export default function RequestList() {
   //     toast.error('Failed to fetch Purchase List')
   //   }
   // };
-  // import Layout from "../layouts/PageLayout";
   // import { apiRoutes } from "../utils/apiRoutes";
   // export default function PurchaseList() {
   //   const [purchase, setPurchase] = useState([]);
@@ -62,6 +61,36 @@ export default function RequestList() {
   //     }
   //   };
 
+  const handleRequestApprove = async (e, id) => {
+    try {
+      const reqData = {id};
+      const res = await axios.post(`${apiRoutes.mail}/approve`,reqData);
+      const { data } = res;
+      console.log(data);
+      toast.success(data.message);
+    }
+    catch (err) {
+      console.error(`ERROR (request-approve): ${err?.response?.data?.message}`);
+      toast.error(err?.response?.data?.message || 'Failed to approve request');
+    }
+  };
+
+    const handleRequestReject = async (e, id) => {
+      try {
+        const reqData = {id};
+        const res = await axios.post(`${apiRoutes.mail}/reject`,reqData);
+        const { data } = res;
+        console.log(data);
+        toast.success(data.message);
+      }
+      catch (err) {
+        console.error(`ERROR (request-reject): ${err?.response?.data?.message}`);
+        toast.error(err?.response?.data?.message || 'Failed to reject request');
+      }
+    }; 
+
+
+
   return (
     <>
       {/* {loading && <SyncLoadingScreen />} */}
@@ -73,6 +102,8 @@ export default function RequestList() {
           data={MockData}
           text=""
           detail="See latest signup requests."
+          handleApprove={handleRequestApprove}
+          handleReject={handleRequestReject}
           //   handleDelete={handlePurchaseDelete}
           searchKey="name"
         />

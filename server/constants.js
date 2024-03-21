@@ -15,6 +15,10 @@ const REJECTED_MAIL_TEMPLATE = (role) => {
   return `<h1><span style="color:blue;">Mediease</span>.</h1><p>You are <b>rejected</b> from your applied role ${role}.</p>`;
 };
 module.exports = {
-  OTP_EXPIRY_TIME,
-  OTP_MAIL_TEMPLATE,
-};
+    OTP_EXPIRY_TIME,
+    OTP_MAIL_TEMPLATE, 
+    PENDING_MAIL_TEMPLATE_USER,
+    PENDING_MAIL_TEMPLATE_ADMIN,
+    APPROVED_MAIL_TEMPLATE,
+    REJECTED_MAIL_TEMPLATE
+}
