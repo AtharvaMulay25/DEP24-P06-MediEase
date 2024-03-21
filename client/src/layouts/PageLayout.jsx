@@ -133,12 +133,12 @@ const Layout = ({ children }) => {
                   <div>
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-semibold text-lg">
-                        {userName}
+                        {userName || ""}
                       </Typography>
                     )}
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-normal text-xs">
-                        {userRole}
+                        {userRole || ""}
                       </Typography>
                     )}
                   </div>
