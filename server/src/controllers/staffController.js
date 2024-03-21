@@ -10,7 +10,7 @@ const ExpressError = require('../utils/ExpressError');
 // @access  Private (Admin)
 const getStaffList = async (req, res, next) => {
     const staffList = await prisma.staff.findMany({});
-    console.log("staffList : ", staffList);
+    // console.log("staffList : ", staffList);
 
     return res.status(200).json({
         ok: true,
