@@ -2,6 +2,7 @@ import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
+import {toast} from 'sonner';
 
 const TABLE_HEAD = {
   id: "#",
@@ -15,9 +16,11 @@ const getMedicinesData = async () => {
   try {
     const response = await axios.get(apiRoutes.medicine);
     // console.log(response.data.data);
+    toast.success('Medicine List fetched successfully')
     return response.data.data;
   } catch (error) {
     console.error(`ERROR (get-medicine-list): ${error?.response?.data?.message}`);
+    toast.error(error?.response?.data?.message || 'Failed to fetch Medicine List')
   }
 };
 
@@ -45,6 +48,7 @@ export default function MedicineList() {
       
       if (data?.ok) {
         console.log(`MESSAGE : ${data?.message}`);
+        toast.success(data?.message);
         setMedicines((prev) => prev.filter(p => p.id !== id));
       } else {
         // TODO: show an error message
@@ -52,6 +56,7 @@ export default function MedicineList() {
       }
     } catch (err) {
       console.error(`ERROR (medicine_list_delete): ${err?.response?.data?.message}`);
+      toast.error(err?.response?.data?.message || 'Failed to delete Medicine');
     }
   };
 

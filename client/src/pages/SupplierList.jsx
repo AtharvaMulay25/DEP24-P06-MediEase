@@ -1,5 +1,6 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState , useEffect} from "react";
+import {toast} from 'sonner';
 import axios from "axios";
 import { GridLoadingScreen, SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
@@ -18,9 +19,11 @@ const TABLE_HEAD = {
 const getSuppliersData = async () => {
   try {
     const response = await axios.get(apiRoutes.supplier);
+    toast.success('Supplier List fetched successfully')
     return response.data.data;
   } catch (error) {
     console.error(`ERROR (get-supplier-list): ${error?.response?.data?.message}`);
+    toast.error('Failed to fetch Supplier List')
   }
 }
 
@@ -50,13 +53,15 @@ export default function SupplierList() {
       
       if (data?.ok) {
         console.log(`MESSAGE : ${data?.message}`);
-        setSuppliers((prev) => prev.filter(p => p.id !== id));
+        toast.success(data?.message)
+;        setSuppliers((prev) => prev.filter(p => p.id !== id));
       } else {
         // TODO: show an error message
         console.log(`ERROR (supplier_list_delete): ${data.message}`);
       }
     } catch (err) {
       console.error(`ERROR (supplier_list_delete): ${err?.response?.data?.message}`);
+      toast.error(err?.response?.data?.message || 'Failed to delete Supplier');
     }
   };
 

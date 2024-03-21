@@ -3,7 +3,7 @@ const Joi = require('joi');
 // Medicine Schema
 const medicineSchema = Joi.object({
   brandName: Joi.string().required(),
-  saltName: Joi.string().required(),
+  saltName: Joi.string().pattern(/^[a-zA-Z]+$/).required(),
   categoryId: Joi.string().required(),
 //   Stock: Joi.array().items(Joi.object()),
 //   Checkups: Joi.array().items(Joi.object()),
@@ -84,10 +84,11 @@ const purchaseSchema = Joi.object({
 const patientSchema = Joi.object({
 
   name: Joi.string().required(),
-  department: Joi.string().valid('COMPUTER SCIENCE', 'ELECTRICAL', 'MECHANICAL', 'MATHEMATICS & COMPUTING', 'CHEMICAL', 'CIVIL', 'METALLURGY', 'ENGINEERING PHYSICS', 'PHYSICS', 'CHEMISTRY', 'BIOLOGY', 'MATHEMATICS', 'HUMANITIES').optional(),
-  dob: Joi.date().iso().required(),
+  department: Joi.string().valid('COMPUTER_SCIENCE', 'ELECTRICAL', 'MECHANICAL', 'MATHEMATICS_COMPUTING', 'CHEMICAL', 'CIVIL', 'METALLURGY', 'ENGINEERING_PHYSICS', 'PHYSICS', 'CHEMISTRY', 'BIOLOGY', 'MATHEMATICS', 'HUMANITIES').optional(),
+  // dob: Joi.date().iso().required(),
   age: Joi.number().integer().required(),
   email: Joi.string().email().required(),
+  allergy: Joi.string().optional(),
   bloodGroup: Joi.string().required(),
   program: Joi.string().valid('BTECH', 'MTECH', 'DUAL DEGREE', 'PHD').optional(),
   fatherOrSpouseName: Joi.string().optional(),
@@ -113,6 +114,22 @@ const checkupSchema = Joi.object({
 //   Medicines: Joi.array().items(Joi.object()),
 });
 
+const sendOtpSchema = Joi.object({
+  email: Joi.string().email().required(),
+  // role: Joi.string().required().valid('DOCTOR', 'PATIENT', 'ADMIN', 'PARAMEDICAL'), 
+  action: Joi.string().valid('LOGIN', 'SIGNUP').required()
+})
+
+const verifyOtpSchema = Joi.object({
+  email: Joi.string().email().required(),
+  otp: Joi.string().required()  //can do number().integer() if needed
+  
+})
+const userSchema = Joi.object({
+  email: Joi.string().email().required(),
+  name: Joi.string().required(),
+  role: Joi.string().required().valid('DOCTOR', 'PATIENT', 'ADMIN', 'PARAMEDICAL')
+})
 module.exports = {
   medicineSchema,
   supplierSchema,
@@ -123,4 +140,7 @@ module.exports = {
   purchaseSchema,
   patientSchema,
   checkupSchema,
+  sendOtpSchema, 
+  verifyOtpSchema,
+  userSchema
 };

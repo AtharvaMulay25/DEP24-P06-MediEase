@@ -1,5 +1,6 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
+import {toast} from 'sonner';
 import axios from "axios";
 import {
   GridLoadingScreen,
@@ -19,9 +20,11 @@ const TABLE_HEAD = {
 const getStockData = async () => {
   try {
     const response = await axios.get(apiRoutes.stock);
+    toast.success('Stock List fetched successfully')
     return response.data.data;
   } catch (error) {
     console.error(`ERROR (get-stock-list): ${error?.response?.data?.message}`);
+    toast.error('Failed to fetch Stock List')
   }
 };
 
@@ -49,10 +52,12 @@ export default function StockList() {
       
       if (data?.ok) {
         console.log(`MESSAGE : ${data?.message}`);
+        toast.success(data?.message);
         setStock((prev) => prev.filter(p => p.id !== id));
       } else {
         // TODO: show an error message
         console.log(`ERROR (stock_list_delete): ${data.message}`);
+        toast.error(err?.response?.data?.message || 'Failed to delete Stock Entry');
       }
     } catch (err) {
       console.error(`ERROR (stock_list_delete): ${err?.response?.data?.message}`);

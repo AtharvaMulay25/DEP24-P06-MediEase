@@ -1,5 +1,6 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
+import {toast} from 'sonner';
 import axios from "axios";
 import {
   SyncLoadingScreen,
@@ -19,9 +20,11 @@ const getPurchaseData = async () => {
   try {
     const response = await axios.get(apiRoutes.purchase);
     console.log("response", response.data.data)
+    toast.success('Purchase List fetched successfully')
     return response.data.data;
   } catch (error) {
     console.error(`ERROR (get-purchase-list): ${error?.response?.data?.message}`);
+    toast.error('Failed to fetch Purchase List')
   }
 };
 // import MockData from "../assets/MOCK_DATA_purchase.json";
@@ -48,6 +51,7 @@ export default function PurchaseList() {
       console.log(data)
       if (data?.ok) {
         console.log(`MESSAGE : ${data?.message}`);
+        toast.success(data?.message);
         setPurchase((prev) => prev.filter(p => p.id !== id));
       } else {
         // TODO: show an error message
@@ -56,6 +60,7 @@ export default function PurchaseList() {
     }
      catch (err) {
       console.error(`ERROR (purchase_list_delete): ${err?.response?.data?.message}`);
+      toast.error(err?.response?.data?.message || 'Failed to delete Purchase');
     }
   };
   return (

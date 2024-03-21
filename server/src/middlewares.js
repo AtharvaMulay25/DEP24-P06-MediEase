@@ -8,7 +8,10 @@ const {
   purchaseListSchema,
   purchaseSchema,
   categorySchema,
-  checkupSchema
+  checkupSchema,
+  sendOtpSchema,
+  verifyOtpSchema,
+  userSchema
 } = require('./schemas');
 
 module.exports.validateMedicine = (req, res, next) => {
@@ -101,6 +104,39 @@ module.exports.validateCategory = (req, res, next) => {
 
 module.exports.validateCheckup = (req, res, next) => {
   const { error } = checkupSchema.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((e) => e.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+}
+
+module.exports.validateSendOtp = (req, res, next) =>{
+  const {error} = sendOtpSchema.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((e) => e.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+}
+
+module.exports.validateVerifyOtp = (req, res, next) =>{
+  const {error} = verifyOtpSchema.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((e) => e.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+}
+
+module.exports.validateUser = (req, res, next) =>{
+  const {error} = userSchema.validate(req.body);
 
   if (error) {
     const msg = error.details.map((e) => e.message).join(",");
