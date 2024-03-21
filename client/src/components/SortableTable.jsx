@@ -506,7 +506,9 @@ export function SortableTable({
                       ) : (
                         <>
                           <Tooltip content="Approve">
-                            <IconButton variant="text" onClick={(e) => handleApprove(e, rowData["id"])}>
+                            <IconButton variant="text" 
+                            onClick={(e) => handleApprove(e, rowData["id"])}
+                            >
                               <CheckCircleIcon
                                 className="h-6 w-6"
                                 style={{ color: "green" }}
@@ -514,7 +516,9 @@ export function SortableTable({
                             </IconButton>
                           </Tooltip>
                           <Tooltip content="Reject">
-                            <IconButton variant="text" onClick={(e) => handleReject(e, rowData["id"])}>
+                            <IconButton variant="text"
+                             onClick={(e) => handleReject(e, rowData["id"])}
+                             >
                               <XCircleIcon
                                 className="h-6 w-6"
                                 style={{ color: "red" }}

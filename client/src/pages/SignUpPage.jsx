@@ -26,7 +26,7 @@ export default function SignUpPage() {
   const [registrationData, setRegistrationData] = useState({
     email: "",
     role: "",
-    name: ""
+    name: "",
   });
   const [loading, setLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -37,38 +37,45 @@ export default function SignUpPage() {
       [name]: value,
     }));
   };
-  const asyncTimeout = (delay, role) => {
+  const asyncTimeout = (delay, redirectUrl) => {
     return new Promise(() => {
       setTimeout(() => {
-        if(role !== "PATIENT")
-        navigate("/staff/profile");
-        else navigate("/patient/profile")
+        navigate(redirectUrl);
       }, delay);
     });
   };
   const signUp = async () => {
-    const user = {...registrationData};
+    const user = { ...registrationData };
     console.log(user);
-    const response = await axios.post(
-      `${apiRoutes.auth}/signup`,
-      user
-    );
-    if (response.data.ok) {
-      const resData = response.data;
-      dispatch({
-        type: "LOGIN",
-        payload: resData.data.user,
-      })
-
-      //saving the data into cookies 
-      Cookies.set("user-role", resData.data.user.role, { expires: 7 });
-      Cookies.set("user-email", resData.data.user.email, { expires: 7 });
-      Cookies.set("user-name", resData.data.user.name, { expires: 7 });
-
-      toast.success(response.data.message);
-      await asyncTimeout(2000, user.role);
+    if (user.role !== "PATIENT") {
+      // navigate("/staff/profile");
+      const response = await axios.post(`${apiRoutes.mail}/pending`, user);
+      if (response.data.ok) {
+        toast.success(response.data.message);
+        await asyncTimeout(3000, "/");
+      } else {
+        toast.error(response.data.message);
+      }
     } else {
-      toast.error(response.data.message);
+      const response = await axios.post(`${apiRoutes.auth}/signup`, user);
+      if (response.data.ok) {
+        const resData = response.data;
+        dispatch({
+          type: "LOGIN",
+          payload: resData.data.user,
+        });
+
+        //saving the data into cookies
+        Cookies.set("user-role", resData.data.user.role, { expires: 7 });
+        Cookies.set("user-email", resData.data.user.email, { expires: 7 });
+        Cookies.set("user-name", resData.data.user.name, { expires: 7 });
+
+        toast.success(response.data.message);
+
+        await asyncTimeout(2000, "/patient/profile");
+      } else {
+        toast.error(response.data.message);
+      }
     }
   };
   const handleSubmit = async () => {
@@ -78,11 +85,9 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      const data = { email: registrationData.email, action: "SIGNUP" };  //not passing name to /otp/send
+      const data = { email: registrationData.email, action: "SIGNUP" }; //not passing name to /otp/send
       console.log(data);
-      const response = await axios.post(`${apiRoutes.otp}/send`,
-        data
-      );
+      const response = await axios.post(`${apiRoutes.otp}/send`, data);
       if (response.data.ok) {
         setIsOtpSent(true);
         toast.success(response.data.message);

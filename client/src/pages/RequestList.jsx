@@ -5,7 +5,7 @@ import axios from "axios";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import Layout from "../layouts/PageLayout";
 import MockData from "../assets/MOCK_DATA_requests.json";
-
+import { apiRoutes } from "../utils/apiRoutes";
 const TABLE_HEAD = {
   id: "#",
   name: "Name",
@@ -14,57 +14,36 @@ const TABLE_HEAD = {
   action: "Action",
 };
 
+const getRequestsData = async () => {
+  try {
+    const response = await axios.get(apiRoutes.requests);
+    console.log(response.data.data);
+    toast.success("Request List fetched successfully");
+    return response.data.data;
+  } catch (error) {
+    console.error(`ERROR (get-request-list): ${error?.response?.data?.message}`);
+    toast.error(error?.response?.data?.message || "Failed to fetch Request List");
+  }
+}
 export default function RequestList() {
-  // const getPurchaseData = async () => {
-  //   try {
-  //     const response = await axios.get(apiRoutes.purchase);
-  //     console.log("response", response.data.data)
-  //     toast.success('Purchase List fetched successfully')
-  //     return response.data.data;
-  //   } catch (error) {
-  //     console.error(`ERROR (get-purchase-list): ${error?.response?.data?.message}`);
-  //     toast.error('Failed to fetch Purchase List')
-  //   }
-  // };
-  // import { apiRoutes } from "../utils/apiRoutes";
-  // export default function PurchaseList() {
-  //   const [purchase, setPurchase] = useState([]);
-  //   const [loading, setLoading] = useState(true);
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       const data = await getPurchaseData();
-  //       // console.log("data out", data);
-  //       setPurchase(data);
-  //       setLoading(false);
-  //     };
-  //     fetchData();
-  //   }, []);
+  const [loading, setLoading] = useState(true);
+  const [requests, setRequests] = useState([]);
 
-  //   const handlePurchaseDelete = async(e, id) => {
-  //     try {
-  //       const res = await axios.delete(`${apiRoutes.purchase}/${id}`);
+  useEffect(() => {
+    const fetchRequests = async () => {
+      const data = await getRequestsData();
+      setRequests(data);
+      setLoading(false);
+    };
+    fetchRequests();
+  }, []);
 
-  //       const { data } = res;
-  //       console.log(data)
-  //       if (data?.ok) {
-  //         console.log(`MESSAGE : ${data?.message}`);
-  //         toast.success(data?.message);
-  //         setPurchase((prev) => prev.filter(p => p.id !== id));
-  //       } else {
-  //         // TODO: show an error message
-  //         console.log(`ERROR (purchase_list_delete): ${data.message}`);
-  //       }
-  //     }
-  //      catch (err) {
-  //       console.error(`ERROR (purchase_list_delete): ${err?.response?.data?.message}`);
-  //       toast.error(err?.response?.data?.message || 'Failed to delete Purchase');
-  //     }
-  //   };
 
   const handleRequestApprove = async (e, id) => {
     try {
       const reqData = {id};
       const res = await axios.post(`${apiRoutes.mail}/approve`,reqData);
+      console.log(res);
       const { data } = res;
       console.log(data);
       toast.success(data.message);
@@ -93,22 +72,22 @@ export default function RequestList() {
 
   return (
     <>
-      {/* {loading && <SyncLoadingScreen />} */}
-      {/* {!loading && ( */}
+      {loading && <SyncLoadingScreen />}
+      {!loading && (
       <Layout>
         <SortableTable
           tableHead={TABLE_HEAD}
           title="Pending Request List"
-          data={MockData}
+          data={requests}
           text=""
           detail="See latest signup requests."
           handleApprove={handleRequestApprove}
           handleReject={handleRequestReject}
-          //   handleDelete={handlePurchaseDelete}
+            // handleDelete={handlePurchaseDelete}
           searchKey="name"
         />
       </Layout>
-      {/* )} */}
+       )} 
     </>
   );
 }

@@ -100,18 +100,20 @@ const rejectRequestController = async (req, res, next) => {
 };
 
 const pendingRequestController = async (req, res, next) => {
-  const { id } = req.body;
-  const request = await prisma.requests.findUnique({
-    where: {
-      id: id,
+  const { name, email, role } = req.body;
+  const request = await prisma.requests.create({
+    data: {
+      name,
+      email,
+      role,
     },
   });
   if (!request) {
-    throw new ExpressError("Request not found", 404);
+    throw new ExpressError("Error in creating request", 500);
   }
   const admins = await prisma.user.findMany({
     where: {
-      role: "admin",
+      role: "ADMIN",
     },
   });
   const mailTemplateUser = PENDING_MAIL_TEMPLATE_USER();

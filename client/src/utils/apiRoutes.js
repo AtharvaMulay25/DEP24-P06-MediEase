@@ -9,6 +9,8 @@ export const apiRoutes = {
   category: `${baseUrl}/category`,
   admin: `${baseUrl}/admin`,
   otp: `${baseUrl}/otp`,
+  mail: `${baseUrl}/mail`,
+  requests: `${baseUrl}/requests`,
   auth: `${baseUrl}/auth`,
   staff: `${baseUrl}/staff`,
   schedule: `${baseUrl}/schedule`,
