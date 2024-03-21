@@ -32,6 +32,23 @@ const createStaff = async (req, res, next) => {
         gender
     } = req.body;
 
+    const staff =  await prisma.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
+      
+      if(!staff){
+          // Create user record
+          const createdUserRecord = await prisma.user.create({
+              data: {
+                  name,
+                  email,
+                  role
+              }
+          })
+      }
+
     // Create staff record
     const createdRecord = await prisma.staff.create({
         data: {

@@ -20,6 +20,36 @@ const getPatientList = async (req, res, next) => {
 // @access  Private (Admin) 
 const createPatient = async (req, res, next) => {
         console.log(req.body);
+        const {
+            name,
+            department,
+            age,
+            email,
+            bloodGroup,
+            program,
+            fatherOrSpouseName,
+            category,
+            gender,
+            allergy
+        } = req.body;
+
+        const patient =  await prisma.user.findUnique({
+            where: {
+              email: email,
+            },
+          });
+          
+          if(!patient){
+              // Create user record
+              const createdUserRecord = await prisma.user.create({
+                  data: {
+                      name,
+                      email,
+                      role: "PATIENT"
+                  }
+              })
+          }    
+
         const createdRecord = await prisma.patient.create({
             data: {
                 ...req.body
