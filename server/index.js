@@ -19,6 +19,8 @@ const categoryRoutes = require("./src/routes/categoryRoutes.js");
 const adminRoutes = require("./src/routes/adminRoutes.js");
 const authRoutes = require("./src/routes/authRoutes.js");
 const otpRoutes = require("./src/routes/otpRoutes.js");
+const staffRoutes = require("./src/routes/staffRoutes.js");
+
 const ExpressError = require("./src/utils/ExpressError.js");
 
 app.use("/api/auth", authRoutes);
@@ -30,6 +32,7 @@ app.use("/api/stock", stockRoutes);
 app.use("/api/patient", patientRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/staff", staffRoutes);
 
 app.all("*", (req, res) => {
   throw new ExpressError("Page Not Found", 404);
