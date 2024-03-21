@@ -24,6 +24,8 @@ import AddStaff from "./pages/AddStaff";
 import PrescriptionList from "./pages/PrescriptionList";
 import CompleteProfilePatient from "./pages/CompleteProfilePatient";
 import CompleteProfileStaff from "./pages/CompleteProfileStaff";
+import AddAdmin from "./pages/AddAdmin";
+import AdminList from "./pages/AdminList";
 import { useAuthContext } from "./hooks/useAuthContext";
 
 function App() {
@@ -48,7 +50,6 @@ function App() {
           <Route path="/patient/add" element={<AddPatient />} />
           <Route path="/patient" element={<PatientList />} />
           <Route path="/doctordashboard" element={<DoctorDashboard />} />
-          <Route path="/patient/add_patient" element={<AddPatient />} />
           <Route path="/patient/list" element={<PatientList />} />
           <Route path="/patient/profile" element={<CompleteProfilePatient />} />
           <Route path="/prescription" element={<PrescriptionList />} />
@@ -58,6 +59,8 @@ function App() {
           <Route path="/staff" element={<StaffList />} />
           <Route path="/staff/add" element={<AddStaff />} />
           <Route path="/staff/profile" element={<CompleteProfileStaff />} />
+          <Route path="/admin" element={<AdminList />} />
+          <Route path="/admin/add" element={<AddAdmin />} />
         </Routes>
       </BrowserRouter>
     </>

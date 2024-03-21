@@ -21,7 +21,8 @@ export default function AddPatientForm() {
     patientName: "",
     bloodGroup: "",
     gender: "",
-    dob: "",
+    // dob: "",
+    allergy: "",
     category: "",
     patientAge: "",
     email: "",
@@ -46,10 +47,11 @@ export default function AddPatientForm() {
     const sendData = {
       name: formData.patientName,
       department: formData.department,
-      dob: new Date(formData.dob),
+      // dob: new Date(formData.dob),
       age: parseInt(formData.patientAge),
       email: formData.email,
       bloodGroup: formData.bloodGroup,
+      allergy: formData.allergy,
       program: formData.program,
       fatherOrSpouseName: formData.fatherName,
       category: formData.category.toUpperCase(),
@@ -123,7 +125,7 @@ export default function AddPatientForm() {
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-4 w-full md:w-72 justify-end">
                 <label htmlFor="patientName">
-                  Full Name <span className="text-red-800">*</span>
+                  Full Name <span className="text-red-800">*</span>:
                 </label>
               </div>
               <Input
@@ -138,7 +140,7 @@ export default function AddPatientForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="department">Department</label>
+                <label htmlFor="department">Department:</label>
               </div>
               <Select
                 id="department"
@@ -147,16 +149,16 @@ export default function AddPatientForm() {
                 value={formData.department}
                 onChange={(value) => handleChange("department", value)}
               >
-                <Option value="COMPUTER SCIENCE">Computer Science</Option>
+                <Option value="COMPUTER_SCIENCE">Computer Science</Option>
                 <Option value="ELECTRICAL">Electrical</Option>
                 <Option value="MECHANICAL">Mechanical</Option>
-                <Option value="MATHEMATICS & COMPUTING">
+                <Option value="MATHEMATICS_COMPUTING">
                   Mathematics & Computing
                 </Option>
                 <Option value="CHEMICAL">Chemical</Option>
                 <Option value="CIVIL">Civil</Option>
                 <Option value="METALLURGY">Metallurgy</Option>
-                <Option value="ENGINEERING PHYSICS">Engineering Physics</Option>
+                <Option value="ENGINEERING_PHYSICS">Engineering Physics</Option>
                 <Option value="PHYSICS">Physics</Option>
                 <Option value="CHEMISTRY">Chemistry</Option>
                 <Option value="BIOLOGY">Biology</Option>
@@ -167,7 +169,7 @@ export default function AddPatientForm() {
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="patientAge">
-                  Age <span className="text-red-800">*</span>
+                  Age <span className="text-red-800">*</span>:
                 </label>
               </div>
               <Input
@@ -185,7 +187,7 @@ export default function AddPatientForm() {
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="email">
-                  Email <span className="text-red-800">*</span>
+                  Email <span className="text-red-800">*</span>:
                 </label>
               </div>
               <Input
@@ -200,10 +202,10 @@ export default function AddPatientForm() {
             </div>
 
             {/* CHECK : dob is redundant */}
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+            {/* <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="dob">
-                  Date of Birth <span className="text-red-800">*</span>
+                  Date of Birth <span className="text-red-800">*</span>:
                 </label>
               </div>
               <Input
@@ -215,11 +217,25 @@ export default function AddPatientForm() {
                 value={formData.dob}
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
               />
+            </div> */}
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 w-full md:w-72 justify-end">
+                <label htmlFor="allergy">Allergies(if any):</label>
+              </div>
+              <Input
+                id="allergy"
+                size="md"
+                label="Allergies"
+                name="allergy"
+                type="allergy"
+                value={formData.allergy}
+                onChange={(e) => handleChange(e.target.name, e.target.value)}
+              />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="gender">
-                  Gender <span className="text-red-800">*</span>
+                  Gender <span className="text-red-800">*</span>:
                 </label>
               </div>
               <Select
@@ -237,7 +253,7 @@ export default function AddPatientForm() {
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="bloodGroup">
-                  Blood Group <span className="text-red-800">*</span>
+                  Blood Group <span className="text-red-800">*</span>:
                 </label>
               </div>
               <Select
@@ -257,7 +273,7 @@ export default function AddPatientForm() {
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="category">
-                  Category <span className="text-red-800">*</span>
+                  Category <span className="text-red-800">*</span>:
                 </label>
               </div>
               <Select
@@ -275,7 +291,7 @@ export default function AddPatientForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="program">Program</label>
+                <label htmlFor="program">Program:</label>
               </div>
               <Select
                 id="program"
@@ -292,7 +308,7 @@ export default function AddPatientForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="fatherName">Father's or Spouse's Name</label>
+                <label htmlFor="fatherName">Father's/Spouse's Name</label>:
               </div>
               <Input
                 id="fatherName"

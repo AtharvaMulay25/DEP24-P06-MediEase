@@ -9,7 +9,7 @@ const { generateToken } = require("../utils/handleJWT.js");
 // @access   Public
 const signup = async (req, res, next) => {
   try {
-    const { email, role } = req.body;
+    const { email, role , name} = req.body;
 
     const userAlreadyExists = await prisma.user.findUnique({
       where: {
@@ -18,15 +18,15 @@ const signup = async (req, res, next) => {
     });
 
     if (userAlreadyExists) {
-      const error = new ExpressError("User already exists.", 409);
-      next(error);
+      throw new ExpressError("User already exists.", 409);
     }
 
     const user = await prisma.user.create({
       data: {
         id: uuidv4(),
         email,
-        role 
+        role, 
+        name
       },
     });
 
@@ -53,11 +53,10 @@ const signup = async (req, res, next) => {
       });
     }
 
-    const error = new ExpressError("User Registration failed.", 400);
-    next(error);
+   throw new ExpressError("User Registration failed.", 400);
+
   } catch (err) {
-    const error = new ExpressError(err.message, 500);
-    next(error);
+    throw new ExpressError(err.message, 500);
   }
 };
 
@@ -66,18 +65,16 @@ const signup = async (req, res, next) => {
 // @access   Public
 const login = async (req, res, next) => {
   try {
-    const { email, role } = req.body;
+    const { email} = req.body;
 
     const user = await prisma.user.findUnique({
       where: {
-        email,
-        role
+        email
       },
     });
 
     if (!user) {
-      const err = new ExpressError("User does not exists", 400);
-      next(err);
+      throw new ExpressError("User does not exists", 400);
     }
 
     const token = generateToken(
@@ -88,11 +85,11 @@ const login = async (req, res, next) => {
     );
 
     res.cookie("token", token, { httpOnly: true, secure: true });
-    res.cookie("role", role, { httpOnly: true, secure: true });
+    res.cookie("role", user.role, { httpOnly: true, secure: true });
 
     return res.status(200).json({
       ok: true,
-      message: "User logged in successfully.",
+      message: `Logged in successfully as ${user.role}`,
       data: {
         user: {
           email: user.email,
@@ -101,8 +98,7 @@ const login = async (req, res, next) => {
       },
     });
   } catch (err) {
-    const error = new ExpressError(err.message, 500);
-    next(error);
+    throw new ExpressError(err.message, 500);
   }
 };
 

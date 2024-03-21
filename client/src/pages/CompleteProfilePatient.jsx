@@ -22,7 +22,8 @@ export default function CompleteProfilePatient() {
     patientName: "",
     bloodGroup: "",
     gender: "",
-    dob: "",
+    // dob: "",
+    allergy: "",
     category: "",
     patientAge: "",
     email: "",
@@ -47,10 +48,11 @@ export default function CompleteProfilePatient() {
     const sendData = {
       name: formData.patientName,
       department: formData.department,
-      dob: new Date(formData.dob),
+      // dob: new Date(formData.dob),
       age: parseInt(formData.patientAge),
       email: formData.email,
       bloodGroup: formData.bloodGroup,
+      allergy: formData.allergy,
       program: formData.program,
       fatherOrSpouseName: formData.fatherName,
       category: formData.category.toUpperCase(),
@@ -81,17 +83,23 @@ export default function CompleteProfilePatient() {
     }
   };
   return (
-    <div className="bg-gray-50 h-full mt-1">
-      <Card className="h-max w-full ">
+    <div className="bg-gray-50 min-h-screen flex justify-center items-center">
+      <Card
+        style={{
+          display: "flex",
+          margin: "auto",
+          justifyContent: "center",
+        }}
+      >
         <CardHeader
           floated={false}
           shadow={false}
-          className="rounded-none pb-3"
+          className="flex rounded-lg pb-3 pt-3 justify-center bg-black h-28"
         >
           <div className="mb-2 sm:flex sm:flex-row flex-col items-center justify-between gap-8">
             <div>
               <div className="flex flex-row items-center justify-between gap-8">
-                <Typography variant="h5" color="blue-gray">
+                <Typography variant="h3" color="white">
                   Patient Profile
                 </Typography>
               </div>
@@ -104,7 +112,7 @@ export default function CompleteProfilePatient() {
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-4 w-full md:w-72 justify-end">
                   <label htmlFor="patientName">
-                    Full Name <span className="text-red-800">*</span>
+                    Full Name <span className="text-red-800">*</span>:
                   </label>
                 </div>
                 <Input
@@ -119,7 +127,7 @@ export default function CompleteProfilePatient() {
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
-                  <label htmlFor="department">Department</label>
+                  <label htmlFor="department">Department:</label>
                 </div>
                 <Select
                   id="department"
@@ -150,7 +158,7 @@ export default function CompleteProfilePatient() {
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
                   <label htmlFor="patientAge">
-                    Age <span className="text-red-800">*</span>
+                    Age <span className="text-red-800">*</span>:
                   </label>
                 </div>
                 <Input
@@ -168,7 +176,7 @@ export default function CompleteProfilePatient() {
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
                   <label htmlFor="email">
-                    Email <span className="text-red-800">*</span>
+                    Email <span className="text-red-800">*</span>:
                   </label>
                 </div>
                 <Input
@@ -181,28 +189,24 @@ export default function CompleteProfilePatient() {
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                 />
               </div>
-
-              {/* CHECK : dob is redundant */}
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
-                  <label htmlFor="dob">
-                    Date of Birth <span className="text-red-800">*</span>
-                  </label>
+                  <label htmlFor="allergy">Allergies(if any):</label>
                 </div>
                 <Input
-                  id="dob"
+                  id="allergy"
                   size="md"
-                  label="Date of Birth"
-                  name="dob"
-                  type="date"
-                  value={formData.dob}
+                  label="Allergies"
+                  name="allergy"
+                  type="allergy"
+                  value={formData.allergy}
                   onChange={(e) => handleChange(e.target.name, e.target.value)}
                 />
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
                   <label htmlFor="gender">
-                    Gender <span className="text-red-800">*</span>
+                    Gender <span className="text-red-800">*</span>:
                   </label>
                 </div>
                 <Select
@@ -220,7 +224,7 @@ export default function CompleteProfilePatient() {
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
                   <label htmlFor="bloodGroup">
-                    Blood Group <span className="text-red-800">*</span>
+                    Blood Group <span className="text-red-800">*</span>:
                   </label>
                 </div>
                 <Select
@@ -240,7 +244,7 @@ export default function CompleteProfilePatient() {
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
                   <label htmlFor="category">
-                    Category <span className="text-red-800">*</span>
+                    Category <span className="text-red-800">*</span>:
                   </label>
                 </div>
                 <Select
@@ -258,7 +262,7 @@ export default function CompleteProfilePatient() {
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
-                  <label htmlFor="program">Program</label>
+                  <label htmlFor="program">Program</label>:
                 </div>
                 <Select
                   id="program"
@@ -275,7 +279,7 @@ export default function CompleteProfilePatient() {
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 w-full md:w-72 justify-end">
-                  <label htmlFor="fatherName">Father's or Spouse's Name</label>
+                  <label htmlFor="fatherName">Father's/Spouse's Name</label>:
                 </div>
                 <Input
                   id="fatherName"

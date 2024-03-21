@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
+import { FaUserCog } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
   Typography,
@@ -572,6 +573,60 @@ const Layout = ({ children }) => {
                   </AccordionBody>
                 )}
               </Accordion>
+              <Accordion
+                open={open === 8}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 8 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 8}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(8)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <FaUserCog
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Admin
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/admin/add")}
+                      >
+                        Add Admin
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/admin")}
+                      >
+                        Admin List
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
             </ul>
           </div>
         </div>
@@ -725,7 +780,7 @@ const Layout = ({ children }) => {
         </footer>
       </div>
 
-      <Toaster richColors closeButton expand={false} position="top-center" />
+      <Toaster richColors closeButton  position="top-center" />
     </div>
   );
 };
