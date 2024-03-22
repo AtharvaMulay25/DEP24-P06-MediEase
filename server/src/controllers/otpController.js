@@ -52,7 +52,7 @@ const sendOtp = async (req, res, next) => {
   const mailOptions = {
     from: "dep2024.p06@gmail.com",
     to: email,
-    subject: "Mediease - Signup",
+    subject: (action == "SIGNUP") ? "Mediease - Signup" : "Mediease - Login",
     html: mailTemplate,
     text: "",
   };

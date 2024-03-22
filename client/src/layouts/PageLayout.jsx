@@ -89,13 +89,12 @@ const Layout = ({ children }) => {
       <div className="fixed h-screen z-10 top-0 left-0">
         <div className="flex">
           <div
-            className={`transition-width duration-300 h-screen overflow-x-hidden overflow-y-${
-              isCollapsed && !isHovered ? "hidden" : "auto"
-            }`}
+            className={`transition-width duration-300 h-screen overflow-x-hidden`}
             style={{
               width: isCollapsed && !isHovered ? "60px" : "250px",
               scrollbarWidth: "thin",
               backgroundColor: "#0a141f",
+              overflowY: isCollapsed && !isHovered ? "hidden" : "auto",
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
@@ -533,7 +532,7 @@ const Layout = ({ children }) => {
                   </AccordionBody>
                 )}
               </Accordion>
-              <Accordion
+              <Accordion 
                 open={open === 7}
                 icon={
                   !(isCollapsed & !isHovered) && (
