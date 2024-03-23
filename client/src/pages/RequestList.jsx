@@ -21,10 +21,14 @@ const getRequestsData = async () => {
     toast.success("Request List fetched successfully");
     return response.data.data;
   } catch (error) {
-    console.error(`ERROR (get-request-list): ${error?.response?.data?.message}`);
-    toast.error(error?.response?.data?.message || "Failed to fetch Request List");
+    console.error(
+      `ERROR (get-request-list): ${error?.response?.data?.message}`
+    );
+    toast.error(
+      error?.response?.data?.message || "Failed to fetch Request List"
+    );
   }
-}
+};
 export default function RequestList() {
   const [loading, setLoading] = useState(true);
   const [requests, setRequests] = useState([]);
@@ -39,55 +43,74 @@ export default function RequestList() {
   }, []);
 
 
-  const handleRequestApprove = async (e, id) => {
+  const sendRejectMail = async (id) => {
     try {
-      const reqData = {id};
-      const res = await axios.post(`${apiRoutes.mail}/approve`,reqData);
-      console.log(res);
-      const { data } = res;
-      console.log(data);
-      toast.success(data.message);
-    }
-    catch (err) {
-      console.error(`ERROR (request-approve): ${err?.response?.data?.message}`);
-      toast.error(err?.response?.data?.message || 'Failed to approve request');
+      const reqData = { id };
+      const res = await axios.post(`${apiRoutes.mail}/reject`, reqData);
+      setTimeout(() => {
+        toast.success(res.data.message);
+      }, 1000);
+    } catch (err) {
+      console.error(
+        `ERROR (send-reject-mail): ${err?.response?.data?.message}`
+      );
+      setTimeout(() => {
+        toast.error(
+          err?.response?.data?.message || "Failed to send reject mail"
+        );
+      }, 1000);
     }
   };
-
-    const handleRequestReject = async (e, id) => {
-      try {
-        const reqData = {id};
-        const res = await axios.post(`${apiRoutes.mail}/reject`,reqData);
-        const { data } = res;
-        console.log(data);
-        toast.success(data.message);
-      }
-      catch (err) {
-        console.error(`ERROR (request-reject): ${err?.response?.data?.message}`);
-        toast.error(err?.response?.data?.message || 'Failed to reject request');
-      }
-    }; 
-
+  const sendApproveMail = async (id) => {
+    try {
+      const reqData = { id };
+      const res = await axios.post(`${apiRoutes.mail}/approve`, reqData);
+      setTimeout(() => {
+        toast.success(res.data.message);
+      }, 1000);
+    } catch (err) {
+      console.error(
+        `ERROR (send-approve-mail): ${err?.response?.data?.message}`
+      );
+      setTimeout(() => {
+        toast.error(
+          err?.response?.data?.message || "Failed to send approve mail"
+        );
+      }, 1000);
+    }
+  }
+  const handleRequestReject = async (e, id) => {
+    setLoading(true);
+    await sendRejectMail(id);
+    setRequests((prev) => prev.filter((p) => p.id !== id));
+    setLoading(false);
+  };
+  const handleRequestApprove = async (e, id) => {
+    setLoading(true);
+    await sendApproveMail(id);
+    setRequests((prev) => prev.filter((p) => p.id !== id));
+    setLoading(false);
+  };
 
 
   return (
     <>
       {loading && <SyncLoadingScreen />}
       {!loading && (
-      <Layout>
-        <SortableTable
-          tableHead={TABLE_HEAD}
-          title="Pending Request List"
-          data={requests}
-          text=""
-          detail="See latest signup requests."
-          handleApprove={handleRequestApprove}
-          handleReject={handleRequestReject}
+        <Layout>
+          <SortableTable
+            tableHead={TABLE_HEAD}
+            title="Pending Request List"
+            data={requests}
+            text=""
+            detail="See latest signup requests."
+            handleApprove={handleRequestApprove}
+            handleReject={handleRequestReject}
             // handleDelete={handlePurchaseDelete}
-          searchKey="name"
-        />
-      </Layout>
-       )} 
+            searchKey="name"
+          />
+        </Layout>
+      )}
     </>
   );
 }

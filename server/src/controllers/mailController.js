@@ -154,7 +154,7 @@ const pendingRequestController = async (req, res, next) => {
   return res.status(200).json({
     ok: true,
     data: [],
-    message: "Pending request mail sent to admins and user successfully",
+    message: "Approval Pending mail sent to user successfully.",
   });
 };
 
