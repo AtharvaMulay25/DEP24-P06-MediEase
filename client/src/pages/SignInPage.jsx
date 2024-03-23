@@ -7,9 +7,7 @@ import {
   Typography,
   Input,
   Checkbox,
-  Button,
-  Select,
-  Option,
+  Button
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
