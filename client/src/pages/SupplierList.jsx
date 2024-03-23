@@ -53,13 +53,15 @@ export default function SupplierList() {
       
       if (data?.ok) {
         console.log(`MESSAGE : ${data?.message}`);
-        setSuppliers((prev) => prev.filter(p => p.id !== id));
+        toast.success(data?.message)
+;        setSuppliers((prev) => prev.filter(p => p.id !== id));
       } else {
         // TODO: show an error message
         console.log(`ERROR (supplier_list_delete): ${data.message}`);
       }
     } catch (err) {
       console.error(`ERROR (supplier_list_delete): ${err?.response?.data?.message}`);
+      toast.error(err?.response?.data?.message || 'Failed to delete Supplier');
     }
   };
 

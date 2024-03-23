@@ -1,4 +1,5 @@
 import React from "react";
+import "../index.css";
 import { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import {
@@ -49,9 +50,9 @@ const PharmaDashboard = () => {
     width:
       width < 720
         ? width * (18 / 24)
-        : (width >= 720) & (width <= 1150)
-        ? width * (19 / 24)
-        : width * (13 / 24),
+        : (width >= 720) & (width <= 1200)
+        ? width * (16 / 24)
+        : width * (10 / 24),
     series: [
       {
         name: "Checkups",
@@ -164,18 +165,8 @@ const PharmaDashboard = () => {
 
   const chartConfigPie = {
     type: "pie",
-    width:
-      width < 720
-        ? width * (1 / 2)
-        : (width >= 720) & (width <= 1150)
-        ? width * (1 / 3)
-        : width * (1 / 5),
-    height:
-      width < 720
-        ? width * (1 / 2)
-        : (width >= 720) & (width <= 1150)
-        ? width * (1 / 3)
-        : width * (1 / 5),
+    width: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
+    height: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
     series: [44, 55, 13, 43, 22],
     options: {
       chart: {
@@ -201,12 +192,8 @@ const PharmaDashboard = () => {
     <>
       <Layout>
         <div>
-          <div className="md:grid md:grid-cols-4">
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
-            >
+          <div className="grid-container -mt-7">
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <GiMedicines
@@ -229,11 +216,7 @@ const PharmaDashboard = () => {
                 </button>
               </div>
             </div>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
-            >
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <ChartBarIcon className="h-7 w-7 mr-2" />
@@ -253,11 +236,7 @@ const PharmaDashboard = () => {
                 </button>
               </div>
             </div>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
-            >
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <ShoppingCartIcon className="h-7 w-7 mr-2" />
@@ -277,11 +256,7 @@ const PharmaDashboard = () => {
                 </button>
               </div>
             </div>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
-            >
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <UserGroupIcon className="h-7 w-7 mr-2" />
@@ -302,13 +277,13 @@ const PharmaDashboard = () => {
               </div>
             </div>
           </div>
-          <div className="md:grid md:grid-cols-3">
-            <Card className={`mt-6 ml-4 col-span-${width > 1150 ? "2" : "3"}`}>
+          <div className="grid-container2">
+            <Card className="mt-4 ml-4 grid-item21">
               <CardHeader
                 floated={false}
                 shadow={false}
                 color="transparent"
-                className="flex flex-col gap-4 rounded-none md:flex-row md:items-center"
+                className="flex gap-4 rounded-none md:items-center"
               >
                 <div className="w-max rounded-lg bg-gray-900 p-3 text-white">
                   <ClipboardDocumentCheckIcon className="h-6 w-6" />
@@ -331,12 +306,12 @@ const PharmaDashboard = () => {
                 <Chart {...chartConfigBar} />
               </CardBody>
             </Card>
-            <Card className={`mt-6 ml-4 col-span-${width > 1150 ? "1" : "3"}`}>
+            <Card className="mt-4 ml-4 grid-item22">
               <CardHeader
                 floated={false}
                 shadow={false}
                 color="transparent"
-                className="flex flex-col gap-4 rounded-none md:flex-row md:items-center"
+                className="flex gap-4 rounded-none md:items-center"
               >
                 <div className="w-max rounded-lg bg-gray-900 p-3 text-white">
                   <GiMedicines className="h-7 w-7" />

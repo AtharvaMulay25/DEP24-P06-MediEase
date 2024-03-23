@@ -1,14 +1,14 @@
 import React from "react";
-import AddDoctorForm from "../components/AddDoctorForm";
+import AddStaffForm from "../components/AddStaffForm";
 import Layout from "../layouts/PageLayout";
-const AddDoctor = () => {
+const AddStaff = () => {
   return (
     <>    
       <Layout>
-        <AddDoctorForm />
+        <AddStaffForm />
       </Layout>
     </>
   );
 };
 
-export default AddDoctor;
+export default AddStaff;

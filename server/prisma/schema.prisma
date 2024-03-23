@@ -13,6 +13,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id    String   @id @default(uuid())
+  email String   @unique
+  name  String
+  role  UserRole
+  @@map("user")
+}
+
+model Requests{
+  id    String   @id @default(uuid())
+  email String   @unique
+  name  String
+  role  UserRole
+  @@map("requests")
+}
+
+model Verification {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  otp        String
+  expiryTime DateTime
+}
+
 model Medicine {
   id         String @id @default(uuid())
   brandName  String
@@ -44,17 +67,29 @@ model Supplier {
 }
 
 model Staff {
-  id             String    @id @default(uuid())
+  id             String     @id @default(uuid())
   name           String
-  email          String    @unique
+  email          String     @unique
+  mobileNumber   String?
   role           Role
-  speciality     String?
+  department     String?
   gender         Gender
-  shiftSchedule  String
-  DoctorCheckups Checkup[] @relation("DoctorCheckups")
-  StaffCheckups  Checkup[] @relation("StaffCheckups")
+  DoctorCheckups Checkup[]  @relation("DoctorCheckups")
+  StaffCheckups  Checkup[]  @relation("StaffCheckups")
+  Schedule       Schedule[]
 
   @@map("staff")
+}
+
+model Schedule {
+  id      String @id @default(uuid())
+  staffId String
+  shift   Shift
+  day     Day
+
+  Staff Staff @relation(fields: [staffId], references: [id])
+
+  @@map("schedule")
 }
 
 model Stock {
@@ -97,7 +132,7 @@ model Purchase {
   medicineId     String
   mfgDate        DateTime?
   expiryDate     DateTime
-  batchNo        BigInt 
+  batchNo        BigInt
   quantity       Int
 
   Medicine     Medicine     @relation(fields: [medicineId], references: [id])
@@ -109,30 +144,32 @@ model Purchase {
 model Patient {
   id                 String          @id @default(uuid())
   name               String
-  department         String?
-  dob                DateTime
+  department         Department?
   age                Int
   email              String          @unique
   bloodGroup         String
-  program            String?
+  program            Program?
   fatherOrSpouseName String?
   category           PatientCategory
   gender             Gender
+  allergy            String?
   Checkup            Checkup[]
 
   @@map("patient")
 }
 
 model Checkup {
-  id             String   @id @default(uuid())
-  patientId      String
-  temperature    Float?
-  date           DateTime
-  bloodPressure  String?
-  symptoms       String?
-  diagnosis      String
-  doctorId       String?
-  staffId        String
+  id            String   @id @default(uuid())
+  patientId     String
+  temperature   Float?
+  date          DateTime
+  spO2          Float?
+  pulseRate     Int?
+  bloodPressure String?
+  symptoms      String?
+  diagnosis     String
+  doctorId      String?
+  staffId       String
 
   Patient Patient @relation(fields: [patientId], references: [id])
 
@@ -142,6 +179,59 @@ model Checkup {
   Medicines Medicine[] @relation("CheckupMedicines")
 
   @@map("checkup")
+}
+
+enum Department {
+  COMPUTER_SCIENCE
+  ELECTRICAL
+  MECHANICAL
+  MATHEMATICS_COMPUTING
+  CHEMICAL
+  CIVIL
+  METALLURGY
+  ENGINEERING_PHYSICS
+  PHYSICS
+  CHEMISTRY
+  BIOLOGY
+  MATHEMATICS
+  HUMANITIES
+}
+
+enum Day {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+
+enum Program {
+  BTECH
+  MTECH
+  PHD
+  DUAL_DEGREE
+}
+
+enum UserRole {
+  DOCTOR
+  PATIENT
+  ADMIN
+  PARAMEDICAL
+}
+
+enum DoctorDepartment {
+  AYURVEDIC
+  GYNECOLOGY
+  HOMEOPATHY
+  OTHERS
 }
 
 enum Role {

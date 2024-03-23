@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
 import {
   CardBody,
   Input,
@@ -13,22 +14,53 @@ import {
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
 export default function AddScheduleForm() {
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    doctorName: "",
+  
+  const [staff, setStaff] = useState([]);
+  const [selectedStaff, setSelectedStaff] = useState({
+    name: "",
+    role: "",
     department: "",
-    email: "",
+  });
+  
+  const [formData, setFormData] = useState({
     day: "",
     shift: "",
   });
 
+  const handleStaffChange = (selectedStaff) => {
+    // console.log("selectedstaff : ", selectedStaff);
+    setSelectedStaff(selectedStaff);
+    // setFormData((prevData) => ({
+    //   ...prevData,
+    //   staff: selectedStaff.value
+    // }));
+  };
+
+  const fetchStaffList = async () => {
+    try {
+      const response = await axios.get(apiRoutes.staff);
+      const staffList = response.data.data; 
+
+      // console.log("staffList : ", staffList);
+      setStaff(staffList);
+    } catch (error) {
+      console.error(`ERROR (fetch-staff-add-schedule): ${error?.response?.data?.message}`);
+      toast.error(error?.response?.data?.message || 'Failed to fetch Staff List');
+    }
+  };
+
+  useEffect(() => {
+    fetchStaffList();
+  }, []);
+
   const handleChange = (name, value) => {
     // console.log(e.target);
     // const { name, value } = e.target;
-    console.log(name, value);
+    // console.log(name, value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -37,14 +69,32 @@ export default function AddScheduleForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    // console.log("selected staff : ", selectedStaff);
+    
     const data = {
-      doctorName: formData.doctorName,
-      department: formData.department,
-      email: formData.email,
+      staffId: selectedStaff.value.id,
       day: formData.day,
       shift: formData.shift,
     };
+
+    try {
+      const response = await axios.post(apiRoutes.schedule, data);
+      const resData = response.data;
+      
+      if (resData.ok) {
+        console.log("Schedule added successfully");
+        toast.success(resData.message); 
+        setTimeout(() => {
+          navigate("/schedule");
+        }, 1000);
+      } else {
+        console.log("Adding Schedule Failed : ", response?.data?.data?.message);
+        toast.error(response?.data?.data?.message); 
+      }
+    } catch (err) {
+      console.log(`ERROR (add-schedule): ${err?.response?.data?.data?.message}`);
+      toast.error(err?.response?.data?.data?.message); 
+    }
   };
 
   return (
@@ -91,10 +141,23 @@ export default function AddScheduleForm() {
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-4 md:w-72 w-full justify-end">
                 <label htmlFor="doctorName">
-                  Doctor Name <span className="text-red-800">*</span>:
+                  Staff Name <span className="text-red-800">*</span>:
                 </label>
               </div>
-              <Input
+              <Select
+                id="staff"
+                options={staff.map((staffPerson) => ({
+                  value: staffPerson, 
+                  label: staffPerson.name,
+                }))}
+                name="staff"
+                value={selectedStaff}
+                onChange={handleStaffChange}
+                isClearable={true}
+                placeholder="Select Staff"
+                className="w-full"
+              />
+              {/* <Input
                 id="doctorName"
                 size="md"
                 label="Doctor Name"
@@ -102,12 +165,28 @@ export default function AddScheduleForm() {
                 name="doctorName"
                 value={formData.doctorName}
                 onChange={(e) => handleChange(e.target.name, e.target.value)}
-              />
+              /> */}
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="mobileNo">
-                  Department <span className="text-red-800">*</span>:
+                <label htmlFor="role">
+                  Role:
+                </label>
+              </div>
+              <Input
+                id="role"
+                size="md"
+                disabled
+                name="role"
+                label="Role"
+                value={selectedStaff?.value?.role || "Role"}
+                // onChange={(e) => handleChange(e.target.name, e.target.value)}
+              />
+            </div>
+            {selectedStaff?.value?.role === "DOCTOR" && <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
+                <label htmlFor="department">
+                  Department:
                 </label>
               </div>
               <Input
@@ -116,10 +195,10 @@ export default function AddScheduleForm() {
                 disabled
                 name="department"
                 label="Department"
-                value={formData.department}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
+                value={selectedStaff.value.department}
+                // onChange={(e) => handleChange(e.target.name, e.target.value)}
               />
-            </div>
+            </div>}
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="day">Day:</label>
@@ -131,13 +210,13 @@ export default function AddScheduleForm() {
                 value={formData.day}
                 onChange={(value) => handleChange("day", value)}
               >
-                <Option value="Monday">Monday</Option>
-                <Option value="Tuesday">Tuesday</Option>
-                <Option value="Wednesday">Wednesday</Option>
-                <Option value="Thursday">Thursday</Option>
-                <Option value="Friday">Friday</Option>
-                <Option value="Saturday">Saturday</Option>
-                <Option value="Sunday">Sunday</Option>
+                <Option value="MONDAY">Monday</Option>
+                <Option value="TUESDAY">Tuesday</Option>
+                <Option value="WEDNESDAY">Wednesday</Option>
+                <Option value="THURSDAY">Thursday</Option>
+                <Option value="FRIDAY">Friday</Option>
+                <Option value="SATURDAY">Saturday</Option>
+                <Option value="SUNDAY">Sunday</Option>
               </MaterialSelect>
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
@@ -153,8 +232,9 @@ export default function AddScheduleForm() {
                 value={formData.shift}
                 onChange={(value) => handleChange("shift", value)}
               >
-                <Option value="Morning">Morning</Option>
-                <Option value="Afternoon">Afternoon</Option>
+                <Option value="MORNING">Morning</Option>
+                <Option value="AFTERNOON">Afternoon</Option>
+                <Option value="NIGHT">Night</Option>
               </MaterialSelect>
             </div>
           </div>
