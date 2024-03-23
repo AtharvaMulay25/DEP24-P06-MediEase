@@ -77,7 +77,9 @@ export function SortableTable({
   text,
   addLink,
   handleDelete,
-  searchKey
+  searchKey,
+  handledetail = () => { },
+  detailsFlag = false,
 }) {
   const [open, setOpen] = useState(false);
   const [deletedRecordId, setDeletedRecordId] = useState(null);
@@ -459,6 +461,14 @@ export function SortableTable({
                       })}
                   <td className={("", classes)}>
                     <div className="flex gap-0.5">
+                      { detailsFlag == true && <Tooltip content="View">
+                        <IconButton 
+                          variant="text"
+                          onClick={() => handledetail(rowData["id"])}
+                        >
+                          <EyeIcon className="h-4 w-4" />
+                        </IconButton>
+                      </Tooltip> } 
                       <Tooltip content="Edit">
                         <IconButton variant="text">
                           <PencilIcon className="h-4 w-4" />

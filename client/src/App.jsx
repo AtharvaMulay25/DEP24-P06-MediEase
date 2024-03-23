@@ -20,6 +20,7 @@ import ScheduleList from "./pages/ScheduleList";
 import AddSchedule from "./pages/AddSchedule";
 import DoctorList from "./pages/DoctorList";
 import AddDoctor from "./pages/AddDoctor";import PrescriptionList from "./pages/PrescriptionList";
+import PrescriptionDetail from "./pages/PrescriptionDetail";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path="/patient/list" element={<PatientList />} />
           <Route path="/prescription" element={<PrescriptionList />} />
           <Route path="/prescription/add" element={<AddPrescription />} />
+          <Route path="/prescription/:id" element={<PrescriptionDetail />} />
           <Route path="/schedule" element={<ScheduleList />} />
           <Route path="/schedule/add" element={<AddSchedule />} />
           <Route path="/doctor" element={<DoctorList />} />

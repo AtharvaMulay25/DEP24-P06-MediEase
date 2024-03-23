@@ -1,5 +1,6 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   SyncLoadingScreen,
@@ -10,8 +11,6 @@ const TABLE_HEAD = {
   patientName: "Patient Name",
   doctor: "Doctor",
   date: "Date",
-  temperature: "Temperature",
-  bloodPressure: "Blood Pressure",
   diagnosis: "Diagnosis",
   symptoms: "Symptoms",
   action: "Action",
@@ -21,9 +20,14 @@ import MockData from "../assets/MOCK_DATA_prescription.json";
 import Layout from "../layouts/PageLayout";
 
 export default function PrescriptionList() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handlePrescriptionDelete = async (e, id) => {};
+  const handlePrescriptionDetail = async (e, id) => {
+    console.log("Prescription Detail", id);
+    navigate(`/prescription/${id}`);
+  };
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -38,6 +42,8 @@ export default function PrescriptionList() {
             addLink="/prescription/add"
             handleDelete={handlePrescriptionDelete}
             searchKey="patientName"
+            handledetail={handlePrescriptionDetail}
+            detailsFlag={true}
           />
         </Layout>
       )}
