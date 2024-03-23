@@ -6,11 +6,7 @@ const prisma = new PrismaClient()
 // route    GET /api/patient
 // @access  Private (Admin) 
 const getPatientList = async (req, res, next) => {
-        let patientList = await prisma.patient.findMany({});
-
-        // console.log("patientList : ", patientList);
-        patientList = patientList.map((patient) => ({...patient, dob: patient.dob.toISOString().split('T')[0] }));
-        
+        let patientList = await prisma.patient.findMany({});     
         return res.status(200).json({
             ok: true,
             data: patientList,
@@ -23,6 +19,37 @@ const getPatientList = async (req, res, next) => {
 // route    POST /api/patient
 // @access  Private (Admin) 
 const createPatient = async (req, res, next) => {
+        console.log(req.body);
+        const {
+            name,
+            department,
+            age,
+            email,
+            bloodGroup,
+            program,
+            fatherOrSpouseName,
+            category,
+            gender,
+            allergy
+        } = req.body;
+
+        const patient =  await prisma.user.findUnique({
+            where: {
+              email: email,
+            },
+          });
+          
+          if(!patient){
+              // Create user record
+              const createdUserRecord = await prisma.user.create({
+                  data: {
+                      name,
+                      email,
+                      role: "PATIENT"
+                  }
+              })
+          }    
+
         const createdRecord = await prisma.patient.create({
             data: {
                 ...req.body

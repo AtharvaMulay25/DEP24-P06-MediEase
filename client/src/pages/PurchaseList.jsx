@@ -51,6 +51,7 @@ export default function PurchaseList() {
       console.log(data)
       if (data?.ok) {
         console.log(`MESSAGE : ${data?.message}`);
+        toast.success(data?.message);
         setPurchase((prev) => prev.filter(p => p.id !== id));
       } else {
         // TODO: show an error message
@@ -59,6 +60,7 @@ export default function PurchaseList() {
     }
      catch (err) {
       console.error(`ERROR (purchase_list_delete): ${err?.response?.data?.message}`);
+      toast.error(err?.response?.data?.message || 'Failed to delete Purchase');
     }
   };
   return (

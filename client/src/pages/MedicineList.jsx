@@ -56,7 +56,7 @@ export default function MedicineList() {
       }
     } catch (err) {
       console.error(`ERROR (medicine_list_delete): ${err?.response?.data?.message}`);
-      toast.error(err?.response?.data?.message || 'Failed to delete Medicine')
+      toast.error(err?.response?.data?.message || 'Failed to delete Medicine');
     }
   };
 

@@ -8,6 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
+import { FaUserCog, FaExclamation } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
   Typography,
@@ -29,8 +30,11 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Layout = ({ children }) => {
+  const { userRole, userName } = useAuthContext();
+
   const [open, setOpen] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -85,13 +89,12 @@ const Layout = ({ children }) => {
       <div className="fixed h-screen z-10 top-0 left-0">
         <div className="flex">
           <div
-            className={`transition-width duration-300 h-screen overflow-x-hidden overflow-y-${
-              isCollapsed && !isHovered ? "hidden" : "auto"
-            }`}
+            className={`transition-width duration-300 h-screen overflow-x-hidden`}
             style={{
               width: isCollapsed && !isHovered ? "60px" : "250px",
               scrollbarWidth: "thin",
               backgroundColor: "#0a141f",
+              overflowY: isCollapsed && !isHovered ? "hidden" : "auto",
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
@@ -129,12 +132,12 @@ const Layout = ({ children }) => {
                   <div>
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-semibold text-lg">
-                        Atharva Mulay
+                        {userName || ""}
                       </Typography>
                     )}
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-normal text-xs">
-                        Pharmaceutical Staff
+                        {userRole || ""}
                       </Typography>
                     )}
                   </div>
@@ -167,6 +170,17 @@ const Layout = ({ children }) => {
                   <MdSpaceDashboard className="h-5 w-5 mr-4" />
                   {!(isCollapsed & !isHovered) && (
                     <Typography className="font-normal">Dashboard</Typography>
+                  )}
+                </li>
+              </a>
+              <a href="/requests">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
+                >
+                  <FaExclamation className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Requests</Typography>
                   )}
                 </li>
               </a>
@@ -494,7 +508,7 @@ const Layout = ({ children }) => {
                         style={{ color: "#f1ffea" }}
                         className="mr-auto font-normal"
                       >
-                        Doctor
+                        Staff
                       </Typography>
                     )}
                   </AccordionHeader>
@@ -504,21 +518,21 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/doctor/add")}
+                        onClick={() => navigate("/staff/add")}
                       >
-                        Add Doctor
+                        Add Staff
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/doctor")}
+                        onClick={() => navigate("/staff")}
                       >
-                        Doctor List
+                        Staff List
                       </ListItem>
                     </List>
                   </AccordionBody>
                 )}
               </Accordion>
-              <Accordion
+              <Accordion 
                 open={open === 7}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -567,6 +581,60 @@ const Layout = ({ children }) => {
                         onClick={() => navigate("/schedule")}
                       >
                         Schedule List
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
+              <Accordion
+                open={open === 8}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 8 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 8}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(8)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <FaUserCog
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Admin
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/admin/add")}
+                      >
+                        Add Admin
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/admin")}
+                      >
+                        Admin List
                       </ListItem>
                     </List>
                   </AccordionBody>
@@ -725,7 +793,7 @@ const Layout = ({ children }) => {
         </footer>
       </div>
 
-      <Toaster richColors closeButton expand={false} position="top-center"/>
+      <Toaster richColors closeButton position="top-center" />
     </div>
   );
 };

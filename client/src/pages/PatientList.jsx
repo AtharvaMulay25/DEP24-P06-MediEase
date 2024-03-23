@@ -12,7 +12,8 @@ const TABLE_HEAD = {
   department: "Department",
   age: "Age",
   email: "Email",
-  dob: "DOB",
+  // dob: "DOB",
+  allergy: "Allergy",
   bloodGroup: "Blood Group",
   category: "Category",
   program: "Program",
@@ -54,17 +55,21 @@ export default function PatientList() {
   const handlePatientDelete = async (e, id) => {
     try {
       const res = await axios.delete(`${apiRoutes.patient}/${id}`);
+      console.log(res);
       if (res) {
         const data = res?.data;
         if (data && data.ok) {
-          setPatients((prev) => prev.filter(p => p.id !== id));
           console.log("backend message : ", data.message);
+          toast.success(data?.message);
+          setPatients((prev) => prev.filter(p => p.id !== id));
         } else {
           console.log(`ERROR (get-patient-list): ${data?.message || "NO DATA"}`);
         }
       }
     } catch (err) {
         console.error(`ERROR (delete-patient): ${err?.response?.data?.message}`);
+        toast.error(err?.response?.data?.message || 'Failed to delete Patient');
+
     } 
   };
   return (
