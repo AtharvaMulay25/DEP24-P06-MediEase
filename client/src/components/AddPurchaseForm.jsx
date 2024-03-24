@@ -91,7 +91,11 @@ export function AddPurchaseForm() {
 
   const handleDeleteRow = (index) => {
     console.log(index);
-    if (dataArray.length == 1) return; // Prevent deleting the first row
+    if (dataArray.length == 1) {
+      // Prevent deleting the first row
+      toast.error("Purchase must have at least one item");
+      return;
+    }
     //**** GIVE ERROR MSG HERE
     const updatedArray = [...dataArray];
     updatedArray.splice(index, 1);
@@ -142,19 +146,23 @@ export function AddPurchaseForm() {
     const purchaseListEntry = {
       purchaseDate: formData.purchaseDate + "T00:00:00Z",
       invoiceNo: formData.invoiceNo,
-      supplierId: formData.supplier.value, // Assuming supplier object has a unique identifier 'value'  //will be passing supplier id to backend
-      purchaseDetails: formData.purchaseDetails,
+      supplierId: formData?.supplier?.value, // Assuming supplier object has a unique identifier 'value'  //will be passing supplier id to backend
     };
-    const purchaseItems = dataArray.map((data) => ({
-      medicineId: data.medicine.value, // Assuming medicine object has a unique identifier 'value'  //will be passing medicine id to backend
-      batchNo: data.batchNo,
-      mfgDate: data.mfgDate + "T00:00:00Z",
-      expiryDate: data.expDate + "T00:00:00Z",
-      quantity: parseInt(data.quantity) || 0, // Assuming quantity is a number
-    }));
+    if (formData.purchaseDetails)
+      purchaseListEntry.purchaseDetails = formData.purchaseDetails; //optional
+    const purchaseItems = dataArray.map((data) => {
+      const purchaseItem = {
+        medicineId: data.medicine.value, // Assuming medicine object has a unique identifier 'value'  //will be passing medicine id to backend
+        batchNo: data.batchNo,
+        expiryDate: data.expDate + "T00:00:00Z",
+        quantity: parseInt(data.quantity) || 0, // Assuming quantity is a number
+      };
+      if (data.mfgDate) purchaseItem.mfgDate = data.mfgDate + "T00:00:00Z"; //optional
+      return purchaseItem;
+    });
 
     // Here you can handle the submission of the form
-    const data = { purchaseListEntry, purchaseItems };
+    const data = { ...purchaseListEntry, purchaseItems };
     //***DON'T LET THE FORM SUBMIT IF ANY OF MANDATORY ITEMS IS MISSING OR ANY LIST ROW FIELD IS EMPTY */
     try {
       const response = await axios.post(apiRoutes.purchase, data);
