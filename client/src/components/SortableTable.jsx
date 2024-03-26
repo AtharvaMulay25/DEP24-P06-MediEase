@@ -95,9 +95,9 @@ export function SortableTable({
   addLink,
   handleDelete,
   searchKey,
-  handleApprove ,
+  handleApprove,
   handleReject,
-  handledetail = () => { },
+  handleDetail = () => {},
   detailsFlag = false,
 }) {
   const [open, setOpen] = useState(false);
@@ -462,18 +462,18 @@ export function SortableTable({
                           </Typography>
                         </td>
                       );
-                    if (key === "purchaseItems")
-                      return (
-                        <div className="flex justify-center">
-                          <td className="px-3 border-0 opacity-80">
-                            <Tooltip content="View">
-                              <IconButton variant="text">
-                                <EyeIcon className="h-4 w-4" />
-                              </IconButton>
-                            </Tooltip>
-                          </td>
-                        </div>
-                      );
+                    // if (key === "purchaseItems")
+                    //   return (
+                    //     <div className="flex justify-center">
+                    //       <td className="px-3 border-0 opacity-80">
+                    //         <Tooltip content="View">
+                    //           <IconButton variant="text">
+                    //             <EyeIcon className="h-4 w-4" />
+                    //           </IconButton>
+                    //         </Tooltip>
+                    //       </td>
+                    //     </div>
+                    //   );
                     if (key !== "action")
                       return (
                         <td className={classes} key={key}>
@@ -491,15 +491,17 @@ export function SortableTable({
                     <div className="flex gap-0.5">
                       {title !== "Pending Request List" ? (
                         <>
-                          { detailsFlag == true && <Tooltip content="View">
-                        <IconButton 
-                          variant="text"
-                          onClick={() => handledetail(rowData["id"])}
-                        >
-                          <EyeIcon className="h-4 w-4" />
-                        </IconButton>
-                      </Tooltip> } 
-                      <Tooltip content="Edit">
+                          {detailsFlag == true && (
+                            <Tooltip content="View">
+                              <IconButton
+                                variant="text"
+                                onClick={() => handleDetail(rowData["id"])}
+                              >
+                                <EyeIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                          )}
+                          <Tooltip content="Edit">
                             <IconButton variant="text">
                               <PencilIcon className="h-4 w-4" />
                             </IconButton>
@@ -516,8 +518,9 @@ export function SortableTable({
                       ) : (
                         <>
                           <Tooltip content="Approve">
-                            <IconButton variant="text" 
-                            onClick={(e) => handleApprove(e, rowData["id"])}
+                            <IconButton
+                              variant="text"
+                              onClick={(e) => handleApprove(e, rowData["id"])}
                             >
                               <CheckCircleIcon
                                 className="h-6 w-6"
@@ -526,9 +529,10 @@ export function SortableTable({
                             </IconButton>
                           </Tooltip>
                           <Tooltip content="Reject">
-                            <IconButton variant="text"
-                             onClick={(e) => handleReject(e, rowData["id"])}
-                             >
+                            <IconButton
+                              variant="text"
+                              onClick={(e) => handleReject(e, rowData["id"])}
+                            >
                               <XCircleIcon
                                 className="h-6 w-6"
                                 style={{ color: "red" }}

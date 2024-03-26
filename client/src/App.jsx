@@ -29,6 +29,7 @@ import AdminList from "./pages/AdminList";
 import { useAuthContext } from "./hooks/useAuthContext";
 import RequestList from "./pages/RequestList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
+import PurchaseDetail from "./pages/PurchaseDetail";
 
 function App() {
   const { userRole } = useAuthContext();
@@ -46,6 +47,7 @@ function App() {
           <Route path="/medicine/category" element={<CategoryList />} />
           <Route path="/purchase/add" element={<AddPurchase />} />
           <Route path="/purchase" element={<PurchaseList />} />
+          <Route path="/purchase/:id" element={<PurchaseDetail />} />
           <Route path="/supplier/add" element={<AddSupplier />} />
           <Route path="/supplier" element={<SupplierList />} />
           <Route path="/stock" element={<StockList />} />
