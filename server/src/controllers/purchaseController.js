@@ -47,9 +47,9 @@ const getPurchaseList = async(req, res, next) => {
 // route    POST /api/purchase/create
 // @access  Private (Admin) 
 const createPurchaseList = async(req, res, next) => {
-        const {purchaseListEntry, purchaseItems} = req.body;
-        const {purchaseDate, invoiceNo, supplierId, purchaseDetails} = purchaseListEntry;
-        console.log(purchaseListEntry)
+        const {purchaseDate, invoiceNo, supplierId, purchaseDetails, purchaseItems} = req.body;
+        // const {} = purchaseListEntry;
+        // console.log(purchaseListEntry)
         console.log(purchaseItems)
         
         const supplier = await prisma.supplier.findUnique({
@@ -83,7 +83,7 @@ const createPurchaseList = async(req, res, next) => {
                     }
                 }
             });
-
+        console.log("createRecord ", createdRecord);
         return res.status(200).json({
             ok: true,
             data: createdRecord,

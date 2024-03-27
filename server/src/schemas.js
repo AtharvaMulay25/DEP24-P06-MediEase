@@ -66,14 +66,25 @@ const stockSchema = Joi.object({
   outQuantity: Joi.number().integer().required(),
   //   Medicine: Joi.object().required(),
 });
-
+// Purchase Schema
+const purchaseSchema = Joi.object({
+  // purchaseListId: Joi.string().required(),
+  medicineId: Joi.string().required(),
+  mfgDate: Joi.date().iso().optional(),
+  expiryDate: Joi.date().iso().required(),
+  batchNo: Joi.string().required(),
+  quantity: Joi.number().integer().required(),
+  //   Medicine: Joi.object().required(),
+  //   PurchaseList: Joi.object().required(),
+});
 // PurchaseList Schema
 const purchaseListSchema = Joi.object({
   supplierId: Joi.string().required(),
   purchaseDate: Joi.date().iso().required(),
   invoiceNo: Joi.string().required(),
-  Details: Joi.string().optional(),
-  Supplier: Joi.object().required(),
+  purchaseDetails: Joi.string().optional(),
+  purchaseItems: Joi.array().items(purchaseSchema).required(),
+  // Supplier: Joi.object().required(),
   //   Purchase: Joi.array().items(Joi.object()),
 });
 
@@ -84,17 +95,7 @@ const categorySchema = Joi.object({
   //   Medicine: Joi.array().items(Joi.object()),
 });
 
-// Purchase Schema
-const purchaseSchema = Joi.object({
-  purchaseListId: Joi.string().required(),
-  medicineId: Joi.string().required(),
-  mfgDate: Joi.date().iso().optional(),
-  expiryDate: Joi.date().iso().required(),
-  batchNo: Joi.string().required(),
-  quantity: Joi.number().integer().required(),
-  //   Medicine: Joi.object().required(),
-  //   PurchaseList: Joi.object().required(),
-});
+
 
 // Patient Schema
 const patientSchema = Joi.object({
