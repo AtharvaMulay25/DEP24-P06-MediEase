@@ -18,11 +18,11 @@ import { toast } from "sonner";
 import Toaster from "../components/UI/Toaster";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
-import { useAuthContext } from "../hooks/useAuthContext.jsx";
+import { useAuth } from "../hooks/useAuth.jsx";
 import Cookies from "js-cookie";
 
 export default function SignUpPage() {
-  const { userRole, dispatch } = useAuthContext();
+  const { userRole, dispatch } = useAuth();
   const [registrationData, setRegistrationData] = useState({
     email: "",
     role: "",

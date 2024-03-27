@@ -1,8 +1,8 @@
 import Cookies from "js-cookie";
-import { useAuthContext } from "./useAuthContext";
+import { useAuth } from "./useAuth";
 
 export const useLogout = () => {
-    const { dispatch: authDispatch } = useAuthContext();
+    const { dispatch: authDispatch } = useAuth();
        
     const logout = () => {
         Cookies.remove('user-role');    

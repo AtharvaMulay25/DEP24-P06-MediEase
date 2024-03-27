@@ -26,11 +26,11 @@ import CompleteProfilePatient from "./pages/CompleteProfilePatient";
 import CompleteProfileStaff from "./pages/CompleteProfileStaff";
 import AddAdmin from "./pages/AddAdmin";
 import AdminList from "./pages/AdminList";
-import { useAuthContext } from "./hooks/useAuthContext";
+import { useAuth } from "./hooks/useAuth";
 import RequestList from "./pages/RequestList";
 
 function App() {
-  const { userRole } = useAuthContext();
+  const { userRole } = useAuth();
   return (
     <>
       <BrowserRouter>

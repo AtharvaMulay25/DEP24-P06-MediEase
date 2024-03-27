@@ -12,14 +12,14 @@ import {
 } from "@material-tailwind/react";
 import {toast} from "sonner";
 import Toaster from "../components/UI/Toaster";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
 
 export default function CompleteProfileStaff() {
   const navigate = useNavigate();
-  const { userName , userEmail, userRole} = useAuthContext();
+  const { userName , userEmail, userRole} = useAuth();
   const departments = ["Ayurvedic", "Gynecology", "Homeopathy"];
   const roles = ["Doctor", "Paramedical Staff"];
 

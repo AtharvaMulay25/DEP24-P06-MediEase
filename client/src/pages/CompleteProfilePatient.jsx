@@ -15,10 +15,10 @@ import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuth } from "../hooks/useAuth";
 export default function CompleteProfilePatient() {
   const navigate = useNavigate();
-  const { userName , userEmail} = useAuthContext();
+  const { userName , userEmail} = useAuth();
   console.log(userName, userEmail)
   const [formData, setFormData] = useState({
     name: userName,

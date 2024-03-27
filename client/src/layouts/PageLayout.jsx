@@ -30,11 +30,11 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuth } from "../hooks/useAuth";
 import roleMap from "../utils/rolesMap.js";
 
 const Layout = ({ children }) => {
-  const { userRole, userName } = useAuthContext();
+  const { userRole, userName } = useAuth();
 
   const [roleArr, setRoleArr] = useState([]);
 

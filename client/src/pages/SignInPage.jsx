@@ -16,12 +16,12 @@ import Toaster from "../components/UI/Toaster";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
 import { apiRoutes } from "../utils/apiRoutes";
-import { useAuthContext } from "../hooks/useAuthContext.jsx";
+import { useAuth } from "../hooks/useAuth.jsx";
 import Cookies from "js-cookie";
 
 
 export default function SignInPage() {
-  const { userRole, dispatch } = useAuthContext();
+  const { userRole, dispatch } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);

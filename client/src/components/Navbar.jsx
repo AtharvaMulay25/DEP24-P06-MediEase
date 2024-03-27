@@ -5,12 +5,12 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Contact from "../models/Contact";
 import { UserButton , SignedIn, SignedOut} from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { useLogout } from "../hooks/useLogout";
 import { toast } from "sonner";
 
 const Navbar = () => {
-  const { userRole } = useAuthContext();
+  const { userRole } = useAuth();
   const { logout } = useLogout();
   const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
