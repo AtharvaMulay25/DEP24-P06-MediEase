@@ -133,7 +133,7 @@ const Layout = ({ children }) => {
               className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal"
               style={{ color: "#f1ffea" }}
             >
-              <a href="/doctordashboard">
+              <a href={userRole === "PARAMEDICAL" ? "/pharmadashboard" : "/doctordashboard"}>
                 <li className="flex items-center w-full p-1 rounded-lg text-start leading-tight transition-all cursor-pointer">
                   <UserCircleIcon className="h-8 w-8 mr-4" />
                   <div>
@@ -169,18 +169,29 @@ const Layout = ({ children }) => {
               className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal overflow-y-auto"
               style={{ color: "#f1ffea" }}
             >
-              <a href="/pharmadashboard">
+              {roleArr.includes("PHARMA_DASHBOARD") && <a href="/pharmadashboard">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                         hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
                 >
                   <MdSpaceDashboard className="h-5 w-5 mr-4" />
                   {!(isCollapsed & !isHovered) && (
-                    <Typography className="font-normal">Dashboard</Typography>
+                    <Typography className="font-normal">Pharma Dashboard</Typography>
                   )}
                 </li>
-              </a>
-              <a href="/requests">
+              </a>}
+              {roleArr.includes("DOCTOR_DASHBOARD") && <a href="/doctordashboard">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
+                >
+                  <MdSpaceDashboard className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Doctor Dashboard</Typography>
+                  )}
+                </li>
+              </a>}
+              {roleArr.includes("REQUESTS") && <a href="/requests">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                         hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
@@ -190,8 +201,8 @@ const Layout = ({ children }) => {
                     <Typography className="font-normal">Requests</Typography>
                   )}
                 </li>
-              </a>
-              <a href="/stock">
+              </a>}
+              {roleArr.includes("STOCK") && <a href="/stock">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                          hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
@@ -201,8 +212,8 @@ const Layout = ({ children }) => {
                     <Typography className="font-normal">Stock</Typography>
                   )}
                 </li>
-              </a>
-              <Accordion
+              </a>}
+              {roleArr.includes("MEDICINE") && <Accordion
                 open={open === 1}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -267,9 +278,9 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
+              </Accordion>}
 
-              <Accordion
+              {roleArr.includes("PURCHASE") && <Accordion
                 open={open === 2}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -322,8 +333,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArr.includes("SUPPLIER") && <Accordion
                 open={open === 3}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -376,8 +387,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArr.includes("PATIENT") && <Accordion
                 open={open === 4}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -430,8 +441,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArr.includes("PRESCRIPTION") && <Accordion
                 open={open === 5}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -484,8 +495,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArr.includes("STAFF") && <Accordion
                 open={open === 6}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -538,8 +549,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion 
+              </Accordion>}
+              {roleArr.includes("SCHEDULE") && <Accordion 
                 open={open === 7}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -592,8 +603,8 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
-              <Accordion
+              </Accordion>}
+              {roleArr.includes("ADMIN") && <Accordion
                 open={open === 8}
                 icon={
                   !(isCollapsed & !isHovered) && (
@@ -646,7 +657,7 @@ const Layout = ({ children }) => {
                     </List>
                   </AccordionBody>
                 )}
-              </Accordion>
+              </Accordion>}
             </ul>
           </div>
         </div>
