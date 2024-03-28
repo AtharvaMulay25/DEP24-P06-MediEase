@@ -57,7 +57,9 @@ export default function SignUpPage() {
         toast.error(response.data.message);
       }
     } else {
-      const response = await axios.post(`${apiRoutes.auth}/signup`, user);
+      const response = await axios.post(`${apiRoutes.auth}/signup`, user, {
+        withCredentials: true
+      });
       if (response.data.ok) {
         const resData = response.data;
         dispatch({
