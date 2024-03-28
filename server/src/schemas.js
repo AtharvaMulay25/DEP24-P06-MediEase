@@ -43,6 +43,7 @@ const staffSchema = Joi.object({
 
 // Staff Schema
 const scheduleSchema = Joi.object({
+  email: Joi.string().email().required(),
   staffId: Joi.string().required(),
   shift: Joi.string().valid("MORNING", "AFTERNOON", "NIGHT").required(),
   day: Joi.string()

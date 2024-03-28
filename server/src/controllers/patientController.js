@@ -1,7 +1,9 @@
 //prisma client 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
-
+const {sendMail} = require("../utils/sendMail");
+const {ACCOUNT_CREATED_MAIL_TEMPLATE} = require("../../constants");
+const ExpressError = require("../utils/ExpressError");
 // @desc    Get Patient List
 // route    GET /api/patient
 // @access  Private (Admin) 
@@ -20,35 +22,49 @@ const getPatientList = async (req, res, next) => {
 // @access  Private (Admin) 
 const createPatient = async (req, res, next) => {
         console.log(req.body);
-        const {
-            name,
-            department,
-            age,
-            email,
-            bloodGroup,
-            program,
-            fatherOrSpouseName,
-            category,
-            gender,
-            allergy
-        } = req.body;
 
-        const patient =  await prisma.user.findUnique({
+        const userRecord =  await prisma.user.findUnique({
             where: {
-              email: email,
+              email: req.body.email,
             },
           });
           
-          if(!patient){
+          if(!userRecord){
+            //account is being created externally by admin/staff/doctor
               // Create user record
               const createdUserRecord = await prisma.user.create({
                   data: {
-                      name,
-                      email,
+                      name: req.body.name,
+                      email: req.body.email,
                       role: "PATIENT"
                   }
               })
+              const mailTemplate = ACCOUNT_CREATED_MAIL_TEMPLATE();
+              const mailOptions = {
+                from: "dep2024.p06@gmail.com",
+                to: req.body.email,
+                subject: "Mediease - Account Created" ,
+                html: mailTemplate,
+                text: "",
+              };
+    
+              const info = await sendMail(mailOptions);
+              if(!info){
+                  throw new ExpressError("Error in sending mail to the staff", 500);
+              }
+
           }    
+        if(userRecord && userRecord.role !== "PATIENT"){
+            throw new ExpressError("User already exists with different role", 400);
+        };
+        const patientRecord = await prisma.patient.findUnique({
+            where: {
+                email: req.body.email,
+            },
+        });
+        if(patientRecord){
+            throw new ExpressError("Patient already exists", 400);
+        }
 
         const createdRecord = await prisma.patient.create({
             data: {
@@ -61,7 +77,7 @@ const createPatient = async (req, res, next) => {
         return res.status(200).json({
             ok: true,
             data: createdRecord,
-            message: "Patient List record created successfully"
+            message: "Patient added successfully"
         });
     
 };

@@ -30,7 +30,7 @@ import { useAuthContext } from "./hooks/useAuthContext";
 import RequestList from "./pages/RequestList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
 import PurchaseDetail from "./pages/PurchaseDetail";
-
+// import Toaster from "./components/UI/Toaster";
 function App() {
   const { userRole } = useAuthContext();
   return (
@@ -69,6 +69,7 @@ function App() {
           <Route path="/requests" element={<RequestList />} />
         </Routes>
       </BrowserRouter>
+      {/* <Toaster richColors closeButton position="top-center" /> */}
     </>
   );
 }

@@ -10,8 +10,8 @@ import {
   Select as MaterialSelect,
   Option,
 } from "@material-tailwind/react";
-import {toast} from "sonner";
 import Toaster from "../components/UI/Toaster";
+import {toast} from "sonner";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
