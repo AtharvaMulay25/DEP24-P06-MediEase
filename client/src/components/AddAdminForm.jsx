@@ -40,7 +40,9 @@ export default function AddAdminForm() {
     };
 
     try {
-      const res = await axios.post(apiRoutes.admin, sendData);
+      const res = await axios.post(apiRoutes.admin, sendData, {
+        withCredentials: true
+      });
       console.log("res : ", res);
 
       const data = res?.data;

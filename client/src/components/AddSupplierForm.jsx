@@ -54,7 +54,9 @@ export function AddSupplierForm() {
     // Here you can handle the submission of the form
     console.log(formData);
     try {
-      const response = await axios.post(apiRoutes.supplier, data);
+      const response = await axios.post(apiRoutes.supplier, data, {
+        withCredentials: true
+      });
       console.log(response);
       toast.success("Medicine added successfully");
       setTimeout(() => {

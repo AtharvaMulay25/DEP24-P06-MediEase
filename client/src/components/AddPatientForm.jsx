@@ -59,7 +59,9 @@ export default function AddPatientForm() {
     };
 
     try {
-      const res = await axios.post(apiRoutes.patient, sendData);
+      const res = await axios.post(apiRoutes.patient, sendData, {
+        withCredentials: true
+      });
       console.log("res : ", res);
 
       const data = res?.data;

@@ -11,6 +11,11 @@ const {
     createStockList 
 } = require('../controllers/stockController');
 
+const authMiddleware = require("../middlewares/authMiddleware.js");
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles));
+
 router.get('/', catchAsync(getStockList));
 // router.post('/create', createStockList);
 // router.put('/', updateStockList);

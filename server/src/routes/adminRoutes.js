@@ -8,6 +8,12 @@ const {
   updateAdmin,
   deleteAdmin,
 } = require("../controllers/adminController");
+
+const authMiddleware = require("../middlewares/authMiddleware.js");
+const roles = ["ADMIN"];
+
+router.use(authMiddleware(roles));
+
 //admin routes
 router.get("/", catchAsync(getAdminList));
 router.post("/", validateUser, catchAsync(createAdmin));

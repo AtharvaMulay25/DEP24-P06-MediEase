@@ -38,9 +38,9 @@ const signup = async (req, res, next) => {
         "2h"
       );
 
-      res.cookie('token', token, { maxAge: 900000, httpOnly: true });
-      res.cookie('role', role, { maxAge: 900000, httpOnly: true });
-      res.cookie('name', user.name, { maxAge: 900000, httpOnly: true });
+      res.cookie('token', token, { maxAge: 2*60*60*1000, httpOnly: true });
+      res.cookie('role', role, { maxAge: 2*60*60*1000, httpOnly: true });
+      res.cookie('name', user.name, { maxAge: 2*60*60*1000, httpOnly: true });
 
       return res.status(201).json({
         ok: true,
@@ -86,9 +86,9 @@ const login = async (req, res, next) => {
       "2h"
     );
 
-    res.cookie('token', token, { maxAge: 900000, httpOnly: true });
-    res.cookie('role', user.role, { maxAge: 900000, httpOnly: true });
-    res.cookie('name', user.name, { maxAge: 900000, httpOnly: true });
+    res.cookie('token', token, { maxAge: 2*60*60*1000, httpOnly: true });
+    res.cookie('role', user.role, { maxAge: 2*60*60*100, httpOnly: true });
+    res.cookie('name', user.name, { maxAge: 2*60*60*100, httpOnly: true });
 
     return res.status(200).json({
       ok: true,

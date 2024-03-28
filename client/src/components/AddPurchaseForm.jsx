@@ -42,7 +42,9 @@ export function AddPurchaseForm() {
 
   const fetchSuppliers = async () => {
     try {
-      const response = await axios.get(apiRoutes.supplier);
+      const response = await axios.get(apiRoutes.supplier, {
+        withCredentials: true
+      });
       // console.log(response.data);
       setSuppliers(response.data.data); // Assuming the response is an array of suppliers
     } catch (error) {
@@ -57,7 +59,9 @@ export function AddPurchaseForm() {
 
   const fetchMedicines = async () => {
     try {
-      const response = await axios.get(apiRoutes.medicine);
+      const response = await axios.get(apiRoutes.medicine, {
+        withCredentials: true
+      });
       // console.log(response.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
@@ -165,7 +169,9 @@ export function AddPurchaseForm() {
     const data = { ...purchaseListEntry, purchaseItems };
     //***DON'T LET THE FORM SUBMIT IF ANY OF MANDATORY ITEMS IS MISSING OR ANY LIST ROW FIELD IS EMPTY */
     try {
-      const response = await axios.post(apiRoutes.purchase, data);
+      const response = await axios.post(apiRoutes.purchase, data, {
+        withCredentials: true
+      });
       console.log("add purchase submit response = ", response);
       toast.success("Purchase added successfully");
       setTimeout(() => {

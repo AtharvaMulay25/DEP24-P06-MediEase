@@ -8,6 +8,12 @@ const {
     updateSchedule,
     deleteSchedule
 } = require('../controllers/scheduleController');
+
+const authMiddleware = require("../middlewares/authMiddleware.js");
+const roles = ["PATIENT", "DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles));
+
 //schedule routes
 router.get('/', catchAsync(getScheduleList));
 router.post('/', catchAsync(createSchedule));

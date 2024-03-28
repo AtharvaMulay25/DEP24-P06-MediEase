@@ -67,7 +67,9 @@ export default function AddPrescriptionForm() {
 
   const fetchMedicines = async () => {
     try {
-      const response = await axios.get(apiRoutes.medicine);
+      const response = await axios.get(apiRoutes.medicine, {
+        withCredentials: true
+      });
       // console.log(response.data.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {

@@ -10,6 +10,10 @@ const {
     deleteStaff
 } = require('../controllers/staffController');
 
+const authMiddleware = require("../middlewares/authMiddleware.js");
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles));
 
 router.get('/', catchAsync(getStaffList));
 router.post('/', validateStaff, catchAsync(createStaff));

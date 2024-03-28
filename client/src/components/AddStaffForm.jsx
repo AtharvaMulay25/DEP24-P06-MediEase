@@ -51,7 +51,9 @@ export default function AddStaffForm() {
     };
 
     try {
-      const response = await axios.post(apiRoutes.staff, data);
+      const response = await axios.post(apiRoutes.staff, data, {
+        withCredentials: true
+      });
       console.log(response);
       toast.success("Staff added successfully");
       setTimeout(() => {

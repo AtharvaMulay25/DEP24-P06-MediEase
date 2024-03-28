@@ -7,6 +7,12 @@ const { getCategory,
     createCategory,
     updateCategory,
     deleteCategory} = require('../controllers/categoryController');
+
+const authMiddleware = require("../middlewares/authMiddleware.js");
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles));
+
 //category routes
 router.get('/', catchAsync(getCategoryList));
 router.get('/:id', catchAsync(getCategory));
