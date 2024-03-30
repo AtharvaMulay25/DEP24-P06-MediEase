@@ -58,7 +58,7 @@ const Navbar = () => {
               smooth={true}
               duration={500}
               className=" hover:text-hoverColor transition-all cursor-pointer"
-              onClick={() => navigate("/pharmadashboard")}
+              onClick={() => navigate(userRole === "PARAMEDICAL" ? "/pharmadashboard" : "/doctordashboard")}
             >
               Dashboard
             </Link>

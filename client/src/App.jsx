@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignInPage from "./pages/SignInPage";
@@ -29,40 +30,51 @@ import AdminList from "./pages/AdminList";
 import { useAuth } from "./hooks/useAuth";
 import RequestList from "./pages/RequestList";
 
+import { LoggedInRoute, RoleBasedRoute } from "./components/protected/protectRoute";
+import roleMap from "./utils/rolesMap";
+
 function App() {
   const { userRole } = useAuth();
+  const [roleArr, setRoleArr] = useState();
+  
+  useEffect(() => {
+     setRoleArr(roleMap(userRole));
+  }, [userRole]);
+
+  console.log("roleArr : ", roleArr);
+
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/signin" element={!userRole ? <SignInPage /> : <Dashboard/>} />
-          <Route path="/signup" element={!userRole ? <SignUpPage /> : <Dashboard/>} />
-          <Route path="/pharmadashboard" element={<PharmaDashboard />} />
-          <Route path="/medicine/add" element={<AddMedicine />} />
-          <Route path="/medicine" element={<MedicineList />} />
-          <Route path="/medicine/category/add" element={<AddCategory />} />
-          <Route path="/medicine/category" element={<CategoryList />} />
-          <Route path="/purchase/add" element={<AddPurchase />} />
-          <Route path="/purchase" element={<PurchaseList />} />
-          <Route path="/supplier/add" element={<AddSupplier />} />
-          <Route path="/supplier" element={<SupplierList />} />
-          <Route path="/stock" element={<StockList />} />
-          <Route path="/patient/add" element={<AddPatient />} />
-          <Route path="/patient" element={<PatientList />} />
-          <Route path="/doctordashboard" element={<DoctorDashboard />} />
-          <Route path="/patient/list" element={<PatientList />} />
-          <Route path="/patient/profile" element={<CompleteProfilePatient />} />
-          <Route path="/prescription" element={<PrescriptionList />} />
-          <Route path="/prescription/add" element={<AddPrescription />} />
-          <Route path="/schedule" element={<ScheduleList />} />
-          <Route path="/schedule/add" element={<AddSchedule />} />
-          <Route path="/staff" element={<StaffList />} />
-          <Route path="/staff/add" element={<AddStaff />} />
-          <Route path="/staff/profile" element={<CompleteProfileStaff />} />
-          <Route path="/admin" element={<AdminList />} />
-          <Route path="/admin/add" element={<AddAdmin />} />
-          <Route path="/requests" element={<RequestList />} />
+          <Route path="/signin" element={<LoggedInRoute shouldBeLoggedIn={false} routePath={"/"}><SignInPage /></LoggedInRoute>} />
+          <Route path="/signup" element={<LoggedInRoute shouldBeLoggedIn={false} routePath={"/"}><SignUpPage /></LoggedInRoute>} />
+          <Route path="/pharmadashboard" element={userRole === "DOCTOR" ? <PharmaDashboard /> : <>ACCESS DENIED</>} />
+          <Route path="/medicine/add" element={<RoleBasedRoute allowedRoles={roleArr}><AddMedicine /></RoleBasedRoute>} />
+          <Route path="/medicine" element={<RoleBasedRoute allowedRoles={roleArr}><MedicineList /></RoleBasedRoute>} />
+          <Route path="/medicine/category/add" element={<RoleBasedRoute allowedRoles={roleArr}><AddCategory /></RoleBasedRoute>} />
+          <Route path="/medicine/category" element={<RoleBasedRoute allowedRoles={roleArr}><CategoryList /></RoleBasedRoute>} />
+          <Route path="/purchase/add" element={<RoleBasedRoute allowedRoles={roleArr}><AddPurchase /></RoleBasedRoute>} />
+          <Route path="/purchase" element={<RoleBasedRoute allowedRoles={roleArr}><PurchaseList /></RoleBasedRoute>} />
+          <Route path="/supplier/add" element={<RoleBasedRoute allowedRoles={roleArr}><AddSupplier /></RoleBasedRoute>} />
+          <Route path="/supplier" element={<RoleBasedRoute allowedRoles={roleArr}><SupplierList /></RoleBasedRoute>} />
+          <Route path="/stock" element={<RoleBasedRoute allowedRoles={roleArr} userRole={userRole}><StockList /></RoleBasedRoute>} />
+          <Route path="/patient/add" element={<RoleBasedRoute allowedRoles={roleArr}><AddPatient /></RoleBasedRoute>} />
+          <Route path="/patient" element={<RoleBasedRoute allowedRoles={roleArr}><PatientList /></RoleBasedRoute>} />
+          <Route path="/doctordashboard" element={<RoleBasedRoute allowedRoles={roleArr}><DoctorDashboard /></RoleBasedRoute>} />
+          <Route path="/patient/list" element={<RoleBasedRoute allowedRoles={roleArr}><PatientList /></RoleBasedRoute>} />
+          <Route path="/patient/profile" element={<RoleBasedRoute allowedRoles={roleArr}><CompleteProfilePatient /></RoleBasedRoute>} />
+          <Route path="/prescription" element={<RoleBasedRoute allowedRoles={roleArr}><PrescriptionList /></RoleBasedRoute>} />
+          <Route path="/prescription/add" element={<RoleBasedRoute allowedRoles={roleArr}><AddPrescription /></RoleBasedRoute>} />
+          <Route path="/schedule" element={<RoleBasedRoute allowedRoles={roleArr}><ScheduleList /></RoleBasedRoute>} />
+          <Route path="/schedule/add" element={<RoleBasedRoute allowedRoles={roleArr}><AddSchedule /></RoleBasedRoute>} />
+          <Route path="/staff" element={<RoleBasedRoute allowedRoles={roleArr}><StaffList /></RoleBasedRoute>} />
+          <Route path="/staff/add" element={<RoleBasedRoute allowedRoles={roleArr}><AddStaff /></RoleBasedRoute>} />
+          <Route path="/staff/profile" element={<RoleBasedRoute allowedRoles={roleArr}><CompleteProfileStaff /></RoleBasedRoute>} />
+          <Route path="/admin" element={<RoleBasedRoute allowedRoles={roleArr}><AdminList /></RoleBasedRoute>} />
+          <Route path="/admin/add" element={<RoleBasedRoute allowedRoles={roleArr}><AddAdmin /></RoleBasedRoute>} />
+          <Route path="/requests" element={<RoleBasedRoute allowedRoles={roleArr}><RequestList /></RoleBasedRoute>} />
         </Routes>
       </BrowserRouter>
     </>

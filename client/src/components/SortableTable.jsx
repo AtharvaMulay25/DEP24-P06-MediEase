@@ -497,7 +497,7 @@ export function SortableTable({
                           <Tooltip content="Delete">
                             <IconButton
                               variant="text"
-                              onClick={(e) => handleDelete(e, rowData["id"])}
+                              onClick={(e) => handleDialogDelete(e, rowData["id"])}
                             >
                               <TrashIcon className="h-4 w-4" />
                             </IconButton>
