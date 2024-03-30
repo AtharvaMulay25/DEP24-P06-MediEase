@@ -96,7 +96,8 @@ export function SortableTable({
   handleDelete,
   searchKey,
   handleApprove ,
-  handleReject
+  handleReject, 
+  actionFlag = 'true',
 }) {
   const [open, setOpen] = useState(false);
   const [deletedRecordId, setDeletedRecordId] = useState(null);
@@ -444,7 +445,7 @@ export function SortableTable({
           </thead>
           <tbody>
             {paginatedData.map((rowData, index) => {
-              const classes = "px-3 border-2 opacity-80";
+              const classes = "px-3 border-2 opacity-80 h-10";
               return (
                 <tr key={index} className="even:bg-blue-gray-50/50">
                   {Object.entries(tableHead).map(([key, value]) => {
@@ -485,50 +486,52 @@ export function SortableTable({
                         </td>
                       );
                   })}
-                  <td className={("", classes)}>
-                    <div className="flex gap-0.5">
-                      {title !== "Pending Request List" ? (
-                        <>
-                          <Tooltip content="Edit">
-                            <IconButton variant="text">
-                              <PencilIcon className="h-4 w-4" />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip content="Delete">
-                            <IconButton
-                              variant="text"
-                              onClick={(e) => handleDelete(e, rowData["id"])}
-                            >
-                              <TrashIcon className="h-4 w-4" />
-                            </IconButton>
-                          </Tooltip>
-                        </>
-                      ) : (
-                        <>
-                          <Tooltip content="Approve">
-                            <IconButton variant="text" 
-                            onClick={(e) => handleApprove(e, rowData["id"])}
-                            >
-                              <CheckCircleIcon
-                                className="h-6 w-6"
-                                style={{ color: "green" }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip content="Reject">
-                            <IconButton variant="text"
-                             onClick={(e) => handleReject(e, rowData["id"])}
-                             >
-                              <XCircleIcon
-                                className="h-6 w-6"
-                                style={{ color: "red" }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                        </>
-                      )}
-                    </div>
-                  </td>
+                  { actionFlag == 'true' && 
+                    <td className={("", classes)}>
+                      <div className="flex gap-0.5">
+                        {title !== "Pending Request List" ? (
+                          <>
+                            <Tooltip content="Edit">
+                              <IconButton variant="text">
+                                <PencilIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Delete">
+                              <IconButton
+                                variant="text"
+                                onClick={(e) => handleDelete(e, rowData["id"])}
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                          </>
+                        ) : (
+                          <>
+                            <Tooltip content="Approve">
+                              <IconButton variant="text" 
+                              onClick={(e) => handleApprove(e, rowData["id"])}
+                              >
+                                <CheckCircleIcon
+                                  className="h-6 w-6"
+                                  style={{ color: "green" }}
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Reject">
+                              <IconButton variant="text"
+                              onClick={(e) => handleReject(e, rowData["id"])}
+                              >
+                                <XCircleIcon
+                                  className="h-6 w-6"
+                                  style={{ color: "red" }}
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  }
                 </tr>
               );
             })}
