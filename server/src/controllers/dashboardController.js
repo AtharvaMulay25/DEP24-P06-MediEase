@@ -63,7 +63,7 @@ const getTopMedicineStat = async (req, res, next) => {
 
     const sortedStocks = stocks.map(stock => ({
         saltName: stock.Medicine.saltName,
-        availableQuantity: stock.inQuantity - stock.outQuantity,
+        qty: stock.inQuantity - stock.outQuantity,
     })).sort((a, b) => b.availableQuantity - a.availableQuantity).slice(0, Math.min(stocks.length, 5));
 
     return res.json({

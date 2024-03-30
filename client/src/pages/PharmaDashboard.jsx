@@ -106,10 +106,7 @@ const PharmaDashboard = () => {
     series: [
       {
         name: "Checkups",
-        data: [
-          50, 40, 30, 32, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0, 0, 0, 0, 0, 0, 0, 0,
-        ],
+        data: checkupStat.map(it => it.total),
       },
     ],
     options: {
@@ -146,39 +143,7 @@ const PharmaDashboard = () => {
             fontWeight: 500,
           },
         },
-        categories: [
-          "01/03/2024",
-          "02/03/2024",
-          "03/03/2024",
-          "04/03/2024",
-          "05/03/2024",
-          "06/03/2024",
-          "07/03/2024",
-          "08/03/2024",
-          "09/03/2024",
-          "10/03/2024",
-          "11/03/2024",
-          "12/03/2024",
-          "13/03/2024",
-          "14/03/2024",
-          "15/03/2024",
-          "16/03/2024",
-          "17/03/2024",
-          "18/03/2024",
-          "19/03/2024",
-          "20/03/2024",
-          "21/03/2024",
-          "22/03/2024",
-          "23/03/2024",
-          "24/03/2024",
-          "25/03/2024",
-          "26/03/2024",
-          "27/03/2024",
-          "28/03/2024",
-          "29/03/2024",
-          "30/03/2024",
-          "31/03/2024",
-        ],
+        categories: checkupStat.map(it => it.date),
       },
       yaxis: {
         labels: {
@@ -217,7 +182,7 @@ const PharmaDashboard = () => {
     type: "pie",
     width: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
     height: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
-    series: [44, 55, 13, 43, 22],
+    series: topMedicineStat.map(it => it.qty),
     options: {
       chart: {
         toolbar: {
@@ -230,8 +195,8 @@ const PharmaDashboard = () => {
       dataLabels: {
         enabled: false,
       },
-      labels: ["Dolo", "Crocin", "Combiflam", "Ibuprofen", "Omeprazole"],
-      colors: ["#020617", "#ff8f00", "#00897b", "#1e88e5", "#d81b60"],
+      labels: topMedicineStat.map(it => it.saltName),
+      colors: ["#020617", "#ff8f00", "#00897b", "#1e88e5", "#d81b60"].slice(0, topMedicineStat.length),
       legend: {
         show: true,
       },
