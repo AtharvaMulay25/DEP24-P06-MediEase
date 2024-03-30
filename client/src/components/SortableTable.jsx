@@ -98,7 +98,8 @@ export function SortableTable({
   handleApprove,
   handleReject,
   handleDetail = () => {},
-  detailsFlag = false,
+  detailsFlag = false,, 
+  actionFlag = 'true',
 }) {
   const [open, setOpen] = useState(false);
   const [deletedRecordId, setDeletedRecordId] = useState(null);
@@ -447,7 +448,7 @@ export function SortableTable({
           </thead>
           <tbody>
             {paginatedData.map((rowData, index) => {
-              const classes = "px-3 border-2 opacity-80";
+              const classes = "px-3 border-2 opacity-80 h-10";
               return (
                 <tr key={index} className="even:bg-blue-gray-50/50">
                   {Object.entries(tableHead).map(([key, value]) => {
@@ -488,11 +489,12 @@ export function SortableTable({
                         </td>
                       );
                   })}
-                  <td className={("", classes)}>
-                    <div className="flex gap-0.5">
-                      {title !== "Pending Request List" ? (
-                        <>
-                          {detailsFlag == true && (
+                  { actionFlag == 'true' && 
+                    <td className={("", classes)}>
+                      <div className="flex gap-0.5">
+                        {title !== "Pending Request List" ? (
+                          <>
+                            {detailsFlag == true && (
                             <Tooltip content="View">
                               <IconButton
                                 variant="text"
@@ -503,50 +505,51 @@ export function SortableTable({
                             </Tooltip>
                           )}
                           <Tooltip content="Edit">
-                            <IconButton variant="text">
-                              <PencilIcon className="h-4 w-4" />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip content="Delete">
-                            <IconButton
-                              variant="text"
-                              onClick={(e) => {
+                              <IconButton variant="text">
+                                <PencilIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Delete">
+                              <IconButton
+                                variant="text"
+                                onClick={(e) => {
                                 console.log("rowData: ", rowData);
                                 handleDialogDelete(e, rowData["id"])
                               }}
-                            >
-                              <TrashIcon className="h-4 w-4" />
-                            </IconButton>
-                          </Tooltip>
-                        </>
-                      ) : (
-                        <>
-                          <Tooltip content="Approve">
-                            <IconButton
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                          </>
+                        ) : (
+                          <>
+                            <Tooltip content="Approve">
+                              <IconButton
                               variant="text"
-                              onClick={(e) => handleApprove(e, rowData["id"])}
-                            >
-                              <CheckCircleIcon
-                                className="h-6 w-6"
-                                style={{ color: "green" }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip content="Reject">
-                            <IconButton
+                                onClick={(e) => handleApprove(e, rowData["id"])}
+                              >
+                                <CheckCircleIcon
+                                  className="h-6 w-6"
+                                  style={{ color: "green" }}
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Reject">
+                              <IconButton
                               variant="text"
-                              onClick={(e) => handleReject(e, rowData["id"])}
-                            >
-                              <XCircleIcon
-                                className="h-6 w-6"
-                                style={{ color: "red" }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                        </>
-                      )}
-                    </div>
-                  </td>
+                               onClick={(e) => handleReject(e, rowData["id"])}
+                             >
+                                <XCircleIcon
+                                  className="h-6 w-6"
+                                  style={{ color: "red" }}
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  }
                 </tr>
               );
             })}

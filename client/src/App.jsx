@@ -28,6 +28,8 @@ import AddAdmin from "./pages/AddAdmin";
 import AdminList from "./pages/AdminList";
 import { useAuthContext } from "./hooks/useAuthContext";
 import RequestList from "./pages/RequestList";
+import OutOfStock from "./pages/OutOfStock";
+import ExpiredMedicineList from "./pages/ExpiredMedicineList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
 import PurchaseDetail from "./pages/PurchaseDetail";
 // import Toaster from "./components/UI/Toaster";
@@ -41,6 +43,7 @@ function App() {
           <Route path="/signin" element={!userRole ? <SignInPage /> : <Dashboard/>} />
           <Route path="/signup" element={!userRole ? <SignUpPage /> : <Dashboard/>} />
           <Route path="/pharmadashboard" element={<PharmaDashboard />} />
+          <Route path="/medicine/expired" element={<ExpiredMedicineList />} />
           <Route path="/medicine/add" element={<AddMedicine />} />
           <Route path="/medicine" element={<MedicineList />} />
           <Route path="/medicine/category/add" element={<AddCategory />} />
@@ -51,6 +54,7 @@ function App() {
           <Route path="/supplier/add" element={<AddSupplier />} />
           <Route path="/supplier" element={<SupplierList />} />
           <Route path="/stock" element={<StockList />} />
+          <Route path="/stock/outofstock" element={<OutOfStock />} />
           <Route path="/patient/add" element={<AddPatient />} />
           <Route path="/patient" element={<PatientList />} />
           <Route path="/doctordashboard" element={<DoctorDashboard />} />
