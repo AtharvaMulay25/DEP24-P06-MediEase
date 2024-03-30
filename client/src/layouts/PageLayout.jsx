@@ -30,9 +30,12 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useAuthContext } from "../hooks/useAuthContext";
+import roleMap from "../utils/rolesMap.js";
 import Toaster from "../components/UI/Toaster";
 const Layout = ({ children }) => {
   const { userRole, userName } = useAuthContext();
+
+  const [roleArr, setRoleArr] = useState([]);
 
   const [open, setOpen] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -70,6 +73,10 @@ const Layout = ({ children }) => {
   const [isLargeScreen, setIsLargeScreen] = useState(
     window.matchMedia("(min-width: 890px)").matches
   );
+
+  useEffect(() => {
+    setRoleArr(roleMap(userRole)); 
+  }, [userRole]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 890px)");

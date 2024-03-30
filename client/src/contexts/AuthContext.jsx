@@ -27,23 +27,25 @@ export const AuthContextProvider = ({ children }) => {
     }); 
 
     useEffect(() => {
-        const userRole = Cookies.get('user-role');
-        const userEmail = Cookies.get('user-email');
-        const userName = Cookies.get('user-name');
-        
-        if (userRole && userEmail && userName) {
-            dispatch({
-                type: "LOGIN", 
-                payload: {
-                    userRole,
-                    userEmail,
-                    userName
-                }
-            });
+        const fetchDetails = async() => {
+            const userRole = Cookies.get('user-role');
+            const userEmail = Cookies.get('user-email');
+            const userName = Cookies.get('user-name');
+            
+            if (userRole && userEmail && userName) {
+                dispatch({
+                    type: "LOGIN", 
+                    payload: {
+                        userRole,
+                        userEmail,
+                        userName
+                    }
+                });
+            }
+            console.log(userEmail, userName, userRole);
         }
-        console.log(userEmail, userName, userRole);
-
-    }, []);
+        fetchDetails();
+    }, [state.userRole, state.userEmail, state.userName]);
 
     return <AuthContext.Provider value={{ ...state, dispatch }}>
         {children}
