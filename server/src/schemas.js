@@ -134,7 +134,7 @@ const patientSchema = Joi.object({
   //   Checkup: Joi.array().items(Joi.object()),
 });
 
-const checkupMedicines = Joi.object({
+const checkupMedicinesSchema = Joi.object({
   medicineId: Joi.string().required(),
   dosage: Joi.string().optional(),
   frequency: Joi.string().valid('OD', 'BD', 'SOS', 'TDS').required()
@@ -143,19 +143,16 @@ const checkupMedicines = Joi.object({
 // Checkup Schema
 const checkupSchema = Joi.object({
   patientId: Joi.string().required(),
+  staffEmail: Joi.string().email().required(),
   temperature: Joi.number().optional(),
   pulseRate : Joi.number().integer().optional(),
   spO2: Joi.number().min(0).max(100).optional(),  //is a percentage value
   bloodPressure: Joi.string().optional(), //mm Hg
-  date: Joi.date().iso().required(),
+  date: Joi.date().required(),
   doctorId: Joi.string().optional(),
   symptoms: Joi.string().optional(),
   diagnosis: Joi.string().required(),
-  
-  // staffId: Joi.string().required(),
-  //   Doctor: Joi.object().optional(),
-  //   Staff: Joi.object().required(),
-  //   Medicines: Joi.array().items(Joi.object()),
+  checkupMedicines: Joi.array().items(checkupMedicinesSchema).required()
 });
 
 const sendOtpSchema = Joi.object({
@@ -189,4 +186,5 @@ module.exports = {
   sendOtpSchema,
   verifyOtpSchema,
   userSchema,
+  checkupSchema
 };

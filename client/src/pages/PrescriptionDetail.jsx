@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { useState, useEffect} from "react";
 import { useParams } from "react-router-dom";
-
+import { apiRoutes } from "../utils/apiRoutes";
+import axios from "axios";
 import { PrinterIcon } from "@heroicons/react/24/solid";
 import {
   Card,
@@ -10,146 +11,57 @@ import {
   CardFooter,
 } from "@material-tailwind/react";
 import Layout from "../layouts/PageLayout";
-
+import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
+import {toast} from "sonner";
+import {setToastTimeout} from "../utils/customTimeout"
 const TABLE_HEAD = ["Medicine", "Dosage", "Frequency"];
 
 const PrescriptionDetail = () => {
   const { id } = useParams();
-  const prescriptionData = {
-    opdID: "123",
-    patientName: "John Doe",
-    doctor: "Dr. Jane Doe",
-    date: "12/12/2021",
-    temperature: "98.6",
-    bloodPressure: "120/80",
-    spO2: "98",
-    pulse_rate: "72",
-    diagnosis: "Fever due to cold weather and viral infection in the area. Take rest and drink plenty of water. ",
-    symptoms: "Headache, Bodyache and fever.",
-    medicines: [
-      {
-        name: "Paracetamol",
-        dosage: "2-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Azithromycin",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-      {
-        name: "Medicine 1",
-        dosage: "1-0-1",
-        frequency: "Daily",
-      },
-    ],
-  };
+  console.log(id);
+  const params = id.split('^');
+  const prescriptionId = params[0];
+  const opdId = params[1];
+  // console.log(prescriptionId)
+  const [loading, setLoading] = useState(true);
+  const [prescriptionData, setPrescriptionData]  = useState({
+    patientName: "",
+    doctorName: "",
+    date: "",
+    temperature: "",
+    bloodPressure: "",
+    spO2: "",
+    pulseRate: "",
+    diagnosis: "",
+    symptoms: "",
+    checkupMedicines: [],
+  });
+
+
+  const fetchPrescriptionDetail = async () => {
+    try {
+      const response = await axios.get(apiRoutes.checkup + `/${prescriptionId}`);
+      console.log("response", response.data.data);
+      setToastTimeout('success', 'Prescription Details fetched successfully', 1000)
+      return response.data.data;
+    } catch (error) {
+      console.error(
+        `ERROR (get-prescription-detail): ${error?.response?.data?.message}`
+      );
+      setToastTimeout('error', 'Failed to fetch Prescription Details', 1000)  
+    }
+  }
+
+  useEffect(() => async () => {
+    const data = await fetchPrescriptionDetail();
+    console.log("data out", data);
+    setPrescriptionData(data);
+    setLoading(false);
+  }, []);
   return (
+    <>
+    {loading && <SyncLoadingScreen />}
+    {!loading && (
     <Layout>
       <div className="flex flex-col self-center lg:w-2/3 h-max">
         <div className="flex flex-col sm:flex-row justify-between py-2">
@@ -162,14 +74,10 @@ const PrescriptionDetail = () => {
             </Typography>
           </div>
           <div className="flex gap-x-2 h-10">
-            <Button size="md"  ripple={true}>
+            <Button size="md" ripple={true}>
               Edit
             </Button>
-            <Button
-              size="md"
-              ripple={true}
-              className="flex gap-x-1 px-4"
-            >
+            <Button size="md" ripple={true} className="flex gap-x-1 px-4">
               <PrinterIcon className="h-4" /> Print
             </Button>
           </div>
@@ -206,18 +114,18 @@ const PrescriptionDetail = () => {
                 color="blue-gray"
                 className="mb-2 font-medium"
               >
-                {prescriptionData.opdID}
+                {opdId}
               </Typography>
 
-              <Typography variant="small">Doctor</Typography>
+              <Typography variant="small">Doctor Name</Typography>
               <Typography
                 variant="paragraph"
                 color="blue-gray"
                 className="mb-2 font-medium"
               >
-                {prescriptionData.doctor}
+                {prescriptionData.doctorName}
               </Typography>
-            
+
               <Typography variant="small">Patient Name</Typography>
               <Typography
                 variant="paragraph"
@@ -226,7 +134,7 @@ const PrescriptionDetail = () => {
               >
                 {prescriptionData.patientName}
               </Typography>
-            
+
               <Typography variant="small">Date</Typography>
               <Typography
                 variant="paragraph"
@@ -235,7 +143,7 @@ const PrescriptionDetail = () => {
               >
                 {prescriptionData.date}
               </Typography>
-            
+
               <Typography variant="small">Temperature</Typography>
               <Typography
                 variant="paragraph"
@@ -244,7 +152,7 @@ const PrescriptionDetail = () => {
               >
                 {prescriptionData.temperature}
               </Typography>
-            
+
               <Typography variant="small">Blood Pressure</Typography>
               <Typography
                 variant="paragraph"
@@ -253,7 +161,7 @@ const PrescriptionDetail = () => {
               >
                 {prescriptionData.bloodPressure}
               </Typography>
-            
+
               <Typography variant="small">SpO2</Typography>
               <Typography
                 variant="paragraph"
@@ -262,16 +170,16 @@ const PrescriptionDetail = () => {
               >
                 {prescriptionData.spO2}
               </Typography>
-            
+
               <Typography variant="small">Pulse Rate</Typography>
               <Typography
                 variant="paragraph"
                 color="blue-gray"
                 className="mb-2 font-medium"
               >
-                {prescriptionData.pulse_rate}
+                {prescriptionData.pulseRate}
               </Typography>
-            
+
               <Typography variant="small">Diagnosis</Typography>
               <Typography
                 variant="paragraph"
@@ -304,14 +212,14 @@ const PrescriptionDetail = () => {
                           className="font-normal leading-none opacity-70 text-center"
                         >
                           {head}
-                          {head === "Dosage" && '*'}
+                          {head === "Dosage" && "*"}
                         </Typography>
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {prescriptionData.medicines.map((medicine) => (
+                  {prescriptionData.checkupMedicines.map((medicine) => (
                     <tr className="text-center border-b border-blue-gray-50">
                       <td className="">
                         <Typography
@@ -319,7 +227,7 @@ const PrescriptionDetail = () => {
                           // color="blue-gray"
                           className="font-normal p-4"
                         >
-                          {medicine.name}
+                          {medicine.brandName}
                         </Typography>
                       </td>
                       <td>
@@ -355,6 +263,9 @@ const PrescriptionDetail = () => {
         </Card>
       </div>
     </Layout>
+
+    )}
+    </>
   );
 };
 

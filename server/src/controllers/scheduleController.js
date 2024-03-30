@@ -16,6 +16,7 @@ const getScheduleList = async (req, res, next) => {
     // console.log("Schedule list : ", scheduleList);
 
     const sendScheduleList = scheduleList.map((schedule) => ({
+      id: schedule.id,
       staffId: schedule.staffId,
       day: schedule.day,
       shift: schedule.shift,

@@ -93,7 +93,7 @@ const updateSupplier = async(req, res, next) => {
 // @access  Private (Admin) 
 const deleteSupplier = async(req, res, next) => {
     try {
-        const {id} = req.params;        
+        const {id} = req.params;  
         const deletedRecord = await prisma.supplier.delete({
             where: {
               id: id,

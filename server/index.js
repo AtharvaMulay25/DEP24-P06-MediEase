@@ -23,6 +23,7 @@ const mailRoutes = require("./src/routes/mailRoutes.js");
 const requestRoutes = require("./src/routes/requestRoutes.js");
 const staffRoutes = require("./src/routes/staffRoutes.js");
 const scheduleRoutes = require('./src/routes/scheduleRoutes.js');
+const checkupRoutes = require("./src/routes/checkupRoutes.js");
 const ExpressError = require("./src/utils/ExpressError.js");
 
 app.use("/api/auth", authRoutes);
@@ -30,6 +31,7 @@ app.use("/api/otp", otpRoutes);
 app.use("/api/mail", mailRoutes);
 app.use("/api/requests", requestRoutes);
 app.use("/api/purchase", purchaseRoutes);
+app.use("/api/checkup", checkupRoutes);
 app.use("/api/supplier", supplierRoutes);
 app.use("/api/medicine", medicineRoutes);
 app.use("/api/stock", stockRoutes);

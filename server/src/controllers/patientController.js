@@ -1,7 +1,7 @@
 //prisma client 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
-const {sendMail} = require("../utils/sendMail");
+const sendMail = require("../utils/sendMail");
 const {ACCOUNT_CREATED_MAIL_TEMPLATE} = require("../../constants");
 const ExpressError = require("../utils/ExpressError");
 // @desc    Get Patient List

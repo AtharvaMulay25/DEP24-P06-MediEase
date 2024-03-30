@@ -19,10 +19,11 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 export default function AddPrescriptionForm() {
   const navigate = useNavigate();
-
+  const {userEmail} = useAuthContext();
   const [formData, setFormData] = useState({
     email: "",
     doctor: "",
@@ -84,7 +85,7 @@ export default function AddPrescriptionForm() {
       );
       toast.error(
         error?.response?.data?.message || "Failed to fetch Patients List"
-      )
+      );
     }
   };
 
@@ -112,14 +113,14 @@ export default function AddPrescriptionForm() {
     setDataArray(updatedArray);
   };
 
-  const handleDoctorChange = (selectedDoctor) =>{
+  const handleDoctorChange = (selectedDoctor) => {
     console.log(selectedDoctor);
     setSelectedDoctor(selectedDoctor);
     setFormData((prevData) => ({
       ...prevData,
       doctor: selectedDoctor.value,
     }));
-  }
+  };
   const handlePatientChange = (selectedPatient) => {
     console.log(selectedPatient);
     setSelectedPatient(selectedPatient);
@@ -127,7 +128,7 @@ export default function AddPrescriptionForm() {
       ...prevData,
       email: selectedPatient.value,
     }));
-  }; 
+  };
   const handleMedicineChange = (selectedMedicine, index) => {
     console.log(selectedMedicine.value);
     setDataArray((prevData) => {
@@ -151,30 +152,62 @@ export default function AddPrescriptionForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you can handle the submission of the form
-    const data = {
+    const checkupListEntry = {
       patientId: selectedPatient?.value?.id,
-      doctorId: selectedDoctor?.value,
       date: formData.date,
       diagnosis: formData.diagnosis,
-      medicines: dataArray
     };
     //optional fields
-    if(formData.temperature) {
-      data.temperature = parseFloat(formData.temperature) || 0;
+    if(selectedDoctor?.value){
+      checkupListEntry.doctorId  =selectedDoctor?.value
     }
-    if(formData.pulseRate) {
-      data.pulseRate = parseInt(formData.pulseRate) || 0;
+    if (formData.temperature) {
+      checkupListEntry.temperature =formData.temperature;
     }
-    if(formData.spO2) {
-      data.spO2 = parseFloat(formData.spO2) || 0;
+    if (formData.pulseRate) {
+      checkupListEntry.pulseRate = formData.pulseRate;
     }
-    if(formData.bloodPressure) {
-      data.bloodPressure = formData.bloodPressure;
+    if (formData.spO2) {
+      checkupListEntry.spO2 = formData.spO2;
     }
-    if(formData.symptoms){
-      data.symptoms = formData.symptoms;
+    if (formData.bloodPressure) {
+      checkupListEntry.bloodPressure = formData.bloodPressure;
+    }
+    if (formData.symptoms) {
+      checkupListEntry.symptoms = formData.symptoms;
     }
 
+    const checkupMedicines = dataArray.map((data) => {
+      const medicines = {
+        medicineId: data?.name?.value,
+        frequency: data.frequency,
+      };
+      if (data.dosage) medicines.dosage = data.dosage;
+      return medicines;
+    });
+
+    const data = {
+      ...checkupListEntry,
+      staffEmail: userEmail,
+      checkupMedicines,
+    };
+    console.log(data);
+
+    try {
+      const response = await axios.post(apiRoutes.checkup, data);
+      console.log(response.data);
+      toast.success(response.data.message);
+      setTimeout(() => {
+        navigate("/prescription");
+      }, 1000);
+    } catch (error) {
+      console.error(
+        `ERROR (add-prescription): ${error?.response?.data?.message}`
+      );
+      toast.error(
+        error?.response?.data?.message || "Failed to add Prescription"
+      );
+    }
   };
 
   const handleAddRow = () => {
@@ -259,7 +292,7 @@ export default function AddPrescriptionForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="temperature">Temperature</label>:
+                <label htmlFor="temperature">Temperature (C)</label>:
               </div>
               <Input
                 id="temperature"
@@ -277,6 +310,8 @@ export default function AddPrescriptionForm() {
               </div>
               <Input
                 id="pulseRate"
+                type="number"
+                min={1}
                 size="md"
                 name="pulseRate"
                 label="Pulse Rate"
@@ -333,7 +368,7 @@ export default function AddPrescriptionForm() {
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="doctor">
-                  Doctor <span className="text-red-800">*</span>:
+                  Doctor:
                 </label>
               </div>
               <Select
@@ -349,8 +384,6 @@ export default function AddPrescriptionForm() {
                 onChange={handleDoctorChange}
                 isClearable={true}
               />
-             
-  
             </div>
 
             <div className="flex-col md:flex md:flex-row items-start justify-around p-1">
@@ -403,6 +436,9 @@ export default function AddPrescriptionForm() {
                         className="font-normal leading-none opacity-70"
                       >
                         {head}
+                        {head !== "Dosage" && head !== "Action" && (
+                          <span className="text-red-800">*</span>
+                        )}
                       </Typography>
                     </th>
                   ))}

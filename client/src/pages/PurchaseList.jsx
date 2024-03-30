@@ -65,7 +65,7 @@ export default function PurchaseList() {
     }
   };
 
-  const handlePurchaseDetail = async(e, id) => {
+  const handlePurchaseDetail = async(e, id, idx) => {
     console.log("Purchase Detail", id);
     navigate(`/purchase/${id}`);
   }

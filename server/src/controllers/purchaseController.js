@@ -166,9 +166,9 @@ const createPurchaseList = async (req, res, next) => {
         400
       );
     }
-    if (purchase.mfgDate >= purchaseDate || purchase.expiryDate >= purchaseDate) {
+    if (purchase.mfgDate >= purchaseDate ) {
         throw new ExpressError(
-            `Mfg. Date or Exp. Date cannot be greater than Purchase Date in ITEM ${idx}`,
+            `Mfg. Date cannot be greater than Purchase Date in ITEM ${idx}`,
             400
         );
     }
@@ -253,11 +253,20 @@ const deletePurchaseList = async (req, res, next) => {
   try {
     console.log("req.body : ", req.body);
     const { id } = req.params;
-    const deletedRecord = await prisma.purchase.delete({
+    console.log("id: ", id)
+
+    const deletedRecords = await prisma.purchase.deleteMany({
       where: {
-        id: id,
+        purchaseListId: id,
       },
     });
+    const deletedPuchase = await prisma.purchaseList.delete({
+      where: {
+        id
+      }
+    });
+
+    
 
     return res.status(200).json({
       ok: true,
@@ -283,6 +292,8 @@ const deletePurchaseList = async (req, res, next) => {
     });
   }
 };
+
+
 
 module.exports = {
   getPurchaseList,

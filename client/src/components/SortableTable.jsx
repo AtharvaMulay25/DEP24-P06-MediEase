@@ -138,6 +138,7 @@ export function SortableTable({
   }, [currentPage, itemsPerPage, searchList]);
 
   const handleDialogDelete = (e, id) => {
+    console.log("id : ", id);  
     setDeletedRecordId(id);
     setOpen(!open);
   };
@@ -495,7 +496,7 @@ export function SortableTable({
                             <Tooltip content="View">
                               <IconButton
                                 variant="text"
-                                onClick={(e) => handleDetail(e, rowData["id"])}
+                                onClick={(e) => handleDetail(e, rowData["id"], (currentPage - 1) * itemsPerPage + index + 1)}
                               >
                                 <EyeIcon className="h-4 w-4" />
                               </IconButton>
@@ -509,7 +510,10 @@ export function SortableTable({
                           <Tooltip content="Delete">
                             <IconButton
                               variant="text"
-                              onClick={(e) => handleDelete(e, rowData["id"])}
+                              onClick={(e) => {
+                                console.log("rowData: ", rowData);
+                                handleDialogDelete(e, rowData["id"])
+                              }}
                             >
                               <TrashIcon className="h-4 w-4" />
                             </IconButton>
