@@ -48,6 +48,8 @@ const DoctorDashboard = () => {
 
   const [checkupStat, setCheckupStat] = useState([]);
   const [topMedicineStat, setTopMedicineStat] = useState([]);
+  const [totalMedicines, setTotalMedicine] = useState(0);
+  const [totalStock, setTotalStock] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -76,6 +78,8 @@ const DoctorDashboard = () => {
           // console.log(data.data.message);
           // console.log("dashboard-medicine-stats: ", data.data.medicine);
           setTopMedicineStat(data.data.medicine);
+          setTotalMedicine(data.data.totalM);
+          setTotalStock(data.data.totalS);
         } else {
           console.log("dashboard top medicine stats fetch failed");
         }
@@ -218,7 +222,7 @@ const DoctorDashboard = () => {
                   Medicines Provided
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                  350
+                {totalMedicines}
                 </p>
               </div>
               <div className="p-6 pt-0">
@@ -238,7 +242,7 @@ const DoctorDashboard = () => {
                   Checkups Done
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                  350
+                {totalStock}
                 </p>
               </div>
               <div className="p-6 pt-0">

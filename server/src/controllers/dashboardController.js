@@ -60,16 +60,22 @@ const getTopMedicineStat = async (req, res, next) => {
     });
 
     // console.log("stocks : ", stocks);
-
-    const sortedStocks = stocks.map(stock => ({
+    
+    
+    const totalS = 0, totalM = stocks.length;
+    const sortedStocks = stocks.map(stock => {
+        totalS += stock.inQuantity - stock.outQuantity;
+        return {
         saltName: stock.Medicine.saltName,
         qty: stock.inQuantity - stock.outQuantity,
-    })).sort((a, b) => b.availableQuantity - a.availableQuantity).slice(0, Math.min(stocks.length, 5));
+    }}).sort((a, b) => b.availableQuantity - a.availableQuantity).slice(0, Math.min(stocks.length, 5));
 
     return res.json({
         ok: true,
         data: {
-            medicine: sortedStocks
+            medicine: sortedStocks,
+            totalS,
+            totalM
         },
         message: "Checkup Stat for current month retrieved successfully"
     });
