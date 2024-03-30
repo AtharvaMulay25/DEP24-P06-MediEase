@@ -52,7 +52,7 @@ export default function SignInPage() {
   const signIn = async () => {
     const user = { ...loginData };
 
-    console.log(user);
+    // console.log(user);
 
     const response = await axios.post(
       `${apiRoutes.auth}/login`,

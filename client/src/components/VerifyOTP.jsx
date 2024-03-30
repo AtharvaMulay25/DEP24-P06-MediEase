@@ -46,7 +46,7 @@ const VerifyOTP = ({ email, setIsOtpSent, handler, otpSubmitHandler }) => {
 
   const handleResendOTP = () => {
     otpSubmitHandler();
-    setResendTimer(10);
+    setResendTimer(30);
     setShowResend(false);
   };
 
