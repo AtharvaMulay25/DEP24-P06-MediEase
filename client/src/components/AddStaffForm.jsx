@@ -10,7 +10,6 @@ import {
   Select as MaterialSelect,
   Option,
 } from "@material-tailwind/react";
-import { toast } from "sonner";
 import { SyncLoadingScreen } from "./UI/LoadingScreen";
 import { useNavigate } from "react-router-dom";
 import Layout from "../layouts/PageLayout";

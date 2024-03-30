@@ -1,7 +1,6 @@
 //prisma client 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
-const {v4 : uuidv4} = require('uuid')
 
 // @desc    Get Supplier List
 // route    GET /api/supplier/list
@@ -23,10 +22,9 @@ const getSupplierList = async(req, res, next) => {
 // route    POST /api/supplier/create
 // @access  Private (Admin) 
 const createSupplier = async(req, res, next) => {
-        const { name, mobileNumber, email, city, state, address1, address2, pinCode } = req.body;
+        const { name, mobileNumber, email = '', city = '', state, address1, address2 = '', pinCode ='' } = req.body;
         const createdRecord = await prisma.supplier.create({
             data: {
-                id: uuidv4(),
                 name,
                 mobileNumber,
                 email,
@@ -42,7 +40,7 @@ const createSupplier = async(req, res, next) => {
         return res.status(200).json({
             ok: true,
             data: createdRecord,
-            message: "Supplier List record created successfully"
+            message: "Supplier Added successfully"
         });
    
 };

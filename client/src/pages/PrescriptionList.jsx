@@ -42,7 +42,7 @@ export default function PrescriptionList() {
             addLink="/prescription/add"
             handleDelete={handlePrescriptionDelete}
             searchKey="patientName"
-            handledetail={handlePrescriptionDetail}
+            handleDetail={handlePrescriptionDetail}
             detailsFlag={true}
           />
         </Layout>

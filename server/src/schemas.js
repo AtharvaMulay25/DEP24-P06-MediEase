@@ -21,7 +21,7 @@ const supplierSchema = Joi.object({
   city: Joi.string().optional(),
   state: Joi.string().required(),
   pinCode: Joi.string().optional(),
-  mobileNumber: Joi.string().required(),
+  mobileNumber: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
   email: Joi.string().email().optional(),
   //   PurchaseList: Joi.array().items(Joi.object()),
 });
@@ -30,7 +30,7 @@ const supplierSchema = Joi.object({
 const staffSchema = Joi.object({
   name: Joi.string().required().min(3).max(30),
   email: Joi.string().email().required(),
-  mobileNumber: Joi.string().optional(),
+  mobileNumber: Joi.string().length(10).pattern(/^[0-9]+$/).optional(),
   role: Joi.string().valid("DOCTOR", "PARAMEDICAL").required(),
   department: Joi.string()
     .valid("AYURVEDIC", "GYNECOLOGY", "HOMEOPATHY", "OTHERS")
@@ -71,17 +71,17 @@ const stockSchema = Joi.object({
 const purchaseSchema = Joi.object({
   // purchaseListId: Joi.string().required(),
   medicineId: Joi.string().required(),
-  mfgDate: Joi.date().iso().optional(),
-  expiryDate: Joi.date().iso().required(),
+  mfgDate: Joi.date().optional(),
+  expiryDate: Joi.date().required(),
   batchNo: Joi.string().required(),
-  quantity: Joi.number().integer().required(),
+  quantity: Joi.number().integer().min(1).required(),
   //   Medicine: Joi.object().required(),
   //   PurchaseList: Joi.object().required(),
 });
 // PurchaseList Schema
 const purchaseListSchema = Joi.object({
   supplierId: Joi.string().required(),
-  purchaseDate: Joi.date().iso().required(),
+  purchaseDate: Joi.date().required(),
   invoiceNo: Joi.string().required(),
   purchaseDetails: Joi.string().optional(),
   purchaseItems: Joi.array().items(purchaseSchema).required(),
@@ -134,17 +134,25 @@ const patientSchema = Joi.object({
   //   Checkup: Joi.array().items(Joi.object()),
 });
 
+const checkupMedicines = Joi.object({
+  medicineId: Joi.string().required(),
+  dosage: Joi.string().optional(),
+  frequency: Joi.string().valid('OD', 'BD', 'SOS', 'TDS').required()
+});
+
 // Checkup Schema
 const checkupSchema = Joi.object({
   patientId: Joi.string().required(),
   temperature: Joi.number().optional(),
+  pulseRate : Joi.number().integer().optional(),
+  spO2: Joi.number().min(0).max(100).optional(),  //is a percentage value
+  bloodPressure: Joi.string().optional(), //mm Hg
   date: Joi.date().iso().required(),
-  bloodPressure: Joi.string().optional(),
+  doctorId: Joi.string().optional(),
   symptoms: Joi.string().optional(),
   diagnosis: Joi.string().required(),
-  doctorId: Joi.string().optional(),
-  staffId: Joi.string().required(),
-  Patient: Joi.object().required(),
+  
+  // staffId: Joi.string().required(),
   //   Doctor: Joi.object().optional(),
   //   Staff: Joi.object().required(),
   //   Medicines: Joi.array().items(Joi.object()),

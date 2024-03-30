@@ -495,7 +495,7 @@ export function SortableTable({
                             <Tooltip content="View">
                               <IconButton
                                 variant="text"
-                                onClick={() => handleDetail(rowData["id"])}
+                                onClick={(e) => handleDetail(e, rowData["id"])}
                               >
                                 <EyeIcon className="h-4 w-4" />
                               </IconButton>

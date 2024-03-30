@@ -13,7 +13,6 @@ const TABLE_HEAD = {
   supplierName: "Supplier",
   purchaseDate: "Date",
   details: "Details",
-  purchaseItems: "Medicines",
   action: "Action",
 };
 
@@ -85,7 +84,7 @@ export default function PurchaseList() {
             addLink="/purchase/add"
 			      handleDelete={handlePurchaseDelete}
             searchKey="supplierName"
-            handledetail={handlePurchaseDetail}
+            handleDetail={handlePurchaseDetail}
             detailsFlag={true}
           />
         </Layout>

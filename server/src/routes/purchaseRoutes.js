@@ -7,9 +7,11 @@ const {
     getPurchaseList, 
     deletePurchaseList, 
     updatePurchaseList, 
-    createPurchaseList 
+    createPurchaseList,
+    getPurchaseDetails
 } = require('../controllers/purchaseController');
 
+router.get('/:id', catchAsync(getPurchaseDetails));
 router.get('/', catchAsync(getPurchaseList));
 router.post('/', validatePurchaseList, catchAsync(createPurchaseList));
 router.put('/:id', validatePurchaseList, catchAsync(updatePurchaseList));
