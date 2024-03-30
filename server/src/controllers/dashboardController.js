@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { v4: uuidv4 } = require("uuid");
 const ExpressError = require("../utils/ExpressError");
+const { daysInMonthList, daysInMonth } = require("../utils/daysInMonthList");
 
 // @desc    Get Checkup Stat
 // route    GET /api/dashboard/checkup
@@ -10,6 +10,9 @@ const getCheckupStat = async (req, res, next) => {
     const currentDate = new Date();
     const startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    
+    // console.log("startDate: " + startDate);
+    // console.log("endDate: " + endDate);
 
     const checkupList = await prisma.checkup.findMany({
         where: {
@@ -18,12 +21,25 @@ const getCheckupStat = async (req, res, next) => {
                 lte: new Date(endDate),
             },
         },
+        select: {
+            id: true,
+            date: true,
+        }
     });
+
+    // console.log("checkup list: " + checkupList[0].date.getDate());
+    
+    const { daysList } = await daysInMonthList(currentDate.getMonth(), currentDate.getFullYear());
+    
+    for (const checkup of checkupList) {
+        const day = checkup.date.getDate()-1;
+        daysList[day].total++; 
+    }
 
     return res.json({
         ok: true,
         data: {
-            checkup: checkupList
+            checkup: daysList
         },
         message: "Checkup Stat for current month retrieved successfully"
     });

@@ -17,6 +17,11 @@ import {
 import { GiMedicines } from "react-icons/gi";
 import Layout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
+import {
+  SyncLoadingScreen,
+} from "../components/UI/LoadingScreen";
+import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -41,6 +46,51 @@ function useWindowDimensions() {
 }
 
 const PharmaDashboard = () => {
+  const [loading, setLoading] = useState();
+
+  const [checkupStat, setCheckupStat] = useState([]);
+  const [topMedicineStat, setTopMedicineStat] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+
+    const fetchCheckupData = async () => {
+      try {
+        const res = await axios.get(`${apiRoutes.dashboard}/checkup`);
+        const { data } = res;
+        if (data.ok) {
+          // console.log(data.data.message);
+          // console.log("dashboard-checkup-stats: ", data.data.checkup)
+          setCheckupStat(data.data.checkup);
+        } else {
+          console.log("dashboard stats checkup fetch failed, Error: ", data.error);
+        }
+      } catch (err) {
+        console.log("dashboard stats checkup fetch failed, Error: " + err.message);
+      }
+    };
+
+    const fetchMedicineData = async () => {
+      try {
+        const res = await axios.get(`${apiRoutes.dashboard}/medicine`);
+        const { data } = res;
+        if (data.ok) {
+          // console.log(data.data.message);
+          // console.log("dashboard-medicine-stats: ", data.data.medicine);
+          setTopMedicineStat(data.data.medicine);
+        } else {
+          console.log("dashboard top medicine stats fetch failed");
+        }
+      } catch (err) {
+        console.log("dashboard top medicine stats fetch failed, Error: " + err.message);
+      }
+    };
+
+    fetchCheckupData();
+    fetchMedicineData();
+    setLoading(false);
+  }, []);
+
   const { height, width } = useWindowDimensions();
   const navigate = useNavigate();
 
@@ -51,8 +101,8 @@ const PharmaDashboard = () => {
       width < 720
         ? width * (18 / 24)
         : (width >= 720) & (width <= 1200)
-        ? width * (16 / 24)
-        : width * (10 / 24),
+          ? width * (16 / 24)
+          : width * (10 / 24),
     series: [
       {
         name: "Checkups",
@@ -190,7 +240,8 @@ const PharmaDashboard = () => {
 
   return (
     <>
-      <Layout>
+      {loading && <SyncLoadingScreen />}
+      {!loading && <Layout>
         <div>
           <div className="grid-container -mt-7">
             <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
@@ -336,7 +387,7 @@ const PharmaDashboard = () => {
             </Card>
           </div>
         </div>
-      </Layout>
+      </Layout>}
     </>
   );
 };
