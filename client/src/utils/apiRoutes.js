@@ -15,4 +15,5 @@ export const apiRoutes = {
   auth: `${baseUrl}/auth`,
   staff: `${baseUrl}/staff`,
   schedule: `${baseUrl}/schedule`,
+  dashboard: `${baseUrl}/dashboard`,
 };
