@@ -11,20 +11,21 @@ import {
   Option,
   Select as MaterialSelect
 } from "@material-tailwind/react";
-
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
 export function AddMedicineForm() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    medicineType: "",
-    category: "",
-    medicineDetails: "",
-    saltName: "",
-    brandName: "",
-    strength: ""
+    medicineType: '',
+    category: '',
+    medicineDetails: '',
+    saltName: '',
+    brandName: '',
+    strength: ''
   });
 
   const [categories, setCategories] = useState([]);
@@ -37,11 +38,12 @@ export function AddMedicineForm() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/medicine/category/list");
+      const response = await axios.get(apiRoutes.category);
       console.log(response.data.data)
       setCategories(response.data.data);
     } catch (error) {
-      console.error(error);
+      console.error(`ERROR (add-medicine): ${error?.response?.data?.message}`);
+      toast.error(error?.response?.data?.message || 'Failed to fetch Categories');
     }
   };
 
@@ -65,6 +67,7 @@ export function AddMedicineForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData)
     // Here you can handle the submission of the form
     const data = {
       // medicineType: formData.medicineType,
@@ -75,29 +78,49 @@ export function AddMedicineForm() {
     };
     // console.log(data);
     try {
-      const response = await axios.post("http://localhost:4000/api/medicine/create", data);
+      const response = await axios.post(apiRoutes.medicine, data);
       console.log(response);
-      navigate("/medicine/list");
+      toast.success('Medicine added successfully');
+      setTimeout(() => {
+        navigate("/medicine");
+      }, 1000);
     } catch (error) {
       console.error(error);
+      toast.error(error?.response?.data?.message || 'Failed to add Medicine');
     }
   };
 
   return (
     <Card className="h-max w-full">
-      <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
+     <CardHeader floated={false} shadow={false} className="rounded-none pb-3">
         <div className="mb-2 sm:flex sm:flex-row flex-col items-center justify-between gap-8">
           <div>
-            <Typography variant="h5" color="blue-gray">
-              Medicine Form
+            <div className="flex flex-row items-center justify-between gap-8">
+              <Typography variant="h5" color="blue-gray">
+                Medicine Form
+              </Typography>
+              <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:hidden">
+                <Button
+                  className="flex items-center gap-3"
+                  size="md"
+                  onClick={() => {
+                    navigate("/medicine");
+                  }}
+                >
+                  Medicine List
+                </Button>
+              </div>
+            </div>
+            <Typography color="gray" className="mt-1 font-normal">
+              Add a new medicine to the list.
             </Typography>
           </div>
-          <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+          <div className="hidden sm:flex shrink-0 flex-col gap-2 sm:flex-row">
             <Button
               className="flex items-center gap-3"
               size="md"
               onClick={() => {
-                navigate("/medicine/list");
+                navigate("/medicine");
               }}
             >
               Medicine List

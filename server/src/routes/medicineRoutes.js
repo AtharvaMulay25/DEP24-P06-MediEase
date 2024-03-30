@@ -6,24 +6,14 @@ const {
     deleteMedicineList, 
     updateMedicineList, 
     createMedicineList,
-    getCategory, 
-    getCategoryList,
-    createCategory,
-    updateCategory,
-    deleteCategory
 } = require('../controllers/medicineController');
 
+const { validateMedicine, validateCategory } = require('../middlewares');
+const catchAsync = require('../utils/catchAsync');
 //medicines routes
-router.get('/list', getMedicineList);
-router.post('/create', createMedicineList);
-router.put('/update', updateMedicineList);
-router.delete('/delete', deleteMedicineList);
-
-//category routes
-router.get('/category/list', getCategoryList);
-router.get('/category/:id', getCategory);
-router.post('/category/create', createCategory);
-router.put('/category/update', updateCategory);
-router.delete('/category/delete', deleteCategory);
+router.get('/', catchAsync(getMedicineList));
+router.post('/', validateMedicine, catchAsync(createMedicineList));
+router.put('/:id', validateMedicine, catchAsync(updateMedicineList));
+router.delete('/:id', catchAsync(deleteMedicineList));
 
 module.exports = router;

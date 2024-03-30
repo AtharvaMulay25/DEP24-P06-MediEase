@@ -9,7 +9,6 @@ const prisma = new PrismaClient()
 // route    GET /api/purchase/list
 // @access  Private (Admin) 
 const getPurchaseList = async(req, res, next) => {
-    try {
         BigInt.prototype.toJSON = function () {
             return this.toString();
           };
@@ -41,25 +40,16 @@ const getPurchaseList = async(req, res, next) => {
             data: restructuredPurchaseList,
             message: "Puchase List retrieved successfully"
         });
-    } catch (err) {
-        console.log(`Purchase List Fetching Error : ${err.message}`);
-        
-        return res.status(500).json({
-            ok: false,
-            data: [],
-            message: "Fetching purchase list failed, Please try again later"
-        });
-    }
+    
 };
 
 // @desc    Create Purchase List Records
 // route    POST /api/purchase/create
 // @access  Private (Admin) 
 const createPurchaseList = async(req, res, next) => {
-    try {
-        const {purchaseListEntry, purchaseItems} = req.body;
-        const {purchaseDate, invoiceNo, supplierId, purchaseDetails} = purchaseListEntry;
-        console.log(purchaseListEntry)
+        const {purchaseDate, invoiceNo, supplierId, purchaseDetails, purchaseItems} = req.body;
+        // const {} = purchaseListEntry;
+        // console.log(purchaseListEntry)
         console.log(purchaseItems)
         
         const supplier = await prisma.supplier.findUnique({
@@ -93,21 +83,13 @@ const createPurchaseList = async(req, res, next) => {
                     }
                 }
             });
-
+        console.log("createRecord ", createdRecord);
         return res.status(200).json({
             ok: true,
             data: createdRecord,
             message: "Puchase List record created successfully"
         });
-    } catch (err) {
-        console.log(`Purchase List Creating Error : ${err.message}`);
-        
-        return res.status(500).json({
-            ok: false,
-            data: [],
-            message: "Creating purchase list failed, Please try again later"
-        });
-    }
+    
 };
 
 // @desc    Update Purchase List Record
@@ -115,7 +97,7 @@ const createPurchaseList = async(req, res, next) => {
 // @access  Private (Admin) 
 const updatePurchaseList = async(req, res, next) => {
     try {
-        const { id } = req.body;
+        const {id} = req.params;        
         const updatedRecord = await prisma.purchase.update({
             where: {
                 id,
@@ -159,8 +141,7 @@ const updatePurchaseList = async(req, res, next) => {
 const deletePurchaseList = async(req, res, next) => {
     try {
         console.log("req.body : ", req.body);
-        const { id } = req.body;
-        
+        const {id} = req.params;        
         const deletedRecord = await prisma.purchase.delete({
             where: {
               id: id,

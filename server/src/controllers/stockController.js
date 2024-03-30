@@ -11,7 +11,7 @@ const prisma = new PrismaClient()
 // route    GET /api/stock
 // @access  Private (Admin) 
 const getStockList = async(req, res, next) => {
-    try {
+    try{
         const stockList = await prisma.stock.findMany({
             include: {
               Medicine: {
@@ -44,22 +44,23 @@ const getStockList = async(req, res, next) => {
             data: restructuredStockList,
             message: "Stock List retrieved successfully"
         });
-    } catch (err) {
+    }catch(err){
         console.log(`Stock List Fetching Error : ${err.message}`);
         
         return res.status(500).json({
             ok: false,
             data: [],
-            message: "Fetching stock list failed, Please try again later"
+            message: "Fetching Stock List failed, Please try again later"
         });
     }
+    
 };
 
 // @desc    Create Stock List Records
 // route    POST /api/stock/create
 // @access  Private (Admin) 
 const createStockList = async(req, res, next) => {
-    try {
+    try{
         const createdRecord = await prisma.stock.create({
             data: {
                 ...req.body
@@ -73,15 +74,16 @@ const createStockList = async(req, res, next) => {
             data: createdRecord,
             message: "Stock List record created successfully"
         });
-    } catch (err) {
-        console.log(`Stock List Creating Error : ${err.message}`);
+    }catch(err){
+        console.log(`Stock List Creation Error : ${err.message}`);
         
         return res.status(500).json({
             ok: false,
             data: [],
-            message: "Creating stock list failed, Please try again later"
+            message: "Creating stock list record failed, Please try again later"
         });
     }
+    
 };
 
 // @desc    Update Stock List Record

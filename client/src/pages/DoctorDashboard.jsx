@@ -8,9 +8,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import {
-  UserGroupIcon,
-  ShoppingCartIcon,
-  PresentationChartBarIcon,
+  DocumentTextIcon,
+  ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -49,7 +48,7 @@ const DoctorDashboard = () => {
     width:
       width < 720
         ? width * (18 / 24)
-        : (width >= 720) & (width <= 1150)
+        : (width >= 720) & (width <= 1200)
         ? width * (19 / 24)
         : width * (13 / 24),
     series: [
@@ -164,18 +163,8 @@ const DoctorDashboard = () => {
 
   const chartConfigPie = {
     type: "pie",
-    width:
-      width < 720
-        ? width * (1 / 2)
-        : (width >= 720) & (width <= 1150)
-        ? width * (1 / 3)
-        : width * (1 / 5),
-    height:
-      width < 720
-        ? width * (1 / 2)
-        : (width >= 720) & (width <= 1150)
-        ? width * (1 / 3)
-        : width * (1 / 5),
+    width: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
+    height: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
     series: [44, 55, 13, 43, 22],
     options: {
       chart: {
@@ -201,12 +190,8 @@ const DoctorDashboard = () => {
     <>
       <Layout>
         <div>
-          <div className="md:grid md:grid-cols-4">
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
-            >
+          <div className="grid-container -mt-7">
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <GiMedicines
@@ -223,20 +208,16 @@ const DoctorDashboard = () => {
                 <button
                   className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
                   type="button"
-                  onClick={() => navigate("/medicine/list")}
+                  onClick={() => navigate("/medicine")}
                 >
                   See Medicine List
                 </button>
               </div>
             </div>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
-            >
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                  <UserGroupIcon className="h-7 w-7 mr-2" />
+                  <ClipboardDocumentCheckIcon className="h-7 w-7 mr-2" />
                   Checkups Done
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
@@ -253,11 +234,7 @@ const DoctorDashboard = () => {
                 </button>
               </div>
             </div>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
-            >
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
                   <FaUserDoctor className="h-7 w-7 mr-2" />
@@ -271,20 +248,16 @@ const DoctorDashboard = () => {
                 <button
                   className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
                   type="button"
-                  onClick={() => navigate("/purchase/list")}
+                  onClick={() => navigate("/doctor")}
                 >
                   See Doctors List
                 </button>
               </div>
             </div>
-            <div
-              className={`mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl col-span-${
-                width > 1150 ? "1" : "2"
-              }`}
-            >
+            <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
               <div className="p-6">
                 <h5 className="flex items-center mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                  <PresentationChartBarIcon className="h-7 w-7 mr-2" />
+                  <DocumentTextIcon className="h-7 w-7 mr-2" />
                   Current Schedule
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
@@ -295,15 +268,15 @@ const DoctorDashboard = () => {
                 <button
                   className="align-middle select-none font-sans font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none"
                   type="button"
-                  onClick={() => navigate("/supplier/list")}
+                  onClick={() => navigate("/schedule")}
                 >
                   See my schedule
                 </button>
               </div>
             </div>
           </div>
-          <div className="md:grid md:grid-cols-3">
-            <Card className={`mt-6 ml-4 col-span-${width > 1150 ? "2" : "3"}`}>
+          <div className="grid-container2">
+            <Card className="mt-4 ml-4 grid-item21">
               <CardHeader
                 floated={false}
                 shadow={false}
@@ -311,7 +284,7 @@ const DoctorDashboard = () => {
                 className="flex flex-col gap-4 rounded-none md:flex-row md:items-center"
               >
                 <div className="w-max rounded-lg bg-gray-900 p-3 text-white">
-                  <ShoppingCartIcon className="h-6 w-6" />
+                  <ClipboardDocumentCheckIcon className="h-6 w-6" />
                 </div>
                 <div>
                   <Typography variant="h6" color="blue-gray">
@@ -331,7 +304,7 @@ const DoctorDashboard = () => {
                 <Chart {...chartConfigBar} />
               </CardBody>
             </Card>
-            <Card className={`mt-6 ml-4 col-span-${width > 1150 ? "1" : "3"}`}>
+            <Card className="mt-4 ml-4 grid-item22">
               <CardHeader
                 floated={false}
                 shadow={false}
@@ -350,7 +323,7 @@ const DoctorDashboard = () => {
                     color="gray"
                     className="max-w-sm font-normal"
                   >
-                    Top medicines provided by me.
+                    Top medicines provided by you.
                   </Typography>
                 </div>
               </CardHeader>

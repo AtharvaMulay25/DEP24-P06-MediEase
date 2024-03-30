@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
+import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
-import { UserCircleIcon } from "@heroicons/react/24/solid";
+import {
+  UserCircleIcon,
+  ClipboardDocumentListIcon,
+  DocumentTextIcon,
+} from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
+import { FaUserDoctor } from "react-icons/fa6";
+import { FaUserCog, FaExclamation } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
-
 import {
   Typography,
   List,
@@ -12,22 +18,23 @@ import {
   Accordion,
   AccordionHeader,
   AccordionBody,
-  Card,
-  CardFooter,
 } from "@material-tailwind/react";
 import {
   ShoppingCartIcon,
   UserGroupIcon,
   ChartBarIcon,
-  UserIcon
+  UserIcon,
 } from "@heroicons/react/24/solid";
 import {
   ChevronDownIcon,
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const Layout = ({ children }) => {
+  const { userRole, userName } = useAuthContext();
+
   const [open, setOpen] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
@@ -79,15 +86,15 @@ const Layout = ({ children }) => {
   return (
     <div className="h-screen flex">
       {/* sidebar */}
-      <div className="overflow-visible fixed h-screen z-10 top-0 left-0">
+      <div className="fixed h-screen z-10 top-0 left-0">
         <div className="flex">
           <div
-            className="transition-width duration-300 h-screen overflow-x-hidden"
+            className={`transition-width duration-300 h-screen overflow-x-hidden`}
             style={{
               width: isCollapsed && !isHovered ? "60px" : "250px",
               scrollbarWidth: "thin",
-              overflowY: "hidden",
               backgroundColor: "#0a141f",
+              overflowY: isCollapsed && !isHovered ? "hidden" : "auto",
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
@@ -125,12 +132,12 @@ const Layout = ({ children }) => {
                   <div>
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-semibold text-lg">
-                        Atharva Mulay
+                        {userName || ""}
                       </Typography>
                     )}
                     {!(isCollapsed & !isHovered) && (
                       <Typography className="font-normal text-xs">
-                        Pharmaceutical Staff
+                        {userRole || ""}
                       </Typography>
                     )}
                   </div>
@@ -158,11 +165,22 @@ const Layout = ({ children }) => {
               <a href="/pharmadashboard">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
-                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full scroll-auto overflow-y-auto"
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
                 >
                   <MdSpaceDashboard className="h-5 w-5 mr-4" />
                   {!(isCollapsed & !isHovered) && (
                     <Typography className="font-normal">Dashboard</Typography>
+                  )}
+                </li>
+              </a>
+              <a href="/requests">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
+                >
+                  <FaExclamation className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Requests</Typography>
                   )}
                 </li>
               </a>
@@ -217,27 +235,25 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() =>
-                          navigate("/medicine/category/add_category")
-                        }
+                        onClick={() => navigate("/medicine/category/add")}
                       >
                         Add Category
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/medicine/category/list")}
+                        onClick={() => navigate("/medicine/category")}
                       >
                         Category List
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/medicine/add_medicine")}
+                        onClick={() => navigate("/medicine/add")}
                       >
                         Add Medicine
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/medicine/list")}
+                        onClick={() => navigate("/medicine")}
                       >
                         Medicine List
                       </ListItem>
@@ -286,13 +302,13 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/purchase/add_purchase")}
+                        onClick={() => navigate("/purchase/add")}
                       >
                         Add Purchase
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/purchase/list")}
+                        onClick={() => navigate("/purchase")}
                       >
                         Purchase List
                       </ListItem>
@@ -340,13 +356,13 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/supplier/add_supplier")}
+                        onClick={() => navigate("/supplier/add")}
                       >
                         Add Supplier
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/supplier/list")}
+                        onClick={() => navigate("/supplier")}
                       >
                         Supplier List
                       </ListItem>
@@ -394,15 +410,231 @@ const Layout = ({ children }) => {
                     <List className="p-0" style={{ color: "#f1ffea" }}>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/patient/add_patient")}
+                        onClick={() => navigate("/patient/add")}
                       >
                         Add Patient
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/patient/list")}
+                        onClick={() => navigate("/patient")}
                       >
                         Patient List
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
+              <Accordion
+                open={open === 5}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 5 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 5}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(5)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <ClipboardDocumentListIcon
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Prescription
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/prescription/add")}
+                      >
+                        Add Prescription
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/prescription")}
+                      >
+                        Prescription List
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
+              <Accordion
+                open={open === 6}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 6 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 6}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(6)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <FaUserDoctor
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Staff
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/staff/add")}
+                      >
+                        Add Staff
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/staff")}
+                      >
+                        Staff List
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
+              <Accordion 
+                open={open === 7}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 7 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 7}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(7)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <DocumentTextIcon
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Schedule
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/schedule/add")}
+                      >
+                        Add Schedule
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/schedule")}
+                      >
+                        Schedule List
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
+              <Accordion
+                open={open === 8}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 8 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 8}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(8)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <FaUserCog
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Admin
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/admin/add")}
+                      >
+                        Add Admin
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/admin")}
+                      >
+                        Admin List
                       </ListItem>
                     </List>
                   </AccordionBody>
@@ -560,6 +792,8 @@ const Layout = ({ children }) => {
           </div>
         </footer>
       </div>
+
+      <Toaster richColors closeButton position="top-center" />
     </div>
   );
 };

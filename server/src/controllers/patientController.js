@@ -6,33 +6,50 @@ const prisma = new PrismaClient()
 // route    GET /api/patient
 // @access  Private (Admin) 
 const getPatientList = async (req, res, next) => {
-    try {
-        let patientList = await prisma.patient.findMany({});
-
-        // console.log("patientList : ", patientList);
-        patientList = patientList.map((patient) => ({...patient, dob: patient.dob.toISOString().split('T')[0] }));
-        
+        let patientList = await prisma.patient.findMany({});     
         return res.status(200).json({
             ok: true,
             data: patientList,
             message: "Patient List retrieved successfully"
         });
-    } catch (err) {
-        console.log(`Patient List Fetching Error : ${err.message}`);
-
-        return res.status(500).json({
-            ok: false,
-            data: [],
-            message: "Fetching patient list failed, Please try again later"
-        });
-    }
+   
 };
 
 // @desc    Create Patient List Records
 // route    POST /api/patient
 // @access  Private (Admin) 
 const createPatient = async (req, res, next) => {
-    try {
+        console.log(req.body);
+        const {
+            name,
+            department,
+            age,
+            email,
+            bloodGroup,
+            program,
+            fatherOrSpouseName,
+            category,
+            gender,
+            allergy
+        } = req.body;
+
+        const patient =  await prisma.user.findUnique({
+            where: {
+              email: email,
+            },
+          });
+          
+          if(!patient){
+              // Create user record
+              const createdUserRecord = await prisma.user.create({
+                  data: {
+                      name,
+                      email,
+                      role: "PATIENT"
+                  }
+              })
+          }    
+
         const createdRecord = await prisma.patient.create({
             data: {
                 ...req.body
@@ -46,15 +63,7 @@ const createPatient = async (req, res, next) => {
             data: createdRecord,
             message: "Patient List record created successfully"
         });
-    } catch (err) {
-        console.log(`Patient List Creating Error : ${err.message}`);
-
-        return res.status(500).json({
-            ok: false,
-            data: [],
-            message: "Creating patient list failed, Please try again later"
-        });
-    }
+    
 };
 
 // @desc    Update Patient List Record
@@ -62,7 +71,7 @@ const createPatient = async (req, res, next) => {
 // @access  Private (Admin) 
 const updatePatient = async (req, res, next) => {
     try {
-        const { id } = req.body;
+        const { id } = req.params;
         const updatedRecord = await prisma.patient.update({
             where: {
                 id,
@@ -105,8 +114,7 @@ const updatePatient = async (req, res, next) => {
 // @access  Private (Admin) 
 const deletePatient = async (req, res, next) => {
     try {
-        const { id } = req.body;
-
+        const { id } = req.params;
         const deletedRecord = await prisma.patient.delete({
             where: {
                 id: id,

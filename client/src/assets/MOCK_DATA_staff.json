@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1,
+    "name": "John Doe",
+    "role": "Doctor",
+    "department": "Gynecology",
+    "gender": "Male",
+    "email": "john.doe@example.com",
+    "mobileNumber": "+1234567890"
+  },
+  {
+    "id": 2,
+    "name": "Jane Smith",
+    "role": "Doctor",
+    "department": "Pediatrics",
+    "gender": "Female",
+    "email": "jane.smith@example.com",
+    "mobileNumber": "+1987654321"
+  },
+  {
+    "id": 3,
+    "name": "Bob Johnson",
+    "role": "Paramedical Staff",
+    "gender": "Male",
+    "email": "bob.johnson@example.com",
+    "mobileNumber": "+1122334455"
+  },
+  {
+    "id": 4,
+    "name": "Emily Davis",
+    "role": "Paramedical Staff",
+    "gender": "Female",
+    "email": "emily.davis@example.com",
+    "mobileNumber": "+6677889900"
+  },
+  {
+    "id": 5,
+    "name": "Michael Brown",
+    "role": "Doctor",
+    "department": "Cardiology",
+    "gender": "Male",
+    "email": "michael.brown@example.com",
+    "mobileNumber": "+1122334455"
+  },
+  {
+    "id": 6,
+    "name": "Sarah Lee",
+    "role": "Doctor",
+    "department": "Neurology",
+    "gender": "Female",
+    "email": "sarah.lee@example.com",
+    "mobileNumber": "+2233445566"
+  },
+  {
+    "id": 7,
+    "name": "David Wilson",
+    "role": "Paramedical Staff",
+    "gender": "Male",
+    "email": "david.wilson@example.com",
+    "mobileNumber": "+3344556677"
+  },
+  {
+    "id": 8,
+    "name": "Jennifer Garcia",
+    "role": "Paramedical Staff",
+    "gender": "Female",
+    "email": "jennifer.garcia@example.com",
+    "mobileNumber": "+4455667788"
+  },
+  {
+    "id": 9,
+    "name": "James Martinez",
+    "role": "Doctor",
+    "department": "Orthopedics",
+    "gender": "Male",
+    "email": "james.martinez@example.com",
+    "mobileNumber": "+5566778899"
+  },
+  {
+    "id": 10,
+    "name": "Lisa Robinson",
+    "role": "Doctor",
+    "department": "Dermatology",
+    "gender": "Female",
+    "email": "lisa.robinson@example.com",
+    "mobileNumber": "+6677889900"
+  },
+  {
+    "id": 11,
+    "name": "Matthew Clark",
+    "role": "Paramedical Staff",
+    "gender": "Male",
+    "email": "matthew.clark@example.com",
+    "mobileNumber": "+7788990011"
+  },
+  {
+    "id": 12,
+    "name": "Jessica Lewis",
+    "role": "Paramedical Staff",
+    "gender": "Female",
+    "email": "jessica.lewis@example.com",
+    "mobileNumber": "+8899001122"
+  },
+  {
+    "id": 13,
+    "name": "Daniel Perez",
+    "role": "Doctor",
+    "department": "Ophthalmology",
+    "gender": "Male",
+    "email": "daniel.perez@example.com",
+    "mobileNumber": "+9900112233"
+  },
+  {
+    "id": 14,
+    "name": "Ashley King",
+    "role": "Doctor",
+    "department": "Urology",
+    "gender": "Female",
+    "email": "ashley.king@example.com",
+    "mobileNumber": "+0011223344"
+  },
+  {
+    "id": 15,
+    "name": "Christopher Wright",
+    "role": "Paramedical Staff",
+    "gender": "Male",
+    "email": "christopher.wright@example.com",
+    "mobileNumber": "+1122334455"
+  },
+  {
+    "id": 16,
+    "name": "Amanda Hall",
+    "role": "Paramedical Staff",
+    "gender": "Female",
+    "email": "amanda.hall@example.com",
+    "mobileNumber": "+2233445566"
+  },
+  {
+    "id": 17,
+    "name": "Brian Young",
+    "role": "Doctor",
+    "department": "Hematology",
+    "gender": "Male",
+    "email": "brian.young@example.com",
+    "mobileNumber": "+3344556677"
+  },
+  {
+    "id": 18,
+    "name": "Megan Allen",
+    "role": "Doctor",
+    "department": "Oncology",
+    "gender": "Female",
+    "email": "megan.allen@example.com",
+    "mobileNumber": "+4455667788"
+  },
+  {
+    "id": 19,
+    "name": "Kevin Scott",
+    "role": "Paramedical Staff",
+    "gender": "Male",
+    "email": "kevin.scott@example.com",
+    "mobileNumber": "+5566778899"
+  },
+  {
+    "id": 20,
+    "name": "Rachel Hill",
+    "role": "Paramedical Staff",
+    "gender": "Female",
+    "email": "rachel.hill@example.com",
+    "mobileNumber": "+6677889900"
+  }
+]
