@@ -28,7 +28,9 @@ import AddAdmin from "./pages/AddAdmin";
 import AdminList from "./pages/AdminList";
 import { useAuthContext } from "./hooks/useAuthContext";
 import RequestList from "./pages/RequestList";
-
+import PrescriptionDetail from "./pages/PrescriptionDetail";
+import PurchaseDetail from "./pages/PurchaseDetail";
+// import Toaster from "./components/UI/Toaster";
 function App() {
   const { userRole } = useAuthContext();
   return (
@@ -45,6 +47,7 @@ function App() {
           <Route path="/medicine/category" element={<CategoryList />} />
           <Route path="/purchase/add" element={<AddPurchase />} />
           <Route path="/purchase" element={<PurchaseList />} />
+          <Route path="/purchase/:id" element={<PurchaseDetail />} />
           <Route path="/supplier/add" element={<AddSupplier />} />
           <Route path="/supplier" element={<SupplierList />} />
           <Route path="/stock" element={<StockList />} />
@@ -55,6 +58,7 @@ function App() {
           <Route path="/patient/profile" element={<CompleteProfilePatient />} />
           <Route path="/prescription" element={<PrescriptionList />} />
           <Route path="/prescription/add" element={<AddPrescription />} />
+          <Route path="/prescription/:id" element={<PrescriptionDetail />} />
           <Route path="/schedule" element={<ScheduleList />} />
           <Route path="/schedule/add" element={<AddSchedule />} />
           <Route path="/staff" element={<StaffList />} />
@@ -65,6 +69,7 @@ function App() {
           <Route path="/requests" element={<RequestList />} />
         </Routes>
       </BrowserRouter>
+      {/* <Toaster richColors closeButton position="top-center" /> */}
     </>
   );
 }

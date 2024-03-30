@@ -43,20 +43,19 @@ export function AddSupplierForm() {
     const data = {
       name: formData.supplierName,
       mobileNumber: formData.mobileNo,
-      email: formData.email,
-      city: formData.city,
       state: formData.state,
-      pinCode: formData.zip,
       address1: formData.address1,
-      address2: formData.address2,
     };
-
+    if(formData.email) data.email = formData.email;
+    if(formData.city) data.city = formData.city;
+    if(formData.zip) data.pinCode = formData.zip;
+    if(formData.address2) data.address2 = formData.address2;
     // Here you can handle the submission of the form
     console.log(formData);
     try {
       const response = await axios.post(apiRoutes.supplier, data);
       console.log(response);
-      toast.success("Medicine added successfully");
+      toast.success("Supplier added successfully");
       setTimeout(() => {
         navigate("/supplier");
       }, 1000);

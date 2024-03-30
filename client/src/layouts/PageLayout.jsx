@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
 import {
   UserCircleIcon,
@@ -31,7 +30,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useAuthContext } from "../hooks/useAuthContext";
-
+import Toaster from "../components/UI/Toaster";
 const Layout = ({ children }) => {
   const { userRole, userName } = useAuthContext();
 
@@ -792,9 +791,9 @@ const Layout = ({ children }) => {
           </div>
         </footer>
       </div>
-
-      <Toaster richColors closeButton position="top-center" />
+      <Toaster richColors position="top-center"/>
     </div>
+    
   );
 };
 

@@ -144,25 +144,27 @@ export function AddPurchaseForm() {
     /* ALSO CLEAR THE PURCHASE LIST DATA ON SUBMITTING THE FORM ****** */
 
     const purchaseListEntry = {
-      purchaseDate: formData.purchaseDate + "T00:00:00Z",
+      purchaseDate: formData.purchaseDate,
       invoiceNo: formData.invoiceNo,
       supplierId: formData?.supplier?.value, // Assuming supplier object has a unique identifier 'value'  //will be passing supplier id to backend
     };
     if (formData.purchaseDetails)
       purchaseListEntry.purchaseDetails = formData.purchaseDetails; //optional
+    
     const purchaseItems = dataArray.map((data) => {
       const purchaseItem = {
         medicineId: data.medicine.value, // Assuming medicine object has a unique identifier 'value'  //will be passing medicine id to backend
         batchNo: data.batchNo,
-        expiryDate: data.expDate + "T00:00:00Z",
+        expiryDate: data.expDate,
         quantity: parseInt(data.quantity) || 0, // Assuming quantity is a number
       };
-      if (data.mfgDate) purchaseItem.mfgDate = data.mfgDate + "T00:00:00Z"; //optional
+      if (data.mfgDate) purchaseItem.mfgDate = data.mfgDate ; //optional
       return purchaseItem;
     });
 
     // Here you can handle the submission of the form
     const data = { ...purchaseListEntry, purchaseItems };
+    console.log(data);
     //***DON'T LET THE FORM SUBMIT IF ANY OF MANDATORY ITEMS IS MISSING OR ANY LIST ROW FIELD IS EMPTY */
     try {
       const response = await axios.post(apiRoutes.purchase, data);

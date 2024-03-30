@@ -4,8 +4,8 @@ import { toast } from "sonner";
 import axios from "axios";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import Layout from "../layouts/PageLayout";
-import MockData from "../assets/MOCK_DATA_requests.json";
 import { apiRoutes } from "../utils/apiRoutes";
+import { setToastTimeout } from "../utils/customTimeout";
 const TABLE_HEAD = {
   id: "#",
   name: "Name",
@@ -47,36 +47,28 @@ export default function RequestList() {
     try {
       const reqData = { id };
       const res = await axios.post(`${apiRoutes.mail}/reject`, reqData);
-      setTimeout(() => {
-        toast.success(res.data.message);
-      }, 1000);
+      setToastTimeout("success", res.data.message, 1000);
     } catch (err) {
       console.error(
         `ERROR (send-reject-mail): ${err?.response?.data?.message}`
       );
-      setTimeout(() => {
-        toast.error(
-          err?.response?.data?.message || "Failed to send reject mail"
-        );
-      }, 1000);
+      setToastTimeout(
+        "error",
+        err?.response?.data?.message || "Failed to send reject mail",
+        1000
+      );
     }
   };
   const sendApproveMail = async (id) => {
     try {
       const reqData = { id };
       const res = await axios.post(`${apiRoutes.mail}/approve`, reqData);
-      setTimeout(() => {
-        toast.success(res.data.message);
-      }, 1000);
+      setToastTimeout("success", res.data.message, 1000);
     } catch (err) {
       console.error(
         `ERROR (send-approve-mail): ${err?.response?.data?.message}`
       );
-      setTimeout(() => {
-        toast.error(
-          err?.response?.data?.message || "Failed to send approve mail"
-        );
-      }, 1000);
+      setToastTimeout("error", err?.response?.data?.message || "Failed to send approve mail", 1000);
     }
   }
   const handleRequestReject = async (e, id) => {

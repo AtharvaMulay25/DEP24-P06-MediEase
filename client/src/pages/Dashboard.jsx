@@ -6,7 +6,6 @@ import Services from "../components/Services";
 import Doctors from "../components/Doctors";
 import Blogs from "../components/Blogs";
 import Footer from "../components/Footer";
-import Toaster from "../components/UI/Toaster";
 const App = () => {
   return (
     <>
@@ -38,7 +37,6 @@ const App = () => {
 
       <Footer />
     </div>
-    <Toaster richColors position="top-center"/>
     </>
   );
 };

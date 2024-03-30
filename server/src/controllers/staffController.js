@@ -1,7 +1,8 @@
 //prisma client
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
-
+const sendMail = require('../utils/sendMail');
+const {ACCOUNT_CREATED_MAIL_TEMPLATE} = require('../../constants');
 const { v4: uuidv4 } = require('uuid');
 const ExpressError = require('../utils/ExpressError');
 
@@ -32,13 +33,14 @@ const createStaff = async (req, res, next) => {
         gender
     } = req.body;
 
-    const staff =  await prisma.user.findUnique({
+    const userRecord =  await prisma.user.findUnique({
         where: {
           email: email,
         },
       });
-      
-      if(!staff){
+
+      if(!userRecord){
+        //It means account is being created externally by staff/admin/doctor
           // Create user record
           const createdUserRecord = await prisma.user.create({
               data: {
@@ -47,8 +49,33 @@ const createStaff = async (req, res, next) => {
                   role
               }
           })
-      }
+          //send mail to user here
+        const mailTemplate = ACCOUNT_CREATED_MAIL_TEMPLATE();
+        const mailOptions = {
+            from: "dep2024.p06@gmail.com",
+            to: email,
+            subject: "Mediease - Account Created" ,
+            html: mailTemplate,
+            text: "",
+          };
 
+          const info = await sendMail(mailOptions);
+          if(!info){
+              throw new ExpressError("Error in sending mail to the staff", 500);
+          }
+
+      }
+    if(userRecord && userRecord.role !== "PARAMEDICAL" && userRecord.role !== "DOCTOR"){
+        throw new ExpressError("User already exists with different role", 400);
+    };
+    const staffRecord = await prisma.staff.findUnique({
+        where: {
+            email: email
+        }
+    });
+    if(staffRecord) {
+        throw new ExpressError("Staff already exists", 400);
+    }
     // Create staff record
     const createdRecord = await prisma.staff.create({
         data: {

@@ -62,7 +62,7 @@ export default function ScheduleList() {
       } else {
         console.log(`ERROR (schedule_list_delete): ${data.message}`);
         toast.error(
-          err?.response?.data?.message || "Failed to delete Schedule Category"
+          "Failed to delete Schedule Category"
         );
       }
     } catch (err) {

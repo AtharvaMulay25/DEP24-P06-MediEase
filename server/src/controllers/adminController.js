@@ -2,12 +2,12 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
 const ExpressError = require("../utils/ExpressError");
-
+const sendMail = require("../utils/sendMail");
+const {ACCOUNT_CREATED_MAIL_TEMPLATE} = require("../../constants");
 // @desc    Get Admin List
 // route    GET /api/admin
 // @access  Private (Admin)
 const getAdminList = async (req, res, next) => {
-  try {
     const adminList = await prisma.user.findMany({
       where: {
         role: "ADMIN",
@@ -20,24 +20,38 @@ const getAdminList = async (req, res, next) => {
       data: adminList,
       message: "Admin List retrieved successfully",
     });
-  } catch (err) {
-    console.log(`Admin List Fetching Error : ${err.message}`);
-
-    return res.status(500).json({
-      ok: false,
-      data: [],
-      message: "Fetching Admin List failed, Please try again later",
-    });
-  }
 };
 
 // @desc    Create Admin Records
 // route    POST /api/admin
 // @access  Private (Admin)
 const createAdmin = async (req, res, next) => {
-  try {
     console.log(req.body);
     const { name, email } = req.body;
+
+    const adminRecord = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if(adminRecord){
+      throw new ExpressError("Admin already exists", 400);
+    }
+    //Admin account can only be created externally by other admin
+      //send mail to user here
+      const mailTemplate = ACCOUNT_CREATED_MAIL_TEMPLATE();
+      const mailOptions = {
+          from: "dep2024.p06@gmail.com",
+          to: email,
+          subject: "Mediease - Account Created" ,
+          html: mailTemplate,
+          text: "",
+        };
+
+        const info = await sendMail(mailOptions);
+        if(!info){
+            throw new ExpressError("Error in sending mail to the admin", 500);
+        }
     const createdRecord = await prisma.user.create({
       data: {
         name,
@@ -51,17 +65,10 @@ const createAdmin = async (req, res, next) => {
     return res.status(200).json({
       ok: true,
       data: createdRecord,
-      message: "Admin record created successfully",
+      message: "Admin added successfully",
     });
-  } catch (err) {
-    console.log(`Admin Creating Error : ${err.message}`);
-
-    return res.status(500).json({
-      ok: false,
-      data: [],
-      message: `Creating Admin record failed, Please try again later`,
-    });
-  }
+  
+  
 };
 
 // @desc    Update Admin List Record
