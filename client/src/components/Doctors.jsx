@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Carousel, IconButton } from "@material-tailwind/react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -79,7 +80,7 @@ const Doctors = () => {
   };
 
   return (
-    <div className=" min-h-screen flex flex-col justify-center lg:px-32 px-5 pt-16">
+    <div className=" min-h-screen flex flex-col justify-center lg:px-32 px-5 pt-16 bg-yellow-50">
       <div className=" flex flex-col items-center lg:flex-row justify-between mb-10 lg:mb-0">
         <div>
           <h1 className=" text-4xl font-semibold text-center lg:text-start">
@@ -90,43 +91,45 @@ const Doctors = () => {
             quidem.
           </p>
         </div>
-        <div className="flex gap-5 mt-4 lg:mt-0">
-          <button
-            className=" bg-[#d5f2ec] text-backgroundColor px-4 py-2 rounded-lg active:bg-[#ade9dc]"
-            onClick={() => slider.current.slickPrev()}
-          >
-            <FaArrowLeft size={25} />
-          </button>
-          <button
-            className=" bg-[#d5f2ec] text-backgroundColor px-4 py-2 rounded-lg active:bg-[#ade9dc]"
-            onClick={() => slider.current.slickNext()}
-          >
-            <FaArrowRight size={25} />
-          </button>
-        </div>
       </div>
-      <div className=" mt-5">
-        <Slider ref={slider} {...settings}>
-          {data.map((e, index) => (
-            <div
-              className="h-[350px] text-black rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-2 cursor-pointer"
-              key={index}
-            >
-              <div>
-                <img
-                  src={e.img}
-                  alt="img"
-                  className=" h-56 rounded-t-xl w-full object-contain"
+      <div className="mt-5">
+        <Carousel
+          className="rounded-xl"
+          style={{
+            height: 600,
+            width: 400,
+          }}
+          loop={true}
+          autoplay={true}
+          autoplayDelay={3000}
+          navigation={({ setActiveIndex, activeIndex, length }) => (
+            <div className="absolute bottom-3 left-2/4 z-50 flex -translate-x-2/4 gap-2">
+              {new Array(length).fill("").map((_, i) => (
+                <span
+                  key={i}
+                  className={`block h-1 cursor-pointer -mb-1 rounded-2xl transition-all content-[''] ${
+                    activeIndex === i ? "w-6 bg-white" : "w-3 bg-white/50"
+                  }`}
+                  onClick={() => setActiveIndex(i)}
                 />
-              </div>
-
-              <div className=" flex flex-col justify-center items-center">
-                <h1 className=" font-semibold text-xl pt-4">{e.name}</h1>
-                <h3 className=" pt-2">{e.specialties}</h3>
+              ))}
+            </div>
+          )}
+        >
+          {data.map((item, index) => (
+            <div key={index} className="h-full w-full relative">
+              <img
+                src={item.img}
+                alt={`image ${index + 1}`}
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 text-white">
+                <h2 className="text-lg font-semibold">{item.name}</h2>
+                <p className="text-sm">{item.specialties}</p>
               </div>
             </div>
           ))}
-        </Slider>
+        </Carousel>
       </div>
     </div>
   );

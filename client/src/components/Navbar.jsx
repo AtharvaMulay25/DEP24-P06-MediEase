@@ -3,7 +3,7 @@ import { Link } from "react-scroll";
 import Button from "../layouts/Button";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import Contact from "../models/Contact";
-import { UserButton , SignedIn, SignedOut} from "@clerk/clerk-react";
+import { UserButton, SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
@@ -42,14 +42,29 @@ const Navbar = () => {
   };
 
   return (
-    <div className=" fixed top-0 w-full z-10 text-white">
+    <div className="fixed top-0 w-full z-10 text-white">
       <div>
         {/* <div className=" flex flex-row justify-between p-5 md:px-32 px-5 bg-backgroundColor shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"> */}
-        <div className=" flex flex-row justify-between p-5 md:px-32 px-5 text-white font-light bg-gray-800 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
-          <div className=" flex flex-row items-center cursor-pointer">
-            <Link to="home" spy={true} smooth={true} duration={500}>
-              <h1 className=" text-2xl font-semibold">MediEase</h1>
-            </Link>
+        <div className=" flex flex-row justify-between p-5 md:px-32 px-5 text-black font-light bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+          <div className="flex">
+            <div className="h-12 w-12 flex-shrink-0">
+              <a href="/">
+                <img
+                  src="/src/assets/img/logo.png"
+                  alt="Logo"
+                  className="-ml-3 -mr-2 cursor-pointer"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </a>
+            </div>
+            <div className=" flex flex-row items-center cursor-pointer">
+              <Link to="home" spy={true} smooth={true} duration={500}>
+                <h1 className=" text-2xl font-semibold">
+                  <span style={{ color: "#0eb8fc" }}>Medi</span>
+                  <span style={{ color: "#fe055c" }}>Ease</span>
+                </h1>
+              </Link>
+            </div>
           </div>
 
           <nav className=" hidden lg:flex flex-row items-center text-lg font-medium gap-8">
@@ -109,22 +124,26 @@ const Navbar = () => {
             </Link>
           </nav>
           {/* <SignedOut> */}
-          {userRole ? <div className=" hidden lg:flex">
-            <button
-              className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
-              onClick={() => handleLogout()}
-            >
-              Logout
-            </button>
-          </div> : <div className=" hidden lg:flex">
-            <button
-              className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
-              // onClick={openForm}
-              onClick={() => navigate("/signin")}
-            >
-              Login
-            </button>
-          </div>}
+          {userRole ? (
+            <div className=" hidden lg:flex">
+              <button
+                className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
+                onClick={() => handleLogout()}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className=" hidden lg:flex">
+              <button
+                className="bg-blue-900 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out"
+                // onClick={openForm}
+                onClick={() => navigate("/signin")}
+              >
+                Login
+              </button>
+            </div>
+          )}
           {/* </SignedOut> */}
           {/* <SignedIn> */}
           {/* <UserButton afterSignOutUrl="/signin" /> */}
