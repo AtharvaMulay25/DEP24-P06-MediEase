@@ -18,14 +18,16 @@ model User {
   email String   @unique
   name  String
   role  UserRole
+
   @@map("user")
 }
 
-model Requests{
+model Requests {
   id    String   @id @default(uuid())
   email String   @unique
   name  String
   role  UserRole
+
   @@map("requests")
 }
 
@@ -45,6 +47,7 @@ model Medicine {
   Stock     Stock[]
   Checkups  Checkup[]  @relation("CheckupMedicines")
   Purchases Purchase[]
+  CheckupMedicine CheckupMedicine[]
 
   Category Category @relation(fields: [categoryId], references: [id])
 
@@ -177,8 +180,29 @@ model Checkup {
   Staff  Staff  @relation("StaffCheckups", fields: [staffId], references: [id])
 
   Medicines Medicine[] @relation("CheckupMedicines")
+  CheckupMedicine CheckupMedicine[]
 
   @@map("checkup")
+}
+
+model CheckupMedicine {
+  id         String    @id @default(uuid())
+  medicineId String
+  dosage     String?
+  frequency  Frequency
+  checkupId  String  
+
+  Medicine Medicine @relation(fields: [medicineId], references: [id])
+  Checkup Checkup @relation(fields: [checkupId], references: [id])
+
+  @@map("checkupMedicine")
+}
+
+enum Frequency {
+  OD
+  BD
+  SOS
+  TDS
 }
 
 enum Department {
