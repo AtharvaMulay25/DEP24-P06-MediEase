@@ -45,7 +45,6 @@ model Medicine {
   categoryId String
 
   Stock     Stock[]
-  Checkups  Checkup[]  @relation("CheckupMedicines")
   Purchases Purchase[]
   CheckupMedicine CheckupMedicine[]
 
@@ -179,7 +178,6 @@ model Checkup {
   Doctor Staff? @relation("DoctorCheckups", fields: [doctorId], references: [id])
   Staff  Staff  @relation("StaffCheckups", fields: [staffId], references: [id])
 
-  Medicines Medicine[] @relation("CheckupMedicines")
   CheckupMedicine CheckupMedicine[]
 
   @@map("checkup")
