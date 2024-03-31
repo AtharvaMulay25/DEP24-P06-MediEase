@@ -34,10 +34,10 @@ export function AddPurchaseForm() {
   const [suppliers, setSuppliers] = useState([]);
   const [medicines, setMedicines] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => async () =>{
     // Fetch suppliers list when the component mounts
-    fetchSuppliers();
-    fetchMedicines();
+    await fetchSuppliers();
+    await fetchMedicines();
   }, []);
 
   const fetchSuppliers = async () => {
@@ -236,6 +236,8 @@ export function AddPurchaseForm() {
               </div>
               <Input
                 id="invoiceNo"
+                type="number"
+                min={1}
                 size="md"
                 label="Invoice No."
                 name="invoiceNo"

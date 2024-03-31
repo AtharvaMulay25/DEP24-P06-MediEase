@@ -59,7 +59,7 @@ model Supplier {
   address      String
   city         String?
   state        String
-  pinCode      String?
+  pinCode      Int?
   mobileNumber String
   email        String?
 
@@ -109,7 +109,7 @@ model PurchaseList {
   id           String   @id @default(uuid())
   supplierId   String
   purchaseDate DateTime
-  invoiceNo    String   @unique
+  invoiceNo    BigInt   @unique
   Details      String?
 
   Supplier Supplier   @relation(fields: [supplierId], references: [id])

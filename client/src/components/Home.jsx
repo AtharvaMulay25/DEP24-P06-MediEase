@@ -14,8 +14,8 @@ const Home = () => {
           fugiat vero consequatur?
         </p> */}
         <div className="mt-18">
-          
-        <Button  title="Get Started" />
+      
+        {/* <Button  title="Get Started" /> */}
         </div>
       </div>
     </div>

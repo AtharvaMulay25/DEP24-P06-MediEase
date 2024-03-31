@@ -20,7 +20,7 @@ const supplierSchema = Joi.object({
   address2: Joi.string().optional(),
   city: Joi.string().optional(),
   state: Joi.string().required(),
-  pinCode: Joi.string().optional(),
+  pinCode: Joi.number().integer().min(10 ** 5).max(10 ** 6 - 1).optional(),
   mobileNumber: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
   email: Joi.string().email().optional(),
   //   PurchaseList: Joi.array().items(Joi.object()),
@@ -119,7 +119,7 @@ const patientSchema = Joi.object({
     )
     .optional(),
   // dob: Joi.date().iso().required(),
-  age: Joi.number().integer().required(),
+  age: Joi.number().integer().min(1).max(100).required(),
   email: Joi.string().email().required(),
   allergy: Joi.string().optional(),
   bloodGroup: Joi.string().required(),

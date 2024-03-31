@@ -7,7 +7,15 @@ const { OTP_MAIL_TEMPLATE } = require("../../constants.js");
 
 const sendOtp = async (req, res, next) => {
   const { email, action} = req.body;
-
+  const userRequested = await prisma.requests.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if(action === "SIGNUP" && userRequested){
+    throw new ExpressError("User already requested, Please wait for approval", 409);
+  }
+  
   const userExists = await prisma.user.findUnique({
     where: {
       email: email,

@@ -31,8 +31,8 @@ export function AddMedicineForm() {
   const [categories, setCategories] = useState([]);
 
 
-  useEffect(() => {
-    fetchCategories();
+  useEffect(() =>async () => {
+    await fetchCategories();
 
   }, []);
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
 import { PrinterIcon } from "@heroicons/react/24/solid";
@@ -23,6 +23,7 @@ const TABLE_HEAD = [
 ];
 const PurchaseDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [purchaseData, setPurchaseData] = useState({
     invoiceNo: "",
@@ -65,7 +66,7 @@ const PurchaseDetail = () => {
             <div className="flex flex-col sm:flex-row justify-between py-2">
               <div>
                 <Typography variant="h4" color="blue-gray" className="mb-2">
-                  Purchase Detail
+                  Purchase Details
                 </Typography>
                 <Typography variant="h6" color="blue-gray" className="mb-2">
                   Invoice No: {purchaseData.invoiceNo}
@@ -77,6 +78,9 @@ const PurchaseDetail = () => {
                 </Button>
                 <Button size="md" ripple={true} className="flex gap-x-1 px-4">
                   <PrinterIcon className="h-4" /> Print
+                </Button>
+                <Button size="md" ripple={true} className="flex gap-x-1 px-4" onClick={()=>navigate("/purchase")}>
+                  Close
                 </Button>
               </div>
             </div>

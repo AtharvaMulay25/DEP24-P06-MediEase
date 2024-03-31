@@ -50,12 +50,12 @@ export default function AddPrescriptionForm() {
 
   const [medicines, setMedicines] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => async () =>{
     // Fetch doctors list when the component mounts
     // fetchDoctors();
-    fetchMedicines();
-    fetchDoctors();
-    fetchPatients();
+    await fetchMedicines();
+    await fetchDoctors();
+    await fetchPatients();
   }, []);
 
   const fetchDoctors = async () => {

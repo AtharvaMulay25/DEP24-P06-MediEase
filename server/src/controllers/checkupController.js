@@ -42,7 +42,7 @@ const getCheckupDetails = async (req, res, next) => {
   });
 
   if (!checkup) {
-    throw new ExpressError("Checkup does not exist", 404);
+    throw new ExpressError("Prescription does not exist", 404);
   }
 
   const restructuredCheckup = {
@@ -68,7 +68,7 @@ const getCheckupDetails = async (req, res, next) => {
   return res.status(200).json({
     ok: true,
     data: restructuredCheckup,
-    message: "Checkup Details retrieved successfully",
+    message: "Prescription Details retrieved successfully",
   });
 };
 
@@ -112,7 +112,7 @@ const getCheckupList = async (req, res, next) => {
   return res.status(200).json({
     ok: true,
     data: restructuredCheckupList,
-    message: "Checkup List retrieved successfully",
+    message: "Prescription List retrieved successfully",
   });
 };
 
@@ -175,11 +175,42 @@ const createCheckup = async (req, res, next) => {
     });
     if (!medicineRecord) {
       throw new ExpressError(
-        `Medicine with ID ${medicine.medicineId} does not exist in ITEM ${idx}`,
+        `Medicine with ID ${medicine.medicineId} does not exist in ITEM ${
+          idx + 1
+        }`,
         404
       );
     }
   }
+  
+  // for (const [idx, medicine] of checkupMedicines.entries()) {
+  //   const medicineRecord = await prisma.medicine.findUnique({
+  //     where: {
+  //       id: medicine.medicineId,
+  //     },
+  //   });
+  //   const updateStock = await prisma.stock.update({
+  //     where: {
+  //       medicineId: medicine.medicineId,
+  //     },
+  //     data: {
+  //       outQuantity: {
+  //         increment: parseInt(medicine.quantity),
+  //       },
+  //       stock: {
+  //         decrement: parseInt(medicine.quantity),
+  //       }
+  //     },
+  //   });
+  //   if(!updateStock){
+  //     throw new ExpressError(
+  //       `Stock not updated for medicine ${medicineRecord.brandName} with ID ${medicine.medicineId} in ITEM ${
+  //         idx + 1
+  //       }`,
+  //       404
+  //     );
+  //   }
+  // }
 
   const createdCheckup = await prisma.checkup.create({
     data: {
@@ -204,7 +235,7 @@ const createCheckup = async (req, res, next) => {
   return res.status(200).json({
     ok: true,
     data: createdCheckup,
-    message: "Checkup added successfully",
+    message: "Prescription added successfully",
   });
 };
 
@@ -230,12 +261,13 @@ const deleteCheckup = async (req, res, next) => {
     return res.status(200).json({
       ok: true,
       data: deletedRecords,
-      message: "Checkup Record deleted successfully",
+      message: "Prescription Record deleted successfully",
     });
   } catch (err) {
-    console.log(`Checkup List Deletion Error : ${err.message}`);
+    console.log(`Prescription List Deletion Error : ${err.message}`);
 
-    let errMsg = "Deleting Checkup list record failed, Please try again later";
+    let errMsg =
+      "Deleting Prescription list record failed, Please try again later";
     let errCode = 500;
 
     //record does not exist
@@ -256,5 +288,5 @@ module.exports = {
   getCheckupDetails,
   getCheckupList,
   createCheckup,
-  deleteCheckup
+  deleteCheckup,
 };
