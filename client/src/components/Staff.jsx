@@ -6,7 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 
-const Doctors = () => {
+const Staff = () => {
   const data = [
     {
       img: "/src/assets/img/reena.jpg",
@@ -80,15 +80,14 @@ const Doctors = () => {
   };
 
   return (
-    <div className=" min-h-screen flex flex-col justify-center lg:px-32 px-5 pt-16 bg-yellow-50">
+    <div className=" min-h-screen flex flex-col justify-center lg:px-32 px-5 pt-16 bg-blue-50">
       <div className=" flex flex-col items-center lg:flex-row justify-between mb-10 lg:mb-0">
         <div>
           <h1 className=" text-4xl font-semibold text-center lg:text-start">
-            Our Doctors
+            Our Staff
           </h1>
           <p className=" mt-2 text-center lg:text-start">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus,
-            quidem.
+            Presenting our esteemed staff, from skilled doctors to dedicated medical staff.
           </p>
         </div>
       </div>
@@ -135,4 +134,4 @@ const Doctors = () => {
   );
 };
 
-export default Doctors;
+export default Staff;

@@ -12,15 +12,14 @@ const Services = () => {
   const icon3 = <FaUserCog size={35} className=" text-backgroundColor" />;
 
   return (
-    <div className=" min-h-screen flex flex-col justify-center lg:px-32 px-5 pt-24 lg:pt-16 bg-red-50">
+    <div className=" min-h-screen flex flex-col justify-center lg:px-32 px-5 pt-24 lg:pt-16">
       <div className=" flex flex-col items-center lg:flex-row justify-between">
         <div>
           <h1 className=" text-4xl font-semibold text-center lg:text-start">
             Our Services
           </h1>
           <p className=" mt-2 text-center lg:text-start">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus,
-            quidem.
+            We provide the following services based on the roles you login with.
           </p>
         </div>
       </div>
@@ -28,20 +27,42 @@ const Services = () => {
         <ServicesCard
           icon={icon1}
           title="Patient"
-          content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-          praesentium asperiores"
+          content={
+            <div>
+              <ul>
+                <li>• Access past prescriptions effortlessly.</li>
+                <li>• Convenient medical leave application for students.</li>
+              </ul>
+            </div>
+          }
         />
         <ServicesCard
           icon={icon2}
-          title="Staff"
-          content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-          praesentium asperiores unde veniam, perspiciatis neque!"
+          title="Medical Staff"
+          content={
+            <div>
+              <ul>
+                <li>• Doctors: Manage schedules and patient records.</li>
+                <li>• Paramedical Staff: Monitor stock and suppliers.</li>
+                <li>
+                  • Both can issue prescriptions and access personalized
+                  dashboards.
+                </li>
+              </ul>
+            </div>
+          }
         />
         <ServicesCard
           icon={icon3}
           title="Admin"
-          content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
-          praesentium asperiores unde veniam, perspiciatis neque!"
+          content={
+            <div>
+              <ul>
+                <li>• Complete access to all data and functions.</li>
+                <li>• Exclusive management of admin accounts.</li>
+              </ul>
+            </div>
+          }
         />
       </div>
     </div>

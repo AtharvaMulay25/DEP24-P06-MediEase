@@ -7,22 +7,22 @@ const About = () => {
       <div className=" w-full lg:w-3/4 space-y-4">
         <h1 className=" text-4xl font-semibold text-center lg:text-start">About Us</h1>
         <p className=" text-justify lg:text-start">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam
-          labore rerum tempore tenetur commodi natus quos itaque voluptatum
-          repudiandae nostrum accusantium vero voluptate aspernatur totam,
-          laboriosam aut, et quae consequatur?
+        At our institute hospital, we are committed to providing exceptional healthcare services tailored to your needs. 
+        With a dedicated team of professionals, we prioritize patient well-being above all else. Our goal is to deliver 
+        comprehensive medical care with compassion and efficiency, ensuring your health and satisfaction.
         </p>
         <p className="text-justify lg:text-start">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora quia
-          suscipit illum, numquam incidunt nostrum dolor officia doloremque
-          cupiditate, placeat explicabo sed iure atque neque quidem ipsam!
-          Dolor, minus reiciendis.
+        Our patient-centric approach ensures that individuals have easy access to their medical history, prescriptions,
+        and studnets have the ability to apply for medical leave using our page, with the medical history we provided.
+        conveniently. On the staff side, our doctors benefit from streamlined scheduling processes and access to patient 
+        records, facilitating efficient and personalized care. Meanwhile, our paramedical staff can effectively manage 
+        medical stock, update inventory, and oversee supplier relations, ensuring seamless operations. 
         </p>
         <p className="text-justify lg:text-start">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe, illum.
-          Accusantium ab expedita veniam nobis aut, in rerum repellendus!
-          Exercitationem libero recusandae corrupti accusantium reiciendis in
-          placeat illo maxime ea.
+        At the core of our institution is our administration, equipped with complete access to data and functions, 
+        including the management of admin accounts for enhanced security. Through our unwavering dedication to 
+        excellence, compassion, and efficiency, we strive to set the standard for quality healthcare delivery, fostering
+        a culture of trust, innovation, and wellness within our community.
         </p>
       </div>
       <div className=" w-full lg:w-3/4">

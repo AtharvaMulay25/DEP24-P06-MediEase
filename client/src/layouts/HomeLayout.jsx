@@ -1,58 +1,52 @@
 import React, { useState, useEffect } from "react";
 import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import {
-  UserCircleIcon,
-  ClipboardDocumentListIcon,
-  DocumentTextIcon,
-} from "@heroicons/react/24/solid";
-import { GiMedicines } from "react-icons/gi";
-import { FaUserDoctor } from "react-icons/fa6";
-import { FaUserCog, FaExclamation } from "react-icons/fa";
-import { MdSpaceDashboard } from "react-icons/md";
-import {
-  Typography,
-  List,
-  ListItem,
-  ListItemPrefix,
-  Accordion,
-  AccordionHeader,
-  AccordionBody,
-} from "@material-tailwind/react";
-import {
-  ShoppingCartIcon,
-  UserGroupIcon,
-  ChartBarIcon,
-  UserIcon,
-} from "@heroicons/react/24/solid";
-import {
-  ChevronDownIcon,
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Link } from "react-scroll";
+import { Typography } from "@material-tailwind/react";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import Contact from "../models/Contact";
+import { useLogout } from "../hooks/useLogout";
+import { toast } from "sonner";
 
-const Layout2 = ({ children }) => {
-  const { userRole, userName } = useAuthContext();
-
-  const [open, setOpen] = useState(0);
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
+const HomeLayout = ({ children }) => {
+  const { userRole } = useAuthContext();
+  const { logout } = useLogout();
   const navigate = useNavigate();
+  const [menu, setMenu] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
-  const handleOpen = (value) => {
-    setOpen(open === value ? 0 : value);
+  const handleChange = () => {
+    setMenu(!menu);
   };
 
-  const toggleCollapse = () => {
-    setIsCollapsed((prevState) => !prevState);
+  const closeMenu = () => {
+    setMenu(false);
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged Out Successfully");
+    setTimeout(() => {
+      navigate("/signin");
+    }, 1000);
+  };
+
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const LINKS = [
     {
       title: "About Us",
-      items: ["Overview", "Servies", "Doctors"],
+      items: ["Overview", "Servies", "Staff"],
     },
     {
       title: "Services",
@@ -87,13 +81,193 @@ const Layout2 = ({ children }) => {
   return (
     <div className="h-screen flex">
       {/* navbar */}
-      <Navbar />
+      <div className="fixed top-0 w-full z-10 text-white">
+        <div>
+          {/* <div className=" flex flex-row justify-between p-5 md:px-32 px-5 bg-backgroundColor shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"> */}
+          <div className=" flex flex-row justify-between p-5 md:px-32 px-5 text-black font-light bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+            <div className="flex">
+              <div className="h-12 w-12 flex-shrink-0">
+                <a href="/">
+                  <img
+                    src="/src/assets/img/logo.png"
+                    alt="Logo"
+                    className="-ml-3 -mr-2 cursor-pointer"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </a>
+              </div>
+              <div className=" flex flex-row items-center cursor-pointer">
+                <Link to="home" spy={true} smooth={true} duration={500}>
+                  <h1 className=" text-2xl font-semibold">
+                    <span style={{ color: "#0eb8fc" }}>Medi</span>
+                    <span style={{ color: "#fe055c" }}>Ease</span>
+                  </h1>
+                </Link>
+              </div>
+            </div>
+
+            <nav className=" hidden lg:flex flex-row items-center text-lg font-medium gap-8">
+              <Link
+                to="#about"
+                spy={true}
+                smooth={true}
+                duration={500}
+                className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+                onClick={() => scrollToSection("about")}
+              >
+                About Us
+              </Link>
+              <Link
+                to="#services"
+                spy={true}
+                smooth={true}
+                duration={500}
+                className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+                onClick={() => scrollToSection("services")}
+              >
+                Services
+              </Link>
+              <Link
+                to="#staff"
+                spy={true}
+                smooth={true}
+                duration={500}
+                className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+                onClick={() => scrollToSection("staff")}
+              >
+                Staff
+              </Link>
+              <Link
+                to="#blogs"
+                spy={true}
+                smooth={true}
+                duration={500}
+                className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+                onClick={() => scrollToSection("blogs")}
+              >
+                Blog
+              </Link>
+            </nav>
+            {/* <SignedOut> */}
+            {userRole ? (
+              <div className=" hidden lg:flex">
+                <button
+                  className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out font-semibold"
+                  onClick={() => handleLogout()}
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className=" hidden lg:flex">
+                <button
+                  className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out font-semibold"
+                  // onClick={openForm}
+                  onClick={() => navigate("/signin")}
+                >
+                  Login
+                </button>
+              </div>
+            )}
+            {/* </SignedOut> */}
+            {/* <SignedIn> */}
+            {/* <UserButton afterSignOutUrl="/signin" /> */}
+
+            {/* </SignedIn> */}
+            {showForm && <Contact closeForm={closeForm} />}
+
+            <div className=" lg:hidden flex items-center">
+              {menu ? (
+                <AiOutlineClose size={28} onClick={handleChange} />
+              ) : (
+                <AiOutlineMenu size={28} onClick={handleChange} />
+              )}
+            </div>
+          </div>
+          <div
+            className={`${
+              menu ? "translate-x-0" : "-translate-x-full"
+            } lg:hidden flex flex-col absolute bg-white text-black left-0 top-16 font-semibold text-2xl text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}
+          >
+            {/* <Link
+            to="home"
+            spy={true}
+            smooth={true}
+            duration={500}
+            className=" hover:bg-gray-300 transition-all cursor-pointer rounded-lg"
+            onClick={closeMenu}
+          >
+            Home
+          </Link> */}
+            <Link
+              to="#about"
+              spy={true}
+              smooth={true}
+              duration={500}
+              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+              onClick={closeMenu && scrollToSection("about")}
+            >
+              About Us
+            </Link>
+            <Link
+              to="#services"
+              spy={true}
+              smooth={true}
+              duration={500}
+              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+              onClick={closeMenu && scrollToSection("services")}
+            >
+              Services
+            </Link>
+            <Link
+              to="#staff"
+              spy={true}
+              smooth={true}
+              duration={500}
+              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+              onClick={closeMenu && scrollToSection("staff")}
+            >
+              Staff
+            </Link>
+            <Link
+              to="#blogs"
+              spy={true}
+              smooth={true}
+              duration={500}
+              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+              onClick={closeMenu && scrollToSection("blogs")}
+            >
+              Blog
+            </Link>
+            {userRole ? (
+              <div className=" hidden lg:flex">
+                <button
+                  className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out font-semibold"
+                  onClick={() => handleLogout()}
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <div className=" hidden lg:flex">
+                <button
+                  className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out font-semibold"
+                  // onClick={openForm}
+                  onClick={() => navigate("/signin")}
+                >
+                  Login
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
 
       {/* Content of page */}
       <div className="flex-auto flex flex-col justify-between shadow-lg bg-gray-50 h-screen overflow-y-auto">
         {children}
         <footer className="w-full mt-5 bg-white">
-          <div className="mx-auto w-full max-w-7xl px-4 py-2">
+          <div className="mx-auto w-full max-w-7xl px-4 py-5">
             <div className="grid grid-cols-1 justify-between gap-4 md:grid-cols-2">
               <Typography variant="h5" className="mb-6">
                 MediEase
@@ -232,4 +406,4 @@ const Layout2 = ({ children }) => {
   );
 };
 
-export default Layout2;
+export default HomeLayout;
