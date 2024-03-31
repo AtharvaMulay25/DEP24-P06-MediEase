@@ -9,6 +9,7 @@ const TABLE_HEAD = {
   brandName: "Medicine Name (Brand)",
   saltName: "Salt Name",
   category: "Category",
+  batchNo: "Batch No."
 };
 
 // const getMedicinesData = async () => {
