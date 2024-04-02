@@ -2,6 +2,7 @@ import React, { useState, useEffect} from "react";
 import { useParams, useNavigate} from "react-router-dom";
 import { apiRoutes } from "../utils/apiRoutes";
 import axios from "axios";
+import html2pdf from "html2pdf.js";
 import { PrinterIcon } from "@heroicons/react/24/solid";
 import {
   Card,
@@ -37,7 +38,11 @@ const PrescriptionDetail = () => {
     symptoms: "",
     checkupMedicines: [],
   });
-
+  const handlePrint = () => {
+    const element = document.getElementById("prescriptionDetail");
+    const pdfName = `Prescription_${prescriptionData.patientName}_${prescriptionData.date}`;
+    html2pdf().from(element).set({ filename: pdfName }).save();
+  }
 
   const fetchPrescriptionDetail = async () => {
     try {
@@ -78,7 +83,7 @@ const PrescriptionDetail = () => {
             <Button size="md" ripple={true}>
               Edit
             </Button>
-            <Button size="md" ripple={true} className="flex gap-x-1 px-4">
+            <Button size="md" ripple={true} className="flex gap-x-1 px-4" onClick={handlePrint}>
               <PrinterIcon className="h-4" /> Print
             </Button>
             <Button size="md" ripple={true} onClick={()=>navigate("/prescription")}>
@@ -86,7 +91,7 @@ const PrescriptionDetail = () => {
             </Button>
           </div>
         </div>
-        <Card className="w-full h-fit min-h-lvh">
+        <Card id="prescriptionDetail" className="w-full h-fit min-h-lvh">
           <CardBody>
             <div className="flex border-b border-black p-2 ">
               {/* <img
