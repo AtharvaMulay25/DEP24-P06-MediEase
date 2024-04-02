@@ -84,7 +84,7 @@ const HomeLayout = ({ children }) => {
       <div className="fixed top-0 w-full z-10 text-white">
         <div>
           {/* <div className=" flex flex-row justify-between p-5 md:px-32 px-5 bg-backgroundColor shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"> */}
-          <div className=" flex flex-row justify-between p-5 md:px-32 px-5 text-black font-light bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
+          <div className=" flex flex-row justify-between items-center py-3 px-5 md:px-8 text-black font-light bg-white shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
             <div className="flex">
               <div className="h-12 w-12 flex-shrink-0">
                 <a href="/">
@@ -205,7 +205,10 @@ const HomeLayout = ({ children }) => {
               smooth={true}
               duration={500}
               className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
-              onClick={closeMenu && scrollToSection("about")}
+              onClick={() => {
+                closeMenu();
+                scrollToSection("about");
+              }}
             >
               About Us
             </Link>
@@ -215,7 +218,10 @@ const HomeLayout = ({ children }) => {
               smooth={true}
               duration={500}
               className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
-              onClick={closeMenu && scrollToSection("services")}
+              onClick={() => {
+                closeMenu();
+                scrollToSection("services");
+              }}
             >
               Services
             </Link>
@@ -225,7 +231,10 @@ const HomeLayout = ({ children }) => {
               smooth={true}
               duration={500}
               className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
-              onClick={closeMenu && scrollToSection("staff")}
+              onClick={() => {
+                closeMenu();
+                scrollToSection("staff");
+              }}
             >
               Staff
             </Link>
@@ -235,7 +244,10 @@ const HomeLayout = ({ children }) => {
               smooth={true}
               duration={500}
               className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
-              onClick={closeMenu && scrollToSection("blogs")}
+              onClick={() => {
+                closeMenu();
+                scrollToSection("blogs");
+              }}
             >
               Blog
             </Link>

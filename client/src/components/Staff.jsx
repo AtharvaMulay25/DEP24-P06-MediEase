@@ -87,16 +87,17 @@ const Staff = () => {
             Our Staff
           </h1>
           <p className=" mt-2 text-center lg:text-start">
-            Presenting our esteemed staff, from skilled doctors to dedicated medical staff.
+            Presenting our esteemed staff, from skilled doctors to dedicated
+            medical staff.
           </p>
         </div>
       </div>
-      <div className="mt-5">
+      <div className="mt-5 mx-auto">
         <Carousel
           className="rounded-xl"
           style={{
-            height: 600,
-            width: 400,
+            height: 400,
+            width: 300,
           }}
           loop={true}
           autoplay={true}
