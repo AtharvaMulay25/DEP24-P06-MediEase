@@ -187,7 +187,7 @@ const HomeLayout = ({ children }) => {
           <div
             className={`${
               menu ? "translate-x-0" : "-translate-x-full"
-            } lg:hidden flex flex-col absolute bg-white text-black left-0 top-16 font-semibold text-2xl text-center pt-8 pb-4 gap-8 w-full h-fit transition-transform duration-300`}
+            } lg:hidden flex flex-col absolute bg-white text-black left-0 top-16 font-semibold text-2xl text-center gap-2 w-full h-fit transition-transform duration-300`}
           >
             {/* <Link
             to="home"
@@ -204,7 +204,7 @@ const HomeLayout = ({ children }) => {
               spy={true}
               smooth={true}
               duration={500}
-              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer rounded-lg p-2"
               onClick={() => {
                 closeMenu();
                 scrollToSection("about");
@@ -217,7 +217,7 @@ const HomeLayout = ({ children }) => {
               spy={true}
               smooth={true}
               duration={500}
-              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer rounded-lg p-2"
               onClick={() => {
                 closeMenu();
                 scrollToSection("services");
@@ -230,7 +230,7 @@ const HomeLayout = ({ children }) => {
               spy={true}
               smooth={true}
               duration={500}
-              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer rounded-lg p-2"
               onClick={() => {
                 closeMenu();
                 scrollToSection("staff");
@@ -243,7 +243,7 @@ const HomeLayout = ({ children }) => {
               spy={true}
               smooth={true}
               duration={500}
-              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer rounded-lg p-2"
               onClick={() => {
                 closeMenu();
                 scrollToSection("blogs");
@@ -252,7 +252,7 @@ const HomeLayout = ({ children }) => {
               Blog
             </Link>
             {userRole ? (
-              <div className=" hidden lg:flex">
+              <div className=" lg:flex">
                 <button
                   className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out font-semibold"
                   onClick={() => handleLogout()}
@@ -261,7 +261,7 @@ const HomeLayout = ({ children }) => {
                 </button>
               </div>
             ) : (
-              <div className=" hidden lg:flex">
+              <div className="lg:flex mb-2">
                 <button
                   className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-700 transition duration-300 ease-in-out font-semibold"
                   // onClick={openForm}
