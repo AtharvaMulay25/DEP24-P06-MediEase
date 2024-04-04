@@ -1,32 +1,29 @@
 import React, { useRef } from "react";
-import { Carousel, IconButton } from "@material-tailwind/react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa";
 
 const Staff = () => {
   const data = [
     {
       img: "/src/assets/img/reena.jpg",
       name: "Dr. Reena Rani",
-      specialties: "Medical Officer – Allopathy",
+      specialties: "Doctor – Allopathy",
     },
     {
       img: "/src/assets/img/charnjit.jpg",
-      name: "Dr.Charanjit Singh",
-      specialties: "Medical Officer – Allopathy",
+      name: "Dr. Charanjit Singh",
+      specialties: "Doctor – Allopathy",
     },
     {
       img: "/src/assets/img/gurvinder.png",
       name: "Dr. Gurvinder Kaur Saini",
-      specialties: "Medical Officer – Ayurveda",
+      specialties: "Doctor – Ayurveda",
     },
     {
       img: "/src/assets/img/Dipti.jpg",
       name: "Dr. Dipti Borad",
-      specialties: "Medical Officer – Homeopathy",
+      specialties: "Doctor – Homeopathy",
     },
     {
       img: "/src/assets/img/vikas.jpg",
@@ -40,96 +37,61 @@ const Staff = () => {
     },
   ];
 
-  const slider = useRef(null);
-
   const settings = {
-    accessibility: true,
     dots: true,
     infinite: true,
+    autoPlay: true,
     speed: 500,
-    arrows: false,
+    autoplaySpeed: 2000,
     slidesToShow: 3,
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 1023,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 768,
+        breakpoint: 1080,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
+          slidesToScroll: 1,
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 660,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
-          initialSlide: 2,
         },
       },
     ],
   };
 
   return (
-    <div className=" min-h-screen flex flex-col justify-center lg:px-32 px-5 pt-16 bg-blue-50">
-      <div className=" flex flex-col items-center lg:flex-row justify-between mb-10 lg:mb-0">
-        <div>
-          <h1 className=" text-4xl font-semibold text-center lg:text-start">
-            Our Staff
-          </h1>
-          <p className=" mt-2 text-center lg:text-start">
-            Presenting our esteemed staff, from skilled doctors to dedicated
-            medical staff.
-          </p>
-        </div>
+    <div className="min-h-screen flex flex-col items-start mx-auto bg-blue-50  px-5 pt-24 lg:pt-32 lg:px-32">
+      <div className="items-center lg:flex-row justify-between mb-10 lg:mb-0">
+        <h1 className=" text-4xl font-semibold text-center lg:text-start">
+          Our Staff
+        </h1>
+        <p className=" mt-2 text-center lg:text-start">
+          Presenting our esteemed staff, from skilled doctors to dedicated
+          medical staff.
+        </p>
       </div>
-      <div className="mt-5 mx-auto">
-        <Carousel
-          className="rounded-xl"
-          style={{
-            height: 400,
-            width: 300,
-          }}
-          loop={true}
-          autoplay={true}
-          autoplayDelay={3000}
-          navigation={({ setActiveIndex, activeIndex, length }) => (
-            <div className="absolute bottom-3 left-2/4 z-50 flex -translate-x-2/4 gap-2">
-              {new Array(length).fill("").map((_, i) => (
-                <span
-                  key={i}
-                  className={`block h-1 cursor-pointer -mb-1 rounded-2xl transition-all content-[''] ${
-                    activeIndex === i ? "w-6 bg-white" : "w-3 bg-white/50"
-                  }`}
-                  onClick={() => setActiveIndex(i)}
+      <div className="w-3/4 mx-auto my-32">
+        <Slider {...settings}>
+          {data.map((d) => (
+            <div className="h-[400px] w-[270px] bg-white text-black rounded-xl">
+              <div className="rounded-top-xl bg-blue-500 flex justify-center items-center rounded-t-xl h-[270px]">
+                <img
+                  src={d.img}
+                  alt={d.name}
+                  className="h-44 w-44 rounded-full"
                 />
-              ))}
-            </div>
-          )}
-        >
-          {data.map((item, index) => (
-            <div key={index} className="h-full w-full relative">
-              <img
-                src={item.img}
-                alt={`image ${index + 1}`}
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 text-white">
-                <h2 className="text-lg font-semibold">{item.name}</h2>
-                <p className="text-sm">{item.specialties}</p>
+              </div>
+              <div className="flex flex-col justify-center items-center gap-1 p-4">
+                <p className="text-xl font-semibold">{d.name}</p>
+                <p>{d.specialties}</p>
               </div>
             </div>
           ))}
-        </Carousel>
+        </Slider>
       </div>
     </div>
   );
