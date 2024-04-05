@@ -69,7 +69,7 @@ const Layout = ({ children }) => {
   const LINKS = [
     {
       title: "About Us",
-      items: ["Overview", "Servies", "Doctors"],
+      items: ["Overview", "Servies", "Staff"],
     },
     {
       title: "Services",
