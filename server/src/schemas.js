@@ -20,7 +20,7 @@ const supplierSchema = Joi.object({
   address2: Joi.string().optional(),
   city: Joi.string().optional(),
   state: Joi.string().required(),
-  pinCode: Joi.string().optional(),
+  pinCode: Joi.number().integer().min(10 ** 5).max(10 ** 6 - 1).optional(),
   mobileNumber: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
   email: Joi.string().email().optional(),
   //   PurchaseList: Joi.array().items(Joi.object()),
@@ -73,7 +73,7 @@ const purchaseSchema = Joi.object({
   medicineId: Joi.string().required(),
   mfgDate: Joi.date().optional(),
   expiryDate: Joi.date().required(),
-  batchNo: Joi.string().required(),
+  batchNo: Joi.number().integer().min(1).required(),
   quantity: Joi.number().integer().min(1).required(),
   //   Medicine: Joi.object().required(),
   //   PurchaseList: Joi.object().required(),
@@ -82,7 +82,7 @@ const purchaseSchema = Joi.object({
 const purchaseListSchema = Joi.object({
   supplierId: Joi.string().required(),
   purchaseDate: Joi.date().required(),
-  invoiceNo: Joi.string().required(),
+  invoiceNo: Joi.number().integer().min(1).required(),
   purchaseDetails: Joi.string().optional(),
   purchaseItems: Joi.array().items(purchaseSchema).required(),
   // Supplier: Joi.object().required(),
@@ -119,7 +119,7 @@ const patientSchema = Joi.object({
     )
     .optional(),
   // dob: Joi.date().iso().required(),
-  age: Joi.number().integer().required(),
+  age: Joi.number().integer().min(1).max(100).required(),
   email: Joi.string().email().required(),
   allergy: Joi.string().optional(),
   bloodGroup: Joi.string().required(),
@@ -137,7 +137,8 @@ const patientSchema = Joi.object({
 const checkupMedicinesSchema = Joi.object({
   medicineId: Joi.string().required(),
   dosage: Joi.string().optional(),
-  frequency: Joi.string().valid('OD', 'BD', 'SOS', 'TDS').required()
+  quantity: Joi.number().integer().min(1).required(),
+  // frequency: Joi.string().valid('OD', 'BD', 'SOS', 'TDS').required()
 });
 
 // Checkup Schema

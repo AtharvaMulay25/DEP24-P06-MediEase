@@ -6,70 +6,70 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const ExpressError = require("../utils/ExpressError");
 
+//for serializing BigInt to JSON
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+
 // @desc    Get Purchase Details
 // route    GET /api/purchase/:id
 // @access  Private (Admin)
 const getPurchaseDetails = async (req, res, next) => {
-    
-    const { id } = req.params;
-    const purchaseDetails = await prisma.purchaseList.findUnique({
-        where: {
-            id: id,
-        },
+  const { id } = req.params;
+  const purchaseDetails = await prisma.purchaseList.findUnique({
+    where: {
+      id: id,
+    },
+    include: {
+      Purchase: {
         include: {
-            Purchase: {
-                include: {
-                    Medicine: {
-                        select: {
-                            brandName: true,
-                        },
-                    },
-                },
+          Medicine: {
+            select: {
+              brandName: true,
             },
-            Supplier: {
-                select: {
-                    name: true,
-                },
-            },
+          },
         },
-    });
+      },
+      Supplier: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
 
-    if (!purchaseDetails) {
-        throw new ExpressError("Purchase Details does not exist", 404);
-    }
+  if (!purchaseDetails) {
+    throw new ExpressError("Purchase Details does not exist", 404);
+  }
 
-    const restructuredPurchaseDetails = {
-        supplierName: purchaseDetails.Supplier.name,
-        purchaseDate: purchaseDetails.purchaseDate.toISOString().split("T")[0],
-        invoiceNo: purchaseDetails.invoiceNo,
-        details: purchaseDetails.Details,
-        medicines: purchaseDetails.Purchase.map((purchase) => ({
-            name: purchase.Medicine.brandName,
-            batchNo: purchase.batchNo.toString(),
-            mfgDate: purchase.mfgDate ? purchase.mfgDate.toISOString().split("T")[0] : "",
-            expDate: purchase.expiryDate.toISOString().split("T")[0],
-            totalQuantity: purchase.quantity,
-        })),
-    };
+  const restructuredPurchaseDetails = {
+    supplierName: purchaseDetails.Supplier.name,
+    purchaseDate: purchaseDetails.purchaseDate.toISOString().split("T")[0],
+    invoiceNo: purchaseDetails.invoiceNo,
+    details: purchaseDetails.Details,
+    medicines: purchaseDetails.Purchase.map((purchase) => ({
+      name: purchase.Medicine.brandName,
+      batchNo: purchase.batchNo.toString(),
+      mfgDate: purchase.mfgDate
+        ? purchase.mfgDate.toISOString().split("T")[0]
+        : "",
+      expDate: purchase.expiryDate.toISOString().split("T")[0],
+      totalQuantity: purchase.quantity,
+    })),
+  };
 
-
-    return res.status(200).json({
-        ok: true,
-        data: restructuredPurchaseDetails,
-        message: "Puchase Details retrieved successfully",
-    });
+  return res.status(200).json({
+    ok: true,
+    data: restructuredPurchaseDetails,
+    message: "Puchase Details retrieved successfully",
+  });
 };
-
-
 
 // @desc    Get Purchase List
 // route    GET /api/purchase/list
 // @access  Private (Admin)
 const getPurchaseList = async (req, res, next) => {
-  BigInt.prototype.toJSON = function () {
-    return this.toString();
-  };
-
+ 
   const purchaseList = await prisma.purchaseList.findMany({
     include: {
       Purchase: true,
@@ -103,6 +103,9 @@ const getPurchaseList = async (req, res, next) => {
 // route    POST /api/purchase/create
 // @access  Private (Admin)
 const createPurchaseList = async (req, res, next) => {
+  console.log(
+    "inside.."
+  )
   const {
     purchaseDate,
     invoiceNo,
@@ -111,8 +114,8 @@ const createPurchaseList = async (req, res, next) => {
     purchaseItems,
   } = req.body;
   // const {} = purchaseListEntry;
-  console.log(purchaseDate)
-//   console.log(purchaseItems);
+  console.log(purchaseDate);
+  //   console.log(purchaseItems);
 
   const supplier = await prisma.supplier.findUnique({
     where: {
@@ -126,7 +129,7 @@ const createPurchaseList = async (req, res, next) => {
 
   const invoiceNoRecord = await prisma.purchaseList.findUnique({
     where: {
-      invoiceNo,
+      invoiceNo: invoiceNo,
     },
   });
 
@@ -139,45 +142,115 @@ const createPurchaseList = async (req, res, next) => {
     const medicineRecord = await prisma.medicine.findUnique({
       where: {
         id: purchase.medicineId,
-      },
-    });
-    if (!medicineRecord) {
-      throw new ExpressError(
-        `Medicine with ID ${purchase.medicineId} does not exist in ITEM ${idx}`,
-        404
-      );
+      }
+    })
+    if(!medicineRecord){
+      throw new ExpressError(`Medicine with ID ${purchase.medicineId} does not exist in ITEM ${idx + 1}`, 404);
     }
 
     const batchNoRecord = await prisma.purchase.findUnique({
       where: {
-        batchNo: BigInt(purchase.batchNo) || 0,
+        batchNo: purchase.batchNo,
       },
     });
     if (batchNoRecord) {
       throw new ExpressError(
-        `Batch No ${purchase.batchNo} already exists in ITEM ${idx}`,
+        `Batch No ${purchase.batchNo} already exists in ITEM ${idx + 1}`,
         400
       );
     }
 
     if (purchase.expiryDate <= purchase.mfgDate) {
       throw new ExpressError(
-        `Expiry Date cannot be less than Manufacturing Date in ITEM ${idx}`,
+        `Expiry Date cannot be less than Manufacturing Date in ITEM ${idx + 1}`,
         400
       );
     }
-    if (purchase.mfgDate >= purchaseDate ) {
-        throw new ExpressError(
-            `Mfg. Date cannot be greater than Purchase Date in ITEM ${idx}`,
-            400
-        );
+    if (purchase.mfgDate >= purchaseDate) {
+      throw new ExpressError(
+        `Mfg. Date cannot be greater than Purchase Date in ITEM ${idx + 1}`,
+        400
+      );
+    }
+  }
+
+  //updating the stock
+  for (const [idx, purchase] of purchaseItems.entries()) {
+    const stockRecord = await prisma.stock.findFirst({
+      where: {
+        medicineId: purchase.medicineId,
+      },
+    });
+    //using if else upserting the stock
+    let updateStock, newStock;
+    if (stockRecord) {
+      updateStock = await prisma.stock.update({
+        where: {
+          id: stockRecord.id,
+        },
+        data: {
+          inQuantity: {
+            increment: purchase.quantity,
+          },
+          stock: {
+            increment: purchase.quantity,
+          },
+        },
+      });
+    }
+    else {
+      newStock = await prisma.stock.create({
+        data: {
+          medicineId: purchase.medicineId,
+          stock: purchase.quantity,
+          inQuantity: purchase.quantity,
+          outQuantity: 0,
+        },
+      });
+      //if error in upserting stock 
+    }
+    if ((stockRecord && !updateStock) || (!stockRecord && !newStock) ) {
+      //rollback all the previous stock updates
+      for (let i = 0; i < idx; i++) {
+        const previousPurchase = purchaseItems[i];
+        const previousStockRecord = await prisma.stock.findFirst({
+          where: {
+            medicineId: previousPurchase.medicineId,
+          },
+        });
+
+        const previousStock = await prisma.stock.update({
+          where: {
+            id: previousStockRecord.id,
+          },
+          data: {
+            inQuantity: {
+              decrement: previousPurchase.quantity,
+            },
+            stock: {
+              decrement: previousPurchase.quantity,
+            },
+          },
+        });
+
+        if (!previousStock) {
+          throw new ExpressError(
+            `Failed to rollback stock update for medicine with ID ${
+              previousPurchase.medicineId
+            } in ITEM ${i + 1}`,
+            500
+          );
+        }
+      }
+
+      throw new ExpressError(`Failed to update stock for medicines`, 404);
     }
   }
 
   const createdRecord = await prisma.purchaseList.create({
     data: {
       purchaseDate: purchaseDate + "T00:00:00Z",
-      invoiceNo,
+      invoiceNo: invoiceNo,
       supplierId,
       Details: purchaseDetails, //change Details name to details in schema*******
       Purchase: {
@@ -185,7 +258,7 @@ const createPurchaseList = async (req, res, next) => {
           const newItem = {
             medicineId: item.medicineId,
             quantity: item.quantity,
-            batchNo: BigInt(item.batchNo) || 0,
+            batchNo: item.batchNo,
             expiryDate: item.expiryDate + "T00:00:00Z",
           };
           if (item.mfgDate) {
@@ -253,7 +326,7 @@ const deletePurchaseList = async (req, res, next) => {
   try {
     console.log("req.body : ", req.body);
     const { id } = req.params;
-    console.log("id: ", id)
+    console.log("id: ", id);
 
     const deletedRecords = await prisma.purchase.deleteMany({
       where: {
@@ -262,11 +335,9 @@ const deletePurchaseList = async (req, res, next) => {
     });
     const deletedPuchase = await prisma.purchaseList.delete({
       where: {
-        id
-      }
+        id,
+      },
     });
-
-    
 
     return res.status(200).json({
       ok: true,
@@ -293,12 +364,10 @@ const deletePurchaseList = async (req, res, next) => {
   }
 };
 
-
-
 module.exports = {
   getPurchaseList,
   createPurchaseList,
   updatePurchaseList,
   deletePurchaseList,
-  getPurchaseDetails
+  getPurchaseDetails,
 };

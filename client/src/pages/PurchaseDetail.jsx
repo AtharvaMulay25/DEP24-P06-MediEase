@@ -1,5 +1,5 @@
 import React, {useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
 import { PrinterIcon } from "@heroicons/react/24/solid";
@@ -11,6 +11,7 @@ import {
   CardFooter,
 } from "@material-tailwind/react";
 import Layout from "../layouts/PageLayout";
+import html2pdf from "html2pdf.js";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import {toast} from "sonner";
 import {setToastTimeout} from "../utils/customTimeout"
@@ -23,6 +24,7 @@ const TABLE_HEAD = [
 ];
 const PurchaseDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [purchaseData, setPurchaseData] = useState({
     invoiceNo: "",
@@ -32,6 +34,13 @@ const PurchaseDetail = () => {
     medicines: [],
   });
   console.log("purchase List id: ", id);
+
+  const handlePrint = () => {
+    const element = document.getElementById("purchaseDetail");
+    const pdfName = `Purchase-${purchaseData.invoiceNo}`;
+    html2pdf().from(element).set({ filename: pdfName }).save();
+  }
+
   const fetchPurchaseDetail = async () => {
     try {
       const response = await axios.get(apiRoutes.purchase + `/${id}`);
@@ -65,7 +74,7 @@ const PurchaseDetail = () => {
             <div className="flex flex-col sm:flex-row justify-between py-2">
               <div>
                 <Typography variant="h4" color="blue-gray" className="mb-2">
-                  Purchase Detail
+                  Purchase Details
                 </Typography>
                 <Typography variant="h6" color="blue-gray" className="mb-2">
                   Invoice No: {purchaseData.invoiceNo}
@@ -75,12 +84,15 @@ const PurchaseDetail = () => {
                 <Button size="md" ripple={true}>
                   Edit
                 </Button>
-                <Button size="md" ripple={true} className="flex gap-x-1 px-4">
+                <Button size="md" ripple={true} className="flex gap-x-1 px-4" onClick={handlePrint}>
                   <PrinterIcon className="h-4" /> Print
+                </Button>
+                <Button size="md" ripple={true} className="flex gap-x-1 px-4" onClick={()=>navigate("/purchase")}>
+                  Close
                 </Button>
               </div>
             </div>
-            <Card className="w-full h-fit min-h-lvh">
+            <Card id="purchaseDetail" className="w-full h-fit min-h-lvh">
               <CardBody>
                 <div className="flex border-b border-black p-2 ">
                   {/* <img

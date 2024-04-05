@@ -1,7 +1,8 @@
 import React, { useState, useEffect} from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import { apiRoutes } from "../utils/apiRoutes";
 import axios from "axios";
+import html2pdf from "html2pdf.js";
 import { PrinterIcon } from "@heroicons/react/24/solid";
 import {
   Card,
@@ -14,10 +15,11 @@ import Layout from "../layouts/PageLayout";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import {toast} from "sonner";
 import {setToastTimeout} from "../utils/customTimeout"
-const TABLE_HEAD = ["Medicine", "Dosage", "Frequency"];
+const TABLE_HEAD = ["Medicine", "Dosage", "Quantity"];
 
 const PrescriptionDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   console.log(id);
   const params = id.split('^');
   const prescriptionId = params[0];
@@ -36,7 +38,11 @@ const PrescriptionDetail = () => {
     symptoms: "",
     checkupMedicines: [],
   });
-
+  const handlePrint = () => {
+    const element = document.getElementById("prescriptionDetail");
+    const pdfName = `Prescription_${prescriptionData.patientName}_${prescriptionData.date}`;
+    html2pdf().from(element).set({ filename: pdfName }).save();
+  }
 
   const fetchPrescriptionDetail = async () => {
     try {
@@ -67,7 +73,7 @@ const PrescriptionDetail = () => {
         <div className="flex flex-col sm:flex-row justify-between py-2">
           <div>
             <Typography variant="h4" color="blue-gray" className="mb-2">
-              Prescription Detail
+              Prescription Details
             </Typography>
             <Typography variant="h6" color="blue-gray" className="mb-2">
               Date: {prescriptionData.date}
@@ -77,12 +83,15 @@ const PrescriptionDetail = () => {
             <Button size="md" ripple={true}>
               Edit
             </Button>
-            <Button size="md" ripple={true} className="flex gap-x-1 px-4">
+            <Button size="md" ripple={true} className="flex gap-x-1 px-4" onClick={handlePrint}>
               <PrinterIcon className="h-4" /> Print
+            </Button>
+            <Button size="md" ripple={true} onClick={()=>navigate("/prescription")}>
+              Close
             </Button>
           </div>
         </div>
-        <Card className="w-full h-fit min-h-lvh">
+        <Card id="prescriptionDetail" className="w-full h-fit min-h-lvh">
           <CardBody>
             <div className="flex border-b border-black p-2 ">
               {/* <img
@@ -245,7 +254,7 @@ const PrescriptionDetail = () => {
                           // color="blue-gray"
                           className="font-normal"
                         >
-                          {medicine.frequency}
+                          {medicine.quantity}
                         </Typography>
                       </td>
                     </tr>

@@ -59,7 +59,7 @@ model Supplier {
   address      String
   city         String?
   state        String
-  pinCode      String?
+  pinCode      Int?
   mobileNumber String
   email        String?
 
@@ -109,7 +109,7 @@ model PurchaseList {
   id           String   @id @default(uuid())
   supplierId   String
   purchaseDate DateTime
-  invoiceNo    String   @unique
+  invoiceNo    BigInt   @unique
   Details      String?
 
   Supplier Supplier   @relation(fields: [supplierId], references: [id])
@@ -187,7 +187,7 @@ model CheckupMedicine {
   id         String    @id @default(uuid())
   medicineId String
   dosage     String?
-  frequency  Frequency
+  quantity       Int
   checkupId  String  
 
   Medicine Medicine @relation(fields: [medicineId], references: [id])
@@ -196,12 +196,6 @@ model CheckupMedicine {
   @@map("checkupMedicine")
 }
 
-enum Frequency {
-  OD
-  BD
-  SOS
-  TDS
-}
 
 enum Department {
   COMPUTER_SCIENCE
