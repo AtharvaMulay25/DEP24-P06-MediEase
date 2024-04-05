@@ -1,0 +1,39 @@
+.text-typing { 
+    padding: 20px 0px; 
+    background: rgb(227 242 253); 
+    font-size: 35px; 
+    font-family: monospace; 
+    border-radius: 50px; 
+    overflow: hidden; 
+    position: relative; 
+} 
+
+.text-typing p { 
+    margin: 0px; 
+    white-space: nowrap; 
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0); 
+    animation:  
+typing 4s steps(22, end) forwards, blink 1s infinite; 
+} 
+
+@keyframes typing { 
+    0% { 
+        width: 0% 
+    } 
+
+    100% { 
+        width: 100% 
+    } 
+} 
+
+@keyframes blink { 
+
+    0%, 
+    100% { 
+        border-right: 2px solid transparent; 
+    } 
+
+    50% { 
+        border-right: 2px solid #222; 
+    } 
+}
