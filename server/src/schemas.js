@@ -73,7 +73,7 @@ const purchaseSchema = Joi.object({
   medicineId: Joi.string().required(),
   mfgDate: Joi.date().optional(),
   expiryDate: Joi.date().required(),
-  batchNo: Joi.string().required(),
+  batchNo: Joi.number().integer().min(1).required(),
   quantity: Joi.number().integer().min(1).required(),
   //   Medicine: Joi.object().required(),
   //   PurchaseList: Joi.object().required(),
@@ -82,7 +82,7 @@ const purchaseSchema = Joi.object({
 const purchaseListSchema = Joi.object({
   supplierId: Joi.string().required(),
   purchaseDate: Joi.date().required(),
-  invoiceNo: Joi.string().required(),
+  invoiceNo: Joi.number().integer().min(1).required(),
   purchaseDetails: Joi.string().optional(),
   purchaseItems: Joi.array().items(purchaseSchema).required(),
   // Supplier: Joi.object().required(),
@@ -137,7 +137,8 @@ const patientSchema = Joi.object({
 const checkupMedicinesSchema = Joi.object({
   medicineId: Joi.string().required(),
   dosage: Joi.string().optional(),
-  frequency: Joi.string().valid('OD', 'BD', 'SOS', 'TDS').required()
+  quantity: Joi.number().integer().min(1).required(),
+  // frequency: Joi.string().valid('OD', 'BD', 'SOS', 'TDS').required()
 });
 
 // Checkup Schema

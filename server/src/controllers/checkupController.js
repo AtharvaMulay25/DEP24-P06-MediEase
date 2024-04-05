@@ -61,7 +61,7 @@ const getCheckupDetails = async (req, res, next) => {
       id: medicine?.id,
       brandName: medicine.Medicine?.brandName,
       dosage: medicine?.dosage,
-      frequency: medicine?.frequency,
+      quantity: medicine?.quantity,
     })),
   };
   console.log("restructuredCheckup : ", restructuredCheckup);
@@ -168,49 +168,96 @@ const createCheckup = async (req, res, next) => {
 
   //handle validations on each medicine item in checkupMedicines
   for (const [idx, medicine] of checkupMedicines.entries()) {
+    if (medicine.quantity < 1) {
+      throw new ExpressError(
+        `Quantity should be greater than 0 for medicine with ID ${
+          medicine.medicineId
+        } in ITEM ${idx + 1}`,
+        400
+      );
+    }
+    const stockRecord = await prisma.stock.findFirst({
+      where: {
+        medicineId: medicine.medicineId,
+      },
+    });
+    if (!stockRecord) {
+      throw new ExpressError(
+        `Stock record not found for medicine with ID ${
+          medicine.medicineId
+        } in ITEM ${idx + 1}`,
+        404
+      );
+    }
+    if (stockRecord.stock < medicine.quantity) {
+      throw new ExpressError(
+        `Stock not sufficient for medicine with ID ${
+          medicine.medicineId
+        } in ITEM ${idx + 1}`,
+        400
+      );
+    }
+  }
+
+  for (const [idx, medicine] of checkupMedicines.entries()) {
     const medicineRecord = await prisma.medicine.findUnique({
       where: {
         id: medicine.medicineId,
       },
     });
-    if (!medicineRecord) {
+    //updateMany is used but the entrires are unique by medicineId
+    const updateStock = await prisma.stock.updateMany({
+      where: {
+        medicineId: medicine.medicineId,
+      },
+      data: {
+        outQuantity: {
+          increment: parseInt(medicine.quantity),
+        },
+        stock: {
+          decrement: parseInt(medicine.quantity),
+        },
+      },
+    });
+
+    //if at any point, stock update fails, then rollback all the previous stock updates
+    if (!updateStock) {
+      for (let i = 0; i < idx; i++) {
+        const previousMedicine = checkupMedicines[i];
+        const previousMedicineRecord = await prisma.medicine.findUnique({
+          where: {
+            id: previousMedicine.medicineId,
+          },
+        });
+        const previousStock = await prisma.stock.updateMany({
+          where: {
+            medicineId: previousMedicine.medicineId,
+          },
+          data: {
+            outQuantity: {
+              decrement: parseInt(previousMedicine.quantity),
+            },
+            stock: {
+              increment: parseInt(previousMedicine.quantity),
+            },
+          },
+        });
+        if (!previousStock) {
+          //give understandable error msg like 'stock partially updated, correct it manually' ****  (stock updated till this incex)
+          throw new ExpressError(
+            `Failed to rollback stock update for medicine ${
+              previousMedicineRecord.brandName
+            } with ID ${previousMedicine.medicineId} in ITEM ${i + 1}`,
+            500
+          );
+        }
+      }
       throw new ExpressError(
-        `Medicine with ID ${medicine.medicineId} does not exist in ITEM ${
-          idx + 1
-        }`,
+        `Failed to update stock for medicines`,
         404
       );
     }
   }
-  
-  // for (const [idx, medicine] of checkupMedicines.entries()) {
-  //   const medicineRecord = await prisma.medicine.findUnique({
-  //     where: {
-  //       id: medicine.medicineId,
-  //     },
-  //   });
-  //   const updateStock = await prisma.stock.update({
-  //     where: {
-  //       medicineId: medicine.medicineId,
-  //     },
-  //     data: {
-  //       outQuantity: {
-  //         increment: parseInt(medicine.quantity),
-  //       },
-  //       stock: {
-  //         decrement: parseInt(medicine.quantity),
-  //       }
-  //     },
-  //   });
-  //   if(!updateStock){
-  //     throw new ExpressError(
-  //       `Stock not updated for medicine ${medicineRecord.brandName} with ID ${medicine.medicineId} in ITEM ${
-  //         idx + 1
-  //       }`,
-  //       404
-  //     );
-  //   }
-  // }
 
   const createdCheckup = await prisma.checkup.create({
     data: {

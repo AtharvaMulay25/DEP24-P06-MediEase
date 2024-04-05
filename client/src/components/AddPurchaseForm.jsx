@@ -138,14 +138,17 @@ export function AddPurchaseForm() {
       return updatedArray;
     });
   };
-
+  //this is required for handling TypeError: Don't know how to serialize BigInt
+  BigInt.prototype.toJSON = function () {
+    return this.toString();
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     /* ALSO CLEAR THE PURCHASE LIST DATA ON SUBMITTING THE FORM ****** */
 
     const purchaseListEntry = {
       purchaseDate: formData.purchaseDate,
-      invoiceNo: formData.invoiceNo,
+      invoiceNo: BigInt(formData.invoiceNo) || 0,
       supplierId: formData?.supplier?.value, // Assuming supplier object has a unique identifier 'value'  //will be passing supplier id to backend
     };
     if (formData.purchaseDetails)
@@ -154,7 +157,7 @@ export function AddPurchaseForm() {
     const purchaseItems = dataArray.map((data) => {
       const purchaseItem = {
         medicineId: data.medicine.value, // Assuming medicine object has a unique identifier 'value'  //will be passing medicine id to backend
-        batchNo: data.batchNo,
+        batchNo: BigInt(data.batchNo) || 0,
         expiryDate: data.expDate,
         quantity: parseInt(data.quantity) || 0, // Assuming quantity is a number
       };
@@ -174,6 +177,7 @@ export function AddPurchaseForm() {
         navigate("/purchase");
       }, 1000);
     } catch (error) {
+      console.log(error);
       console.error(`ERROR (add-purchase): ${error?.response?.data?.message}`);
       toast.error(error?.response?.data?.message || "Failed to add Purchase");
     }

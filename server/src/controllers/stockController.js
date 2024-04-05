@@ -78,6 +78,7 @@ const getAvailableStock = async(req, res, next) => {
             if(stock.stock > 0){
                 return {
                     id: stock.id,
+                    medicineId: stock.medicineId,
                     netQuantity: stock.stock,
                     category: stock.Medicine.Category.categoryName,
                     inQuantity: stock.inQuantity,

@@ -51,7 +51,7 @@ export function AddSupplierForm() {
     if(formData.zip) data.pinCode = parseInt(formData.zip) || 0;
     if(formData.address2) data.address2 = formData.address2;
     // Here you can handle the submission of the form
-    console.log(formData);
+    console.log(data);
     try {
       const response = await axios.post(apiRoutes.supplier, data);
       console.log(response);

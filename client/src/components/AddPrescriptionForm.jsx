@@ -41,19 +41,18 @@ export default function AddPrescriptionForm() {
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState("");
-  const frequencyList = ["OD", "BD", "TDS", "SOS"];
-
-  const TABLE_HEAD = ["Medicine Name", "Dosage", "Frequency", "Action"];
+  const TABLE_HEAD = ["Medicine Name", "Dosage", "Quantity","Avl. Qty" ,"Action"];
   const [dataArray, setDataArray] = useState([
-    { name: "", dosage: "", frequency: "" },
+    { name: "", dosage: "", quantity: "" },
   ]);
-
+  
   const [medicines, setMedicines] = useState([]);
+  const [selectedMedicine, setSelectedMedicine] = useState("");
 
   useEffect(() => async () =>{
     // Fetch doctors list when the component mounts
     // fetchDoctors();
-    await fetchMedicines();
+    await fetchAvailableStock();
     await fetchDoctors();
     await fetchPatients();
   }, []);
@@ -89,9 +88,9 @@ export default function AddPrescriptionForm() {
     }
   };
 
-  const fetchMedicines = async () => {
+  const fetchAvailableStock = async () => {
     try {
-      const response = await axios.get(apiRoutes.medicine);
+      const response = await axios.get(apiRoutes.stock + "/available");
       // console.log(response.data.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
@@ -130,7 +129,8 @@ export default function AddPrescriptionForm() {
     }));
   };
   const handleMedicineChange = (selectedMedicine, index) => {
-    console.log(selectedMedicine.value);
+    console.log(selectedMedicine);
+    setSelectedMedicine(selectedMedicine);
     setDataArray((prevData) => {
       const updatedArray = [...prevData];
       updatedArray[index].name = selectedMedicine;
@@ -180,7 +180,7 @@ export default function AddPrescriptionForm() {
     const checkupMedicines = dataArray.map((data) => {
       const medicines = {
         medicineId: data?.name?.value,
-        frequency: data.frequency,
+        quantity: parseInt(data.quantity) || 0,
       };
       if (data.dosage) medicines.dosage = data.dosage;
       return medicines;
@@ -213,7 +213,7 @@ export default function AddPrescriptionForm() {
   const handleAddRow = () => {
     setDataArray((prevData) => [
       ...prevData,
-      { name: "", dosage: "", frequency: "" },
+      { name: "", dosage: "", quantity: "" },
     ]);
   };
 
@@ -292,7 +292,7 @@ export default function AddPrescriptionForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="temperature">Temperature (C)</label>:
+                <label htmlFor="temperature">Temp.(C)</label>:
               </div>
               <Input
                 id="temperature"
@@ -306,7 +306,7 @@ export default function AddPrescriptionForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="pulseRate">Pulse Rate(beats/min)</label>:
+                <label htmlFor="pulseRate">PR(beats/min)</label>:
               </div>
               <Input
                 id="pulseRate"
@@ -322,7 +322,7 @@ export default function AddPrescriptionForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="pulseRate">SpO2 (in %)</label>:
+                <label htmlFor="pulseRate">SpO2 (%)</label>:
               </div>
               <Input
                 id="spO2"
@@ -336,7 +336,7 @@ export default function AddPrescriptionForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="bloodPressure">Blood pressure(mm Hg)</label>:
+                <label htmlFor="bloodPressure">BP(mm Hg)</label>:
               </div>
               <Input
                 id="bloodPressure"
@@ -448,28 +448,13 @@ export default function AddPrescriptionForm() {
                 {dataArray.map((data, index) => (
                   <tr className="even:bg-blue-gray">
                     <td className="p-4">
-                      {/* <Select
-                        className="w-full"
-
-                        options={[
-                          { label: "Medicine 1", value: "Medicine 1" },
-                          { label: "Medicine 2", value: "Medicine 2" },
-                          { label: "Medicine 3", value: "Medicine 3" },
-                        ]}
-                        isClearable={true}
-                        placeholder="Select Medicine"
-                        onChange={(value) => {
-                          const newMedicines = [...medicines];
-                          newMedicines[index].name = value;
-                          setMedicines(newMedicines);
-                        }
-                        }
-                      /> */}
+                      
                       <Select
                         id="medicine"
-                        options={medicines.map((medicine) => ({
-                          value: medicine.id,
-                          label: medicine.brandName,
+                        options={medicines.map((stock) => ({
+                          value: stock.medicineId,
+                          netQuantity: stock.netQuantity,
+                          label: stock.medicineName,
                         }))}
                         value={data["name"]}
                         onChange={(selectedMedicine) =>
@@ -493,34 +478,27 @@ export default function AddPrescriptionForm() {
                     </td>
                     <td className="p-4">
                       <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-                        <MaterialSelect
-                          id="frequency"
-                          size="md"
-                          label="Frequency"
-                          name="frequency"
-                          className="w-full"
-                          value={data["frequency"]}
-                          onChange={(value) =>
-                            handleInputChange("frequency", index, value)
-                          }
-                        >
-                          {frequencyList.map((frequency) => (
-                            <Option key={frequency} value={frequency}>
-                              {frequency}
-                            </Option>
-                          ))}
-                        </MaterialSelect>
-                      </div>
-
-                      {/* <input
+                      <input
                         type="number"
+                        min={1}
                         className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
-                        placeholder="Frequency"
-                        value={data["frequency"]}
+                        placeholder="Quantity"
+                        value={data["quantity"]}
                         onChange={(e) =>
-                          handleInputChange('frequency', index,  e.target.value)
+                          handleInputChange("quantity", index, e.target.value)
                         }
-                      /> */}
+                      />
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex-col md:flex md:flex-row items-center justify-start p-1 min-w-[200px]">
+                      <Input
+                      type="number"
+                      min={1}
+                      value={selectedMedicine?.netQuantity || ""}
+                      disabled
+                    />
+                      </div>
                     </td>
                     <td className="p-4">
                       <Tooltip content="Delete">

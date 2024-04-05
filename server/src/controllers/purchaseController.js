@@ -6,6 +6,11 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const ExpressError = require("../utils/ExpressError");
 
+//for serializing BigInt to JSON
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+
 // @desc    Get Purchase Details
 // route    GET /api/purchase/:id
 // @access  Private (Admin)
@@ -64,10 +69,7 @@ const getPurchaseDetails = async (req, res, next) => {
 // route    GET /api/purchase/list
 // @access  Private (Admin)
 const getPurchaseList = async (req, res, next) => {
-  BigInt.prototype.toJSON = function () {
-    return this.toString();
-  };
-
+ 
   const purchaseList = await prisma.purchaseList.findMany({
     include: {
       Purchase: true,
@@ -101,6 +103,9 @@ const getPurchaseList = async (req, res, next) => {
 // route    POST /api/purchase/create
 // @access  Private (Admin)
 const createPurchaseList = async (req, res, next) => {
+  console.log(
+    "inside.."
+  )
   const {
     purchaseDate,
     invoiceNo,
@@ -124,7 +129,7 @@ const createPurchaseList = async (req, res, next) => {
 
   const invoiceNoRecord = await prisma.purchaseList.findUnique({
     where: {
-      invoiceNo: BigInt(invoiceNo) || 0,
+      invoiceNo: invoiceNo,
     },
   });
 
@@ -137,20 +142,15 @@ const createPurchaseList = async (req, res, next) => {
     const medicineRecord = await prisma.medicine.findUnique({
       where: {
         id: purchase.medicineId,
-      },
-    });
-    if (!medicineRecord) {
-      throw new ExpressError(
-        `Medicine with ID ${purchase.medicineId} does not exist in ITEM ${
-          idx + 1
-        }`,
-        404
-      );
+      }
+    })
+    if(!medicineRecord){
+      throw new ExpressError(`Medicine with ID ${purchase.medicineId} does not exist in ITEM ${idx + 1}`, 404);
     }
 
     const batchNoRecord = await prisma.purchase.findUnique({
       where: {
-        batchNo: BigInt(purchase.batchNo) || 0,
+        batchNo: purchase.batchNo,
       },
     });
     if (batchNoRecord) {
@@ -174,44 +174,83 @@ const createPurchaseList = async (req, res, next) => {
     }
   }
 
-  // for (const [idx, purchase] of purchaseItems.entries()) {
-  //   const medicineRecord = await prisma.medicine.findUnique({
-  //     where: {
-  //       id: purchase.medicineId,
-  //     },
-  //   });
-  //   //still if there is error at some point, then medicines stock before that point may get updated *****
-  //   const updateStock = await prisma.stock.upsert({
-  //     where: {
-  //       medicineId: purchase.medicineId,
-  //     },
-  //     update: {
-  //       inQuantity: {
-  //         increment: purchase.quantity,
-  //       },
-  //     },
-  //     create: {
-  //       medicineId: purchase.medicineId,
-  //       inQuantity: purchase.quantity,
-  //       outQuantity: 0,
-  //       stock: purchase.quantity,
-  //     },
-  //   });
+  //updating the stock
+  for (const [idx, purchase] of purchaseItems.entries()) {
+    const stockRecord = await prisma.stock.findFirst({
+      where: {
+        medicineId: purchase.medicineId,
+      },
+    });
+    //using if else upserting the stock
+    let updateStock, newStock;
+    if (stockRecord) {
+      updateStock = await prisma.stock.update({
+        where: {
+          id: stockRecord.id,
+        },
+        data: {
+          inQuantity: {
+            increment: purchase.quantity,
+          },
+          stock: {
+            increment: purchase.quantity,
+          },
+        },
+      });
+    }
+    else {
+      newStock = await prisma.stock.create({
+        data: {
+          medicineId: purchase.medicineId,
+          stock: purchase.quantity,
+          inQuantity: purchase.quantity,
+          outQuantity: 0,
+        },
+      });
+      //if error in upserting stock 
+    }
+    if ((stockRecord && !updateStock) || (!stockRecord && !newStock) ) {
+      //rollback all the previous stock updates
+      for (let i = 0; i < idx; i++) {
+        const previousPurchase = purchaseItems[i];
+        const previousStockRecord = await prisma.stock.findFirst({
+          where: {
+            medicineId: previousPurchase.medicineId,
+          },
+        });
 
-  //   if (!updateStock) {
-  //     throw new ExpressError(
-  //       `Stock not updated for medicine ${medicineRecord.brandName} with ID ${
-  //         purchase.medicineId
-  //       } in ITEM ${idx + 1}`,
-  //       500
-  //     );
-  //   }
-  // }
+        const previousStock = await prisma.stock.update({
+          where: {
+            id: previousStockRecord.id,
+          },
+          data: {
+            inQuantity: {
+              decrement: previousPurchase.quantity,
+            },
+            stock: {
+              decrement: previousPurchase.quantity,
+            },
+          },
+        });
+
+        if (!previousStock) {
+          throw new ExpressError(
+            `Failed to rollback stock update for medicine with ID ${
+              previousPurchase.medicineId
+            } in ITEM ${i + 1}`,
+            500
+          );
+        }
+      }
+
+      throw new ExpressError(`Failed to update stock for medicines`, 404);
+    }
+  }
 
   const createdRecord = await prisma.purchaseList.create({
     data: {
       purchaseDate: purchaseDate + "T00:00:00Z",
-      invoiceNo: BigInt(invoiceNo) || 0,
+      invoiceNo: invoiceNo,
       supplierId,
       Details: purchaseDetails, //change Details name to details in schema*******
       Purchase: {
@@ -219,7 +258,7 @@ const createPurchaseList = async (req, res, next) => {
           const newItem = {
             medicineId: item.medicineId,
             quantity: item.quantity,
-            batchNo: BigInt(item.batchNo) || 0,
+            batchNo: item.batchNo,
             expiryDate: item.expiryDate + "T00:00:00Z",
           };
           if (item.mfgDate) {

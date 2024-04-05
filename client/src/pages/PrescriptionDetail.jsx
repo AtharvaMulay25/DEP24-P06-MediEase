@@ -15,7 +15,7 @@ import Layout from "../layouts/PageLayout";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import {toast} from "sonner";
 import {setToastTimeout} from "../utils/customTimeout"
-const TABLE_HEAD = ["Medicine", "Dosage", "Frequency"];
+const TABLE_HEAD = ["Medicine", "Dosage", "Quantity"];
 
 const PrescriptionDetail = () => {
   const { id } = useParams();
@@ -254,7 +254,7 @@ const PrescriptionDetail = () => {
                           // color="blue-gray"
                           className="font-normal"
                         >
-                          {medicine.frequency}
+                          {medicine.quantity}
                         </Typography>
                       </td>
                     </tr>
