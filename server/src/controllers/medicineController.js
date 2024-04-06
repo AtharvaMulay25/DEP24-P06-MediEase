@@ -32,6 +32,35 @@ const getMedicineList = async (req, res, next) => {
   });
 };
 
+//get all the expired medicines
+const getExpiredMedicines = async (req, res, next) => {
+  const expiredMedicines = await prisma.purchase.findMany({
+    where: {
+      expiryDate: {
+        lte: new Date(),
+      },
+    },
+    include: {
+      Medicine: true,
+    },
+  });
+
+  // Extract the required fields from the result and construct the response
+  const responseData = expiredMedicines.map((medicine) => ({
+    batchNo: medicine.batchNo,
+    brandName: medicine.Medicine.brandName,
+    saltName: medicine.Medicine.saltName,
+    expiryDate: medicine.expiryDate,
+    quatity: medicine.quantity,
+  }));
+
+  return res.status(200).json({
+    ok: true,
+    data: responseData,
+    message: "Expired Medicines List fetched successfully",
+  });
+};
+
 // @desc    Create Medicine List Records
 // route    POST /api/medicine/create
 // @access  Private (Admin)
@@ -180,6 +209,7 @@ const deleteMedicineList = async (req, res, next) => {
 
 module.exports = {
   getMedicineList,
+  getExpiredMedicines,
   createMedicineList,
   updateMedicineList,
   deleteMedicineList,

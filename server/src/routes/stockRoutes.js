@@ -7,11 +7,13 @@ const catchAsync = require('../utils/catchAsync');
 const { 
     getTotalStock, 
     getAvailableStock,
+    getOutOfStock,
     updateStockList, 
 } = require('../controllers/stockController');
 
 router.get('/', catchAsync(getTotalStock));
 router.get('/available', catchAsync(getAvailableStock));
+router.get('/out', catchAsync(getOutOfStock));
 // router.post('/create', createStockList);
 // router.put('/', updateStockList);
 // router.delete('/', deleteStockList);
