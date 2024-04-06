@@ -1,5 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient()
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
 const ExpressError = require("../utils/ExpressError");
 const { generateToken } = require("../utils/handleJWT.js");
@@ -17,46 +17,60 @@ const signup = async (req, res, next) => {
       },
     });
 
-    if (userAlreadyExists) {
+    if (userAlreadyExists && userAlreadyExists.status === "ACTIVE") {
       throw new ExpressError("User already exists.", 409);
     }
-
-    const user = await prisma.user.create({
-      data: {
-        id: uuidv4(),
-        email,
-        role,
-        name
-      },
-    });
-
-    if (user) {
+    let newUser;
+    if (userAlreadyExists && userAlreadyExists.status === "INACTIVE") {
+      const restoredUser = await prisma.user.update({
+        where: {
+          email: email,
+        },
+        data: {
+          role,
+          name,
+          status: "ACTIVE",
+        },
+      });
+      newUser = restoredUser;
+    }
+    if (!userAlreadyExists) {
+      const user = await prisma.user.create({
+        data: {
+          id: uuidv4(),
+          email,
+          role,
+          name,
+        },
+      });
+      newUser = user;
+    }
+    if (newUser) {
       const token = generateToken(
         {
-          email: user.email,
+          email: newUser.email,
         },
         "2h"
       );
 
       res.cookie("token", token, { httpOnly: true, secure: true });
       res.cookie("role", role, { httpOnly: true, secure: true });
-      res.cookie("name", user.name, { httpOnly: true, secure: true });
+      res.cookie("name", newUser.name, { httpOnly: true, secure: true });
 
       return res.status(201).json({
         ok: true,
         message: "User registered successfully.",
         data: {
           user: {
-            email: user.email,
-            role: user.role,
-            name: user.name
+            email: newUser.email,
+            role: newUser.role,
+            name: newUser.name,
           },
         },
       });
     }
 
     throw new ExpressError("User Registration failed.", 400);
-
   } catch (err) {
     throw new ExpressError(err.message, 500);
   }
@@ -71,11 +85,11 @@ const login = async (req, res, next) => {
 
     const user = await prisma.user.findUnique({
       where: {
-        email
+        email,
       },
     });
 
-    if (!user) {
+    if (!user || user.status === "INACTIVE") {
       throw new ExpressError("User does not exists", 400);
     }
 

@@ -7,51 +7,62 @@ const ExpressError = require("../utils/ExpressError");
 // route    GET /api/schedule
 // @access  Private (Admin)
 const getScheduleList = async (req, res, next) => {
+  const scheduleList = await prisma.schedule.findMany({
+    include: {
+      Staff: true,
+    },
+  });
+  // console.log("Schedule list : ", scheduleList);
 
-    const scheduleList = await prisma.schedule.findMany({
-      include: {
-        Staff: true
-      }
-    });
-    // console.log("Schedule list : ", scheduleList);
+  const sendScheduleList = scheduleList.map((schedule) => ({
+    id: schedule.id,
+    staffId: schedule.staffId,
+    day: schedule.day,
+    shift: schedule.shift,
+    name: schedule.Staff.name,
+    department: schedule.Staff.department,
+    email: schedule.Staff.email,
+  }));
 
-    const sendScheduleList = scheduleList.map((schedule) => ({
-      id: schedule.id,
-      staffId: schedule.staffId,
-      day: schedule.day,
-      shift: schedule.shift,
-      name: schedule.Staff.name,
-      department: schedule.Staff.department,
-      email: schedule.Staff.email
-    }));
-
-    return res.status(200).json({
-      ok: true,
-      data: sendScheduleList,
-      message: "Schedule List retrieved successfully",
-    });
+  return res.status(200).json({
+    ok: true,
+    data: sendScheduleList,
+    message: "Schedule List retrieved successfully",
+  });
 };
 
 // @desc    Create Schedule Records
 // route    POST /api/schedule
 // @access  Private (Admin)
 const createSchedule = async (req, res, next) => {
-    console.log(req.body);
-    const {email, staffId, day, shift } = req.body;
-    const createdRecord = await prisma.schedule.create({
-      data: {
-        staffId,
-        day,
-        shift,
-      },
-    });
-    console.log(createdRecord);
+  console.log(req.body);
+  const { email, staffId, day, shift } = req.body;
 
-    return res.status(200).json({
-      ok: true,
-      data: createdRecord,
-      message: "Schedule record created successfully",
-    });
+  //to avoid duplicate schedules in schedule table
+  const scheduleRecord = await prisma.schedule.findFirst({
+    where: {
+      staffId,
+      day,
+      shift
+    },
+  });
+  if (scheduleRecord) {
+    throw new ExpressError("This schedule already exists", 400);
+  }
+  const createdRecord = await prisma.schedule.create({
+    data: {
+      staffId,
+      day,
+      shift,
+    },
+  });
+  console.log(createdRecord);
+
+  return res.status(200).json({
+    ok: true,
+    data: createdRecord,
+    message: "Schedule record created successfully",
+  });
 };
 
 // @desc    Update Schedule List Record

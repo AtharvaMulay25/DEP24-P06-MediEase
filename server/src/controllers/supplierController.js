@@ -1,12 +1,16 @@
 //prisma client
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-
+const ExpressError = require("../utils/ExpressError");
 // @desc    Get Supplier List
 // route    GET /api/supplier/list
 // @access  Private (Admin)
 const getSupplierList = async (req, res, next) => {
-  const supplierList = await prisma.supplier.findMany({});
+  const supplierList = await prisma.supplier.findMany({
+    where: {
+      status: "ACTIVE",
+    },
+  });
 
   // console.log(supplierList);
 
@@ -21,23 +25,57 @@ const getSupplierList = async (req, res, next) => {
 // route    POST /api/supplier/create
 // @access  Private (Admin)
 const createSupplier = async (req, res, next) => {
-  const createdRecord = await prisma.supplier.create({
-    data: {
-      name: req?.body?.name,
+  const { address1, address2 = "" } = req.body;
+
+  const supplierExists = await prisma.supplier.findUnique({
+    where: {
       mobileNumber: req?.body?.mobileNumber,
-      email: req?.body?.email,
-      city: req?.body?.city,
-      state: req?.body?.state,
-      address: `${req?.body?.address1} ${req?.body?.address2}`,
-      pinCode: req?.body?.pinCode,
     },
   });
+  let newSupplierRecord ;
+  if (supplierExists && supplierExists.status === "ACTIVE") {
+    throw new ExpressError("Supplier already exists", 400);
+  }
+  if (supplierExists && supplierExists.status === "INACTIVE") {
+    const restoredSupplier = await prisma.supplier.update({
+      where: {
+        id: supplierExists.id,
+      },
+      data: {
+        name: req?.body?.name,
+        mobileNumber: req?.body?.mobileNumber,
+        email: req?.body?.email,
+        city: req?.body?.city,
+        state: req?.body?.state,
+        address: `${address1} ${address2}`,
+        pinCode: req?.body?.pinCode,
+        status: "ACTIVE",
+      },
+    });
+    newSupplierRecord = restoredSupplier;
+  }
+
+  if(!supplierExists)
+  {
+    const createdRecord = await prisma.supplier.create({
+      data: {
+        name: req?.body?.name,
+        mobileNumber: req?.body?.mobileNumber,
+        email: req?.body?.email,
+        city: req?.body?.city,
+        state: req?.body?.state,
+        address: `${address1} ${address2}`,
+        pinCode: req?.body?.pinCode,
+      },
+    });
+    newSupplierRecord = createdRecord;
+  }
 
   // console.log(createdRecord);
 
   return res.status(200).json({
     ok: true,
-    data: createdRecord,
+    data: newSupplierRecord,
     message: "Supplier Added successfully",
   });
 };
@@ -90,9 +128,13 @@ const updateSupplier = async (req, res, next) => {
 const deleteSupplier = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const deletedRecord = await prisma.supplier.delete({
+    //change status to inactive
+    const deletedRecord = await prisma.supplier.update({
       where: {
         id: id,
+      },
+      data: {
+        status: "INACTIVE",
       },
     });
 
