@@ -2,7 +2,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const sendMail = require("../utils/sendMail");
-const { ACCOUNT_CREATED_MAIL_TEMPLATE } = require("../../constants");
+const { ACCOUNT_CREATED_MAIL_TEMPLATE, ACCOUNT_DELETED_MAIL_TEMPLATE} = require("../../constants");
 const ExpressError = require("../utils/ExpressError");
 // @desc    Get Patient List
 // route    GET /api/patient
@@ -54,7 +54,7 @@ const createPatient = async (req, res, next) => {
 
     const info = await sendMail(mailOptions);
     if (!info) {
-      throw new ExpressError("Error in sending mail to the staff", 500);
+      throw new ExpressError("Error in sending mail to the patient", 500);
     }
   }
   if (
@@ -88,7 +88,7 @@ const createPatient = async (req, res, next) => {
 
     const info = await sendMail(mailOptions);
     if (!info) {
-      throw new ExpressError("Error in sending mail to the staff", 500);
+      throw new ExpressError("Error in sending mail to the patient", 500);
     }
   }
   let newPatientRecord;
@@ -202,6 +202,22 @@ const deletePatient = async (req, res, next) => {
         status: "INACTIVE",
       },
     });
+
+    //send mail to the patient
+    const mailTemplate = ACCOUNT_DELETED_MAIL_TEMPLATE();
+    const mailOptions = {
+      from: "dep2024.p06@gmail.com",
+      to: patientRecord.email,
+      subject: "Mediease - Account Deleted",
+      html: mailTemplate,
+      text: "",
+    };
+
+    const info = await sendMail(mailOptions);
+    if (!info) {
+      throw new ExpressError("Error in sending mail to the patient", 500);
+    }
+
 
     return res.status(200).json({
       ok: true,

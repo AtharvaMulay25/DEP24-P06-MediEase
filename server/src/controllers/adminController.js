@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 const { v4: uuidv4 } = require("uuid");
 const ExpressError = require("../utils/ExpressError");
 const sendMail = require("../utils/sendMail");
-const { ACCOUNT_CREATED_MAIL_TEMPLATE } = require("../../constants");
+const { ACCOUNT_CREATED_MAIL_TEMPLATE, ACCOUNT_DELETED_MAIL_TEMPLATE} = require("../../constants");
 // @desc    Get Admin List
 // route    GET /api/admin
 // @access  Private (Admin)
@@ -139,6 +139,15 @@ const deleteAdmin = async (req, res, next) => {
   try {
     // console.log("req.body : ", req.body);
     const { id } = req.params;
+    const adminRecord = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!adminRecord) {
+      throw new ExpressError("Admin does not exist", 404);
+    }
 
     const deletedRecord = await prisma.user.update({
       where: {
@@ -149,6 +158,20 @@ const deleteAdmin = async (req, res, next) => {
       },
     });
 
+    //send mail to user here
+    const mailTemplate = ACCOUNT_DELETED_MAIL_TEMPLATE();
+    const mailOptions = {
+      from: "dep2024.p06@gmail.com",
+      to: adminRecord.email,
+      subject: "Mediease - Account Deleted",
+      html: mailTemplate,
+      text: "",
+    };
+
+    const info = await sendMail(mailOptions);
+    if (!info) {
+      throw new ExpressError("Error in sending mail to the admin", 500);
+    }
     return res.status(200).json({
       ok: true,
       data: deletedRecord,
