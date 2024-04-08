@@ -59,7 +59,9 @@ export default function AddPrescriptionForm() {
 
   const fetchDoctors = async () => {
     try {
-      const response = await axios.get(apiRoutes.staff);
+      const response = await axios.get(apiRoutes.staff, {
+        withCredentials: true
+      });
       response.data.data = response.data.data.filter(
         (staff) => staff.role === "DOCTOR"
       );
@@ -76,7 +78,9 @@ export default function AddPrescriptionForm() {
   };
   const fetchPatients = async () => {
     try {
-      const response = await axios.get(apiRoutes.patient);
+      const response = await axios.get(apiRoutes.patient, {
+        withCredentials: true
+      });
       setPatients(response.data.data);
     } catch (error) {
       console.error(
@@ -90,7 +94,9 @@ export default function AddPrescriptionForm() {
 
   const fetchAvailableStock = async () => {
     try {
-      const response = await axios.get(apiRoutes.stock + "/available");
+      const response = await axios.get(apiRoutes.stock + "/available", {
+        withCredentials: true
+      });
       // console.log(response.data.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
@@ -194,7 +200,9 @@ export default function AddPrescriptionForm() {
     console.log(data);
 
     try {
-      const response = await axios.post(apiRoutes.checkup, data);
+      const response = await axios.post(apiRoutes.checkup, data, {
+        withCredentials: true
+      });
       console.log(response.data);
       toast.success(response.data.message);
       setTimeout(() => {

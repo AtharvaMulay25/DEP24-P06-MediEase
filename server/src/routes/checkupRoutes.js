@@ -10,6 +10,11 @@ const {
     deleteCheckup
 } = require('../controllers/checkupController');
 
+const authMiddleware = require("../middlewares/authMiddleware");
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles));
+
 router.get('/:id', catchAsync(getCheckupDetails));
 router.get('/', catchAsync(getCheckupList));
 router.post('/', validateCheckup, catchAsync(createCheckup));

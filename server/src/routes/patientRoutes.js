@@ -10,6 +10,11 @@ const {
     deletePatient 
 } = require('../controllers/patientController.js');
 
+const authMiddleware = require("../middlewares/authMiddleware");
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles));
+
 router.get('/', catchAsync(getPatientList));
 router.post('/', validatePatient, catchAsync(createPatient));
 router.put('/:id', validatePatient, catchAsync(updatePatient));

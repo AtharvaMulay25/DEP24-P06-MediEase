@@ -23,7 +23,9 @@ import Layout from "../layouts/PageLayout";
 
 const getPrescriptionData = async () => {
   try {
-    const response = await axios.get(apiRoutes.checkup);
+    const response = await axios.get(apiRoutes.checkup, {
+      withCredentials: true
+    });
     console.log("response", response.data.data)
     toast.success('Prescription List fetched successfully')
     return response.data.data;
@@ -51,7 +53,9 @@ export default function PrescriptionList() {
 
   const handlePrescriptionDelete = async (e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.checkup}/${id}`);
+      const res = await axios.delete(`${apiRoutes.checkup}/${id}`, {
+        withCredentials: true
+      });
       const { data } = res;
 
       if (data?.ok) {

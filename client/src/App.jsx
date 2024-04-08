@@ -33,13 +33,8 @@ import OutOfStock from "./pages/OutOfStock";
 import ExpiredMedicineList from "./pages/ExpiredMedicineList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
 import PurchaseDetail from "./pages/PurchaseDetail";
-import { HashLoadingScreen, SyncLoadingScreen } from "./components/UI/LoadingScreen";
-import { useEffect, useState } from "react";
-import roleMap from "./utils/rolesMap";
 import ProtectedRoute from "./components/Protection/ProtectedRoute";
-
 // import Toaster from "./components/UI/Toaster";
-
 
 function App() {
   const { userRole } = useAuthContext();

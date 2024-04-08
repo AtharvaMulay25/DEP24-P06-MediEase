@@ -54,7 +54,9 @@ export default function AddStaffForm() {
     if (formData.mobileNumber) data.mobileNumber = formData.mobileNumber;
     setLoading(true);
     try {
-      const response = await axios.post(apiRoutes.staff, data);
+      const response = await axios.post(apiRoutes.staff, data, {
+        withCredentials: true
+      });
       setToastTimeout("success" , "Staff added successfully", 200);     
       setNavigateTimeout(navigate, "/staff", 1000);
       

@@ -43,7 +43,9 @@ export default function AddScheduleForm() {
 
   const fetchStaffList = async () => {
     try {
-      const response = await axios.get(apiRoutes.staff);
+      const response = await axios.get(apiRoutes.staff, {
+        withCredentials: true
+      });
       const staffList = response.data.data;
 
       // console.log("staffList : ", staffList);
@@ -84,7 +86,9 @@ export default function AddScheduleForm() {
     };
     console.log(data);
     try {
-      const response = await axios.post(apiRoutes.schedule, data);
+      const response = await axios.post(apiRoutes.schedule, data, {
+        withCredentials: true
+      });
       const resData = response.data;
 
       console.log("Schedule added successfully");

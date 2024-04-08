@@ -18,7 +18,9 @@ const TABLE_HEAD = {
 
 const getPurchaseData = async () => {
   try {
-    const response = await axios.get(apiRoutes.purchase);
+    const response = await axios.get(apiRoutes.purchase, {
+      withCredentials: true
+    });
     console.log("response", response.data.data)
     toast.success('Purchase List fetched successfully')
     return response.data.data;
@@ -46,7 +48,9 @@ export default function PurchaseList() {
 
   const handlePurchaseDelete = async(e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.purchase}/${id}`);
+      const res = await axios.delete(`${apiRoutes.purchase}/${id}`, {
+        withCredentials: true
+      });
 
       const { data } = res;
       console.log(data)

@@ -19,7 +19,9 @@ const TABLE_HEAD = {
 
 const getStockData = async () => {
   try {
-    const response = await axios.get(apiRoutes.stock);
+    const response = await axios.get(apiRoutes.stock, {
+      withCredentials: true
+    });
     toast.success('Stock List fetched successfully')
     return response.data.data;
   } catch (error) {
@@ -46,7 +48,9 @@ export default function StockList() {
 
   const handleStockDelete = async(e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.stock}/${id}`);
+      const res = await axios.delete(`${apiRoutes.stock}/${id}`, {
+        withCredentials: true
+      });
 
       const { data } = res;
       

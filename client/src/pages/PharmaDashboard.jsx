@@ -57,7 +57,9 @@ const PharmaDashboard = () => {
 
     const fetchCheckupData = async () => {
       try {
-        const res = await axios.get(`${apiRoutes.dashboard}/checkup`);
+        const res = await axios.get(`${apiRoutes.dashboard}/checkup`, {
+          withCredentials: true
+        });
         const { data } = res;
         if (data.ok) {
           // console.log(data.data.message);
@@ -73,7 +75,9 @@ const PharmaDashboard = () => {
 
     const fetchMedicineData = async () => {
       try {
-        const res = await axios.get(`${apiRoutes.dashboard}/medicine`);
+        const res = await axios.get(`${apiRoutes.dashboard}/medicine`, {
+          withCredentials: true
+        });
         const { data } = res;
         if (data.ok) {
           // console.log(data.data.message);

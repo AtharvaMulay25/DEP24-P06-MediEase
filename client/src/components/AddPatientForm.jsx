@@ -62,7 +62,9 @@ export default function AddPatientForm() {
     if(formData.fatherOrSpouseName) sendData.fatherOrSpouseName = formData.fatherOrSpouseName;
     setLoading(true);
     try {
-      const res = await axios.post(apiRoutes.patient, sendData);
+      const res = await axios.post(apiRoutes.patient, sendData, {
+        withCredentials: true
+      });
       const data = res?.data;
       console.log("patient record saved successfully");
       setToastTimeout("success", "Patient added successfully", 200);

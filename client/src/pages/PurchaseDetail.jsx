@@ -43,7 +43,9 @@ const PurchaseDetail = () => {
 
   const fetchPurchaseDetail = async () => {
     try {
-      const response = await axios.get(apiRoutes.purchase + `/${id}`);
+      const response = await axios.get(apiRoutes.purchase + `/${id}`, {
+        withCredentials: true
+      });
       console.log("response", response.data.data);
       setToastTimeout('success', 'Purchase Details fetched successfully', 1000);
       return response.data.data;

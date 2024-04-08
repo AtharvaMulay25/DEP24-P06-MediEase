@@ -56,7 +56,9 @@ export default function SignInPage() {
 
     const response = await axios.post(
       `${apiRoutes.auth}/login`,
-      user
+      user, {
+        withCredentials: true
+      }
     );
     if (response.data.ok) {
       //dispatching loggin action 

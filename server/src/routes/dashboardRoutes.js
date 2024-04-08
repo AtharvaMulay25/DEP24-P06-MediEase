@@ -7,6 +7,11 @@ const {
     getTopMedicineStat
 } = require("../controllers/dashboardController");
 
+const authMiddleware = require("../middlewares/authMiddleware");
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles));
+
 //dashboard routes
 router.get("/checkup", catchAsync(getCheckupStat));
 router.get("/medicine", catchAsync(getTopMedicineStat));
