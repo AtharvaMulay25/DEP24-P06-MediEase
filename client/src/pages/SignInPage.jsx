@@ -44,7 +44,7 @@ export default function SignInPage() {
   const asyncTimeout = (delay) => {
     return new Promise(() => {
       setTimeout(() => {
-        navigate("/pharmadashboard");
+        navigate(userRole === "PARAMEDICAL" ? "/pharmadashboard" : "/doctordashboard");
       }, delay);
     });
   };
