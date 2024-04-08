@@ -62,7 +62,7 @@ const getTopMedicineStat = async (req, res, next) => {
     // console.log("stocks : ", stocks);
     
     
-    const totalS = 0, totalM = stocks.length;
+    let totalS = 0, totalM = stocks.length;
     const sortedStocks = stocks.map(stock => {
         totalS += stock.inQuantity - stock.outQuantity;
         return {
