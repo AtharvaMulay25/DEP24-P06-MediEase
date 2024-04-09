@@ -3,43 +3,43 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import {toast} from 'sonner';
-
-const TABLE_HEAD = {
-  id: "#",
-  brandName: "Medicine Name (Brand)",
-  saltName: "Salt Name",
-  category: "Category",
-  batchNo: "Batch No."
-};
-
-// const getMedicinesData = async () => {
-//   try {
-//     const response = await axios.get(apiRoutes.medicine);
-//     // console.log(response.data.data);
-//     toast.success('Medicine List fetched successfully')
-//     return response.data.data;
-//   } catch (error) {
-//     console.error(`ERROR (get-medicine-list): ${error?.response?.data?.message}`);
-//     toast.error(error?.response?.data?.message || 'Failed to fetch Medicine List')
-//   }
-// };
-
-import MockData from "../assets/MOCK_DATA_expired.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 
+const TABLE_HEAD = {
+  id: "#",
+  brandName: "Brand Name",
+  saltName: "Salt Name",
+  batchNo: "Batch No.",
+  expiryDate: "Expiry Date",
+  quantity: "Quantity",
+};
+
+const getExpiredMedicinesData = async () => {
+  try {
+    const response = await axios.get(apiRoutes.medicine+"/expired", {withCredentials: true});
+    toast.success('Expired Medicines List fetched successfully')
+    return response.data.data;
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Failed to fetch expired medicines data.");
+    console.error(`ERROR (get-expired-medicine-list): ${error?.response?.data?.message}`);
+  }
+}
+
+
 export default function ExpiredMedicineList() {
-  const [expiredMedicines, setExpiredMedicines] = useState(MockData);
+  const [expiredMedicines, setExpiredMedicines] = useState([]);
   const [loading, setLoading] = useState(false);
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const data = await getMedicinesData();
-//       // console.log("data out", data);
-//       setMedicines(data);
-//       setLoading(false);
-//     };
-//     fetchData();
-//   }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      const data = await getExpiredMedicinesData();
+      setExpiredMedicines(data);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   const handleMedicineDelete = () => {};
 

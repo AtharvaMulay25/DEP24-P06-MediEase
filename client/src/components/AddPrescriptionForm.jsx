@@ -97,7 +97,7 @@ export default function AddPrescriptionForm() {
       const response = await axios.get(apiRoutes.stock + "/available", {
         withCredentials: true
       });
-      // console.log(response.data.data);
+      console.log(response.data.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
       console.error(
@@ -460,9 +460,9 @@ export default function AddPrescriptionForm() {
                       <Select
                         id="medicine"
                         options={medicines.map((stock) => ({
-                          value: stock.medicineId,
-                          netQuantity: stock.netQuantity,
-                          label: stock.medicineName,
+                          value: stock?.medicineId,
+                          netQuantity: stock?.netQuantity,
+                          label: stock?.medicineName,
                         }))}
                         value={data["name"]}
                         onChange={(selectedMedicine) =>

@@ -29,7 +29,7 @@ import AdminList from "./pages/AdminList";
 import { useAuthContext } from "./hooks/useAuthContext";
 import RequestList from "./pages/RequestList";
 import AdminDashboard from "./pages/AdminDashboard";
-import OutOfStock from "./pages/OutOfStock";
+import OutOfStock from "./pages/OutOfStockList";
 import ExpiredMedicineList from "./pages/ExpiredMedicineList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
 import PurchaseDetail from "./pages/PurchaseDetail";
@@ -111,7 +111,7 @@ function App() {
               <StockList />
             </ProtectedRoute>
           } />
-          <Route path="/stock/outofstock" element={
+          <Route path="/stock/out" element={
             <ProtectedRoute  routeName="STOCK">
               <OutOfStock />
             </ProtectedRoute>

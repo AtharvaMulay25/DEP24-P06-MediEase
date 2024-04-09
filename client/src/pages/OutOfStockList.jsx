@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import {toast} from 'sonner';
 import axios from "axios";
 import {
-  GridLoadingScreen,
   SyncLoadingScreen,
 } from "../components/UI/LoadingScreen";
+import MockData from "../assets/MOCK_DATA_outofstock.json";
+import Layout from "../layouts/PageLayout";
+import { apiRoutes } from "../utils/apiRoutes";
 
 const TABLE_HEAD = {
   id: "#",
@@ -14,34 +16,33 @@ const TABLE_HEAD = {
   inQuantity: "In Quantity",
 };
 
-// const getStockData = async () => {
-//   try {
-//     const response = await axios.get(apiRoutes.stock);
-//     toast.success('Stock List fetched successfully')
-//     return response.data.data;
-//   } catch (error) {
-//     console.error(`ERROR (get-stock-list): ${error?.response?.data?.message}`);
-//     toast.error('Failed to fetch Stock List')
-//   }
-// };
+const getOutStockData = async () => {
+  try {
+    const response = await axios.get(apiRoutes.stock+"/out", {withCredentials: true});
+    toast.success('Out of Stock List fetched successfully');
+    console.log(response);
+    return response.data.data;
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Failed to fetch out of stock data.");
+    console.error(`ERROR (get-out-of-stock): ${error?.response?.data?.message}`);
+  }
+}
 
-import MockData from "../assets/MOCK_DATA_outofstock.json";
-import Layout from "../layouts/PageLayout";
-import { apiRoutes } from "../utils/apiRoutes";
 
 
 export default function OutOfStock() {
-  const [stock, setStock] = useState(MockData);
+  const [outOfStock, setOutOfStock] = useState([]);
   const [loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await getStockData();
-  //     // console.log("data out", data);
-  //     setStock(data);
-  //     setLoading(false);
-  //   };
-  //   fetchData();
-  // }, []);
+  
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      const data = await getOutStockData();
+      setOutOfStock(data);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   const handleStockDelete = () => {};
 
@@ -53,7 +54,7 @@ export default function OutOfStock() {
           <SortableTable
             tableHead={TABLE_HEAD}
             title="Out of Stock"
-            data={stock}
+            data={outOfStock}
             detail="See information about out of stock medicines."
             text=""
 			      handleDelete={handleStockDelete}

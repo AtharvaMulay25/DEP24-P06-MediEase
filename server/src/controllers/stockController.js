@@ -74,22 +74,14 @@ const getAvailableStock = async(req, res, next) => {
           });
           
           // Restructure the data to have `medicineName` outside the `Medicine` object
-          const restructuredStockList = stockList.map(stock => {
-            if(stock.stock > 0){
-                return {
-                    id: stock.id,
-                    medicineId: stock.medicineId,
-                    netQuantity: stock.stock,
-                    category: stock.Medicine.Category.categoryName,
-                    inQuantity: stock.inQuantity,
-                    outQuantity: stock.outQuantity,
-                    medicineName: stock.Medicine.brandName // Access `name` from `Medicine` object
-                }
-            }
-          });
-          
-        // console.log("restructuredStockList : ", restructuredStockList);
-        
+          const restructuredStockList = stockList.filter(stock => stock.stock > 0).map(stock => ({
+            id: stock.id,
+            netQuantity: stock.stock,
+            category: stock.Medicine.Category.categoryName,
+            inQuantity: stock.inQuantity,
+            outQuantity: stock.outQuantity,
+            medicineName: stock.Medicine.brandName // Access `name` from `Medicine` object
+          }));        
         return res.status(200).json({
             ok: true,
             data: restructuredStockList,
@@ -127,19 +119,14 @@ const getOutOfStock = async(req, res, next) => {
           });
           
           // Restructure the data to have `medicineName` outside the `Medicine` object
-          const restructuredStockList = stockList.map(stock => {
-            if(stock.stock <= 0){
-                return {
-                    id: stock.id,
-                    medicineId: stock.medicineId,
-                    netQuantity: stock.stock,
-                    category: stock.Medicine.Category.categoryName,
-                    inQuantity: stock.inQuantity,
-                    outQuantity: stock.outQuantity,
-                    medicineName: stock.Medicine.brandName // Access `name` from `Medicine` object
-                }
-            }
-          });
+          const restructuredStockList = stockList.filter(stock => stock.stock <= 0).map(stock => ({
+            id: stock.id,
+            netQuantity: stock.stock,
+            category: stock.Medicine.Category.categoryName,
+            inQuantity: stock.inQuantity,
+            outQuantity: stock.outQuantity,
+            medicineName: stock.Medicine.brandName // Access `name` from `Medicine` object
+          }));
           
         // console.log("restructuredStockList : ", restructuredStockList);
         

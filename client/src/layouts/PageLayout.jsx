@@ -321,7 +321,7 @@ const Layout = ({ children }) => {
                       </ListItem>
                       <ListItem
                         className="ml-9"
-                        onClick={() => navigate("/stock/outofstock")}
+                        onClick={() => navigate("/stock/out")}
                       >
                         Out of Stock
                       </ListItem>

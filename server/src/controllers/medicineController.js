@@ -50,8 +50,8 @@ const getExpiredMedicines = async (req, res, next) => {
     batchNo: medicine.batchNo,
     brandName: medicine.Medicine.brandName,
     saltName: medicine.Medicine.saltName,
-    expiryDate: medicine.expiryDate,
-    quatity: medicine.quantity,
+    expiryDate: medicine.expiryDate.toISOString().split("T")[0],
+    quantity: medicine.quantity,
   }));
 
   return res.status(200).json({
