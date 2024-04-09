@@ -98,7 +98,7 @@ export function SortableTable({
   handleApprove,
   handleReject,
   handleDetail = () => {},
-  detailsFlag = false,, 
+  detailsFlag = false,
   actionFlag = 'true',
 }) {
   const [open, setOpen] = useState(false);
