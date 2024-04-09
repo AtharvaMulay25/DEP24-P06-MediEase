@@ -18,7 +18,7 @@ model User {
   email String   @unique
   name  String
   role  UserRole
-
+  status Status   @default(ACTIVE)
   @@map("user")
 }
 
@@ -43,11 +43,10 @@ model Medicine {
   brandName  String
   saltName   String
   categoryId String
-
   Stock     Stock[]
   Purchases Purchase[]
   CheckupMedicine CheckupMedicine[]
-
+  status Status   @default(ACTIVE)
   Category Category @relation(fields: [categoryId], references: [id])
 
   @@map("medicine")
@@ -60,9 +59,9 @@ model Supplier {
   city         String?
   state        String
   pinCode      Int?
-  mobileNumber String
+  mobileNumber String 
   email        String?
-
+  status Status   @default(ACTIVE)
   PurchaseList PurchaseList[]
 
   @@map("supplier")
@@ -76,6 +75,7 @@ model Staff {
   role           Role
   department     String?
   gender         Gender
+  status Status   @default(ACTIVE)
   DoctorCheckups Checkup[]  @relation("DoctorCheckups")
   StaffCheckups  Checkup[]  @relation("StaffCheckups")
   Schedule       Schedule[]
@@ -122,7 +122,7 @@ model Category {
   id           String @id @default(uuid())
   categoryName String
   strengthType String
-
+  status Status   @default(ACTIVE)
   Medicine Medicine[]
 
   @@map("category")
@@ -156,7 +156,7 @@ model Patient {
   gender             Gender
   allergy            String?
   Checkup            Checkup[]
-
+  status Status   @default(ACTIVE)
   @@map("patient")
 }
 
@@ -195,7 +195,10 @@ model CheckupMedicine {
 
   @@map("checkupMedicine")
 }
-
+enum Status {
+  ACTIVE
+  INACTIVE
+}
 
 enum Department {
   COMPUTER_SCIENCE

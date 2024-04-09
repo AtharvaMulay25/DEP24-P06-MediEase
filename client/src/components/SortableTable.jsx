@@ -44,6 +44,7 @@ import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
 
 export function DialogDefault({
+  title,
   open,
   setOpen,
   handleDelete,
@@ -59,9 +60,15 @@ export function DialogDefault({
     <>
       <Dialog open={open}>
         <DialogHeader className="text-1xl">
-          Are you sure you want to delete this record.
+        {`Are you sure you want to delete this ` + title + `?`}
+                
+          
         </DialogHeader>
-        <DialogBody></DialogBody>
+        <DialogBody>
+        {(title === "Admin" || title === "Staff" || title === "Patient") && `
+          Deleting this ` + title + ` will also delete the associated user account.
+          `} 
+        </DialogBody>
         <DialogFooter>
           <Button
             variant="text"
@@ -581,6 +588,7 @@ export function SortableTable({
         </div>
       </CardFooter>
       <DialogDefault
+        title={title.split(" ")[0]}
         open={open}
         setOpen={setOpen}
         handleDelete={handleDelete}
