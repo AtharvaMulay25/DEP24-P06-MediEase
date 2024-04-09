@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -48,7 +48,7 @@ export default function SignInPage() {
         if (role === "ADMIN") navigate("/admindashboard");
         else if (role === "PARAMEDICAL") navigate("/pharmadashboard");
         else if (role === "DOCTOR") navigate("/doctordashboard");
-        
+
         //TODO: Change this to patient dashboard
         else if (role === "PATIENT") navigate("/schedule/doctor");
         else navigate("/");
@@ -64,8 +64,8 @@ export default function SignInPage() {
     const response = await axios.post(
       `${apiRoutes.auth}/login`,
       user, {
-        withCredentials: true
-      }
+      withCredentials: true
+    }
     );
     if (response.data.ok) {
       //dispatching loggin action 
@@ -76,18 +76,17 @@ export default function SignInPage() {
       })
 
       //saving the data into cookies 
-      Cookies.set("user-role", resData.data.user.role, { expires: 2/24 });
-      Cookies.set("user-email", resData.data.user.email, { expires: 2/24 });
-      Cookies.set("user-name", resData.data.user.name, { expires: 2/24 });
-      
+      Cookies.set("user-role", resData.data.user.role, { expires: 2 / 24 });
+      Cookies.set("user-email", resData.data.user.email, { expires: 2 / 24 });
+      Cookies.set("user-name", resData.data.user.name, { expires: 2 / 24 });
+
       toast.success(response.data.message);
       await asyncTimeout(2000, resData.data.user.role);
     } else {
       toast.error(response.data.message);
     }
   };
-  const handleSubmit = async()=>
-  {
+  const handleSubmit = async () => {
     // e.preventDefault();
     //handle Validation  *****
 
@@ -97,7 +96,7 @@ export default function SignInPage() {
       const data = { ...loginData, action: "LOGIN" };
       console.log(data);
       const response = await axios.post(`${apiRoutes.otp}/send`, data);
-      if(response.data.ok){
+      if (response.data.ok) {
         setIsOtpSent(true);
         toast.success(response.data.message);
       }
@@ -181,7 +180,7 @@ export default function SignInPage() {
 
         </>
       )}
-        <Toaster richColors position="top-center"/>
+      <Toaster richColors position="top-center" />
 
     </>
   );
