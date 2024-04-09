@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { HashLoadingScreen, SyncLoadingScreen } from '../UI/LoadingScreen';
+import { HashLoadingScreen } from '../UI/LoadingScreen';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import roleMap from '../../utils/rolesMap';
+import UnauthorizedPage from '../../pages/UnauthorizedPage';
 
 const ProtectedRoute = ({ children, routeName }) => {
     const { userRole } = useAuthContext();
@@ -16,7 +17,7 @@ const ProtectedRoute = ({ children, routeName }) => {
     }
 
     if (!roleArr.includes(routeName)) {
-        return <>USER NOT AUTHORIZED TO ACCESS THIS PAGE</>
+        return <UnauthorizedPage />
     }
 
     return (
