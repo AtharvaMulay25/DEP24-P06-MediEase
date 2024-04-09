@@ -1,7 +1,8 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import {toast} from 'sonner';
+import { toast } from 'sonner';
+import { useNavigate } from "react-router-dom";
 import {
   SyncLoadingScreen,
 } from "../components/UI/LoadingScreen";
@@ -22,8 +23,7 @@ const TABLE_HEAD = {
   action: "Action",
 };
 
-const getPatientsData = async()=>
-{
+const getPatientsData = async () => {
   try {
     const response = await axios.get(apiRoutes.patient, {
       withCredentials: true
@@ -42,17 +42,24 @@ import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 
 export default function PatientList() {
+  const navigate = useNavigate();
+
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
- 
+
   useEffect(() => {
-    const fetchPatientList = async () => {      
-        const data = await getPatientsData();
-        setPatients(data);
-        setLoading(false);      
+    const fetchPatientList = async () => {
+      const data = await getPatientsData();
+      setPatients(data);
+      setLoading(false);
     };
     fetchPatientList();
   }, []);
+
+  const handlePatientUpdate = (id) => {
+    console.log("id : ", id);
+    if (id) navigate(`/patient/update/${id}`);
+  };
 
   const handlePatientDelete = async (e, id) => {
     try {
@@ -71,10 +78,10 @@ export default function PatientList() {
         }
       }
     } catch (err) {
-        console.error(`ERROR (delete-patient): ${err?.response?.data?.message}`);
-        toast.error(err?.response?.data?.message || 'Failed to delete Patient');
+      console.error(`ERROR (delete-patient): ${err?.response?.data?.message}`);
+      toast.error(err?.response?.data?.message || 'Failed to delete Patient');
 
-    } 
+    }
   };
   return (
     <>
@@ -90,6 +97,7 @@ export default function PatientList() {
             addLink="/patient/add"
             handleDelete={handlePatientDelete}
             searchKey="name"
+            handleUpdate={handlePatientUpdate}
           />
         </Layout>
       )}

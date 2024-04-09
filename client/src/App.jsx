@@ -40,6 +40,7 @@ import DoctorScheduleList from "./pages/DoctorScheduleList";
 import UpdateCategory from "./pages/UpdateCategory";
 import UpdateSupplier from "./pages/UpdateSupplier";
 import UpdateSchedule from "./pages/UpdateSchedule";
+import UpdatePatient from "./pages/UpdatePatient";
 // import Toaster from "./components/UI/Toaster";
 
 function App() {
@@ -218,6 +219,11 @@ function App() {
           <Route path="/schedule/update/:id" element={
             <ProtectedRoute routeName="SCHEDULE">
               <UpdateSchedule />
+            </ProtectedRoute>
+          } />
+          <Route path="/patient/update/:id" element={
+            <ProtectedRoute routeName="PATIENT">
+              <UpdatePatient />
             </ProtectedRoute>
           } />
         </Routes>

@@ -32,7 +32,7 @@ const getSupplier = async (req, res, next) => {
         id: id,
       },
     });
-    // console.log(category);
+    // console.log(supplier);
 
     return res.status(200).json({
       ok: true,

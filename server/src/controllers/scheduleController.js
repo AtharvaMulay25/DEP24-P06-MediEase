@@ -58,7 +58,7 @@ const getSchedule = async (req, res, next) => {
       email: schedule.Staff.email,
       role: schedule.Staff.role
     };
-    // console.log(category);
+    // console.log(schedule);
 
     return res.status(200).json({
       ok: true,

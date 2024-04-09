@@ -20,6 +20,36 @@ const getPatientList = async (req, res, next) => {
   });
 };
 
+
+// @desc    Get Single Patient
+// route    GET /api/patient/:id
+// @access  Private (Admin)
+const getPatient = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const patient = await prisma.patient.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    console.log(patient);
+
+    return res.status(200).json({
+      ok: true,
+      data: patient,
+      message: "Patient retrieved successfully",
+    });
+  } catch (err) {
+    console.log(`Patient Fetching Error : ${err.message}`);
+
+    return res.status(500).json({
+      ok: false,
+      data: [],
+      message: "Fetching Patient failed, Please try again later",
+    });
+  }
+};
+
 // @desc    Create Patient List Records
 // route    POST /api/patient
 // @access  Private (Admin)
@@ -246,6 +276,7 @@ const deletePatient = async (req, res, next) => {
 
 module.exports = {
   getPatientList,
+  getPatient,
   createPatient,
   updatePatient,
   deletePatient,
