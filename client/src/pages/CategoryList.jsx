@@ -1,5 +1,6 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import { toast } from "sonner";
@@ -30,8 +31,11 @@ import MOCK_DATA from "../assets/MOCK_DATA_category.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 export default function CategoryList() {
+  const navigate = useNavigate();
+
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await getCategoriesData();
@@ -41,6 +45,11 @@ export default function CategoryList() {
     };
     fetchData();
   }, []);
+
+  const handleCategoryUpdate = (id) => {
+    console.log("id : ", id);
+    if (id) navigate(`/medicine/category/update/${id}`);
+  };
 
   const handleCategoryDelete = async (e, id) => {
     try {
@@ -83,6 +92,7 @@ export default function CategoryList() {
             addLink="/medicine/category/add"
             searchKey={"categoryName"}
             handleDelete={handleCategoryDelete}
+            handleUpdate={handleCategoryUpdate}
           />
         </Layout>
       )}
