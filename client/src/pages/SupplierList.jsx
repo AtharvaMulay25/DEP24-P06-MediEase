@@ -1,8 +1,9 @@
 import { SortableTable } from "../components/SortableTable";
-import { useState , useEffect} from "react";
-import {toast} from 'sonner';
+import { useState, useEffect } from "react";
+import { toast } from 'sonner';
 import axios from "axios";
-import { GridLoadingScreen, SyncLoadingScreen } from "../components/UI/LoadingScreen";
+import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
+import { useNavigate } from "react-router-dom";
 
 const TABLE_HEAD = {
   id: "#",
@@ -33,6 +34,7 @@ const getSuppliersData = async () => {
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 export default function SupplierList() {
+  const navigate = useNavigate();
 
   const [suppliers, setSuppliers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,19 +48,23 @@ export default function SupplierList() {
     fetchData();
   }, []);
 
+  const handleSupplierUpdate = (id) => {
+    console.log("id : ", id);
+    if (id) navigate(`/supplier/update/${id}`);
+  };
 
-  const handleSupplierDelete = async(e, id) => {
+  const handleSupplierDelete = async (e, id) => {
     try {
       const res = await axios.delete(`${apiRoutes.supplier}/${id}`, {
         withCredentials: true
       });
 
       const { data } = res;
-      
+
       if (data?.ok) {
         console.log(`MESSAGE : ${data?.message}`);
         toast.success(data?.message)
-;        setSuppliers((prev) => prev.filter(p => p.id !== id));
+          ; setSuppliers((prev) => prev.filter(p => p.id !== id));
       } else {
         // TODO: show an error message
         console.log(`ERROR (supplier_list_delete): ${data.message}`);
@@ -73,19 +79,20 @@ export default function SupplierList() {
     <>
       {loading && <SyncLoadingScreen />}
       {!loading &&
-    <Layout>
-      <SortableTable
-        tableHead={TABLE_HEAD}
-        title="Supplier List"
-        data={suppliers}
-        detail="See information about all suppliers."
-        text="Add Supplier"
-        addLink="/supplier/add"
-        handleDelete={handleSupplierDelete}
-        searchKey="name"
-      />
-    </Layout>
-        }
+        <Layout>
+          <SortableTable
+            tableHead={TABLE_HEAD}
+            title="Supplier List"
+            data={suppliers}
+            detail="See information about all suppliers."
+            text="Add Supplier"
+            addLink="/supplier/add"
+            handleDelete={handleSupplierDelete}
+            handleUpdate={handleSupplierUpdate}
+            searchKey="name"
+          />
+        </Layout>
+      }
     </>
   );
 }

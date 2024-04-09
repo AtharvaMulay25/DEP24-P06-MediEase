@@ -124,7 +124,7 @@ const UpdateCategoryForm = () => {
                             </div>
                         </div>
                         <Typography color="gray" className="mt-1 font-normal">
-                            Add a new category to the list.
+                            Update Category
                         </Typography>
                     </div>
                     <div className="hidden sm:flex shrink-0 flex-col gap-2 sm:flex-row">

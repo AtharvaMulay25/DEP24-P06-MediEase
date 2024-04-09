@@ -21,6 +21,35 @@ const getSupplierList = async (req, res, next) => {
   });
 };
 
+// @desc    Get Single Supplier
+// route    GET /api/supplier/:id
+// @access  Private (Admin)
+const getSupplier = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const supplier = await prisma.supplier.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    // console.log(category);
+
+    return res.status(200).json({
+      ok: true,
+      data: supplier,
+      message: "Supplier retrieved successfully",
+    });
+  } catch (err) {
+    console.log(`Supplier Fetching Error : ${err.message}`);
+
+    return res.status(500).json({
+      ok: false,
+      data: [],
+      message: "Fetching Supplier failed, Please try again later",
+    });
+  }
+};
+
 // @desc    Create Supplier List Records
 // route    POST /api/supplier/create
 // @access  Private (Admin)
@@ -32,7 +61,7 @@ const createSupplier = async (req, res, next) => {
       mobileNumber: req?.body?.mobileNumber,
     },
   });
-  let newSupplierRecord ;
+  let newSupplierRecord;
   if (supplierExists && supplierExists.status === "ACTIVE") {
     throw new ExpressError("Supplier already exists", 400);
   }
@@ -55,8 +84,7 @@ const createSupplier = async (req, res, next) => {
     newSupplierRecord = restoredSupplier;
   }
 
-  if(!supplierExists)
-  {
+  if (!supplierExists) {
     const createdRecord = await prisma.supplier.create({
       data: {
         name: req?.body?.name,
@@ -86,12 +114,21 @@ const createSupplier = async (req, res, next) => {
 const updateSupplier = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const { address1, address2 = "" } = req.body;
+
     const updatedRecord = await prisma.supplier.update({
       where: {
         id,
       },
       data: {
-        ...req.body, //may give error here concat address
+        name: req?.body?.name,
+        mobileNumber: req?.body?.mobileNumber,
+        email: req?.body?.email,
+        city: req?.body?.city,
+        state: req?.body?.state,
+        address: `${address1} ${address2}`,
+        pinCode: req?.body?.pinCode,
+        status: "ACTIVE",    //CHECK: Athough every supplier that is updated already has status ACTIVE
       },
     });
 
@@ -165,6 +202,7 @@ const deleteSupplier = async (req, res, next) => {
 
 module.exports = {
   getSupplierList,
+  getSupplier,
   createSupplier,
   updateSupplier,
   deleteSupplier,
