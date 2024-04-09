@@ -59,14 +59,13 @@ export default function CategoryList() {
       } else {
         // TODO: show an error message
         console.log(`ERROR (category_list_delete): ${data.message}`);
-        toast.error(
-          err?.response?.data?.message || "Failed to delete Medicine Category"
-        );
+        toast.error(data?.message || "Failed to delete Category");
       }
     } catch (err) {
       console.error(
         `ERROR (category_list_delete): ${err?.response?.data?.message}`
       );
+      toast.error(err?.response?.data?.message || "Failed to delete Category");
     }
   };
 

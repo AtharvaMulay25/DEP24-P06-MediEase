@@ -3,12 +3,13 @@ const router = express.Router();
 //controllers
 const { 
     getMedicineList, 
+    getExpiredMedicines,
     deleteMedicineList, 
     updateMedicineList, 
     createMedicineList,
 } = require('../controllers/medicineController');
 
-const { validateMedicine, validateCategory } = require('../middlewares');
+const { validateMedicine} = require('../middlewares');
 const catchAsync = require('../utils/catchAsync');
 
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -17,6 +18,7 @@ const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 router.use(authMiddleware(roles));
 //medicines routes
 router.get('/', catchAsync(getMedicineList));
+router.get('/expired', catchAsync(getExpiredMedicines));
 router.post('/', validateMedicine, catchAsync(createMedicineList));
 router.put('/:id', validateMedicine, catchAsync(updateMedicineList));
 router.delete('/:id', catchAsync(deleteMedicineList));

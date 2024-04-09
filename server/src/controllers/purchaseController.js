@@ -172,6 +172,13 @@ const createPurchaseList = async (req, res, next) => {
         400
       );
     }
+
+    if(purchase.expDate < purchaseDate){
+      throw new ExpressError(
+        `Expiry Date cannot be less than Purchase Date in ITEM ${idx + 1}`,
+        400
+      );
+    }
   }
 
   //updating the stock

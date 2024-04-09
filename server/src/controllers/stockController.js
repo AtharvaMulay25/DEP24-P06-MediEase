@@ -42,7 +42,7 @@ const getTotalStock = async(req, res, next) => {
         return res.status(200).json({
             ok: true,
             data: restructuredStockList,
-            message: "Stock List retrieved successfully"
+            message: "Stock List fetched successfully"
         });
     }catch(err){
         console.log(`Stock List Fetching Error : ${err.message}`);
@@ -93,7 +93,60 @@ const getAvailableStock = async(req, res, next) => {
         return res.status(200).json({
             ok: true,
             data: restructuredStockList,
-            message: "Stock List retrieved successfully"
+            message: "Available Stock List fetched successfully"
+        });
+    }catch(err){
+        console.log(`Stock List Fetching Error : ${err.message}`);
+        
+        return res.status(500).json({
+            ok: false,
+            data: [],
+            message: "Fetching Stock List failed, Please try again later"
+        });
+    }
+    
+}
+
+
+//get out of stock medicines only
+const getOutOfStock = async(req, res, next) => {
+    try{
+        const stockList = await prisma.stock.findMany({
+            include: {
+              Medicine: {
+                select: {
+                  brandName: true,
+                  Category: {
+                    select: {
+                      categoryName: true,
+                    },
+                  },
+                },
+              },
+            },
+          });
+          
+          // Restructure the data to have `medicineName` outside the `Medicine` object
+          const restructuredStockList = stockList.map(stock => {
+            if(stock.stock <= 0){
+                return {
+                    id: stock.id,
+                    medicineId: stock.medicineId,
+                    netQuantity: stock.stock,
+                    category: stock.Medicine.Category.categoryName,
+                    inQuantity: stock.inQuantity,
+                    outQuantity: stock.outQuantity,
+                    medicineName: stock.Medicine.brandName // Access `name` from `Medicine` object
+                }
+            }
+          });
+          
+        // console.log("restructuredStockList : ", restructuredStockList);
+        
+        return res.status(200).json({
+            ok: true,
+            data: restructuredStockList,
+            message: "Out of Stock List fetched successfully"
         });
     }catch(err){
         console.log(`Stock List Fetching Error : ${err.message}`);
@@ -194,6 +247,7 @@ const deleteStockList = async(req, res, next) => {
 module.exports = {
     getTotalStock,
     getAvailableStock,
+    getOutOfStock,
     updateStockList,
     deleteStockList
 };
