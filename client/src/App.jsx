@@ -33,6 +33,8 @@ import OutOfStock from "./pages/OutOfStock";
 import ExpiredMedicineList from "./pages/ExpiredMedicineList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
 import PurchaseDetail from "./pages/PurchaseDetail";
+import StaffProfile from "./pages/StaffProfile";
+import PatientProfile from "./pages/PatientProfile";
 import ProtectedRoute from "./components/Protection/ProtectedRoute";
 import DoctorScheduleList from "./pages/DoctorScheduleList";
 // import Toaster from "./components/UI/Toaster";
@@ -45,6 +47,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/profile/staff" element={<StaffProfile />} />
+          <Route path="/profile/patient" element={<PatientProfile />} />
           <Route path="/signin" element={!userRole ? <SignInPage /> : <Home />} />
           <Route path="/signup" element={!userRole ? <SignUpPage /> : <Home />} />
           <Route path="/pharmadashboard" element={
