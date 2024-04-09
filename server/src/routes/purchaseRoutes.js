@@ -11,6 +11,11 @@ const {
     getPurchaseDetails
 } = require('../controllers/purchaseController');
 
+const authMiddleware = require("../middlewares/authMiddleware");
+const roles = ["PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles));
+
 router.get('/:id', catchAsync(getPurchaseDetails));
 router.get('/', catchAsync(getPurchaseList));
 router.post('/', validatePurchaseList, catchAsync(createPurchaseList));

@@ -16,7 +16,9 @@ const TABLE_HEAD = {
 
 const getRequestsData = async () => {
   try {
-    const response = await axios.get(apiRoutes.requests);
+    const response = await axios.get(apiRoutes.requests, {
+      withCredentials: true
+    });
     console.log(response.data.data);
     toast.success("Request List fetched successfully");
     return response.data.data;
@@ -46,7 +48,9 @@ export default function RequestList() {
   const sendRejectMail = async (id) => {
     try {
       const reqData = { id };
-      const res = await axios.post(`${apiRoutes.mail}/reject`, reqData);
+      const res = await axios.post(`${apiRoutes.mail}/reject`, reqData, {
+        withCredentials: true
+      });
       setToastTimeout("success", res.data.message, 1000);
     } catch (err) {
       console.error(
@@ -62,7 +66,9 @@ export default function RequestList() {
   const sendApproveMail = async (id) => {
     try {
       const reqData = { id };
-      const res = await axios.post(`${apiRoutes.mail}/approve`, reqData);
+      const res = await axios.post(`${apiRoutes.mail}/approve`, reqData, {
+        withCredentials: true
+      });
       setToastTimeout("success", res.data.message, 1000);
     } catch (err) {
       console.error(

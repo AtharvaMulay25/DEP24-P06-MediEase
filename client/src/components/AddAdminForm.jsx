@@ -43,7 +43,9 @@ export default function AddAdminForm() {
     };
     setLoading(true);
     try {
-      const res = await axios.post(apiRoutes.admin, sendData);
+      const res = await axios.post(apiRoutes.admin, sendData, {
+        withCredentials: true
+      });
       const data = res?.data;
       console.log("admin record saved successfully");
       setToastTimeout("success", "Admin added successfully", 200);

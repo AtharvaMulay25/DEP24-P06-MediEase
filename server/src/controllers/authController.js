@@ -53,9 +53,22 @@ const signup = async (req, res, next) => {
         "2h"
       );
 
-      res.cookie("token", token, { httpOnly: true, secure: true });
-      res.cookie("role", role, { httpOnly: true, secure: true });
-      res.cookie("name", newUser.name, { httpOnly: true, secure: true });
+
+      res.cookie("token", token, {
+        maxAge: 2 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true
+      });
+      res.cookie("role", role, {
+        maxAge: 2 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true
+      });
+      res.cookie("name", user.name, {
+        maxAge: 2 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true
+      });
 
       return res.status(201).json({
         ok: true,
@@ -100,9 +113,21 @@ const login = async (req, res, next) => {
       "2h"
     );
 
-    res.cookie("token", token, { httpOnly: true, secure: true });
-    res.cookie("role", user.role, { httpOnly: true, secure: true });
-    res.cookie("name", user.name, { httpOnly: true, secure: true });
+    res.cookie("token", token, {
+      maxAge: 2 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true
+    });
+    res.cookie("role", user.role, {
+      maxAge: 2 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true
+    });
+    res.cookie("name", user.name, {
+      maxAge: 2 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true
+    });
 
     return res.status(200).json({
       ok: true,
@@ -120,7 +145,38 @@ const login = async (req, res, next) => {
   }
 };
 
+// @desc     User Signup
+// route     POST /api/auth/signup
+// @access   Public
+const logout = async (req, res, next) => {
+  try {
+    console.log("Logging out...");
+
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+    });
+    res.clearCookie("role", {
+      httpOnly: true,
+      secure: true
+    });
+    res.clearCookie("name", {
+      httpOnly: true,
+      secure: true
+    });
+
+    return res.status(200).json({
+      ok: true,
+      message: "User logout successfully.",
+      data: {},
+    });
+  } catch (err) {
+    throw new ExpressError(err.message, 500);
+  }
+};
+
 module.exports = {
   signup,
   login,
+  logout
 };

@@ -38,7 +38,9 @@ export function AddMedicineForm() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(apiRoutes.category);
+      const response = await axios.get(apiRoutes.category, {
+        withCredentials: true
+      });
       console.log(response.data.data)
       setCategories(response.data.data);
     } catch (error) {
@@ -78,7 +80,9 @@ export function AddMedicineForm() {
     };
     // console.log(data);
     try {
-      const response = await axios.post(apiRoutes.medicine, data);
+      const response = await axios.post(apiRoutes.medicine, data, {
+        withCredentials: true
+      });
       console.log(response);
       toast.success('Medicine added successfully');
       setTimeout(() => {

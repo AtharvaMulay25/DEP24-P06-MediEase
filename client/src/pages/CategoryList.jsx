@@ -12,7 +12,9 @@ const TABLE_HEAD = {
 
 const getCategoriesData = async () => {
   try {
-    const response = await axios.get(apiRoutes.category);
+    const response = await axios.get(apiRoutes.category, {
+      withCredentials: true
+    });
     // console.log(response.data.data);
     toast.success("Category List fetched successfully");
     return response.data.data;
@@ -42,7 +44,9 @@ export default function CategoryList() {
 
   const handleCategoryDelete = async (e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.category}/${id}`);
+      const res = await axios.delete(`${apiRoutes.category}/${id}`, {
+        withCredentials: true
+      });
 
       // console.log("res : ", res);
 

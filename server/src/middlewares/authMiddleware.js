@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 const { verifyToken } = require("../utils/handleJWT");
 const ExpressError = require('../utils/ExpressError');
 
-const authMiddleware = (role) => {
+const authMiddleware = (desiredRoles) => {
     return async (req, res, next) => {
         try {
             const token = req.cookies.token;
@@ -12,6 +12,7 @@ const authMiddleware = (role) => {
             if (!token) {
                 const error = new ExpressError("Token not found", 401);
                 next(error);
+                return ;
             }
 
             const data = verifyToken(token);
@@ -22,6 +23,7 @@ const authMiddleware = (role) => {
                     401
                 );
                 next(error);
+                return ;
             }
 
             const { email } = data;
@@ -33,18 +35,32 @@ const authMiddleware = (role) => {
             req.recievedToken = token;
             req.role = req.user?.role;
 
-            if (!req.user || (req.user.role !== role)) {
+            if (!desiredRoles) {
+                desiredRoles = [];
+            }
+
+            if (!req.user) {
                 const error = new ExpressError(
                     "User does not exist",
                     404
                 );
                 next(error);
+                return ;
+            } else if (!desiredRoles.includes(req.role)) {
+                const error = new ExpressError(
+                    "User is not authorized to access this route",
+                    401
+                );
+                next(error);
+                return ;
             } else {
                 next();
+                return ;
             }
         } catch (err) {
             const error = new ExpressError(err.message, 401);
             next(error);
+            return ;
         }
     };
 }

@@ -11,6 +11,11 @@ const {
     updateStockList, 
 } = require('../controllers/stockController');
 
+const authMiddleware = require("../middlewares/authMiddleware");
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles));
+
 router.get('/', catchAsync(getTotalStock));
 router.get('/available', catchAsync(getAvailableStock));
 router.get('/out', catchAsync(getOutOfStock));

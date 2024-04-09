@@ -7,28 +7,30 @@ const ExpressError = require("../utils/ExpressError");
 // route    GET /api/schedule
 // @access  Private (Admin)
 const getScheduleList = async (req, res, next) => {
-  const scheduleList = await prisma.schedule.findMany({
-    include: {
-      Staff: true,
-    },
-  });
-  // console.log("Schedule list : ", scheduleList);
+    const scheduleList = await prisma.schedule.findMany({
+      include: {
+        Staff: true
+      }
+    });
+    // console.log("Schedule list : ", scheduleList);
 
-  const sendScheduleList = scheduleList.map((schedule) => ({
-    id: schedule.id,
-    staffId: schedule.staffId,
-    day: schedule.day,
-    shift: schedule.shift,
-    name: schedule.Staff.name,
-    department: schedule.Staff.department,
-    email: schedule.Staff.email,
-  }));
+    const sendScheduleList = scheduleList.map((schedule) => ({
+      id: schedule.id,
+      staffId: schedule.staffId,
+      day: schedule.day,
+      shift: schedule.shift,
+      name: schedule.Staff.name,
+      department: schedule.Staff.department,
+      email: schedule.Staff.email,
+      role: schedule.Staff.role
+    }));
 
-  return res.status(200).json({
-    ok: true,
-    data: sendScheduleList,
-    message: "Schedule List retrieved successfully",
-  });
+    return res.status(200).json({
+      ok: true,
+      data: sendScheduleList,
+      message: "Schedule List retrieved successfully",
+    });
+
 };
 
 // @desc    Create Schedule Records

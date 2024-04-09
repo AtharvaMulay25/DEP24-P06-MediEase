@@ -53,7 +53,9 @@ export default function CompleteProfileStaff() {
     if(formData.mobileNumber) data.mobileNumber = formData.mobileNumber;
     console.log(data);
     try {
-      const response = await axios.post(apiRoutes.staff, data);
+      const response = await axios.post(apiRoutes.staff, data, {
+        withCredentials: true
+      });
       console.log(response);
       if (response.data.ok) {
         console.log("Staff Profile Created");

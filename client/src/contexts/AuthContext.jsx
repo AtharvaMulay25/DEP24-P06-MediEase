@@ -16,7 +16,7 @@ export const authReducer = (state, action) => {
         default: return {
             ...state
         }
-    } 
+    }
 };
 
 export const AuthContextProvider = ({ children }) => {
@@ -24,17 +24,17 @@ export const AuthContextProvider = ({ children }) => {
         userRole: null,
         userEmail: null,
         userName: ""
-    }); 
+    });
 
     useEffect(() => {
-        const fetchDetails = async() => {
+        const fetchDetails = async () => {
             const userRole = Cookies.get('user-role');
             const userEmail = Cookies.get('user-email');
             const userName = Cookies.get('user-name');
-            
+
             if (userRole && userEmail && userName) {
                 dispatch({
-                    type: "LOGIN", 
+                    type: "LOGIN",
                     payload: {
                         userRole,
                         userEmail,

@@ -46,7 +46,9 @@ const PrescriptionDetail = () => {
 
   const fetchPrescriptionDetail = async () => {
     try {
-      const response = await axios.get(apiRoutes.checkup + `/${prescriptionId}`);
+      const response = await axios.get(apiRoutes.checkup + `/${prescriptionId}`, {
+        withCredentials: true
+      });
       console.log("response", response.data.data);
       setToastTimeout('success', 'Prescription Details fetched successfully', 1000)
       return response.data.data;
