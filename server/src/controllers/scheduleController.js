@@ -22,7 +22,8 @@ const getScheduleList = async (req, res, next) => {
       shift: schedule.shift,
       name: schedule.Staff.name,
       department: schedule.Staff.department,
-      email: schedule.Staff.email
+      email: schedule.Staff.email,
+      role: schedule.Staff.role
     }));
 
     return res.status(200).json({

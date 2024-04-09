@@ -34,6 +34,7 @@ import ExpiredMedicineList from "./pages/ExpiredMedicineList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
 import PurchaseDetail from "./pages/PurchaseDetail";
 import ProtectedRoute from "./components/Protection/ProtectedRoute";
+import DoctorScheduleList from "./pages/DoctorScheduleList";
 // import Toaster from "./components/UI/Toaster";
 
 function App() {
@@ -144,6 +145,11 @@ function App() {
           <Route path="/prescription/:id" element={
             <ProtectedRoute  routeName="PRESCRIPTION">
               <PrescriptionDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/schedule/doctor" element={
+            <ProtectedRoute  routeName="DOCTOR_SCHEDULE">
+              <DoctorScheduleList />
             </ProtectedRoute>
           } />
           <Route path="/schedule" element={

@@ -50,7 +50,7 @@ export default function SignInPage() {
         else if (role === "DOCTOR") navigate("/doctordashboard");
         
         //TODO: Change this to patient dashboard
-        else if (role === "PATIENT") navigate("/schedule");
+        else if (role === "PATIENT") navigate("/schedule/doctor");
         else navigate("/");
       }, delay);
     });

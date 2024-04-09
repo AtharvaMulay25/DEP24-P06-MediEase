@@ -26,7 +26,7 @@ const UnauthorizedPage = () => {
         else if (userRole === "DOCTOR") navigate("/doctordashboard");
 
         //TODO: Change this to patient dashboard
-        else if (userRole === "PATIENT") navigate("/schedule");
+        else if (userRole === "PATIENT") navigate("/schedule/doctor");
         else navigate("/");
     };
 

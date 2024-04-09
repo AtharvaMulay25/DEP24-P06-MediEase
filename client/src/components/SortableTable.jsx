@@ -100,6 +100,7 @@ export function SortableTable({
   handleDetail = () => {},
   detailsFlag = false,
   actionFlag = 'true',
+  showAddBtn = true,
 }) {
   const [open, setOpen] = useState(false);
   const [deletedRecordId, setDeletedRecordId] = useState(null);
@@ -336,7 +337,7 @@ export function SortableTable({
               {detail}
             </Typography>
           </div>
-          {text != "" && (
+          {text != "" && showAddBtn && (
             <div className="hidden sm:flex shrink-0 flex-col gap-2 sm:flex-row">
               {/* <Button variant="outlined" size="sm">
               view all

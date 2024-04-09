@@ -262,6 +262,19 @@ const Layout = ({ children }) => {
                   )}
                 </li>
               </a>}
+
+              {/* doctor schedule only for patient */}
+              {roleArr.includes("DOCTOR_SCHEDULE") && <a href="/schedule/doctor">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
+                >
+                  <DocumentTextIcon className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Doctor Schedule</Typography>
+                  )}
+                </li>
+              </a>}
               {roleArr.includes("STOCK") && <Accordion
                 open={open === 9}
                 icon={
