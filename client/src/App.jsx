@@ -39,6 +39,7 @@ import ProtectedRoute from "./components/Protection/ProtectedRoute";
 import DoctorScheduleList from "./pages/DoctorScheduleList";
 import UpdateCategory from "./pages/UpdateCategory";
 import UpdateSupplier from "./pages/UpdateSupplier";
+import UpdateSchedule from "./pages/UpdateSchedule";
 // import Toaster from "./components/UI/Toaster";
 
 function App() {
@@ -212,6 +213,11 @@ function App() {
           <Route path="/supplier/update/:id" element={
             <ProtectedRoute routeName="SUPPLIER">
               <UpdateSupplier />
+            </ProtectedRoute>
+          } />
+          <Route path="/schedule/update/:id" element={
+            <ProtectedRoute routeName="SCHEDULE">
+              <UpdateSchedule />
             </ProtectedRoute>
           } />
         </Routes>
