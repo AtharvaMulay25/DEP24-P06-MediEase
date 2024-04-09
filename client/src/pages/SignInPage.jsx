@@ -76,9 +76,9 @@ export default function SignInPage() {
       })
 
       //saving the data into cookies 
-      Cookies.set("user-role", resData.data.user.role, { expires: 7 });
-      Cookies.set("user-email", resData.data.user.email, { expires: 7 });
-      Cookies.set("user-name", resData.data.user.name, { expires: 7 });
+      Cookies.set("user-role", resData.data.user.role, { expires: 2/24 });
+      Cookies.set("user-email", resData.data.user.email, { expires: 2/24 });
+      Cookies.set("user-name", resData.data.user.name, { expires: 2/24 });
       
       toast.success(response.data.message);
       await asyncTimeout(2000, resData.data.user.role);

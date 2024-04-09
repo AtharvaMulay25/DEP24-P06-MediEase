@@ -11,7 +11,7 @@ const {
 } = require('../controllers/stockController');
 
 const authMiddleware = require("../middlewares/authMiddleware");
-const roles = ["PARAMEDICAL", "ADMIN"];
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 
 router.use(authMiddleware(roles));
 
