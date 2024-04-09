@@ -45,7 +45,6 @@ export default function SignInPage() {
   const asyncTimeout = (delay, role) => {
     return new Promise(() => {
       setTimeout(() => {
-        console.log("ROLE: ", role);
         if (role === "ADMIN") navigate("/admindashboard");
         else if (role === "PARAMEDICAL") navigate("/pharmadashboard");
         else if (role === "DOCTOR") navigate("/doctordashboard");

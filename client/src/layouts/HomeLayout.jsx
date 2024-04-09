@@ -28,8 +28,8 @@ const HomeLayout = ({ children }) => {
     setShowForm(false);
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async() => {
+    await logout();
     toast.success("Logged Out Successfully");
     setTimeout(() => {
       navigate("/signin");

@@ -10,8 +10,8 @@ const UnauthorizedPage = () => {
     const { logout } = useLogout();
     const navigate = useNavigate();
     
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async() => {
+        await logout();
         toast.success("Logged Out Successfully");
         setTimeout(() => {
             navigate("/signin");

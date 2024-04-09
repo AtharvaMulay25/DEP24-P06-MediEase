@@ -106,7 +106,29 @@ const login = async (req, res, next) => {
   }
 };
 
+// @desc     User Signup
+// route     POST /api/auth/signup
+// @access   Public
+const logout = async (req, res, next) => {
+  try {
+    console.log("Logging out..."); 
+
+    res.clearCookie("token", { httpOnly: true, secure: true });
+    res.clearCookie("role", { httpOnly: true, secure: true });
+    res.clearCookie("name", { httpOnly: true, secure: true });
+
+    return res.status(200).json({
+      ok: true,
+      message: "User logout successfully.",
+      data: {},
+    });
+  } catch (err) {
+    throw new ExpressError(err.message, 500);
+  }
+};
+
 module.exports = {
   signup,
   login,
+  logout
 };

@@ -62,8 +62,8 @@ const Layout = ({ children }) => {
     setIsCollapsed((prevState) => !prevState);
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async() => {
+    await logout();
     toast.success("Logged Out Successfully");
     setTimeout(() => {
       navigate("/signin");
