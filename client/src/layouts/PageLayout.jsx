@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
-import { FaUserCog, FaExclamation } from "react-icons/fa";
+import { FaUserCog, FaExclamation, FaNotesMedical } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
   Typography,
@@ -184,14 +184,14 @@ const Layout = ({ children }) => {
                   )}
                 </li>
               </a>
-              <a href="/stock">
+              <a href="/medical-history">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
-                         hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer"
+                         hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
                 >
-                  <ChartBarIcon className="h-5 w-5 mr-4" />
+                  <FaNotesMedical className="h-5 w-5 mr-4" />
                   {!(isCollapsed & !isHovered) && (
-                    <Typography className="font-normal">Stock</Typography>
+                    <Typography className="font-normal">Med History</Typography>
                   )}
                 </li>
               </a>
@@ -532,7 +532,7 @@ const Layout = ({ children }) => {
                   </AccordionBody>
                 )}
               </Accordion>
-              <Accordion 
+              <Accordion
                 open={open === 7}
                 icon={
                   !(isCollapsed & !isHovered) && (
