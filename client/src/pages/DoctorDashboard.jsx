@@ -246,7 +246,7 @@ const DoctorDashboard = () => {
                   Checkups Done
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                {totalStock}
+                350
                 </p>
               </div>
               <div className="p-6 pt-0">

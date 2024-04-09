@@ -229,6 +229,28 @@ const Layout = ({ children }) => {
                   )}
                 </li>
               </a>}
+              {roleArr.includes("DOCTOR_DASHBOARD") && <a href="/doctordashboard">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
+                >
+                  <MdSpaceDashboard className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Dashboard</Typography>
+                  )}
+                </li>
+              </a>}
+              {roleArr.includes("ADMIN_DASHBOARD") && <a href="/admindashboard">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                        hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
+                >
+                  <MdSpaceDashboard className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Dashboard</Typography>
+                  )}
+                </li>
+              </a>}
               {roleArr.includes("ADMIN") && <a href="/requests">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all

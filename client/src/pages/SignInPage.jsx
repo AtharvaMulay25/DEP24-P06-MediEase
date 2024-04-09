@@ -25,6 +25,7 @@ export default function SignInPage() {
 
   const [loading, setLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
+
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: ""
@@ -41,10 +42,17 @@ export default function SignInPage() {
     }));
   };
 
-  const asyncTimeout = (delay) => {
+  const asyncTimeout = (delay, role) => {
     return new Promise(() => {
       setTimeout(() => {
-        navigate(userRole === "PARAMEDICAL" ? "/pharmadashboard" : "/doctordashboard");
+        console.log("ROLE: ", role);
+        if (role === "ADMIN") navigate("/admindashboard");
+        else if (role === "PARAMEDICAL") navigate("/pharmadashboard");
+        else if (role === "DOCTOR") navigate("/doctordashboard");
+        
+        //TODO: Change this to patient dashboard
+        else if (role === "PATIENT") navigate("/schedule");
+        else navigate("/");
       }, delay);
     });
   };
@@ -74,7 +82,7 @@ export default function SignInPage() {
       Cookies.set("user-name", resData.data.user.name, { expires: 7 });
       
       toast.success(response.data.message);
-      await asyncTimeout(2000);
+      await asyncTimeout(2000, resData.data.user.role);
     } else {
       toast.error(response.data.message);
     }

@@ -11,13 +11,14 @@ const roleMapping = new Map([
     [10, "STAFF"],
     [11, "SCHEDULE"],
     [12, "ADMIN"],
+    [13, "ADMIN_DASHBOARD"],
 ]);
 
 const roleMap = (role) => {
     if (role !== "ADMIN" && role !== "DOCTOR" && role !== "PARAMEDICAL" && role !== "PATIENT") {
         return [];
     }
-    const admin = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    const admin = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     const patient = [11];
     const paramedical = [2, 4, 5, 6, 7, 8, 9, 10, 11];
     const doctor = [1, 4, 5, 8, 9, 10, 11];
