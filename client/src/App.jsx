@@ -33,6 +33,7 @@ import ExpiredMedicineList from "./pages/ExpiredMedicineList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
 import PurchaseDetail from "./pages/PurchaseDetail";
 import StaffProfile from "./pages/StaffProfile";
+import PatientProfile from "./pages/PatientProfile";
 // import Toaster from "./components/UI/Toaster";
 function App() {
   const { userRole } = useAuthContext();
@@ -42,6 +43,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/profile/staff" element={<StaffProfile />} />
+          <Route path="/profile/patient" element={<PatientProfile />} />
           <Route path="/signin" element={!userRole ? <SignInPage /> : <Dashboard/>} />
           <Route path="/signup" element={!userRole ? <SignUpPage /> : <Dashboard/>} />
           <Route path="/pharmadashboard" element={<PharmaDashboard />} />
