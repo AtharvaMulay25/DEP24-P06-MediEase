@@ -23,6 +23,8 @@ const mailRoutes = require("./src/routes/mailRoutes.js");
 const requestRoutes = require("./src/routes/requestRoutes.js");
 const staffRoutes = require("./src/routes/staffRoutes.js");
 const scheduleRoutes = require('./src/routes/scheduleRoutes.js');
+const dashboardRoutes = require('./src/routes/dashboardRoutes.js');
+const checkupRoutes = require("./src/routes/checkupRoutes.js");
 const ExpressError = require("./src/utils/ExpressError.js");
 
 app.use("/api/auth", authRoutes);
@@ -30,6 +32,7 @@ app.use("/api/otp", otpRoutes);
 app.use("/api/mail", mailRoutes);
 app.use("/api/requests", requestRoutes);
 app.use("/api/purchase", purchaseRoutes);
+app.use("/api/checkup", checkupRoutes);
 app.use("/api/supplier", supplierRoutes);
 app.use("/api/medicine", medicineRoutes);
 app.use("/api/stock", stockRoutes);
@@ -38,6 +41,7 @@ app.use("/api/category", categoryRoutes);
 app.use("/api/admin", adminRoutes);
 app.use('/api/schedule',scheduleRoutes);
 app.use("/api/staff", staffRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.all("*", (req, res) => {
   throw new ExpressError("Page Not Found", 404);

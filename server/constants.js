@@ -16,6 +16,10 @@ const REJECTED_MAIL_TEMPLATE = (role) => {
   return `<h2>Hello <span style="color:blue;">Mediease</span> User,</h2><p>You are <b>rejected</b> from your applied role <b>${role}</b>.</p><br></p>Regards,<h4>DEP_P06_2024</h4>`;
 };
 
+const ACCOUNT_CREATED_MAIL_TEMPLATE = () => {
+  return `<h2>Hello <span style="color:blue;">Mediease</span> User,</h2><p>Your account has been created successfully on Mediease.</p><p>Login at <b><a href="${CLIENT_URL}/signin">${CLIENT_URL}/signin</a></b></p><br></p>Regards,<h4>DEP_P06_2024</h4>`;
+};
+
 module.exports = {
   OTP_EXPIRY_TIME,
   OTP_MAIL_TEMPLATE, 
@@ -23,4 +27,5 @@ module.exports = {
   PENDING_MAIL_TEMPLATE_ADMIN,
   APPROVED_MAIL_TEMPLATE,
   REJECTED_MAIL_TEMPLATE,
+  ACCOUNT_CREATED_MAIL_TEMPLATE
 }

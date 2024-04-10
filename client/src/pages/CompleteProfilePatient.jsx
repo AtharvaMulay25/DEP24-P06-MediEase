@@ -310,7 +310,8 @@ export default function CompleteProfilePatient() {
         </CardFooter>
       </Card>
     </div>
-    <Toaster position="top-center" richColors/>
+    <Toaster richColors position="top-center"/>
+
     </>
   );
 }

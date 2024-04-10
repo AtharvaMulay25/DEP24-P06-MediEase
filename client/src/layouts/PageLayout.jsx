@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
 import {
   UserCircleIcon,
@@ -8,7 +7,8 @@ import {
 } from "@heroicons/react/24/solid";
 import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
-import { FaUserCog, FaExclamation, FaNotesMedical } from "react-icons/fa";
+import { LuLogOut } from "react-icons/lu";
+import { FaUserCog, FaExclamation, FaUserEdit, FaNotesMedical } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
   Typography,
@@ -18,6 +18,10 @@ import {
   Accordion,
   AccordionHeader,
   AccordionBody,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
 } from "@material-tailwind/react";
 import {
   ShoppingCartIcon,
@@ -31,11 +35,17 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useAuthContext } from "../hooks/useAuthContext";
-
+import { useLogout } from "../hooks/useLogout";
+import { toast } from "sonner";
+import roleMap from "../utils/rolesMap.js";
+import Toaster from "../components/UI/Toaster";
 const Layout = ({ children }) => {
   const { userRole, userName } = useAuthContext();
+  const { logout } = useLogout();
+  const [roleArr, setRoleArr] = useState([]);
 
   const [open, setOpen] = useState(0);
+  const [openMenu, setOpenMenu] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
@@ -46,6 +56,14 @@ const Layout = ({ children }) => {
 
   const toggleCollapse = () => {
     setIsCollapsed((prevState) => !prevState);
+  };
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged Out Successfully");
+    setTimeout(() => {
+      navigate("/signin");
+    }, 1000);
   };
 
   const LINKS = [
@@ -73,6 +91,10 @@ const Layout = ({ children }) => {
   );
 
   useEffect(() => {
+    setRoleArr(roleMap(userRole)); 
+  }, [userRole]);
+
+  useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 890px)");
     const handleResize = () => setIsLargeScreen(mediaQuery.matches);
 
@@ -82,6 +104,11 @@ const Layout = ({ children }) => {
       mediaQuery.removeEventListener("change", handleResize);
     };
   }, []);
+
+  const triggers = {
+    onMouseEnter: () => setOpenMenu(true),
+    onMouseLeave: () => setOpenMenu(false),
+  }
 
   return (
     <div className="h-screen flex">
@@ -126,21 +153,47 @@ const Layout = ({ children }) => {
               className="list-none flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal"
               style={{ color: "#f1ffea" }}
             >
-              <a href="/doctordashboard">
+              <a>
                 <li className="flex items-center w-full p-1 rounded-lg text-start leading-tight transition-all cursor-pointer">
-                  <UserCircleIcon className="h-8 w-8 mr-4" />
-                  <div>
-                    {!(isCollapsed & !isHovered) && (
-                      <Typography className="font-semibold text-lg">
-                        {userName || ""}
-                      </Typography>
-                    )}
-                    {!(isCollapsed & !isHovered) && (
-                      <Typography className="font-normal text-xs">
-                        {userRole || ""}
-                      </Typography>
-                    )}
-                  </div>
+                  <Menu
+                    animate={{
+                      mount: { y: 0 },
+                      unmount: { y: 25 },
+                    }}
+                    open={openMenu}
+                    handler={setOpenMenu}
+                  >
+                    <MenuHandler { ... triggers }>
+                      <div className="flex w-full">
+                        <UserCircleIcon className="h-8 w-8 mr-4" />
+                        <div>
+                          {!(isCollapsed & !isHovered) && (
+                            <Typography className="font-semibold text-lg">
+                              {userName || ""}
+                            </Typography>
+                          )}
+                          {!(isCollapsed & !isHovered) && (
+                            <Typography className="font-normal text-xs">
+                              {userRole || ""}
+                            </Typography>
+                          )}
+                        </div>
+                      </div>
+                    </MenuHandler>
+                    <MenuList { ... triggers }>
+                      <MenuItem onClick={() => navigate("/profile")} className="flex gap-2">
+                        <UserCircleIcon className="w-4 h-4" />
+                        My Profile
+                      </MenuItem>
+                      <MenuItem onClick={() => navigate("/profile")} className="flex gap-2">
+                        <FaUserEdit className="w-4 h-4" />
+                        Edit Profile
+                      </MenuItem>
+                      <MenuItem onClick={handleLogout} className="flex gap-2">
+                        <LuLogOut className="h-4 w-4" /> Logout
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </li>
               </a>
             </ul>
@@ -195,6 +248,60 @@ const Layout = ({ children }) => {
                   )}
                 </li>
               </a>
+              <Accordion
+                open={open === 9}
+                icon={
+                  !(isCollapsed & !isHovered) && (
+                    <ChevronDownIcon
+                      style={{ color: "#f1ffea" }}
+                      strokeWidth={2.5}
+                      className={`mx-auto h-4 w-4 transition-transform ${
+                        open === 9 ? "rotate-180" : ""
+                      }`}
+                    />
+                  )
+                }
+              >
+                <ListItem className="p-0" selected={open === 9}>
+                  <AccordionHeader
+                    onClick={() => handleOpen(9)}
+                    className="border-b-0 p-3"
+                  >
+                    <ListItemPrefix>
+                      <ChartBarIcon
+                        className="h-5 w-5"
+                        style={{ color: "#f1ffea" }}
+                      />
+                    </ListItemPrefix>
+                    {!(isCollapsed & !isHovered) && (
+                      <Typography
+                        style={{ color: "#f1ffea" }}
+                        className="mr-auto font-normal"
+                      >
+                        Stock
+                      </Typography>
+                    )}
+                  </AccordionHeader>
+                </ListItem>
+                {!(isCollapsed & !isHovered) && (
+                  <AccordionBody className="py-1">
+                    <List className="p-0" style={{ color: "#f1ffea" }}>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/stock")}
+                      >
+                        Stock List
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/stock/outofstock")}
+                      >
+                        Out of Stock
+                      </ListItem>
+                    </List>
+                  </AccordionBody>
+                )}
+              </Accordion>
               <Accordion
                 open={open === 1}
                 icon={
@@ -256,6 +363,12 @@ const Layout = ({ children }) => {
                         onClick={() => navigate("/medicine")}
                       >
                         Medicine List
+                      </ListItem>
+                      <ListItem
+                        className="ml-9"
+                        onClick={() => navigate("/medicine/expired")}
+                      >
+                        Expired Medicines
                       </ListItem>
                     </List>
                   </AccordionBody>
@@ -792,9 +905,9 @@ const Layout = ({ children }) => {
           </div>
         </footer>
       </div>
-
-      <Toaster richColors closeButton position="top-center" />
+      <Toaster richColors position="top-center"/>
     </div>
+    
   );
 };
 

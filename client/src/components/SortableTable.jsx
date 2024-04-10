@@ -95,8 +95,11 @@ export function SortableTable({
   addLink,
   handleDelete,
   searchKey,
-  handleApprove ,
-  handleReject
+  handleApprove,
+  handleReject,
+  handleDetail = () => {},
+  detailsFlag = false,
+  actionFlag = 'true',
 }) {
   const [open, setOpen] = useState(false);
   const [deletedRecordId, setDeletedRecordId] = useState(null);
@@ -136,6 +139,7 @@ export function SortableTable({
   }, [currentPage, itemsPerPage, searchList]);
 
   const handleDialogDelete = (e, id) => {
+    console.log("id : ", id);  
     setDeletedRecordId(id);
     setOpen(!open);
   };
@@ -444,7 +448,7 @@ export function SortableTable({
           </thead>
           <tbody>
             {paginatedData.map((rowData, index) => {
-              const classes = "px-3 border-2 opacity-80";
+              const classes = "px-3 border-2 opacity-80 h-10";
               return (
                 <tr key={index} className="even:bg-blue-gray-50/50">
                   {Object.entries(tableHead).map(([key, value]) => {
@@ -460,18 +464,18 @@ export function SortableTable({
                           </Typography>
                         </td>
                       );
-                    if (key === "purchaseItems")
-                      return (
-                        <div className="flex justify-center">
-                          <td className="px-3 border-0 opacity-80">
-                            <Tooltip content="View">
-                              <IconButton variant="text">
-                                <EyeIcon className="h-4 w-4" />
-                              </IconButton>
-                            </Tooltip>
-                          </td>
-                        </div>
-                      );
+                    // if (key === "purchaseItems")
+                    //   return (
+                    //     <div className="flex justify-center">
+                    //       <td className="px-3 border-0 opacity-80">
+                    //         <Tooltip content="View">
+                    //           <IconButton variant="text">
+                    //             <EyeIcon className="h-4 w-4" />
+                    //           </IconButton>
+                    //         </Tooltip>
+                    //       </td>
+                    //     </div>
+                    //   );
                     if (key !== "action")
                       return (
                         <td className={classes} key={key}>
@@ -485,50 +489,67 @@ export function SortableTable({
                         </td>
                       );
                   })}
-                  <td className={("", classes)}>
-                    <div className="flex gap-0.5">
-                      {title !== "Pending Request List" ? (
-                        <>
+                  { actionFlag == 'true' && 
+                    <td className={("", classes)}>
+                      <div className="flex gap-0.5">
+                        {title !== "Pending Request List" ? (
+                          <>
+                            {detailsFlag == true && (
+                            <Tooltip content="View">
+                              <IconButton
+                                variant="text"
+                                onClick={(e) => handleDetail(e, rowData["id"], (currentPage - 1) * itemsPerPage + index + 1)}
+                              >
+                                <EyeIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                          )}
                           <Tooltip content="Edit">
-                            <IconButton variant="text">
-                              <PencilIcon className="h-4 w-4" />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip content="Delete">
-                            <IconButton
+                              <IconButton variant="text">
+                                <PencilIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Delete">
+                              <IconButton
+                                variant="text"
+                                onClick={(e) => {
+                                console.log("rowData: ", rowData);
+                                handleDialogDelete(e, rowData["id"])
+                              }}
+                              >
+                                <TrashIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                          </>
+                        ) : (
+                          <>
+                            <Tooltip content="Approve">
+                              <IconButton
                               variant="text"
-                              onClick={(e) => handleDelete(e, rowData["id"])}
-                            >
-                              <TrashIcon className="h-4 w-4" />
-                            </IconButton>
-                          </Tooltip>
-                        </>
-                      ) : (
-                        <>
-                          <Tooltip content="Approve">
-                            <IconButton variant="text" 
-                            onClick={(e) => handleApprove(e, rowData["id"])}
-                            >
-                              <CheckCircleIcon
-                                className="h-6 w-6"
-                                style={{ color: "green" }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip content="Reject">
-                            <IconButton variant="text"
-                             onClick={(e) => handleReject(e, rowData["id"])}
+                                onClick={(e) => handleApprove(e, rowData["id"])}
+                              >
+                                <CheckCircleIcon
+                                  className="h-6 w-6"
+                                  style={{ color: "green" }}
+                                />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip content="Reject">
+                              <IconButton
+                              variant="text"
+                               onClick={(e) => handleReject(e, rowData["id"])}
                              >
-                              <XCircleIcon
-                                className="h-6 w-6"
-                                style={{ color: "red" }}
-                              />
-                            </IconButton>
-                          </Tooltip>
-                        </>
-                      )}
-                    </div>
-                  </td>
+                                <XCircleIcon
+                                  className="h-6 w-6"
+                                  style={{ color: "red" }}
+                                />
+                              </IconButton>
+                            </Tooltip>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  }
                 </tr>
               );
             })}
