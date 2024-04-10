@@ -164,6 +164,7 @@ const createPatient = async (req, res, next) => {
 const updatePatient = async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log("req.body : ", req.body);
     const updatedRecord = await prisma.patient.update({
       where: {
         id,

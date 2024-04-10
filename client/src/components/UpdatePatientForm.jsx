@@ -107,7 +107,12 @@ export default function UpdatePatientForm() {
 
         setLoading(true);
         try {
-            const sendData = {...formData, age: parseInt(formData.age)};
+            const sendData = {
+                ...formData, 
+                age: parseInt(formData.age),
+                category: formData.category.toUpperCase(), 
+                gender: formData.gender.toUpperCase() 
+            };
             const res = await axios.put(`${apiRoutes.patient}/${id}`, sendData, {
                 withCredentials: true
             });
