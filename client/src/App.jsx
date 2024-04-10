@@ -29,6 +29,7 @@ import AdminList from "./pages/AdminList";
 import { useAuthContext } from "./hooks/useAuthContext";
 import RequestList from "./pages/RequestList";
 import AdminDashboard from "./pages/AdminDashboard";
+import MedicalHistory from "./pages/MedicalHistory";
 import OutOfStock from "./pages/OutOfStock";
 import ExpiredMedicineList from "./pages/ExpiredMedicineList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
@@ -41,8 +42,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signin" element={!userRole ? <SignInPage /> : <Home/>} />
-          <Route path="/signup" element={!userRole ? <SignUpPage /> : <Home/>} />
+          <Route
+            path="/signin"
+            element={!userRole ? <SignInPage /> : <Home />}
+          />
+          <Route
+            path="/signup"
+            element={!userRole ? <SignUpPage /> : <Home />}
+          />
           <Route path="/pharmadashboard" element={<PharmaDashboard />} />
           <Route path="/medicine/expired" element={<ExpiredMedicineList />} />
           <Route path="/medicine/add" element={<AddMedicine />} />
@@ -73,6 +80,7 @@ function App() {
           <Route path="/admin/add" element={<AddAdmin />} />
           <Route path="/requests" element={<RequestList />} />
           <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/medical-history" element={<MedicalHistory />} />
         </Routes>
       </BrowserRouter>
       {/* <Toaster richColors closeButton position="top-center" /> */}
