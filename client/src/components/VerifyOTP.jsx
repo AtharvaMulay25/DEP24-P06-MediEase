@@ -63,7 +63,6 @@ const VerifyOTP = ({ email, setIsOtpSent, handler, otpSubmitHandler }) => {
       });
       if (response.data.ok) {
         toast.success(response.data.message); //toast messages are not yet integrated**** (no toaster in this branch)
-        console.log("verified");
         await handler();
         setIsOtpSent(false);
       } else {
@@ -83,7 +82,7 @@ const VerifyOTP = ({ email, setIsOtpSent, handler, otpSubmitHandler }) => {
   };
   return (
     <>
-      {loading && <SyncLoadingScreen />}
+      {loading && <SyncLoadingScreen message={"Verifying OTP..."}/>}
       {!loading && (
         <div className="flex justify-center items-center w-screen h-screen">
           <Card className="w-96">
