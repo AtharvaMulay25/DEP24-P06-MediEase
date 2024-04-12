@@ -1,5 +1,4 @@
 import { GridLoader, HashLoader , SyncLoader} from "react-spinners"
-import Toaster from "../../components/UI/Toaster";
 import "../../styles/UI/LoadingScreen.css";
 
 //export two loading screens `GridLoadingScreen` and `HashLoadingScreen`

@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import { apiRoutes } from "../utils/apiRoutes";
 import axios from "axios";
 import { toast } from "sonner";
-import Toaster from "../components/UI/Toaster.jsx";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
 import { useAuthContext } from "../hooks/useAuthContext.jsx";
@@ -205,7 +204,6 @@ export default function SignUpPage() {
           )}
         </>
       )}
-      <Toaster richColors position="top-center"/>
     </>
   );
 }

@@ -37,7 +37,6 @@ import StaffProfile from "./pages/StaffProfile";
 import PatientProfile from "./pages/PatientProfile";
 import ProtectedRoute from "./components/Protection/ProtectedRoute";
 import DoctorScheduleList from "./pages/DoctorScheduleList";
-// import Toaster from "./components/UI/Toaster";
 
 function App() {
   const { userRole } = useAuthContext();
@@ -203,7 +202,6 @@ function App() {
           } />
         </Routes>
       </BrowserRouter>
-      {/* <Toaster richColors closeButton position="top-center" /> */}
     </>
   );
 }

@@ -13,5 +13,5 @@ const setToastTimeout = async (type, msg, delay) => {
     }
   }, delay);
 };
-
-export {setNavigateTimeout, setToastTimeout};
+const resendTimeInSeconds = 30;
+export {setNavigateTimeout, setToastTimeout, resendTimeInSeconds};

@@ -2,7 +2,6 @@ import React from 'react'
 import { useNavigate } from "react-router-dom";
 import unauthorizedImage from "../assets/img/unauthorized.jpg";
 import { useLogout } from '../hooks/useLogout';
-import Toaster from "../components/UI/Toaster";
 import { toast } from "sonner";
 import { useAuthContext } from '../hooks/useAuthContext';
 
@@ -55,7 +54,6 @@ const UnauthorizedPage = () => {
                     </div>
                 </div>
             </div>
-            <Toaster richColors closeButton position="top-center" />
         </>
     )
 }

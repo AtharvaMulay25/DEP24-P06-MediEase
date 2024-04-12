@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-scroll";
 import { Typography } from "@material-tailwind/react";
@@ -446,7 +445,6 @@ const HomeLayout = ({ children }) => {
         </footer>
       </div>
 
-      <Toaster richColors closeButton position="top-center" />
     </div>
   );
 };

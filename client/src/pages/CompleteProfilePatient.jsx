@@ -11,7 +11,6 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { toast } from "sonner";
-import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
@@ -312,7 +311,6 @@ export default function CompleteProfilePatient() {
         </CardFooter>
       </Card>
     </div>
-    <Toaster richColors position="top-center"/>
 
     </>
   );

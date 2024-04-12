@@ -10,7 +10,6 @@ import {
   Select as MaterialSelect,
   Option,
 } from "@material-tailwind/react";
-import Toaster from "../components/UI/Toaster";
 import {toast} from "sonner";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useNavigate } from "react-router-dom";
@@ -220,7 +219,6 @@ export default function CompleteProfileStaff() {
         </CardFooter>
       </Card>
     </div>
-    <Toaster richColors position="top-center"/>
     </>
   );
 }
