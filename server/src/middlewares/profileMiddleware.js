@@ -13,6 +13,8 @@ const profileMiddleware = () => {
                 throw new ExpressError("User not found", 404);
             }
 
+            req.completeProfile = true
+
             if (role === "PATIENT") {
                 const patientExists = await prisma.patient.findUnique({
                     where: {
@@ -21,9 +23,10 @@ const profileMiddleware = () => {
                 });
                 
                 if (!patientExists) {
-                    throw new ExpressError("Patient Profile Incomplete, Please complete your profile", 400);
-                }
-
+                    // throw new ExpressError("Patient Profile Incomplete, Please complete your profile", 400);
+                    req.completeProfile = false;
+                } 
+                
                 req.patient = patientExists;
             } 
 
@@ -35,12 +38,15 @@ const profileMiddleware = () => {
                 });
                 
                 if (!staffExists) {
-                    const errMsg = `${role === "PARAMEDICAL" ? "Paramedical": "Doctor"} Profile Incomplete, Please complete your profile`;
-                    throw new ExpressError(errMsg, 400);
+                    // const errMsg = `${role === "PARAMEDICAL" ? "Paramedical": "Doctor"} Profile Incomplete, Please complete your profile`;
+                    // throw new ExpressError(errMsg, 400);
+                    req.completeProfile = false;
                 }
 
                 req.staff = staffExists;
             } 
+
+            next();
         } catch (err) {
             throw new ExpressError(err.message, 500);
         }

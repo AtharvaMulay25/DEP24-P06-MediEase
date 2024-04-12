@@ -11,8 +11,10 @@ export const authReducer = (state, action) => {
         case 'LOGOUT': return {
             userRole: null,
             userEmail: null,
-            userName: ""
+            userName: "",
+            userProfileComplete: false
         }
+        case 'COMPLETE_PROFILE': return {...state, userProfileComplete: true}
         default: return {
             ...state
         }
@@ -23,7 +25,8 @@ export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, {
         userRole: null,
         userEmail: null,
-        userName: ""
+        userName: "",
+        userProfileComplete: false
     });
 
     useEffect(() => {
@@ -31,21 +34,23 @@ export const AuthContextProvider = ({ children }) => {
             const userRole = Cookies.get('user-role');
             const userEmail = Cookies.get('user-email');
             const userName = Cookies.get('user-name');
+            const userProfileComplete = Cookies.get('user-profile-complete');
 
-            if (userRole && userEmail && userName) {
+            if (userRole && userEmail && userName && userProfileComplete) {
                 dispatch({
                     type: "LOGIN",
                     payload: {
                         userRole,
                         userEmail,
-                        userName
+                        userName,
+                        userProfileComplete
                     }
                 });
             }
-            console.log(userEmail, userName, userRole);
+            console.log(userEmail, userName, userRole, userProfileComplete);
         }
         fetchDetails();
-    }, [state.userRole, state.userEmail, state.userName]);
+    }, [state.userRole, state.userEmail, state.userName, state.userProfileComplete]);
 
     return <AuthContext.Provider value={{ ...state, dispatch }}>
         {children}

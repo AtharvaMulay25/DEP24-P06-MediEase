@@ -79,6 +79,7 @@ const signup = async (req, res, next) => {
             email: newUser.email,
             role: newUser.role,
             name: newUser.name,
+            profileComplete: false
           },
         },
       });
@@ -138,6 +139,7 @@ const login = async (req, res, next) => {
           email: user.email,
           role: user.role,
           name: user.name,
+          profileComplete: req.completeProfile
         },
       },
     });

@@ -4,16 +4,22 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 import roleMap from '../../utils/rolesMap';
 import UnauthorizedPage from '../../pages/UnauthorizedPage';
 import { useNavigate } from "react-router-dom";
+import { toast } from 'sonner';
 
 const ProtectedRoute = ({ children, routeName }) => {
     const navigate = useNavigate();
-    const { userRole } = useAuthContext();
+    const { userRole, userProfileComplete } = useAuthContext();
     const [roleArr, setRoleArr] = useState([]);
 
     useEffect(() => {
         const x = setTimeout(() => {
-            if (userRole) setRoleArr(roleMap(userRole));
-            else {
+            if (userRole) {
+                if (userProfileComplete) setRoleArr(roleMap(userRole));
+                else {
+                    toast.error("Please complete your profile.");
+                    navigate(`/profile/${userRoleAssert === "PATIENT" ? "patient" : "staff"}`);
+                }
+            } else {
                 //TODO: Show warning when non logged in user trying to access
                 navigate("/signin");
             }

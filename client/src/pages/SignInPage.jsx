@@ -79,9 +79,20 @@ export default function SignInPage() {
       Cookies.set("user-role", resData.data.user.role, { expires: 2 / 24 });
       Cookies.set("user-email", resData.data.user.email, { expires: 2 / 24 });
       Cookies.set("user-name", resData.data.user.name, { expires: 2 / 24 });
+      Cookies.set("user-profile-complete", resData.data.user.profileComplete, { expires: 2 / 24 });
+      
       // toast.success(response.data.message);
       setToastTimeout("success", response.data.message, 1500);
-      await asyncTimeout(0, resData.data.user.role);
+      
+      const profileCompleteAssert = resData.data.user.profileComplete;
+      const userRoleAssert = resData.data.user.profileComplete;
+      
+      if (userRoleAssert === "ADMIN" || profileCompleteAssert) {
+        await asyncTimeout(0, resData.data.user.role);
+      } else {
+        navigate(`/profile/${userRoleAssert === "PATIENT" ? "patient" : "staff"}`);
+      }
+      
     } else {
       toast.error(response.data.message);
     }
