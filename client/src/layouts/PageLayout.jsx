@@ -38,7 +38,6 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 import { toast } from "sonner";
 import roleMap from "../utils/rolesMap.js";
-import Toaster from "../components/UI/Toaster";
 const Layout = ({ children }) => {
   const { userRole, userName } = useAuthContext();
   const { logout } = useLogout();
@@ -932,7 +931,6 @@ const Layout = ({ children }) => {
           </div>
         </footer>
       </div>
-      <Toaster richColors position="top-center"/>
     </div>
     
   );

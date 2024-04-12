@@ -15,13 +15,14 @@ import { SyncLoadingScreen } from "./UI/LoadingScreen";
 import axios from "axios";
 import { toast } from "sonner";
 import { apiRoutes } from "../utils/apiRoutes";
+import { resendTimeInSeconds } from "../utils/customTimeout";
 const VerifyOTP = ({ email, setIsOtpSent, handler, otpSubmitHandler }) => {
   const [data, setData] = useState({
     otp: "",
   });
   const [loading, setLoading] = useState(false);
   const [showResend, setShowResend] = useState(false);
-  const [resendTimer, setResendTimer] = useState(10);
+  const [resendTimer, setResendTimer] = useState(resendTimeInSeconds);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -46,7 +47,7 @@ const VerifyOTP = ({ email, setIsOtpSent, handler, otpSubmitHandler }) => {
 
   const handleResendOTP = () => {
     otpSubmitHandler();
-    setResendTimer(10);
+    setResendTimer(resendTimeInSeconds);
     setShowResend(false);
   };
 
@@ -62,7 +63,6 @@ const VerifyOTP = ({ email, setIsOtpSent, handler, otpSubmitHandler }) => {
       });
       if (response.data.ok) {
         toast.success(response.data.message); //toast messages are not yet integrated**** (no toaster in this branch)
-        console.log("verified");
         await handler();
         setIsOtpSent(false);
       } else {
@@ -82,7 +82,7 @@ const VerifyOTP = ({ email, setIsOtpSent, handler, otpSubmitHandler }) => {
   };
   return (
     <>
-      {loading && <SyncLoadingScreen />}
+      {loading && <SyncLoadingScreen message={"Verifying OTP..."}/>}
       {!loading && (
         <div className="flex justify-center items-center w-screen h-screen">
           <Card className="w-96">

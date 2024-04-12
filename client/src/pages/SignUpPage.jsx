@@ -15,11 +15,11 @@ import { useNavigate } from "react-router-dom";
 import { apiRoutes } from "../utils/apiRoutes";
 import axios from "axios";
 import { toast } from "sonner";
-import Toaster from "../components/UI/Toaster.jsx";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
 import { useAuthContext } from "../hooks/useAuthContext.jsx";
 import Cookies from "js-cookie";
+import { setToastTimeout } from "../utils/customTimeout.js";
 
 export default function SignUpPage() {
   const { userRole, dispatch } = useAuthContext();
@@ -72,9 +72,9 @@ export default function SignUpPage() {
         Cookies.set("user-email", resData.data.user.email, { expires: 2/24 });
         Cookies.set("user-name", resData.data.user.name, { expires: 2/24 });
 
-        toast.success(response.data.message);
-
-        await asyncTimeout(2000, "/patient/profile");
+        // toast.success(response.data.message);
+        setToastTimeout("success", response.data.message, 1500);
+        await asyncTimeout(0, "/patient/profile");
       } else {
         toast.error(response.data.message);
       }
@@ -104,7 +104,7 @@ export default function SignUpPage() {
   };
   return (
     <>
-      {loading && <SyncLoadingScreen />}
+      {loading && <SyncLoadingScreen message={"Sending OTP via email..."}/>}
       {!loading && (
         <>
           {isOtpSent ? (
@@ -205,7 +205,6 @@ export default function SignUpPage() {
           )}
         </>
       )}
-      <Toaster richColors position="top-center"/>
     </>
   );
 }

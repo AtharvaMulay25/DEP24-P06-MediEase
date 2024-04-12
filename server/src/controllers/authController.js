@@ -45,6 +45,7 @@ const signup = async (req, res, next) => {
       });
       newUser = user;
     }
+    console.log(newUser);
     if (newUser) {
       const token = generateToken(
         {
@@ -64,7 +65,7 @@ const signup = async (req, res, next) => {
         httpOnly: true,
         secure: true
       });
-      res.cookie("name", user.name, {
+      res.cookie("name", newUser.name, {
         maxAge: 2 * 60 * 60 * 1000,
         httpOnly: true,
         secure: true

@@ -12,12 +12,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
-import Toaster from "../components/UI/Toaster.jsx";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
 import { apiRoutes } from "../utils/apiRoutes";
 import { useAuthContext } from "../hooks/useAuthContext.jsx";
 import Cookies from "js-cookie";
+import { setToastTimeout } from "../utils/customTimeout.js";
 
 
 export default function SignInPage() {
@@ -79,9 +79,9 @@ export default function SignInPage() {
       Cookies.set("user-role", resData.data.user.role, { expires: 2 / 24 });
       Cookies.set("user-email", resData.data.user.email, { expires: 2 / 24 });
       Cookies.set("user-name", resData.data.user.name, { expires: 2 / 24 });
-
-      toast.success(response.data.message);
-      await asyncTimeout(2000, resData.data.user.role);
+      // toast.success(response.data.message);
+      setToastTimeout("success", response.data.message, 1500);
+      await asyncTimeout(0, resData.data.user.role);
     } else {
       toast.error(response.data.message);
     }
@@ -112,7 +112,7 @@ export default function SignInPage() {
   }
   return (
     <>
-      {loading && <SyncLoadingScreen />}
+      {loading && <SyncLoadingScreen message={"Sending OTP via email..."}/>}
       {!loading && (
         <>
           {isOtpSent ? (
@@ -180,7 +180,6 @@ export default function SignInPage() {
 
         </>
       )}
-      <Toaster richColors position="top-center" />
 
     </>
   );
