@@ -11,13 +11,19 @@ const ProtectedRoute = ({ children, routeName }) => {
     const { userRole, userProfileComplete } = useAuthContext();
     const [roleArr, setRoleArr] = useState([]);
 
+    //TODO: Restrict the user to go to their profile complete pages when they have completed their profiles 
     useEffect(() => {
         const x = setTimeout(() => {
             if (userRole) {
-                if (userProfileComplete) setRoleArr(roleMap(userRole));
-                else {
-                    toast.error("Please complete your profile.");
-                    navigate(`/profile/${userRoleAssert === "PATIENT" ? "patient" : "staff"}`);
+                if (userRole === "ADMIN") {
+                    setRoleArr(roleMap("ADMIN"));
+                    return;
+                } else {
+                    if (userProfileComplete) setRoleArr(roleMap(userRole));
+                    else {
+                        toast.error("Please complete your profile.");
+                        navigate(`/profile/${userRoleAssert === "PATIENT" ? "patient" : "staff"}`);
+                    }
                 }
             } else {
                 //TODO: Show warning when non logged in user trying to access

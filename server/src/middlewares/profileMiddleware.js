@@ -3,7 +3,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient()
 const ExpressError = require('../utils/ExpressError');
 
-const profileMiddleware = () => {
+const profileMiddleware = (completeProfileAssert=false) => {
     return async (req, res, next) => {
         try {
             const role = req.cookies.token;
@@ -46,7 +46,13 @@ const profileMiddleware = () => {
                 req.staff = staffExists;
             } 
 
-            next();
+            if (completeProfileAssert) {
+                if (!req.completeProfile) {
+                    throw new ExpressError("Profile Incomplete, Please complete your profile", 400);
+                }
+            } else {
+                next();
+            }
         } catch (err) {
             throw new ExpressError(err.message, 500);
         }
