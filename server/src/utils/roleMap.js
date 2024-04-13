@@ -1,62 +1,95 @@
 const roleMapping = new Map([
-    [1, "DOCTOR_DASHBOARD"],
-    [2, "PHARMA_DASHBOARD"],
-    [3, "ADMIN_DASHBOARD"],
-    [4, "STOCK_LIST"],
-    [5, "OUT_OF_STOCK"],
-    [6, "ADD_CATEGORY"],
-    [7, "CATEGORY_LIST"],
-    [8, "ADD_MEDICINE"],
-    [9, "MEDICINE_LIST"],
-    [10, "EXPIRED_MEDICINE"],
-    [11, "ADD_PURCHASE"],
-    [12, "PURCHASE_LIST"],
-    [13, "ADD_SUPPLIER"],
-    [14, "SUPPLIER_LIST"],
-    [15, "ADD_PATIENT"],
-    [16, "PATIENT_LIST"],
-    [17, "ADD_PRESCRIPTION"],
-    [18, "PRESCRIPTION_LIST"],
-    [19, "ADD_STAFF"],
-    [20, "STAFF_LIST"],
-    [21, "ADD_SCHEDULE"],
-    [22, "SCHEDULE_LIST"],
-    [23, "ADD_ADMIN"],
-    [24, "ADMIN_LIST"],
-    [25, "DOCTOR_SCHEDULE"],
-    [26, "REQUESTS"],
-    [27, "PATIENT_PROFILE"],
-    [28, "STAFF_PROFILE"],
+    // admin routes 
+    ["GET_ADMIN_LIST", ["A"]],
+    ["CREATE_ADMIN", ["A"]],
+    ["UPDATE_ADMIN", ["A"]],
+    ["DELETE_ADMIN", ["A"]],
+    
+    // category routes
+    ["GET_CATEGORY_LIST", ["D", "A", "PM"]],
+    ["GET_CATEGORY", ["D", "A", "PM"]],
+    ["CREATE_CATEGORY", ["D", "A", "PM"]],
+    ["UPDATE_CATEGORY", ["D", "A", "PM"]],
+    ["DELETE_CATEGORY", ["D", "A", "PM"]],
+    
+    // checkup routes
+    ["GET_CHECKUP_LIST", ["D", "A", "PM"]],
+    ["GET_CHECKUP_DETAILS", ["D", "A", "PM"]],
+    ["CREATE_CHECKUP", ["D", "A", "PM"]],
+    ["UPDATE_CHECKUP", ["D", "A", "PM"]],
+    ["DELETE_CHECKUP", ["D", "A", "PM"]],
+
+    // dashboard routes
+    ["GET_CHECKUP_STAT", ["D", "A", "PM"]],
+    ["GET_TOP_MEDICINE_STAT", ["D", "A", "PM"]],
+
+    // medicine routes
+    ["GET_MEDICINE_LIST", ["D", "A", "PM"]],
+    ["GET_EXPIRED_MEDICINE", ["D", "A", "PM"]],
+    ["CREATE_MEDICINE_LIST", ["D", "A", "PM"]],
+    ["UPDATE_MEDICINE_LIST", ["D", "A", "PM"]],
+    ["DELETE_MEDICINE_LIST", ["D", "A", "PM"]],
+    
+    // patient routes
+    ["GET_PATIENT_LIST", ["D", "A", "PM"]],
+    ["CREATE_PATIENT", ["D", "A", "PM"]],
+    ["UPDATE_PATIENT", ["D", "A", "PM"]],
+    ["DELETE_PATIENT", ["D", "A", "PM"]],
+
+    // purchase routes
+    ["GET_PURCHASE_LIST", ["A", "PM"]],
+    ["GET_PURCHASE_DETAILS", ["A", "PM"]],
+    ["CREATE_PURCHASE_LIST", ["A", "PM"]],
+    ["UPDATE_PURCHASE_LIST", ["A", "PM"]],
+    ["DELETE_PURCHASE_LIST", ["A", "PM"]],
+
+    // request routes
+    ["GET_ALL_REQUESTS", ["A"]],
+    ["GET_REQUEST", ["A"]],
+
+    // schedule routes 
+    ["GET_SCHEDULE_LIST", ["D", "A", "PM", "P"]],
+    ["CREATE_SCHEDULE", ["D", "A", "PM"]],
+    ["UPDATE_SCHEDULE", ["D", "A", "PM"]],
+    ["DELETE_SCHEDULE", ["D", "A", "PM"]],
+    
+    // staff routes 
+    ["GET_STAFF_LIST", ["D", "A", "PM"]],
+    ["CREATE_STAFF", ["D", "A", "PM"]],
+    ["UPDATE_STAFF", ["D", "A", "PM"]],
+    ["DELETE_STAFF", ["D", "A", "PM"]],
+    
+    // stock routes 
+    ["GET_TOTAL_STOCK", ["D", "A", "PM"]],
+    ["GET_AVAILABLE_STOCK", ["D", "A", "PM"]],
+    ["GET_OUT_OF_STOCK", ["D", "A", "PM"]],
+    
+    // supplier routes 
+    ["GET_SUPPLIER_LIST", ["A", "PM"]],
+    ["CREATE_SUPPLIER", ["A", "PM"]],
+    ["UPDATE_SUPPLIER", ["A", "PM"]],
+    ["DELETE_SUPPLIER", ["A", "PM"]],
 ]);
 
-const roleMap = (role) => {
-    if (role !== "ADMIN" && role !== "DOCTOR" && role !== "PARAMEDICAL" && role !== "PATIENT") {
-        return [];
-    }
-    const admin = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    const patient = [14];
-    const paramedical = [2, 4, 5, 6, 7, 8, 9, 10, 11];
-    const doctor = [1, 4, 5, 8, 9, 10, 11];
+const numToRoleMapping = new Map([
+    ["A", "ADMIN"],
+    ["D", "DOCTOR"],
+    ["PM", "PARAMEDICAL"],
+    ["P", "PATIENT"]
+]);
 
+const roleMap = (route) => {
     let roleArr = [];
-
-    switch (role) {
-        case "ADMIN":
-            roleArr = admin.map(it => roleMapping.get(it));
-            break;
-        case "DOCTOR":
-            roleArr = doctor.map(it => roleMapping.get(it));
-            break;
-        case "PARAMEDICAL":
-            roleArr = paramedical.map(it => roleMapping.get(it));
-            break;
-        case "PATIENT":
-            roleArr = patient.map(it => roleMapping.get(it));
-            break;
-        default:
-            break;
+    
+    if (!roleMapping.has(route)) {
+        return roleArr;
     }
 
+    roleArr = roleMapping.get(route);
+    roleArr = roleArr.map(role => {
+        return numToRoleMapping.get(role); 
+    });
+     
     return roleArr;
 };
 

@@ -11,16 +11,14 @@ const {
 //schedule routes
 
 const authMiddleware = require("../middlewares/authMiddleware");
-const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap.js");
 
 router.get('/',
-    authMiddleware(["PATIENT", "DOCTOR", "PARAMEDICAL", "ADMIN"]),
+    authMiddleware(roleMap("GET_SCHEDULE_LIST")),
     catchAsync(getScheduleList));
 
-router.use(authMiddleware(roles));
-
-router.post('/', validateSchedule, catchAsync(createSchedule));
-router.put('/:id', validateSchedule, catchAsync(updateSchedule));
-router.delete('/:id', catchAsync(deleteSchedule));
+router.post('/', authMiddleware(roleMap("CREATE_SCHEDULE")), validateSchedule, catchAsync(createSchedule));
+router.put('/:id', authMiddleware(roleMap("UPDATE_SCHEDULE")), validateSchedule, catchAsync(updateSchedule));
+router.delete('/:id', authMiddleware(roleMap("DELETE_SCHEDULE")), catchAsync(deleteSchedule));
 
 module.exports = router;

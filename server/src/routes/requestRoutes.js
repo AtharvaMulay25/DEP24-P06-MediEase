@@ -6,11 +6,9 @@ const {getAllRequests, getRequest} = require("../controllers/requestController.j
 const catchAsync = require('../utils/catchAsync');
 
 const authMiddleware = require("../middlewares/authMiddleware");
-const roles = ["ADMIN"];
+const roleMap = require("../utils/roleMap.js");
 
-router.use(authMiddleware(roles));
-
-router.get("/", catchAsync(getAllRequests));
-router.get("/:id", catchAsync(getRequest));
+router.get("/", authMiddleware(roleMap("GET_ALL_REQUESTS")), catchAsync(getAllRequests));
+router.get("/:id", authMiddleware(roleMap("GET_REQUEST")), catchAsync(getRequest));
 
 module.exports = router;

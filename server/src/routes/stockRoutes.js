@@ -12,13 +12,11 @@ const {
 } = require('../controllers/stockController');
 
 const authMiddleware = require("../middlewares/authMiddleware");
-const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap.js");
 
-router.use(authMiddleware(roles));
-
-router.get('/', catchAsync(getTotalStock));
-router.get('/available', catchAsync(getAvailableStock));
-router.get('/out', catchAsync(getOutOfStock));
+router.get('/', authMiddleware(roleMap("GET_TOTAL_STOCK")),catchAsync(getTotalStock));
+router.get('/available', authMiddleware(roleMap("GET_AVAILABLE_STOCK")), catchAsync(getAvailableStock));
+router.get('/out', authMiddleware(roleMap("GET_OUT_OF_STOCK")), catchAsync(getOutOfStock));
 // router.post('/create', createStockList);
 // router.put('/', updateStockList);
 // router.delete('/', deleteStockList);

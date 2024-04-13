@@ -11,14 +11,12 @@ const {
 } = require('../controllers/checkupController');
 
 const authMiddleware = require("../middlewares/authMiddleware");
-const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap.js");
 
-router.use(authMiddleware(roles));
-
-router.get('/:id', catchAsync(getCheckupDetails));
-router.get('/', catchAsync(getCheckupList));
-router.post('/', validateCheckup, catchAsync(createCheckup));
+router.get('/:id', authMiddleware(roleMap("GET_CHECKUP_DETAILS")),  catchAsync(getCheckupDetails));
+router.get('/', authMiddleware(roleMap("GET_CHECKUP_LIST")),  catchAsync(getCheckupList));
+router.post('/', authMiddleware(roleMap("CREATE_CHECKUP")),  validateCheckup, catchAsync(createCheckup));
 // router.put('/:id', validateCheckup, catchAsync(updatePurchaseList));
-router.delete('/:id', catchAsync(deleteCheckup));
+router.delete('/:id', authMiddleware(roleMap("DELETE_CHECKUP")),  catchAsync(deleteCheckup));
 
 module.exports = router;

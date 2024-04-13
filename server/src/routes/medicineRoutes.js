@@ -13,14 +13,13 @@ const { validateMedicine} = require('../middlewares');
 const catchAsync = require('../utils/catchAsync');
 
 const authMiddleware = require("../middlewares/authMiddleware");
-const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap.js");
 
-router.use(authMiddleware(roles));
 //medicines routes
-router.get('/', catchAsync(getMedicineList));
-router.get('/expired', catchAsync(getExpiredMedicines));
-router.post('/', validateMedicine, catchAsync(createMedicineList));
-router.put('/:id', validateMedicine, catchAsync(updateMedicineList));
-router.delete('/:id', catchAsync(deleteMedicineList));
+router.get('/', authMiddleware(roleMap("GET_MEDICINE_LIST")), catchAsync(getMedicineList));
+router.get('/expired', authMiddleware(roleMap("GET_EXPIRED_MEDICINE")),  catchAsync(getExpiredMedicines));
+router.post('/', authMiddleware(roleMap("CREATE_MEDICINE_LIST")),  validateMedicine, catchAsync(createMedicineList));
+router.put('/:id', authMiddleware(roleMap("UPDATE_MEDICINE_LIST")),  validateMedicine, catchAsync(updateMedicineList));
+router.delete('/:id', authMiddleware(roleMap("DELETE_MEDICINE_LIST")),  catchAsync(deleteMedicineList));
 
 module.exports = router;

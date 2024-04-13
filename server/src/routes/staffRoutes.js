@@ -11,13 +11,11 @@ const {
 } = require('../controllers/staffController');
 
 const authMiddleware = require("../middlewares/authMiddleware");
-const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap.js");
 
-router.use(authMiddleware(roles));
-
-router.get('/', catchAsync(getStaffList));
-router.post('/', validateStaff, catchAsync(createStaff));
-router.put('/:id', validateStaff, catchAsync(updateStaff));
-router.delete('/:id', catchAsync(deleteStaff));
+router.get('/', authMiddleware(roleMap("GET_STAFF_LIST")), catchAsync(getStaffList));
+router.post('/', authMiddleware(roleMap("CREATE_STAFF")), validateStaff, catchAsync(createStaff));
+router.put('/:id', authMiddleware(roleMap("UPDATE_STAFF")), validateStaff, catchAsync(updateStaff));
+router.delete('/:id', authMiddleware(roleMap("DELETE_STAFF")), catchAsync(deleteStaff));
 
 module.exports = router;
