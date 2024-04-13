@@ -113,10 +113,10 @@ const Layout = ({ children }) => {
     onMouseLeave: () => setOpenMenu(false),
   }
 
-  const hasRequiredRole = (roleArr, desiredRole) => {
+  const hasRequiredRole = (routesArr, desiredRoutes) => {
     let containsAtLeastOneRole = false;
-    desiredRole.forEach(role => {
-      if (roleArr.includes(role)) {
+    desiredRoutes.forEach(role => {
+      if (routesArr.includes(role)) {
         containsAtLeastOneRole = true;
       }
     })
@@ -517,7 +517,7 @@ const Layout = ({ children }) => {
                   </AccordionBody>
                 )}
               </Accordion>}
-              {hasRequiredRole(roleArr, ["ADD_PATIENT"]) &&  <Accordion
+              {hasRequiredRole(roleArr, ["ADD_PATIENT", "PATIENT_LIST"]) &&  <Accordion
                 open={open === 4}
                 icon={
                   !(isCollapsed & !isHovered) && (

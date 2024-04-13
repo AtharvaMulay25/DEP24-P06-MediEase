@@ -93,4 +93,4 @@ const roleMap = (route) => {
     return roleArr;
 };
 
-export default roleMap;
+module.exports = roleMap;
