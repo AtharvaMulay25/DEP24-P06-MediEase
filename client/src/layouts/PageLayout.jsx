@@ -44,7 +44,7 @@ const Layout = ({ children }) => {
   const [roleArr, setRoleArr] = useState([]);
 
   useEffect(() => {
-    setRoleArr(roleMap(userRole));  
+    setRoleArr(roleMap(userRole));
   }, [userRole]);
 
   const [open, setOpen] = useState(0);
@@ -61,7 +61,7 @@ const Layout = ({ children }) => {
     setIsCollapsed((prevState) => !prevState);
   };
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     await logout();
     toast.success("Logged Out Successfully");
     setTimeout(() => {
@@ -94,7 +94,7 @@ const Layout = ({ children }) => {
   );
 
   useEffect(() => {
-    setRoleArr(roleMap(userRole)); 
+    setRoleArr(roleMap(userRole));
   }, [userRole]);
 
   useEffect(() => {
@@ -111,6 +111,16 @@ const Layout = ({ children }) => {
   const triggers = {
     onMouseEnter: () => setOpenMenu(true),
     onMouseLeave: () => setOpenMenu(false),
+  }
+
+  const hasRequiredRole = (roleArr, desiredRole) => {
+    let containsAtLeastOneRole = false;
+    desiredRole.forEach(role => {
+      if (roleArr.includes(role)) {
+        containsAtLeastOneRole = true;
+      }
+    })
+    return containsAtLeastOneRole;
   }
 
   return (
@@ -165,7 +175,7 @@ const Layout = ({ children }) => {
                     open={openMenu}
                     handler={setOpenMenu}
                   >
-                    <MenuHandler { ... triggers }>
+                    <MenuHandler {...triggers}>
                       <div className="flex w-full">
                         <UserCircleIcon className="h-8 w-8 mr-4" />
                         <div>
@@ -182,7 +192,7 @@ const Layout = ({ children }) => {
                         </div>
                       </div>
                     </MenuHandler>
-                    <MenuList { ... triggers }>
+                    <MenuList {...triggers}>
                       <MenuItem onClick={() => navigate("/profile")} className="flex gap-2">
                         <UserCircleIcon className="w-4 h-4" />
                         My Profile
@@ -250,7 +260,7 @@ const Layout = ({ children }) => {
                   )}
                 </li>
               </a>}
-              {roleArr.includes("ADMIN") && <a href="/requests">
+              {roleArr.includes("REQUESTS") && <a href="/requests">
                 <li
                   className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
                         hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
@@ -274,16 +284,15 @@ const Layout = ({ children }) => {
                   )}
                 </li>
               </a>}
-              {roleArr.includes("STOCK") && <Accordion
+              {hasRequiredRole(roleArr, ["STOCK_LIST", "OUT_OF_STOCK"]) && <Accordion
                 open={open === 9}
                 icon={
                   !(isCollapsed & !isHovered) && (
                     <ChevronDownIcon
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 9 ? "rotate-180" : ""
-                      }`}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 9 ? "rotate-180" : ""
+                        }`}
                     />
                   )
                 }
@@ -312,105 +321,105 @@ const Layout = ({ children }) => {
                 {!(isCollapsed & !isHovered) && (
                   <AccordionBody className="py-1">
                     <List className="p-0" style={{ color: "#f1ffea" }}>
-                      <ListItem
+                      {hasRequiredRole(roleArr, ["STOCK_LIST"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/stock")}
                       >
                         Stock List
-                      </ListItem>
-                      <ListItem
+                      </ListItem>}
+                      {hasRequiredRole(roleArr, ["OUT_OF_STOCK"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/stock/out")}
                       >
                         Out of Stock
-                      </ListItem>
+                      </ListItem>}
                     </List>
                   </AccordionBody>
                 )}
               </Accordion>}
-              {roleArr.includes("MEDICINE") && <Accordion
+              {hasRequiredRole(roleArr, [
+                "ADD_CATEGORY", "CATEGORY_LIST", "ADD_MEDICINE", "MEDICINE_LIST", "EXPIRED_MEDICINE"
+              ]) && <Accordion
                 open={open === 1}
                 icon={
                   !(isCollapsed & !isHovered) && (
                     <ChevronDownIcon
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 1 ? "rotate-180" : ""
-                      }`}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""
+                        }`}
                     />
                   )
                 }
               >
-                <ListItem className="p-0" selected={open === 1}>
-                  <AccordionHeader
-                    onClick={() => handleOpen(1)}
-                    className="border-b-0 p-3"
-                  >
-                    <ListItemPrefix>
-                      <GiMedicines
-                        className="h-5 w-5"
-                        style={{ color: "#f1ffea" }}
-                      />
-                    </ListItemPrefix>
-                    {!(isCollapsed & !isHovered) && (
-                      <Typography
-                        style={{ color: "#f1ffea" }}
-                        className="mr-auto font-normal"
-                      >
-                        Medicine
-                      </Typography>
-                    )}
-                  </AccordionHeader>
-                </ListItem>
-                {!(isCollapsed & !isHovered) && (
-                  <AccordionBody className="py-1">
-                    <List className="p-0" style={{ color: "#f1ffea" }}>
-                      <ListItem
-                        className="ml-9"
-                        onClick={() => navigate("/medicine/category/add")}
-                      >
-                        Add Category
-                      </ListItem>
-                      <ListItem
-                        className="ml-9"
-                        onClick={() => navigate("/medicine/category")}
-                      >
-                        Category List
-                      </ListItem>
-                      <ListItem
-                        className="ml-9"
-                        onClick={() => navigate("/medicine/add")}
-                      >
-                        Add Medicine
-                      </ListItem>
-                      <ListItem
-                        className="ml-9"
-                        onClick={() => navigate("/medicine")}
-                      >
-                        Medicine List
-                      </ListItem>
-                      <ListItem
-                        className="ml-9"
-                        onClick={() => navigate("/medicine/expired")}
-                      >
-                        Expired Medicines
-                      </ListItem>
-                    </List>
-                  </AccordionBody>
-                )}
-              </Accordion>}
+                  <ListItem className="p-0" selected={open === 1}>
+                    <AccordionHeader
+                      onClick={() => handleOpen(1)}
+                      className="border-b-0 p-3"
+                    >
+                      <ListItemPrefix>
+                        <GiMedicines
+                          className="h-5 w-5"
+                          style={{ color: "#f1ffea" }}
+                        />
+                      </ListItemPrefix>
+                      {!(isCollapsed & !isHovered) && (
+                        <Typography
+                          style={{ color: "#f1ffea" }}
+                          className="mr-auto font-normal"
+                        >
+                          Medicine
+                        </Typography>
+                      )}
+                    </AccordionHeader>
+                  </ListItem>
+                  {!(isCollapsed & !isHovered) && (
+                    <AccordionBody className="py-1">
+                      <List className="p-0" style={{ color: "#f1ffea" }}>
+                        {hasRequiredRole(roleArr, ["ADD_CATEGORY"]) && <ListItem
+                          className="ml-9"
+                          onClick={() => navigate("/medicine/category/add")}
+                        >
+                          Add Category
+                        </ListItem>}
+                        {hasRequiredRole(roleArr, ["CATEGORY_LIST"]) && <ListItem
+                          className="ml-9"
+                          onClick={() => navigate("/medicine/category")}
+                        >
+                          Category List
+                        </ListItem>}
+                        {hasRequiredRole(roleArr, ["ADD_MEDICINE"]) && <ListItem
+                          className="ml-9"
+                          onClick={() => navigate("/medicine/add")}
+                        >
+                          Add Medicine
+                        </ListItem>}
+                        {hasRequiredRole(roleArr, ["MEDICINE_LIST"]) && <ListItem
+                          className="ml-9"
+                          onClick={() => navigate("/medicine")}
+                        >
+                          Medicine List
+                        </ListItem>}
+                        {hasRequiredRole(roleArr, ["EXPIRED_MEDICINE"]) && <ListItem
+                          className="ml-9"
+                          onClick={() => navigate("/medicine/expired")}
+                        >
+                          Expired Medicines
+                        </ListItem>}
+                      </List>
+                    </AccordionBody>
+                  )}
+                </Accordion>}
 
-              {roleArr.includes("PURCHASE") && <Accordion
+              {hasRequiredRole(roleArr, ["ADD_PURCHASE", "PURCHASE_LIST"]) && <Accordion
                 open={open === 2}
                 icon={
                   !(isCollapsed & !isHovered) && (
                     <ChevronDownIcon
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 2 ? "rotate-180" : ""
-                      }`}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 2 ? "rotate-180" : ""
+                        }`}
                     />
                   )
                 }
@@ -439,32 +448,31 @@ const Layout = ({ children }) => {
                 {!(isCollapsed & !isHovered) && (
                   <AccordionBody className="py-1">
                     <List className="p-0" style={{ color: "#f1ffea" }}>
-                      <ListItem
+                      {hasRequiredRole(roleArr, ["ADD_PURCHASE"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/purchase/add")}
                       >
                         Add Purchase
-                      </ListItem>
-                      <ListItem
+                      </ListItem>}
+                      {hasRequiredRole(roleArr, ["PURCHASE_LIST"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/purchase")}
                       >
                         Purchase List
-                      </ListItem>
+                      </ListItem>}
                     </List>
                   </AccordionBody>
                 )}
               </Accordion>}
-              {roleArr.includes("SUPPLIER") && <Accordion
+              {hasRequiredRole(roleArr, ["ADD_SUPPLIER", "SUPPLIER_LIST"]) && <Accordion
                 open={open === 3}
                 icon={
                   !(isCollapsed & !isHovered) && (
                     <ChevronDownIcon
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 3 ? "rotate-180" : ""
-                      }`}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 3 ? "rotate-180" : ""
+                        }`}
                     />
                   )
                 }
@@ -493,32 +501,31 @@ const Layout = ({ children }) => {
                 {!(isCollapsed & !isHovered) && (
                   <AccordionBody className="py-1">
                     <List className="p-0" style={{ color: "#f1ffea" }}>
-                      <ListItem
+                      {hasRequiredRole(roleArr, ["ADD_SUPPLIER"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/supplier/add")}
                       >
                         Add Supplier
-                      </ListItem>
-                      <ListItem
+                      </ListItem>}
+                      {hasRequiredRole(roleArr, ["SUPPLIER_LIST"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/supplier")}
                       >
                         Supplier List
-                      </ListItem>
+                      </ListItem>}
                     </List>
                   </AccordionBody>
                 )}
               </Accordion>}
-              {roleArr.includes("PATIENT") && <Accordion
+              {hasRequiredRole(roleArr, ["ADD_PATIENT"]) &&  <Accordion
                 open={open === 4}
                 icon={
                   !(isCollapsed & !isHovered) && (
                     <ChevronDownIcon
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 4 ? "rotate-180" : ""
-                      }`}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 4 ? "rotate-180" : ""
+                        }`}
                     />
                   )
                 }
@@ -547,32 +554,31 @@ const Layout = ({ children }) => {
                 {!(isCollapsed & !isHovered) && (
                   <AccordionBody className="py-1">
                     <List className="p-0" style={{ color: "#f1ffea" }}>
-                      <ListItem
+                      {hasRequiredRole(roleArr, ["ADD_PATIENT"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/patient/add")}
                       >
                         Add Patient
-                      </ListItem>
-                      <ListItem
+                      </ListItem>}
+                      {hasRequiredRole(roleArr, ["PATIENT_LIST"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/patient")}
                       >
                         Patient List
-                      </ListItem>
+                      </ListItem>}
                     </List>
                   </AccordionBody>
                 )}
               </Accordion>}
-              {roleArr.includes("PRESCRIPTION") && <Accordion
+              {hasRequiredRole(roleArr, ["ADD_PRESCRIPTION", "PRESCRIPTION_LIST"]) && <Accordion
                 open={open === 5}
                 icon={
                   !(isCollapsed & !isHovered) && (
                     <ChevronDownIcon
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 5 ? "rotate-180" : ""
-                      }`}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 5 ? "rotate-180" : ""
+                        }`}
                     />
                   )
                 }
@@ -601,32 +607,31 @@ const Layout = ({ children }) => {
                 {!(isCollapsed & !isHovered) && (
                   <AccordionBody className="py-1">
                     <List className="p-0" style={{ color: "#f1ffea" }}>
-                      <ListItem
+                      {hasRequiredRole(roleArr, ["ADD_PRESCRIPTION"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/prescription/add")}
                       >
                         Add Prescription
-                      </ListItem>
-                      <ListItem
+                      </ListItem>}
+                      {hasRequiredRole(roleArr, ["PRESCRIPTION_LIST"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/prescription")}
                       >
                         Prescription List
-                      </ListItem>
+                      </ListItem>}
                     </List>
                   </AccordionBody>
                 )}
               </Accordion>}
-              {roleArr.includes("STAFF") && <Accordion
+              {hasRequiredRole(roleArr, ["ADD_STAFF", "STAFF_LIST"]) && <Accordion
                 open={open === 6}
                 icon={
                   !(isCollapsed & !isHovered) && (
                     <ChevronDownIcon
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 6 ? "rotate-180" : ""
-                      }`}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 6 ? "rotate-180" : ""
+                        }`}
                     />
                   )
                 }
@@ -655,32 +660,31 @@ const Layout = ({ children }) => {
                 {!(isCollapsed & !isHovered) && (
                   <AccordionBody className="py-1">
                     <List className="p-0" style={{ color: "#f1ffea" }}>
-                      <ListItem
+                      {hasRequiredRole(roleArr, ["ADD_STAFF"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/staff/add")}
                       >
                         Add Staff
-                      </ListItem>
-                      <ListItem
+                      </ListItem>}
+                      {hasRequiredRole(roleArr, ["STAFF_LIST"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/staff")}
                       >
                         Staff List
-                      </ListItem>
+                      </ListItem>}
                     </List>
                   </AccordionBody>
                 )}
               </Accordion>}
-              {roleArr.includes("SCHEDULE") && <Accordion
+              {hasRequiredRole(roleArr, ["ADD_SCHEDULE", "SCHEDULE_LIST"]) && <Accordion
                 open={open === 7}
                 icon={
                   !(isCollapsed & !isHovered) && (
                     <ChevronDownIcon
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 7 ? "rotate-180" : ""
-                      }`}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 7 ? "rotate-180" : ""
+                        }`}
                     />
                   )
                 }
@@ -709,32 +713,31 @@ const Layout = ({ children }) => {
                 {!(isCollapsed & !isHovered) && (
                   <AccordionBody className="py-1">
                     <List className="p-0" style={{ color: "#f1ffea" }}>
-                      <ListItem
+                      {hasRequiredRole(roleArr, ["ADD_SCHEDULE"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/schedule/add")}
                       >
                         Add Schedule
-                      </ListItem>
-                      <ListItem
+                      </ListItem>}
+                      {hasRequiredRole(roleArr, ["SCHEDULE_LIST"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/schedule")}
                       >
                         Schedule List
-                      </ListItem>
+                      </ListItem>}
                     </List>
                   </AccordionBody>
                 )}
               </Accordion>}
-              {roleArr.includes("ADMIN") && <Accordion
+              {hasRequiredRole(roleArr, ["ADD_ADMIN", "ADMIN_LIST"]) && <Accordion
                 open={open === 8}
                 icon={
                   !(isCollapsed & !isHovered) && (
                     <ChevronDownIcon
                       style={{ color: "#f1ffea" }}
                       strokeWidth={2.5}
-                      className={`mx-auto h-4 w-4 transition-transform ${
-                        open === 8 ? "rotate-180" : ""
-                      }`}
+                      className={`mx-auto h-4 w-4 transition-transform ${open === 8 ? "rotate-180" : ""
+                        }`}
                     />
                   )
                 }
@@ -763,18 +766,18 @@ const Layout = ({ children }) => {
                 {!(isCollapsed & !isHovered) && (
                   <AccordionBody className="py-1">
                     <List className="p-0" style={{ color: "#f1ffea" }}>
-                      <ListItem
+                      {hasRequiredRole(roleArr, ["ADD_ADMIN"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/admin/add")}
                       >
                         Add Admin
-                      </ListItem>
-                      <ListItem
+                      </ListItem>}
+                      {hasRequiredRole(roleArr, ["ADMIN_LIST"]) && <ListItem
                         className="ml-9"
                         onClick={() => navigate("/admin")}
                       >
                         Admin List
-                      </ListItem>
+                      </ListItem>}
                     </List>
                   </AccordionBody>
                 )}
@@ -932,7 +935,7 @@ const Layout = ({ children }) => {
         </footer>
       </div>
     </div>
-    
+
   );
 };
 
