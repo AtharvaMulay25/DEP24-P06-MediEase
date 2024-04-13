@@ -1,20 +1,22 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "sonner";
+import { apiRoutes } from "../utils/apiRoutes";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const TABLE_HEAD = {
   id: "#",
-  doctor: "Doctor",
+  doctorName: "Doctor",
+  staffName: "Paramedical Staff",
   date: "Date",
-  temperature: "Temperature",
-  bloodPressure: "Blood Pressure",
   diagnosis: "Diagnosis",
   symptoms: "Symptoms",
   action: "Action",
 };
 
-import MockData from "../assets/MOCK_DATA_prescription.json";
 import Layout from "../layouts/PageLayout";
 
 const getMedicalHistory = async (email) => {
@@ -33,7 +35,7 @@ const getMedicalHistory = async (email) => {
 
 export default function MedicalHistory() {
   const navigate = useNavigate();
-  const { userRole, userName, userEmail } = useAuthContext();
+  const { userEmail } = useAuthContext();
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState([]);
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function MedicalHistory() {
     }
   };
   const handleHistoryDetail = async (e, id, idx) => {
-    console.log("Checkup Detail", id);
+    console.log("History Detail", id);
     navigate(`/history/${id}^${idx}`);
   };
   return (
@@ -78,11 +80,14 @@ export default function MedicalHistory() {
           <SortableTable
             tableHead={TABLE_HEAD}
             title="Medical History"
-            data={MockData}
-            detail="See your medical history."
+            data={history}
+            detail="See information about all previous checkups."
             text=""
-            handleDelete={handleMedicalHistoryDelete}
-            searchKey="doctor"
+            addLink=""
+            handleDelete={handleHistoryDelete}
+            searchKey="doctorName"
+            handleDetail={handleHistoryDetail}
+            detailsFlag={true}
           />
         </Layout>
       )}
