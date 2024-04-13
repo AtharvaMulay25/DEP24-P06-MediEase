@@ -22,7 +22,7 @@ const profileMiddleware = (completeProfileAssert = false) => {
                     },
                 });
 
-                if (!patientExists) {
+                if (!patientExists  || patientExists.status === "INACTIVE") {
                     // throw new ExpressError("Patient Profile Incomplete, Please complete your profile", 400);
                     req.completeProfile = false;
                 }
@@ -37,7 +37,7 @@ const profileMiddleware = (completeProfileAssert = false) => {
                     },
                 });
 
-                if (!staffExists) {
+                if (!staffExists || staffExists.status === "INACTIVE") {
                     // const errMsg = `${role === "PARAMEDICAL" ? "Paramedical": "Doctor"} Profile Incomplete, Please complete your profile`;
                     // throw new ExpressError(errMsg, 400);
                     req.completeProfile = false;

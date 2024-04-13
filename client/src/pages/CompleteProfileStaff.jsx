@@ -19,7 +19,7 @@ import Cookies from "js-cookie";
 
 export default function CompleteProfileStaff() {
   const navigate = useNavigate();
-  const { userName, userEmail, userRole } = useAuthContext();
+  const { userName, userEmail, userRole, dispatch } = useAuthContext();
   const departments = ["Ayurvedic", "Gynecology", "Homeopathy"];
   const roles = ["Doctor", "Paramedical Staff"];
 
@@ -67,10 +67,11 @@ export default function CompleteProfileStaff() {
         })
 
         setTimeout(() => {
-          navigate("/");
+          navigate(`/${userRole === "PARAMEDICAL" ? "pharmadashboard" : "doctordashboard"}`);
         }, 1000);
       }
     } catch (error) {
+      console.log(error);
       console.error(
         `ERROR (create-staff-record): ${error?.response?.data?.message}`
       );
@@ -144,7 +145,7 @@ export default function CompleteProfileStaff() {
                     ))}
                   </MaterialSelect>
                 </div>
-                <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+                {userRole === "DOCTOR" && <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                   <div className="flex mr-2 md:w-72 w-full justify-end">
                     <label htmlFor="mobileNo">Department :</label>
                   </div>
@@ -162,7 +163,7 @@ export default function CompleteProfileStaff() {
                       </Option>
                     ))}
                   </MaterialSelect>
-                </div>
+                </div>}
                 <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                   <div className="flex mr-2 w-full md:w-72 justify-end">
                     <label htmlFor="day">

@@ -71,6 +71,7 @@ export default function SignUpPage() {
         Cookies.set("user-role", resData.data.user.role, { expires: 2/24 });
         Cookies.set("user-email", resData.data.user.email, { expires: 2/24 });
         Cookies.set("user-name", resData.data.user.name, { expires: 2/24 });
+        Cookies.set("user-profile-complete", resData.data.user.profileComplete, { expires: 2 / 24 });
 
         // toast.success(response.data.message);
         setToastTimeout("success", response.data.message, 1500);

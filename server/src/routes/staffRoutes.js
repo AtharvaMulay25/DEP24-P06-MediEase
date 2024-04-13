@@ -17,8 +17,8 @@ const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 
 router.use(authMiddleware(roles), profileMiddleware(true));
 
-router.get('/', catchAsync(getStaffList));
 router.post('/', validateStaff, catchAsync(createStaff));
+router.get('/', catchAsync(getStaffList));
 router.put('/:id', validateStaff, catchAsync(updateStaff));
 router.delete('/:id', catchAsync(deleteStaff));
 

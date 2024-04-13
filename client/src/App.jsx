@@ -145,10 +145,13 @@ function App() {
               <DoctorDashboard />
             </ProtectedRoute>
           } />
-          <Route path="/patient/profile" element={
+          {/* <Route path="/patient/profile" element={
             <ProtectedRoute routeName="PATIENT">
               <CompleteProfilePatient />
             </ProtectedRoute>
+          } /> */}
+          <Route path="/patient/profile" element={
+            <CompleteProfilePatient />
           } />
           <Route path="/prescription" element={
             <ProtectedRoute routeName="PRESCRIPTION">
@@ -190,10 +193,13 @@ function App() {
               <AddStaff />
             </ProtectedRoute>
           } />
-          <Route path="/staff/profile" element={
+          {/* <Route path="/staff/profile" element={
             <ProtectedRoute routeName="STAFF">
               <CompleteProfileStaff />
             </ProtectedRoute>
+          } /> */}
+          <Route path="/staff/profile" element={
+            <CompleteProfileStaff />
           } />
           <Route path="/admin" element={
             <ProtectedRoute routeName="ADMIN">

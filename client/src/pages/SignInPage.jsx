@@ -90,7 +90,7 @@ export default function SignInPage() {
       if (userRoleAssert === "ADMIN" || profileCompleteAssert) {
         await asyncTimeout(0, resData.data.user.role);
       } else {
-        navigate(`/profile/${userRoleAssert === "PATIENT" ? "patient" : "staff"}`);
+        navigate(`/${userRoleAssert === "PATIENT" ? "patient" : "staff"}/profile`);
       }
       
     } else {

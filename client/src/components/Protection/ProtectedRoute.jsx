@@ -47,7 +47,7 @@ const ProtectedRoute = ({ children, routeName }) => {
                     else {
                         toast.error("Please complete your profile.");
                         console.log("please complete your profile");
-                        navigate(`/profile/${userRole === "PATIENT" ? "patient" : "staff"}`);
+                        navigate(`/${userRole === "PATIENT" ? "patient" : "staff"}/profile`);
                     }
                 }
             } else {
