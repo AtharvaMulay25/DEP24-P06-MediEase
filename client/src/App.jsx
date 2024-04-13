@@ -48,7 +48,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={!userRole ? <SignInPage /> : <Home />} />
           <Route path="/signup" element={!userRole ? <SignUpPage /> : <Home />} />
-          <Route path="/profile/staff" element={
+          {/* <Route path="/profile/staff" element={
             <ProtectedRoute routeName="STAFF_PROFILE">
               <StaffProfile />
             </ProtectedRoute>
@@ -57,6 +57,13 @@ function App() {
             <ProtectedRoute routeName="PATIENT_PROFILE">
               <PatientProfile />
             </ProtectedRoute>
+          } /> */}
+
+          <Route path="/profile/staff" element={
+            <StaffProfile />
+          } />
+          <Route path="/profile/patient" element={
+            <PatientProfile />
           } />
           <Route path="/pharmadashboard" element={
             <ProtectedRoute routeName="PHARMA_DASHBOARD">

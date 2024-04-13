@@ -18,28 +18,28 @@ const ProtectedRoute = ({ children, routeName }) => {
             console.log("userProfileComplete: ", userProfileComplete);
 
             if (userRole) {
-                setRoleArr(roleMap("ADMIN"));
                 if (userRole === "ADMIN") {
+                    setRoleArr(roleMap("ADMIN"));
                     return;
                 }
 
-                if (routeName === "PATIENT_PROFILE" || routeName === "STAFF_PROFILE") {
-                    console.log("PROFILESS");
-                    console.log("routeName: ", routeName)
-                    console.log("userRole: ", userRole)
-                    if (
-                        (routeName === "PATIENT_PROFILE" && userRole === "PATIENT") ||
-                        (routeName === "STAFF_PROFILE" && (userRole === "DOCTOR" || userRole === "PARAMEDICAL"))
-                    ) {
-                        console.log("YOU ARE ON CORRECT PROFILE");
-                        setRoleArr(roleMap(userRole));
-                        return;
-                    } else {
-                        console.log("YOU ARE ON WRONG PROFILE");
-                        toast.error("Please complete your profile.");
-                        navigate(`/profile/${userRole === "PATIENT" ? "patient" : "staff"}`);
-                    } 
-                }
+                // if (routeName === "PATIENT_PROFILE" || routeName === "STAFF_PROFILE") {
+                //     console.log("PROFILESS");
+                //     console.log("routeName: ", routeName)
+                //     console.log("userRole: ", userRole)
+                //     if (
+                //         (routeName === "PATIENT_PROFILE" && userRole === "PATIENT") ||
+                //         (routeName === "STAFF_PROFILE" && (userRole === "DOCTOR" || userRole === "PARAMEDICAL"))
+                //     ) {
+                //         console.log("YOU ARE ON CORRECT PROFILE");
+                //         setRoleArr(roleMap(userRole));
+                //         return;
+                //     } else {
+                //         console.log("YOU ARE ON WRONG PROFILE");
+                //         toast.error("Please complete your profile.");
+                //         navigate(`/profile/${userRole === "PATIENT" ? "patient" : "staff"}`);
+                //     } 
+                // }
 
                 else {
                     console.log("userProfileComplete: ", userProfileComplete, typeof userProfileComplete);
