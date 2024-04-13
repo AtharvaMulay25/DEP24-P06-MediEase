@@ -11,9 +11,11 @@ const {
 } = require('../controllers/patientController.js');
 
 const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
+
 const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 
-router.use(authMiddleware(roles));
+router.use(authMiddleware(roles), profileMiddleware(true));
 
 router.get('/', catchAsync(getPatientList));
 router.post('/', validatePatient, catchAsync(createPatient));

@@ -34,9 +34,15 @@ export const AuthContextProvider = ({ children }) => {
             const userRole = Cookies.get('user-role');
             const userEmail = Cookies.get('user-email');
             const userName = Cookies.get('user-name');
-            const userProfileComplete = Cookies.get('user-profile-complete');
+            
+            let userProfileComplete = undefined;
+            
+            const userProfile = Cookies.get('user-profile-complete');
+            
+            if (userProfile === "false") userProfileComplete = false;
+            else if (userProfile === "true") userProfileComplete = true;
 
-            if (userRole && userEmail && userName && userProfileComplete) {
+            if (userRole && userEmail && userName) {
                 dispatch({
                     type: "LOGIN",
                     payload: {

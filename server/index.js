@@ -27,12 +27,8 @@ const dashboardRoutes = require('./src/routes/dashboardRoutes.js');
 const checkupRoutes = require("./src/routes/checkupRoutes.js");
 const ExpressError = require("./src/utils/ExpressError.js");
 
-const profileMiddleware = require("./src/middlewares/profileMiddleware.js");
-
 app.use("/api/otp", otpRoutes);
 app.use("/api/auth", authRoutes);
-
-app.use(profileMiddleware(true));
 
 app.use("/api/mail", mailRoutes);
 app.use("/api/requests", requestRoutes);

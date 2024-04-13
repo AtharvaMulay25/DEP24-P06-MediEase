@@ -107,6 +107,32 @@ const login = async (req, res, next) => {
     if (!user || user.status === "INACTIVE") {
       throw new ExpressError("User does not exists", 400);
     }
+    
+    //Checking complete profile assertion 
+    let profileIsComplete = true;
+    if (user.role === "DOCTOR" || user.role === "PARAMEDICAL") {
+        const staffExists = await prisma.staff.findUnique({
+          where: {
+            email,
+          }
+        });
+
+        //TODO: Add the inactive condition also
+        if (!staffExists) {
+          profileIsComplete = false;
+        }
+    } else if (user.role === "PATIENT") {
+        const patientExists = await prisma.patient.findUnique({
+          where: {
+            email,
+          }
+        });
+
+        //TODO: Add the inactive condition also
+        if (!patientExists) {
+          profileIsComplete = false;
+        }
+    }
 
     const token = generateToken(
       {
@@ -139,7 +165,7 @@ const login = async (req, res, next) => {
           email: user.email,
           role: user.role,
           name: user.name,
-          profileComplete: req.completeProfile
+          profileComplete: profileIsComplete
         },
       },
     });

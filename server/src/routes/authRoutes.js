@@ -6,10 +6,8 @@ const { signup, login, logout } = require("../controllers/authController.js");
 const { validateUser } = require("../middlewares");
 const catchAsync = require('../utils/catchAsync');
 
-const profileMiddleware = require("../middlewares/profileMiddleware.js");
-
 router.post("/signup", validateUser, catchAsync(signup));
-router.post("/login", profileMiddleware(), catchAsync(login));
+router.post("/login", catchAsync(login));
 router.get("/logout", catchAsync(logout));
 
 module.exports = router;

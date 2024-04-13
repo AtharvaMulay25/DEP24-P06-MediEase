@@ -13,9 +13,11 @@ const { validateMedicine} = require('../middlewares');
 const catchAsync = require('../utils/catchAsync');
 
 const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
+
 const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 
-router.use(authMiddleware(roles));
+router.use(authMiddleware(roles), profileMiddleware(true));
 //medicines routes
 router.get('/', catchAsync(getMedicineList));
 router.get('/expired', catchAsync(getExpiredMedicines));

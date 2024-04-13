@@ -11,9 +11,11 @@ const {
 } = require('../controllers/checkupController');
 
 const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
+
 const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 
-router.use(authMiddleware(roles));
+router.use(authMiddleware(roles), profileMiddleware(true));
 
 router.get('/:id', catchAsync(getCheckupDetails));
 router.get('/', catchAsync(getCheckupList));
