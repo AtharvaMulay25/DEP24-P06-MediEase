@@ -15,6 +15,7 @@ import Layout from "../layouts/PageLayout";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import {toast} from "sonner";
 import {setToastTimeout} from "../utils/customTimeout"
+// import "../styles/Details.css";
 const TABLE_HEAD = ["Medicine", "Dosage", "Quantity"];
 
 const PrescriptionDetail = () => {

@@ -252,10 +252,7 @@ const createCheckup = async (req, res, next) => {
           );
         }
       }
-      throw new ExpressError(
-        `Failed to update stock for medicines`,
-        404
-      );
+      throw new ExpressError(`Failed to update stock for medicines`, 404);
     }
   }
 
@@ -290,8 +287,61 @@ const createCheckup = async (req, res, next) => {
 // route    DELETE /api/checkup
 // @access  Private (Admin)
 const deleteCheckup = async (req, res, next) => {
-  try {
+  // try {
     const { id } = req.params;
+
+    const checkupRecord = await prisma.checkup.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!checkupRecord) {
+      throw new ExpressError("Prescription Record doesn't exist", 404);
+    }
+
+    const checkupMedicines = await prisma.checkupMedicine.findMany({
+      where: {
+        checkupId: id,
+      },
+    });
+    for (const [idx, medicine] of checkupMedicines.entries()) {
+      const stockRecord = await prisma.stock.findFirst({
+        where: {
+          medicineId: medicine.medicineId,
+        },
+      });
+      if (stockRecord.outQuantity - medicine.quantity < 0) {
+        throw new ExpressError(
+          `Cannot Update Stock for medicine item ${
+            idx + 1
+          } on deleting the Purchase`,
+          401
+        );
+      }
+    }
+    for (const [idx, medicine] of checkupMedicines.entries()) {
+      const stockRecord = await prisma.stock.findFirst({
+        where: {
+          medicineId: medicine.medicineId,
+        },
+      });
+      const updateStockRecord = await prisma.stock.update({
+        where: {
+          id: stockRecord.id,
+        },
+        data: {
+          outQuantity: {
+            decrement: medicine.quantity,
+          },
+          stock: {
+            decrement: medicine.quantity,
+          },
+        },
+      });
+
+      //to rollback when error occurs at any point *******
+    }
 
     const deletedRecords = await prisma.checkupMedicine.deleteMany({
       where: {
@@ -310,25 +360,25 @@ const deleteCheckup = async (req, res, next) => {
       data: deletedRecords,
       message: "Prescription Record deleted successfully",
     });
-  } catch (err) {
-    console.log(`Prescription List Deletion Error : ${err.message}`);
+  // } catch (err) {
+  //   console.log(`Prescription List Deletion Error : ${err.message}`);
 
-    let errMsg =
-      "Deleting Prescription list record failed, Please try again later";
-    let errCode = 500;
+  //   let errMsg =
+  //     "Deleting Prescription list record failed, Please try again later";
+  //   let errCode = 500;
 
-    //record does not exist
-    if (err.code === "P2025") {
-      errMsg = "Record does not exist";
-      errCode = 404;
-    }
+  //   //record does not exist
+  //   if (err.code === "P2025") {
+  //     errMsg = "Record does not exist";
+  //     errCode = 404;
+  //   }
 
-    return res.status(errCode).json({
-      ok: false,
-      data: [],
-      message: errMsg,
-    });
-  }
+  //   return res.status(errCode).json({
+  //     ok: false,
+  //     data: [],
+  //     message: errMsg,
+  //   });
+  // }
 };
 
 module.exports = {

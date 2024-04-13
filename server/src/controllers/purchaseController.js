@@ -69,7 +69,6 @@ const getPurchaseDetails = async (req, res, next) => {
 // route    GET /api/purchase/list
 // @access  Private (Admin)
 const getPurchaseList = async (req, res, next) => {
- 
   const purchaseList = await prisma.purchaseList.findMany({
     include: {
       Purchase: true,
@@ -103,9 +102,7 @@ const getPurchaseList = async (req, res, next) => {
 // route    POST /api/purchase/create
 // @access  Private (Admin)
 const createPurchaseList = async (req, res, next) => {
-  console.log(
-    "inside.."
-  )
+  console.log("inside..");
   const {
     purchaseDate,
     invoiceNo,
@@ -142,10 +139,15 @@ const createPurchaseList = async (req, res, next) => {
     const medicineRecord = await prisma.medicine.findUnique({
       where: {
         id: purchase.medicineId,
-      }
-    })
-    if(!medicineRecord){
-      throw new ExpressError(`Medicine with ID ${purchase.medicineId} does not exist in ITEM ${idx + 1}`, 404);
+      },
+    });
+    if (!medicineRecord) {
+      throw new ExpressError(
+        `Medicine with ID ${purchase.medicineId} does not exist in ITEM ${
+          idx + 1
+        }`,
+        404
+      );
     }
 
     const batchNoRecord = await prisma.purchase.findUnique({
@@ -173,7 +175,7 @@ const createPurchaseList = async (req, res, next) => {
       );
     }
 
-    if(purchase.expDate < purchaseDate){
+    if (purchase.expDate < purchaseDate) {
       throw new ExpressError(
         `Expiry Date cannot be less than Purchase Date in ITEM ${idx + 1}`,
         400
@@ -204,8 +206,7 @@ const createPurchaseList = async (req, res, next) => {
           },
         },
       });
-    }
-    else {
+    } else {
       newStock = await prisma.stock.create({
         data: {
           medicineId: purchase.medicineId,
@@ -214,9 +215,9 @@ const createPurchaseList = async (req, res, next) => {
           outQuantity: 0,
         },
       });
-      //if error in upserting stock 
+      //if error in upserting stock
     }
-    if ((stockRecord && !updateStock) || (!stockRecord && !newStock) ) {
+    if ((stockRecord && !updateStock) || (!stockRecord && !newStock)) {
       //rollback all the previous stock updates
       for (let i = 0; i < idx; i++) {
         const previousPurchase = purchaseItems[i];
@@ -330,45 +331,96 @@ const updatePurchaseList = async (req, res, next) => {
 // route    DELETE /api/purchase/delete
 // @access  Private (Admin)
 const deletePurchaseList = async (req, res, next) => {
-  try {
-    console.log("req.body : ", req.body);
-    const { id } = req.params;
-    console.log("id: ", id);
-
-    const deletedRecords = await prisma.purchase.deleteMany({
-      where: {
-        purchaseListId: id,
-      },
-    });
-    const deletedPuchase = await prisma.purchaseList.delete({
-      where: {
-        id,
-      },
-    });
-
-    return res.status(200).json({
-      ok: true,
-      data: deletedRecord,
-      message: "Puchase List Record deleted successfully",
-    });
-  } catch (err) {
-    console.log(`Purchase List Deletion Error : ${err.message}`);
-
-    let errMsg = "Deleting purchase list record failed, Please try again later";
-    let errCode = 500;
-
-    //record does not exist
-    if (err.code === "P2025") {
-      errMsg = "Record does not exist";
-      errCode = 404;
-    }
-
-    return res.status(errCode).json({
-      ok: false,
-      data: [],
-      message: errMsg,
-    });
+  // try {
+  const { id } = req.params;
+  console.log("id: ", id);
+  const purchaseListRecord = await prisma.purchaseList.findUnique({
+    where: {
+      id,
+    },
+  });
+  if (!purchaseListRecord) {
+    throw new ExpressError("Purchase List Record doesn't exist", 404);
   }
+  const purchaseItems = await prisma.purchase.findMany({
+    where: {
+      purchaseListId: id,
+    },
+  });
+
+  //update the stock here before deleting the purchase
+  for (const [idx, purchase] of purchaseItems.entries()) {
+    const stockRecord = await prisma.stock.findFirst({
+      where: {
+        medicineId: purchase.medicineId,
+      },
+    });
+    if (stockRecord.inQuantity - purchase.quantity < stockRecord.outQuantity) {
+      throw new ExpressError(
+        `Cannot Update Stock for medicine item ${
+          idx + 1
+        } on deleting the Purchase`,
+        401
+      );
+    }
+  }
+
+  for (const [idx, purchase] of purchaseItems.entries()) {
+    const stockRecord = await prisma.stock.findFirst({
+      where: {
+        medicineId: purchase.medicineId,
+      },
+    });
+
+    const updateStockRecord = await prisma.stock.update({
+      where: {
+        id: stockRecord.id,
+      },
+      data: {
+        inQuantity: {
+          decrement: purchase.quantity,
+        },
+        stock: {
+          decrement: purchase.quantity,
+        },
+      },
+    });
+    //to rollback when error occurs at any point *****
+  }
+
+  const deletedRecords = await prisma.purchase.deleteMany({
+    where: {
+      purchaseListId: id,
+    },
+  });
+  const deletedPuchase = await prisma.purchaseList.delete({
+    where: {
+      id,
+    },
+  });
+  return res.status(200).json({
+    ok: true,
+    data: deletedRecords,
+    message: "Puchase List Record deleted successfully",
+  });
+  // } catch (err) {
+  //   console.log(`Purchase List Deletion Error : ${err.message}`);
+
+  //   let errMsg = "Deleting purchase list record failed, Please try again later";
+  //   let errCode = 500;
+
+  //   //record does not exist
+  //   if (err.code === "P2025") {
+  //     errMsg = "Record does not exist";
+  //     errCode = 404;
+  //   }
+
+  //   return res.status(errCode).json({
+  //     ok: false,
+  //     data: [],
+  //     message: errMsg,
+  //   });
+  // }
 };
 
 module.exports = {
