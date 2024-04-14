@@ -45,7 +45,7 @@ const ProtectedRoute = ({ children, routeName }) => {
                     console.log("userProfileComplete: ", userProfileComplete, typeof userProfileComplete);
                     if (userProfileComplete) setRoleArr(roleMap(userRole));
                     else {
-                        toast.error("Please complete your profile.");
+                        toast.error("Please complete your profile to continue.");
                         console.log("please complete your profile");
                         navigate(`/${userRole === "PATIENT" ? "patient" : "staff"}/profile`);
                     }

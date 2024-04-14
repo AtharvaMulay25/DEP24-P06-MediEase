@@ -90,6 +90,7 @@ export default function SignInPage() {
       if (userRoleAssert === "ADMIN" || profileCompleteAssert) {
         await asyncTimeout(0, resData.data.user.role);
       } else {
+        setToastTimeout("error","Please complete your profile to continue.", 1800);
         navigate(`/${userRoleAssert === "PATIENT" ? "patient" : "staff"}/profile`);
       }
       

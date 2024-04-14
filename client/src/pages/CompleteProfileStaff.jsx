@@ -31,7 +31,6 @@ export default function CompleteProfileStaff() {
     email: userEmail,
     mobileNumber: "",
   });
-
   const handleChange = (name, value) => {
     console.log(name, value);
     setFormData((prevData) => ({
