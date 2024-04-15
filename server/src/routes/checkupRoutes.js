@@ -6,6 +6,7 @@ const {validateCheckup} = require('../middlewares');
 const { 
     getCheckupList, 
     getCheckupDetails,
+    getMedicalHistory,
     createCheckup,
     deleteCheckup
 } = require('../controllers/checkupController');
@@ -19,6 +20,7 @@ router.use(authMiddleware(roles), profileMiddleware(true));
 
 router.get('/:id', catchAsync(getCheckupDetails));
 router.get('/', catchAsync(getCheckupList));
+router.get('/', catchAsync(getMedicalHistory));
 router.post('/', validateCheckup, catchAsync(createCheckup));
 // router.put('/:id', validateCheckup, catchAsync(updatePurchaseList));
 router.delete('/:id', catchAsync(deleteCheckup));

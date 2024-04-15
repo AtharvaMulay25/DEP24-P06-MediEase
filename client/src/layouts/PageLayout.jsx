@@ -8,6 +8,7 @@ import {
 import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
 import { LuLogOut } from "react-icons/lu";
+import { FaUserCog, FaExclamation, FaUserEdit, FaNotesMedical } from "react-icons/fa";
 import { FaUserCog, FaExclamation, FaUserEdit } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
