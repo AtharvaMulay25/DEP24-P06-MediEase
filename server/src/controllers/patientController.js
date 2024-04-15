@@ -174,6 +174,15 @@ const updatePatient = async (req, res, next) => {
       },
     });
 
+    const updatedUserRecord = await prisma.user.update({
+      where: {
+        email: updatedRecord.email,
+      },
+      data: {
+        name: updatedRecord.name,
+      },
+    });
+
     // console.log(updatedRecord);
 
     return res.status(200).json({

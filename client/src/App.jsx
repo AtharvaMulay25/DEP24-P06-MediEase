@@ -41,6 +41,7 @@ import UpdateCategory from "./pages/UpdateCategory";
 import UpdateSupplier from "./pages/UpdateSupplier";
 import UpdateSchedule from "./pages/UpdateSchedule";
 import UpdatePatient from "./pages/UpdatePatient";
+import UpdateStaff from "./pages/UpdateStaff";
 // import Toaster from "./components/UI/Toaster";
 
 function App() {
@@ -224,6 +225,11 @@ function App() {
           <Route path="/patient/update/:id" element={
             <ProtectedRoute routeName="PATIENT">
               <UpdatePatient />
+            </ProtectedRoute>
+          } />
+          <Route path="/staff/update/:id" element={
+            <ProtectedRoute routeName="STAFF">
+              <UpdateStaff />
             </ProtectedRoute>
           } />
         </Routes>

@@ -24,6 +24,35 @@ const getStaffList = async (req, res, next) => {
   });
 };
 
+// @desc    Get Single Staff
+// route    GET /api/staff/:id
+// @access  Private (Admin)
+const getStaff = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const staff = await prisma.staff.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    // console.log(staff);
+
+    return res.status(200).json({
+      ok: true,
+      data: staff,
+      message: "Staff retrieved successfully",
+    });
+  } catch (err) {
+    console.log(`Staff Fetching Error : ${err.message}`);
+
+    return res.status(500).json({
+      ok: false,
+      data: [],
+      message: "Fetching Staff failed, Please try again later",
+    });
+  }
+};
+
 // @desc    Create Staff List Records
 // route    POST /api/staff
 // @access  Private (Admin)
@@ -161,6 +190,15 @@ const updateStaff = async (req, res, next) => {
       },
     });
 
+    const updatedUserRecord = await prisma.user.update({
+      where: {
+        email: updatedRecord.email,
+      },
+      data: {
+        name: updatedRecord.name,
+      },
+    });
+
     // console.log(updatedRecord);
 
     return res.status(200).json({
@@ -265,6 +303,7 @@ const deleteStaff = async (req, res, next) => {
 
 module.exports = {
   getStaffList,
+  getStaff,
   createStaff,
   updateStaff,
   deleteStaff,
