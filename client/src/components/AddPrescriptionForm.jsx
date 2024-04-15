@@ -545,7 +545,7 @@ export default function AddPrescriptionForm() {
                               <Input
                                 type="number"
                                 min={1}
-                                value={selectedMedicine?.netQuantity || ""}
+                                value={data['name']?.netQuantity || ""}
                                 disabled
                               />
                             </div>
