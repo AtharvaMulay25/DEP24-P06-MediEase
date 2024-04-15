@@ -20,8 +20,8 @@ const supplierSchema = Joi.object({
   address2: Joi.string().optional(),
   city: Joi.string().optional(),
   state: Joi.string().required(),
-  pinCode: Joi.string().optional(),
-  mobileNumber: Joi.string().required(),
+  pinCode: Joi.number().integer().min(10 ** 5).max(10 ** 6 - 1).optional(),
+  mobileNumber: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
   email: Joi.string().email().optional(),
   //   PurchaseList: Joi.array().items(Joi.object()),
 });
@@ -30,7 +30,7 @@ const supplierSchema = Joi.object({
 const staffSchema = Joi.object({
   name: Joi.string().required().min(3).max(30),
   email: Joi.string().email().required(),
-  mobileNumber: Joi.string().optional(),
+  mobileNumber: Joi.string().length(10).pattern(/^[0-9]+$/).optional(),
   role: Joi.string().valid("DOCTOR", "PARAMEDICAL").required(),
   department: Joi.string()
     .valid("AYURVEDIC", "GYNECOLOGY", "HOMEOPATHY", "OTHERS")
@@ -43,6 +43,7 @@ const staffSchema = Joi.object({
 
 // Staff Schema
 const scheduleSchema = Joi.object({
+  email: Joi.string().email().required(),
   staffId: Joi.string().required(),
   shift: Joi.string().valid("MORNING", "AFTERNOON", "NIGHT").required(),
   day: Joi.string()
@@ -70,18 +71,18 @@ const stockSchema = Joi.object({
 const purchaseSchema = Joi.object({
   // purchaseListId: Joi.string().required(),
   medicineId: Joi.string().required(),
-  mfgDate: Joi.date().iso().optional(),
-  expiryDate: Joi.date().iso().required(),
-  batchNo: Joi.string().required(),
-  quantity: Joi.number().integer().required(),
+  mfgDate: Joi.date().optional(),
+  expiryDate: Joi.date().required(),
+  batchNo: Joi.number().integer().min(1).required(),
+  quantity: Joi.number().integer().min(1).required(),
   //   Medicine: Joi.object().required(),
   //   PurchaseList: Joi.object().required(),
 });
 // PurchaseList Schema
 const purchaseListSchema = Joi.object({
   supplierId: Joi.string().required(),
-  purchaseDate: Joi.date().iso().required(),
-  invoiceNo: Joi.string().required(),
+  purchaseDate: Joi.date().required(),
+  invoiceNo: Joi.number().integer().min(1).required(),
   purchaseDetails: Joi.string().optional(),
   purchaseItems: Joi.array().items(purchaseSchema).required(),
   // Supplier: Joi.object().required(),
@@ -118,7 +119,7 @@ const patientSchema = Joi.object({
     )
     .optional(),
   // dob: Joi.date().iso().required(),
-  age: Joi.number().integer().required(),
+  age: Joi.number().integer().min(1).max(100).required(),
   email: Joi.string().email().required(),
   allergy: Joi.string().optional(),
   bloodGroup: Joi.string().required(),
@@ -133,20 +134,26 @@ const patientSchema = Joi.object({
   //   Checkup: Joi.array().items(Joi.object()),
 });
 
+const checkupMedicinesSchema = Joi.object({
+  medicineId: Joi.string().required(),
+  dosage: Joi.string().optional(),
+  quantity: Joi.number().integer().min(1).required(),
+  // frequency: Joi.string().valid('OD', 'BD', 'SOS', 'TDS').required()
+});
+
 // Checkup Schema
 const checkupSchema = Joi.object({
   patientId: Joi.string().required(),
+  staffEmail: Joi.string().email().required(),
   temperature: Joi.number().optional(),
-  date: Joi.date().iso().required(),
-  bloodPressure: Joi.string().optional(),
+  pulseRate : Joi.number().integer().optional(),
+  spO2: Joi.number().min(0).max(100).optional(),  //is a percentage value
+  bloodPressure: Joi.string().optional(), //mm Hg
+  date: Joi.date().required(),
+  doctorId: Joi.string().optional(),
   symptoms: Joi.string().optional(),
   diagnosis: Joi.string().required(),
-  doctorId: Joi.string().optional(),
-  staffId: Joi.string().required(),
-  Patient: Joi.object().required(),
-  //   Doctor: Joi.object().optional(),
-  //   Staff: Joi.object().required(),
-  //   Medicines: Joi.array().items(Joi.object()),
+  checkupMedicines: Joi.array().items(checkupMedicinesSchema).required()
 });
 
 const sendOtpSchema = Joi.object({
@@ -180,4 +187,5 @@ module.exports = {
   sendOtpSchema,
   verifyOtpSchema,
   userSchema,
+  checkupSchema
 };

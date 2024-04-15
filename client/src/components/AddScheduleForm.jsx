@@ -18,21 +18,22 @@ import { apiRoutes } from "../utils/apiRoutes";
 
 export default function AddScheduleForm() {
   const navigate = useNavigate();
-  
+
   const [staff, setStaff] = useState([]);
   const [selectedStaff, setSelectedStaff] = useState({
+    email: "",
     name: "",
     role: "",
     department: "",
   });
-  
+
   const [formData, setFormData] = useState({
     day: "",
     shift: "",
   });
 
   const handleStaffChange = (selectedStaff) => {
-    // console.log("selectedstaff : ", selectedStaff);
+    console.log("selectedstaff : ", selectedStaff);
     setSelectedStaff(selectedStaff);
     // setFormData((prevData) => ({
     //   ...prevData,
@@ -42,14 +43,20 @@ export default function AddScheduleForm() {
 
   const fetchStaffList = async () => {
     try {
-      const response = await axios.get(apiRoutes.staff);
-      const staffList = response.data.data; 
+      const response = await axios.get(apiRoutes.staff, {
+        withCredentials: true
+      });
+      const staffList = response.data.data;
 
       // console.log("staffList : ", staffList);
       setStaff(staffList);
     } catch (error) {
-      console.error(`ERROR (fetch-staff-add-schedule): ${error?.response?.data?.message}`);
-      toast.error(error?.response?.data?.message || 'Failed to fetch Staff List');
+      console.error(
+        `ERROR (fetch-staff-add-schedule): ${error?.response?.data?.message}`
+      );
+      toast.error(
+        error?.response?.data?.message || "Failed to fetch Staff List"
+      );
     }
   };
 
@@ -70,30 +77,28 @@ export default function AddScheduleForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log("selected staff : ", selectedStaff);
-    
+
     const data = {
-      staffId: selectedStaff.value.id,
+      email: selectedStaff?.value?.email || "", //email is being passed just to show correct error validation (in case of empty staff email field)
+      staffId: selectedStaff?.value?.id || "",
       day: formData.day,
       shift: formData.shift,
     };
-
+    console.log(data);
     try {
-      const response = await axios.post(apiRoutes.schedule, data);
+      const response = await axios.post(apiRoutes.schedule, data, {
+        withCredentials: true
+      });
       const resData = response.data;
-      
-      if (resData.ok) {
-        console.log("Schedule added successfully");
-        toast.success(resData.message); 
-        setTimeout(() => {
-          navigate("/schedule");
-        }, 1000);
-      } else {
-        console.log("Adding Schedule Failed : ", response?.data?.data?.message);
-        toast.error(response?.data?.data?.message); 
-      }
+
+      console.log("Schedule added successfully");
+      toast.success(resData.message);
+      setTimeout(() => {
+        navigate("/schedule");
+      }, 1000);
     } catch (err) {
-      console.log(`ERROR (add-schedule): ${err?.response?.data?.data?.message}`);
-      toast.error(err?.response?.data?.data?.message); 
+      console.log(`ERROR (add-schedule): ${err?.response?.data?.message}`);
+      toast.error(err?.response?.data?.message);
     }
   };
 
@@ -140,22 +145,22 @@ export default function AddScheduleForm() {
           <div className="grid  sm:grid-cols-2 gap-y-8 gap-x-4 w-full">
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-4 md:w-72 w-full justify-end">
-                <label htmlFor="doctorName">
-                  Staff Name <span className="text-red-800">*</span>:
+                <label htmlFor="email">
+                  Staff Email <span className="text-red-800">*</span>:
                 </label>
               </div>
               <Select
-                id="staff"
+                id="email"
                 options={staff.map((staffPerson) => ({
-                  value: staffPerson, 
-                  label: staffPerson.name,
+                  value: staffPerson,
+                  label: staffPerson.email,
                 }))}
                 name="staff"
+                placeholder="Select Staff"
+                className="w-full"
                 value={selectedStaff}
                 onChange={handleStaffChange}
                 isClearable={true}
-                placeholder="Select Staff"
-                className="w-full"
               />
               {/* <Input
                 id="doctorName"
@@ -169,39 +174,53 @@ export default function AddScheduleForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="role">
-                  Role:
-                </label>
+                <label htmlFor="name">Name:</label>
+              </div>
+              <Input
+                id="name"
+                size="md"
+                disabled
+                name="name"
+                label=""
+                value={selectedStaff?.value?.name || ""}
+                // onChange={(e) => handleChange(e.target.name, e.target.value)}
+              />
+            </div>
+            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+              <div className="flex mr-2 md:w-72 w-full justify-end">
+                <label htmlFor="role">Role:</label>
               </div>
               <Input
                 id="role"
                 size="md"
                 disabled
                 name="role"
-                label="Role"
-                value={selectedStaff?.value?.role || "Role"}
+                label=""
+                value={selectedStaff?.value?.role || ""}
                 // onChange={(e) => handleChange(e.target.name, e.target.value)}
               />
             </div>
-            {selectedStaff?.value?.role === "DOCTOR" && <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-              <div className="flex mr-2 md:w-72 w-full justify-end">
-                <label htmlFor="department">
-                  Department:
-                </label>
+            {selectedStaff?.value?.role === "DOCTOR" && (
+              <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+                <div className="flex mr-2 md:w-72 w-full justify-end">
+                  <label htmlFor="department">Department:</label>
+                </div>
+                <Input
+                  id="department"
+                  size="md"
+                  disabled
+                  name="department"
+                  label=""
+                  value={selectedStaff.value.department}
+                  // onChange={(e) => handleChange(e.target.name, e.target.value)}
+                />
               </div>
-              <Input
-                id="department"
-                size="md"
-                disabled
-                name="department"
-                label="Department"
-                value={selectedStaff.value.department}
-                // onChange={(e) => handleChange(e.target.name, e.target.value)}
-              />
-            </div>}
+            )}
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="day">Day:</label>
+                <label htmlFor="day">
+                  Day <span className="text-red-800">*</span>:
+                </label>
               </div>
               <MaterialSelect
                 id="day"

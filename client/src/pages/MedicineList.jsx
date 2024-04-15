@@ -14,7 +14,9 @@ const TABLE_HEAD = {
 
 const getMedicinesData = async () => {
   try {
-    const response = await axios.get(apiRoutes.medicine);
+    const response = await axios.get(apiRoutes.medicine, {
+      withCredentials: true
+    });
     // console.log(response.data.data);
     toast.success('Medicine List fetched successfully')
     return response.data.data;
@@ -42,7 +44,9 @@ export default function MedicineList() {
 
   const handleMedicineDelete = async(e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.medicine}/${id}`);
+      const res = await axios.delete(`${apiRoutes.medicine}/${id}`, {
+        withCredentials: true
+      });
 
       const { data } = res;
       

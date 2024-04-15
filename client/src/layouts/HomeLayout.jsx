@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Toaster from "../components/UI/Toaster";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-scroll";
 import { Typography } from "@material-tailwind/react";
@@ -28,8 +27,8 @@ const HomeLayout = ({ children }) => {
     setShowForm(false);
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     toast.success("Logged Out Successfully");
     setTimeout(() => {
       navigate("/signin");
@@ -66,6 +65,20 @@ const HomeLayout = ({ children }) => {
   const [isLargeScreen, setIsLargeScreen] = useState(
     window.matchMedia("(min-width: 890px)").matches
   );
+
+  const handleDashboardClick = () => {
+    if (userRole === "ADMIN") {
+      navigate("/admindashboard");
+    } else if (userRole === "PARAMEDICAL") {
+      navigate("/pharmadashboard");
+    } else if (userRole === "DOCTOR") {
+      navigate("/doctordashboard");
+    } else if (userRole === "PATIENT") {
+      navigate("/schedule/doctor");
+    } else {
+      navigate("/");
+    }
+  };
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 890px)");
@@ -107,6 +120,16 @@ const HomeLayout = ({ children }) => {
             </div>
 
             <nav className=" hidden lg:flex flex-row items-center text-lg font-medium gap-8">
+              {userRole && <Link
+                to="#about"
+                spy={true}
+                smooth={true}
+                duration={500}
+                className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+                onClick={() => handleDashboardClick()}
+              >
+                Dashboard
+              </Link>}
               <Link
                 to="#about"
                 spy={true}
@@ -185,9 +208,8 @@ const HomeLayout = ({ children }) => {
             </div>
           </div>
           <div
-            className={`${
-              menu ? "translate-x-0" : "-translate-x-full"
-            } lg:hidden flex flex-col absolute bg-white text-black left-0 top-16 font-semibold text-2xl text-center gap-2 w-full h-fit transition-transform duration-300`}
+            className={`${menu ? "translate-x-0" : "-translate-x-full"
+              } lg:hidden flex flex-col absolute bg-white text-black left-0 top-16 font-semibold text-2xl text-center gap-2 w-full h-fit transition-transform duration-300`}
           >
             {/* <Link
             to="home"
@@ -199,6 +221,16 @@ const HomeLayout = ({ children }) => {
           >
             Home
           </Link> */}
+            {userRole && <Link
+              to="#about"
+              spy={true}
+              smooth={true}
+              duration={500}
+              className=" hover:bg-gray-300 hover:text-gray-700 transition-all cursor-pointer p-4 rounded-lg"
+              onClick={() => handleDashboardClick()}
+            >
+              Dashboard
+            </Link>}
             <Link
               to="#about"
               spy={true}
@@ -413,7 +445,6 @@ const HomeLayout = ({ children }) => {
         </footer>
       </div>
 
-      <Toaster richColors closeButton position="top-center" />
     </div>
   );
 };

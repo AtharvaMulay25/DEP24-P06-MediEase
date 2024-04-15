@@ -18,14 +18,16 @@ model User {
   email String   @unique
   name  String
   role  UserRole
+  status Status   @default(ACTIVE)
   @@map("user")
 }
 
-model Requests{
+model Requests {
   id    String   @id @default(uuid())
   email String   @unique
   name  String
   role  UserRole
+
   @@map("requests")
 }
 
@@ -41,11 +43,10 @@ model Medicine {
   brandName  String
   saltName   String
   categoryId String
-
   Stock     Stock[]
-  Checkups  Checkup[]  @relation("CheckupMedicines")
   Purchases Purchase[]
-
+  CheckupMedicine CheckupMedicine[]
+  status Status   @default(ACTIVE)
   Category Category @relation(fields: [categoryId], references: [id])
 
   @@map("medicine")
@@ -57,10 +58,10 @@ model Supplier {
   address      String
   city         String?
   state        String
-  pinCode      String?
-  mobileNumber String
+  pinCode      Int?
+  mobileNumber String 
   email        String?
-
+  status Status   @default(ACTIVE)
   PurchaseList PurchaseList[]
 
   @@map("supplier")
@@ -74,6 +75,7 @@ model Staff {
   role           Role
   department     String?
   gender         Gender
+  status Status   @default(ACTIVE)
   DoctorCheckups Checkup[]  @relation("DoctorCheckups")
   StaffCheckups  Checkup[]  @relation("StaffCheckups")
   Schedule       Schedule[]
@@ -107,7 +109,7 @@ model PurchaseList {
   id           String   @id @default(uuid())
   supplierId   String
   purchaseDate DateTime
-  invoiceNo    String   @unique
+  invoiceNo    BigInt   @unique
   Details      String?
 
   Supplier Supplier   @relation(fields: [supplierId], references: [id])
@@ -120,7 +122,7 @@ model Category {
   id           String @id @default(uuid())
   categoryName String
   strengthType String
-
+  status Status   @default(ACTIVE)
   Medicine Medicine[]
 
   @@map("category")
@@ -132,7 +134,7 @@ model Purchase {
   medicineId     String
   mfgDate        DateTime?
   expiryDate     DateTime
-  batchNo        BigInt
+  batchNo        BigInt @unique
   quantity       Int
 
   Medicine     Medicine     @relation(fields: [medicineId], references: [id])
@@ -154,7 +156,7 @@ model Patient {
   gender             Gender
   allergy            String?
   Checkup            Checkup[]
-
+  status Status   @default(ACTIVE)
   @@map("patient")
 }
 
@@ -176,9 +178,26 @@ model Checkup {
   Doctor Staff? @relation("DoctorCheckups", fields: [doctorId], references: [id])
   Staff  Staff  @relation("StaffCheckups", fields: [staffId], references: [id])
 
-  Medicines Medicine[] @relation("CheckupMedicines")
+  CheckupMedicine CheckupMedicine[]
 
   @@map("checkup")
+}
+
+model CheckupMedicine {
+  id         String    @id @default(uuid())
+  medicineId String
+  dosage     String?
+  quantity       Int
+  checkupId  String  
+
+  Medicine Medicine @relation(fields: [medicineId], references: [id])
+  Checkup Checkup @relation(fields: [checkupId], references: [id])
+
+  @@map("checkupMedicine")
+}
+enum Status {
+  ACTIVE
+  INACTIVE
 }
 
 enum Department {

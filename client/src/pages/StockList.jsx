@@ -13,13 +13,14 @@ const TABLE_HEAD = {
   category: "Category",
   inQuantity: "In Quantity",
   outQuantity: "Out Quantity",
-  netQuantity: "Stock",
-  action: "Action",
+  netQuantity: "Stock"
 };
 
 const getStockData = async () => {
   try {
-    const response = await axios.get(apiRoutes.stock);
+    const response = await axios.get(apiRoutes.stock, {
+      withCredentials: true
+    });
     toast.success('Stock List fetched successfully')
     return response.data.data;
   } catch (error) {
@@ -44,25 +45,7 @@ export default function StockList() {
     fetchData();
   }, []);
 
-  const handleStockDelete = async(e, id) => {
-    try {
-      const res = await axios.delete(`${apiRoutes.stock}/${id}`);
-
-      const { data } = res;
-      
-      if (data?.ok) {
-        console.log(`MESSAGE : ${data?.message}`);
-        toast.success(data?.message);
-        setStock((prev) => prev.filter(p => p.id !== id));
-      } else {
-        // TODO: show an error message
-        console.log(`ERROR (stock_list_delete): ${data.message}`);
-        toast.error(err?.response?.data?.message || 'Failed to delete Stock Entry');
-      }
-    } catch (err) {
-      console.error(`ERROR (stock_list_delete): ${err?.response?.data?.message}`);
-    }
-  };
+  const handleStockDelete = () => {};
 
   return (
     <>
@@ -77,6 +60,7 @@ export default function StockList() {
             text=""
 			      handleDelete={handleStockDelete}
             searchKey="medicineName"
+            actionFlag="false"
           />
         </Layout>
       )}

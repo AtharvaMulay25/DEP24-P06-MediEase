@@ -29,42 +29,198 @@ import AdminList from "./pages/AdminList";
 import { useAuthContext } from "./hooks/useAuthContext";
 import RequestList from "./pages/RequestList";
 import AdminDashboard from "./pages/AdminDashboard";
+import OutOfStock from "./pages/OutOfStockList";
+import ExpiredMedicineList from "./pages/ExpiredMedicineList";
+import PrescriptionDetail from "./pages/PrescriptionDetail";
+import PurchaseDetail from "./pages/PurchaseDetail";
+import StaffProfile from "./pages/StaffProfile";
+import PatientProfile from "./pages/PatientProfile";
+import ProtectedRoute from "./components/Protection/ProtectedRoute";
+import DoctorScheduleList from "./pages/DoctorScheduleList";
 
 function App() {
   const { userRole } = useAuthContext();
+
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signin" element={!userRole ? <SignInPage /> : <Home/>} />
-          <Route path="/signup" element={!userRole ? <SignUpPage /> : <Home/>} />
-          <Route path="/pharmadashboard" element={<PharmaDashboard />} />
-          <Route path="/medicine/add" element={<AddMedicine />} />
-          <Route path="/medicine" element={<MedicineList />} />
-          <Route path="/medicine/category/add" element={<AddCategory />} />
-          <Route path="/medicine/category" element={<CategoryList />} />
-          <Route path="/purchase/add" element={<AddPurchase />} />
-          <Route path="/purchase" element={<PurchaseList />} />
-          <Route path="/supplier/add" element={<AddSupplier />} />
-          <Route path="/supplier" element={<SupplierList />} />
-          <Route path="/stock" element={<StockList />} />
-          <Route path="/patient/add" element={<AddPatient />} />
-          <Route path="/patient" element={<PatientList />} />
-          <Route path="/doctordashboard" element={<DoctorDashboard />} />
-          <Route path="/patient/list" element={<PatientList />} />
-          <Route path="/patient/profile" element={<CompleteProfilePatient />} />
-          <Route path="/prescription" element={<PrescriptionList />} />
-          <Route path="/prescription/add" element={<AddPrescription />} />
-          <Route path="/schedule" element={<ScheduleList />} />
-          <Route path="/schedule/add" element={<AddSchedule />} />
-          <Route path="/staff" element={<StaffList />} />
-          <Route path="/staff/add" element={<AddStaff />} />
-          <Route path="/staff/profile" element={<CompleteProfileStaff />} />
-          <Route path="/admin" element={<AdminList />} />
-          <Route path="/admin/add" element={<AddAdmin />} />
-          <Route path="/requests" element={<RequestList />} />
-          <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/signin" element={!userRole ? <SignInPage /> : <Home />} />
+          <Route path="/signup" element={!userRole ? <SignUpPage /> : <Home />} />
+          {/* <Route path="/profile/staff" element={
+            <ProtectedRoute routeName="STAFF_PROFILE">
+              <StaffProfile />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile/patient" element={
+            <ProtectedRoute routeName="PATIENT_PROFILE">
+              <PatientProfile />
+            </ProtectedRoute>
+          } /> */}
+
+          <Route path="/profile/staff" element={
+            <StaffProfile />
+          } />
+          <Route path="/profile/patient" element={
+            <PatientProfile />
+          } />
+          <Route path="/pharmadashboard" element={
+            <ProtectedRoute routeName="PHARMA_DASHBOARD">
+              <PharmaDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/medicine/expired" element={
+            <ProtectedRoute routeName="MEDICINE">
+              <ExpiredMedicineList />
+            </ProtectedRoute>
+          } />
+          <Route path="/medicine/add" element={
+            <ProtectedRoute routeName="MEDICINE">
+              <AddMedicine />
+            </ProtectedRoute>
+          } />
+          <Route path="/medicine" element={
+            <ProtectedRoute routeName="MEDICINE">
+              <MedicineList />
+            </ProtectedRoute>
+          } />
+          <Route path="/medicine/category/add" element={
+            <ProtectedRoute routeName="MEDICINE">
+              <AddCategory />
+            </ProtectedRoute>
+          } />
+          <Route path="/medicine/category" element={
+            <ProtectedRoute routeName="MEDICINE">
+              <CategoryList />
+            </ProtectedRoute>
+          } />
+          <Route path="/purchase/add" element={
+            <ProtectedRoute routeName="PURCHASE">
+              <AddPurchase />
+            </ProtectedRoute>
+          } />
+          <Route path="/purchase" element={
+            <ProtectedRoute routeName="PURCHASE">
+              <PurchaseList />
+            </ProtectedRoute>
+          } />
+          <Route path="/purchase/:id" element={
+            <ProtectedRoute routeName="PURCHASE">
+              <PurchaseDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/supplier/add" element={
+            <ProtectedRoute routeName="SUPPLIER">
+              <AddSupplier />
+            </ProtectedRoute>
+          } />
+          <Route path="/supplier" element={
+            <ProtectedRoute routeName="SUPPLIER">
+              <SupplierList />
+            </ProtectedRoute>
+          } />
+          <Route path="/stock" element={
+            <ProtectedRoute routeName="STOCK">
+              <StockList />
+            </ProtectedRoute>
+          } />
+          <Route path="/stock/out" element={
+            <ProtectedRoute routeName="STOCK">
+              <OutOfStock />
+            </ProtectedRoute>
+          } />
+          <Route path="/patient/add" element={
+            <ProtectedRoute routeName="PATIENT">
+              <AddPatient />
+            </ProtectedRoute>
+          } />
+          <Route path="/patient" element={
+            <ProtectedRoute routeName="PATIENT">
+              <PatientList />
+            </ProtectedRoute>
+          } />
+          <Route path="/doctordashboard" element={
+            <ProtectedRoute routeName="DOCTOR_DASHBOARD">
+              <DoctorDashboard />
+            </ProtectedRoute>
+          } />
+          {/* <Route path="/patient/profile" element={
+            <ProtectedRoute routeName="PATIENT">
+              <CompleteProfilePatient />
+            </ProtectedRoute>
+          } /> */}
+          <Route path="/patient/profile" element={
+            <CompleteProfilePatient />
+          } />
+          <Route path="/prescription" element={
+            <ProtectedRoute routeName="PRESCRIPTION">
+              <PrescriptionList />
+            </ProtectedRoute>
+          } />
+          <Route path="/prescription/add" element={
+            <ProtectedRoute routeName="PRESCRIPTION">
+              <AddPrescription />
+            </ProtectedRoute>
+          } />
+          <Route path="/prescription/:id" element={
+            <ProtectedRoute routeName="PRESCRIPTION">
+              <PrescriptionDetail />
+            </ProtectedRoute>
+          } />
+          <Route path="/schedule/doctor" element={
+            <ProtectedRoute routeName="DOCTOR_SCHEDULE">
+              <DoctorScheduleList />
+            </ProtectedRoute>
+          } />
+          <Route path="/schedule" element={
+            <ProtectedRoute routeName="SCHEDULE">
+              <ScheduleList />
+            </ProtectedRoute>
+          } />
+          <Route path="/schedule/add" element={
+            <ProtectedRoute routeName="SCHEDULE">
+              <AddSchedule />
+            </ProtectedRoute>
+          } />
+          <Route path="/staff" element={
+            <ProtectedRoute routeName="STAFF">
+              <StaffList />
+            </ProtectedRoute>
+          } />
+          <Route path="/staff/add" element={
+            <ProtectedRoute routeName="STAFF">
+              <AddStaff />
+            </ProtectedRoute>
+          } />
+          {/* <Route path="/staff/profile" element={
+            <ProtectedRoute routeName="STAFF">
+              <CompleteProfileStaff />
+            </ProtectedRoute>
+          } /> */}
+          <Route path="/staff/profile" element={
+            <CompleteProfileStaff />
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute routeName="ADMIN">
+              <AdminList />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/add" element={
+            <ProtectedRoute routeName="ADMIN">
+              <AddAdmin />
+            </ProtectedRoute>
+          } />
+          <Route path="/requests" element={
+            <ProtectedRoute routeName="ADMIN">
+              <RequestList />
+            </ProtectedRoute>
+          } />
+          <Route path="/admindashboard" element={
+            <ProtectedRoute routeName="ADMIN">
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
         </Routes>
       </BrowserRouter>
     </>

@@ -9,6 +9,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-app.use(cors());
+//TODO: Change the origin to deployed frontend URL
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
 
 module.exports = app;

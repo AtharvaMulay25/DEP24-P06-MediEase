@@ -6,7 +6,18 @@ const ExpressError = require("../utils/ExpressError.js");
 const { OTP_MAIL_TEMPLATE } = require("../../constants.js");
 
 const sendOtp = async (req, res, next) => {
-  const { email, action} = req.body;
+  const { email, action } = req.body;
+  const userRequested = await prisma.requests.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if (action === "SIGNUP" && userRequested) {
+    throw new ExpressError(
+      "User already requested, Please wait for approval",
+      409
+    );
+  }
 
   const userExists = await prisma.user.findUnique({
     where: {
@@ -14,17 +25,14 @@ const sendOtp = async (req, res, next) => {
     },
   });
 
-  if (action === "SIGNUP" && userExists) {
+  if (action === "SIGNUP" && userExists && userExists.status === "ACTIVE") {
     throw new ExpressError("User already exists, Please Login", 409);
   }
 
-  if (action === "LOGIN" && !userExists) {
-    throw new ExpressError("User does not exists, Please Signup", 404);
+  if (action === "LOGIN") {
+    if (!userExists || userExists.status === "INACTIVE")
+      throw new ExpressError("User does not exists, Please Signup", 404);
   }
-
-  // if (action === "LOGIN" && userExists.role !== role) {
-  //   throw new ExpressError("Role does not match", 401);
-  // }
 
   const { otp, expiry } = generateOtp();
   console.log(otp);
@@ -52,7 +60,7 @@ const sendOtp = async (req, res, next) => {
   const mailOptions = {
     from: "dep2024.p06@gmail.com",
     to: email,
-    subject: (action == "SIGNUP") ? "Mediease - Signup" : "Mediease - Login",
+    subject: action == "SIGNUP" ? "Mediease - Signup" : "Mediease - Login",
     html: mailTemplate,
     text: "",
   };

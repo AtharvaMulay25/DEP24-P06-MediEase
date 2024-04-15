@@ -13,7 +13,9 @@ const TABLE_HEAD = {
 
 const getAdminData = async () => {
   try {
-    const response = await axios.get(apiRoutes.admin);
+    const response = await axios.get(apiRoutes.admin, {
+      withCredentials: true
+    });
     console.log(response.data.data);
     toast.success("Admin List fetched successfully");
     return response.data.data;
@@ -41,7 +43,9 @@ export default function AdminList() {
 
   const handleAdminDelete = async (e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.admin}/${id}`);
+      const res = await axios.delete(`${apiRoutes.admin}/${id}`, {
+        withCredentials: true
+      });
       console.log(res);
       if (res) {
         const data = res?.data;

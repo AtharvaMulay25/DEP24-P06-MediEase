@@ -1,5 +1,4 @@
 import { GridLoader, HashLoader , SyncLoader} from "react-spinners"
-
 import "../../styles/UI/LoadingScreen.css";
 
 //export two loading screens `GridLoadingScreen` and `HashLoadingScreen`
@@ -49,7 +48,7 @@ const SyncLoadingScreen = ({ message, loaderColor, messageColor }) => {
                 className="loader py-20"
                 size={25}
             />
-          <p className="syncLoadingText" style={{ color: messageColor }}>{message || "Loading..."}</p> 
+            <p className="syncLoadingText" style={{ color: messageColor }}>{message || "Loading..."}</p> 
       </div>
   </>
 )

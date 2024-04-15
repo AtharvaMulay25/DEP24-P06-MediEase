@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -12,12 +12,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
-import Toaster from "../components/UI/Toaster";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import VerifyOTP from "../components/VerifyOTP";
 import { apiRoutes } from "../utils/apiRoutes";
 import { useAuthContext } from "../hooks/useAuthContext.jsx";
 import Cookies from "js-cookie";
+import { setToastTimeout } from "../utils/customTimeout.js";
 
 
 export default function SignInPage() {
@@ -25,6 +25,7 @@ export default function SignInPage() {
 
   const [loading, setLoading] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
+
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: ""
@@ -41,10 +42,16 @@ export default function SignInPage() {
     }));
   };
 
-  const asyncTimeout = (delay) => {
+  const asyncTimeout = (delay, role) => {
     return new Promise(() => {
       setTimeout(() => {
-        navigate("/pharmadashboard");
+        if (role === "ADMIN") navigate("/admindashboard");
+        else if (role === "PARAMEDICAL") navigate("/pharmadashboard");
+        else if (role === "DOCTOR") navigate("/doctordashboard");
+
+        //TODO: Change this to patient dashboard
+        else if (role === "PATIENT") navigate("/schedule/doctor");
+        else navigate("/");
       }, delay);
     });
   };
@@ -56,7 +63,9 @@ export default function SignInPage() {
 
     const response = await axios.post(
       `${apiRoutes.auth}/login`,
-      user
+      user, {
+      withCredentials: true
+    }
     );
     if (response.data.ok) {
       //dispatching loggin action 
@@ -67,18 +76,29 @@ export default function SignInPage() {
       })
 
       //saving the data into cookies 
-      Cookies.set("user-role", resData.data.user.role, { expires: 7 });
-      Cookies.set("user-email", resData.data.user.email, { expires: 7 });
-      Cookies.set("user-name", resData.data.user.name, { expires: 7 });
+      Cookies.set("user-role", resData.data.user.role, { expires: 2 / 24 });
+      Cookies.set("user-email", resData.data.user.email, { expires: 2 / 24 });
+      Cookies.set("user-name", resData.data.user.name, { expires: 2 / 24 });
+      Cookies.set("user-profile-complete", resData.data.user.profileComplete, { expires: 2 / 24 });
       
-      toast.success(response.data.message);
-      await asyncTimeout(2000);
+      // toast.success(response.data.message);
+      setToastTimeout("success", response.data.message, 1500);
+      
+      const profileCompleteAssert = resData.data.user.profileComplete;
+      const userRoleAssert = resData.data.user.profileComplete;
+      
+      if (userRoleAssert === "ADMIN" || profileCompleteAssert) {
+        await asyncTimeout(0, resData.data.user.role);
+      } else {
+        setToastTimeout("error","Please complete your profile to continue.", 1800);
+        navigate(`/${userRoleAssert === "PATIENT" ? "patient" : "staff"}/profile`);
+      }
+      
     } else {
       toast.error(response.data.message);
     }
   };
-  const handleSubmit = async()=>
-  {
+  const handleSubmit = async () => {
     // e.preventDefault();
     //handle Validation  *****
 
@@ -88,7 +108,7 @@ export default function SignInPage() {
       const data = { ...loginData, action: "LOGIN" };
       console.log(data);
       const response = await axios.post(`${apiRoutes.otp}/send`, data);
-      if(response.data.ok){
+      if (response.data.ok) {
         setIsOtpSent(true);
         toast.success(response.data.message);
       }
@@ -104,7 +124,7 @@ export default function SignInPage() {
   }
   return (
     <>
-      {loading && <SyncLoadingScreen />}
+      {loading && <SyncLoadingScreen message={"Sending OTP via email..."}/>}
       {!loading && (
         <>
           {isOtpSent ? (
@@ -172,7 +192,7 @@ export default function SignInPage() {
 
         </>
       )}
-      <Toaster richColors position="top-center"/>
+
     </>
   );
 }

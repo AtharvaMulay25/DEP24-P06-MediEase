@@ -7,9 +7,18 @@ const {
     getPurchaseList, 
     deletePurchaseList, 
     updatePurchaseList, 
-    createPurchaseList 
+    createPurchaseList,
+    getPurchaseDetails
 } = require('../controllers/purchaseController');
 
+const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
+
+const roles = ["PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles), profileMiddleware(true));
+
+router.get('/:id', catchAsync(getPurchaseDetails));
 router.get('/', catchAsync(getPurchaseList));
 router.post('/', validatePurchaseList, catchAsync(createPurchaseList));
 router.put('/:id', validatePurchaseList, catchAsync(updatePurchaseList));

@@ -10,7 +10,7 @@ const prisma = new PrismaClient()
 // @desc    Get Stock List
 // route    GET /api/stock
 // @access  Private (Admin) 
-const getStockList = async(req, res, next) => {
+const getTotalStock = async(req, res, next) => {
     try{
         const stockList = await prisma.stock.findMany({
             include: {
@@ -30,7 +30,7 @@ const getStockList = async(req, res, next) => {
           // Restructure the data to have `medicineName` outside the `Medicine` object
           const restructuredStockList = stockList.map(stock => ({
             id: stock.id,
-            netQuantity: (stock.inQuantity-stock.outQuantity),
+            netQuantity: stock.stock,
             category: stock.Medicine.Category.categoryName,
             inQuantity: stock.inQuantity,
             outQuantity: stock.outQuantity,
@@ -42,7 +42,7 @@ const getStockList = async(req, res, next) => {
         return res.status(200).json({
             ok: true,
             data: restructuredStockList,
-            message: "Stock List retrieved successfully"
+            message: "Stock List fetched successfully"
         });
     }catch(err){
         console.log(`Stock List Fetching Error : ${err.message}`);
@@ -55,36 +55,100 @@ const getStockList = async(req, res, next) => {
     }
     
 };
-
-// @desc    Create Stock List Records
-// route    POST /api/stock/create
-// @access  Private (Admin) 
-const createStockList = async(req, res, next) => {
+//give positive stock medicines only
+const getAvailableStock = async(req, res, next) => {
     try{
-        const createdRecord = await prisma.stock.create({
-            data: {
-                ...req.body
-            }
-        });
-        
-        // console.log(createdRecord);  
-        
+        const stockList = await prisma.stock.findMany({
+            include: {
+              Medicine: {
+                select: {
+                  brandName: true,
+                  Category: {
+                    select: {
+                      categoryName: true,
+                    },
+                  },
+                },
+              },
+            },
+          });
+          
+          // Restructure the data to have `medicineName` outside the `Medicine` object
+          const restructuredStockList = stockList.filter(stock => stock.stock > 0).map(stock => ({
+            id: stock.id,
+            medicineId: stock.medicineId,
+            netQuantity: stock.stock,
+            category: stock.Medicine.Category.categoryName,
+            inQuantity: stock.inQuantity,
+            outQuantity: stock.outQuantity,
+            medicineName: stock.Medicine.brandName // Access `name` from `Medicine` object
+          }));        
         return res.status(200).json({
             ok: true,
-            data: createdRecord,
-            message: "Stock List record created successfully"
+            data: restructuredStockList,
+            message: "Available Stock List fetched successfully"
         });
     }catch(err){
-        console.log(`Stock List Creation Error : ${err.message}`);
+        console.log(`Stock List Fetching Error : ${err.message}`);
         
         return res.status(500).json({
             ok: false,
             data: [],
-            message: "Creating stock list record failed, Please try again later"
+            message: "Fetching Stock List failed, Please try again later"
         });
     }
     
-};
+}
+
+
+//get out of stock medicines only
+const getOutOfStock = async(req, res, next) => {
+    try{
+        const stockList = await prisma.stock.findMany({
+            include: {
+              Medicine: {
+                select: {
+                  brandName: true,
+                  Category: {
+                    select: {
+                      categoryName: true,
+                    },
+                  },
+                },
+              },
+            },
+          });
+          
+          // Restructure the data to have `medicineName` outside the `Medicine` object
+          const restructuredStockList = stockList.filter(stock => stock.stock <= 0).map(stock => ({
+            id: stock.id,
+            netQuantity: stock.stock,
+            category: stock.Medicine.Category.categoryName,
+            inQuantity: stock.inQuantity,
+            outQuantity: stock.outQuantity,
+            medicineName: stock.Medicine.brandName // Access `name` from `Medicine` object
+          }));
+          
+        // console.log("restructuredStockList : ", restructuredStockList);
+        
+        return res.status(200).json({
+            ok: true,
+            data: restructuredStockList,
+            message: "Out of Stock List fetched successfully"
+        });
+    }catch(err){
+        console.log(`Stock List Fetching Error : ${err.message}`);
+        
+        return res.status(500).json({
+            ok: false,
+            data: [],
+            message: "Fetching Stock List failed, Please try again later"
+        });
+    }
+    
+}
+
+//will give update option to only admin, if any error occurs.... **********
 
 // @desc    Update Stock List Record
 // route    PUT /api/stock/update
@@ -169,8 +233,9 @@ const deleteStockList = async(req, res, next) => {
 
 
 module.exports = {
-    getStockList,
-    createStockList,
+    getTotalStock,
+    getAvailableStock,
+    getOutOfStock,
     updateStockList,
     deleteStockList
 };

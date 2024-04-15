@@ -19,56 +19,85 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 export default function AddPrescriptionForm() {
   const navigate = useNavigate();
-
+  const {userEmail} = useAuthContext();
   const [formData, setFormData] = useState({
-    patientID: "",
+    email: "",
     doctor: "",
     date: "",
     temperature: "",
     bloodPressure: "",
-    patientName: "",
+    name: "",
     pulseRate: "",
     spO2: "",
     symptoms: "",
     diagnosis: "",
   });
 
-  const doctors = ["Dr. John Doe", "Dr. Jane Doe", "Dr. John Smith"];
-  const frequencyList = ["OD", "BD", "TDS", "SOS"];
-
-  const TABLE_HEAD = ["Medicine Name", "Dosage", "Frequency", "Action"];
+  const [doctors, setDoctors] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState("");
+  const [patients, setPatients] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState("");
+  const TABLE_HEAD = ["Medicine Name", "Dosage", "Quantity","Avl. Qty" ,"Action"];
   const [dataArray, setDataArray] = useState([
-    { name: "", dosage: "", frequency: "" },
+    { name: "", dosage: "", quantity: "" },
   ]);
-
-  // const [doctors, setDoctors] = useState([]);
+  
   const [medicines, setMedicines] = useState([]);
+  const [selectedMedicine, setSelectedMedicine] = useState("");
 
-  useEffect(() => {
+  useEffect(() => async () =>{
     // Fetch doctors list when the component mounts
     // fetchDoctors();
-    fetchMedicines();
+    await fetchAvailableStock();
+    await fetchDoctors();
+    await fetchPatients();
   }, []);
 
-  // const fetchDoctors = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       apiRoutes.doctor
-  //     );
-  //     // console.log(response.data);
-  //     setDoctors(response.data.data); // Assuming the response is an array of suppliers
-  //   } catch (error) {
-  //     console.error(`ERROR (fetch-doctor-in-add-prescription): ${error?.response?.data?.message}`);
-  //   }
-  // };
-
-  const fetchMedicines = async () => {
+  const fetchDoctors = async () => {
     try {
-      const response = await axios.get(apiRoutes.medicine);
-      // console.log(response.data.data);
+      const response = await axios.get(apiRoutes.staff, {
+        withCredentials: true
+      });
+      response.data.data = response.data.data.filter(
+        (staff) => staff.role === "DOCTOR"
+      );
+      const doctorList = response.data.data;
+      setDoctors(doctorList);
+    } catch (error) {
+      console.error(
+        `ERROR (fetch-doctors-in-add-prescription): ${error?.response?.data?.message}`
+      );
+      toast.error(
+        error?.response?.data?.message || "Failed to fetch Doctors List"
+      );
+    }
+  };
+  const fetchPatients = async () => {
+    try {
+      const response = await axios.get(apiRoutes.patient, {
+        withCredentials: true
+      });
+      setPatients(response.data.data);
+    } catch (error) {
+      console.error(
+        `ERROR (fetch-patients-in-add-prescription): ${error?.response?.data?.message}`
+      );
+      toast.error(
+        error?.response?.data?.message || "Failed to fetch Patients List"
+      );
+    }
+  };
+
+  const fetchAvailableStock = async () => {
+    try {
+      const response = await axios.get(apiRoutes.stock + "/available", {
+        withCredentials: true
+      });
+      console.log(response.data.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
       console.error(
@@ -80,14 +109,6 @@ export default function AddPrescriptionForm() {
     }
   };
 
-  // const handleDoctorChange = (selectedDoctor) => {
-  //   console.log(selectedDoctor.value);
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     doctor: selectedDoctor,
-  //   }));
-  // };
-
   const handleInputChange = (key, index, value) => {
     // console.log(dataArray)
     console.log(key, index, value);
@@ -97,8 +118,25 @@ export default function AddPrescriptionForm() {
     setDataArray(updatedArray);
   };
 
+  const handleDoctorChange = (selectedDoctor) => {
+    console.log(selectedDoctor);
+    setSelectedDoctor(selectedDoctor);
+    setFormData((prevData) => ({
+      ...prevData,
+      doctor: selectedDoctor.value,
+    }));
+  };
+  const handlePatientChange = (selectedPatient) => {
+    console.log(selectedPatient);
+    setSelectedPatient(selectedPatient);
+    setFormData((prevData) => ({
+      ...prevData,
+      email: selectedPatient.value,
+    }));
+  };
   const handleMedicineChange = (selectedMedicine, index) => {
-    console.log(selectedMedicine.value);
+    console.log(selectedMedicine);
+    setSelectedMedicine(selectedMedicine);
     setDataArray((prevData) => {
       const updatedArray = [...prevData];
       updatedArray[index].name = selectedMedicine;
@@ -120,25 +158,76 @@ export default function AddPrescriptionForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Here you can handle the submission of the form
-    const data = {
-      patientID: formData.patientID,
-      patientName: formData.patientName,
-      temperature: formData.temperature,
-      bloodPressure: formData.bloodPressure,
-      doctor: formData.doctor,
+    const checkupListEntry = {
+      patientId: selectedPatient?.value?.id,
       date: formData.date,
+      diagnosis: formData.diagnosis,
     };
+    //optional fields
+    if(selectedDoctor?.value){
+      checkupListEntry.doctorId  =selectedDoctor?.value
+    }
+    if (formData.temperature) {
+      checkupListEntry.temperature =formData.temperature;
+    }
+    if (formData.pulseRate) {
+      checkupListEntry.pulseRate = formData.pulseRate;
+    }
+    if (formData.spO2) {
+      checkupListEntry.spO2 = formData.spO2;
+    }
+    if (formData.bloodPressure) {
+      checkupListEntry.bloodPressure = formData.bloodPressure;
+    }
+    if (formData.symptoms) {
+      checkupListEntry.symptoms = formData.symptoms;
+    }
+
+    const checkupMedicines = dataArray.map((data) => {
+      const medicines = {
+        medicineId: data?.name?.value,
+        quantity: parseInt(data.quantity) || 0,
+      };
+      if (data.dosage) medicines.dosage = data.dosage;
+      return medicines;
+    });
+
+    const data = {
+      ...checkupListEntry,
+      staffEmail: userEmail,
+      checkupMedicines,
+    };
+    console.log(data);
+
+    try {
+      const response = await axios.post(apiRoutes.checkup, data, {
+        withCredentials: true
+      });
+      console.log(response.data);
+      toast.success(response.data.message);
+      setTimeout(() => {
+        navigate("/prescription");
+      }, 1000);
+    } catch (error) {
+      console.error(
+        `ERROR (add-prescription): ${error?.response?.data?.message}`
+      );
+      toast.error(
+        error?.response?.data?.message || "Failed to add Prescription"
+      );
+    }
   };
 
   const handleAddRow = () => {
     setDataArray((prevData) => [
       ...prevData,
-      { name: "", dosage: "", frequency: "" },
+      { name: "", dosage: "", quantity: "" },
     ]);
   };
 
   const handleDeleteRow = (index) => {
     if (dataArray.length === 1) {
+      toast.error("Atleast one Medicine is required in the prescription");
       return;
     }
     setDataArray((prev) => {
@@ -175,39 +264,43 @@ export default function AddPrescriptionForm() {
           <div className="grid md:grid-cols-2 gap-y-8 gap-x-4 w-full">
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-4 w-full md:w-72 justify-end">
-                <label htmlFor="patientID">
-                  Patient ID <span className="text-red-800">*</span>:
+                <label htmlFor="email">
+                  Patient Email <span className="text-red-800">*</span>:
                 </label>
               </div>
-              <Input
-                id="patientID"
-                size="md"
-                label="Patient ID"
-                name="patientID"
+              <Select
+                id="email"
+                options={patients.map((patient) => ({
+                  value: patient,
+                  label: patient.email,
+                }))}
+                name="email"
+                placeholder="Select Patient"
                 className="w-full"
-                value={formData.patientID}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
+                value={selectedPatient}
+                onChange={handlePatientChange}
+                isClearable={true}
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end ">
-                <label htmlFor="patientName">
+                <label htmlFor="name">
                   Patient Name <span className="text-red-800">*</span>:
                 </label>
               </div>
               <Input
-                id="patientName"
+                id="name"
                 size="md"
-                name="patientName"
-                label="Patient Name"
+                name="name"
+                label=""
                 className="w-full"
-                value={formData.patientName}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
+                value={selectedPatient?.value?.name || ""}
+                disabled
               />
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="temperature">Temperature</label>:
+                <label htmlFor="temperature">Temp.(C)</label>:
               </div>
               <Input
                 id="temperature"
@@ -221,10 +314,12 @@ export default function AddPrescriptionForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="pulseRate">Pulse Rate</label>:
+                <label htmlFor="pulseRate">PR(beats/min)</label>:
               </div>
               <Input
                 id="pulseRate"
+                type="number"
+                min={1}
                 size="md"
                 name="pulseRate"
                 label="Pulse Rate"
@@ -235,7 +330,7 @@ export default function AddPrescriptionForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="pulseRate">SpO2</label>:
+                <label htmlFor="pulseRate">SpO2 (%)</label>:
               </div>
               <Input
                 id="spO2"
@@ -249,7 +344,7 @@ export default function AddPrescriptionForm() {
             </div>
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
-                <label htmlFor="bloodPressure">Blood pressure</label>:
+                <label htmlFor="bloodPressure">BP(mm Hg)</label>:
               </div>
               <Input
                 id="bloodPressure"
@@ -281,36 +376,22 @@ export default function AddPrescriptionForm() {
             <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="doctor">
-                  Doctor <span className="text-red-800">*</span>:
+                  Doctor:
                 </label>
               </div>
-              <MaterialSelect
+              <Select
                 id="doctor"
-                size="md"
-                label="Doctor"
+                options={doctors.map((doctor) => ({
+                  value: doctor.id,
+                  label: doctor.email,
+                }))}
                 name="doctor"
+                placeholder="Select Doctor"
                 className="w-full"
-                value={formData.doctor}
-                onChange={(value) => handleChange("doctor", value)}
-              >
-                {/* <Select
-                  id="doctor"
-                  options={doctors.map((doctor) => ({
-                    value: doctor.id, // Assuming supplier object has a unique identifier 'id'
-                    label: doctor.name, // Assuming supplier object has a property 'name'
-                  }))}
-                  value={formData.doctor}
-                  onChange={handleDoctorChange}
-                  isClearable={true}
-                  placeholder="Select Doctor"
-                  className="w-full"
-                /> */}
-                {doctors.map((doctor) => (
-                  <Option key={doctor} value={doctor}>
-                    {doctor}
-                  </Option>
-                ))}
-              </MaterialSelect>
+                value={selectedDoctor}
+                onChange={handleDoctorChange}
+                isClearable={true}
+              />
             </div>
 
             <div className="flex-col md:flex md:flex-row items-start justify-around p-1">
@@ -363,6 +444,9 @@ export default function AddPrescriptionForm() {
                         className="font-normal leading-none opacity-70"
                       >
                         {head}
+                        {head !== "Dosage" && head !== "Action" && (
+                          <span className="text-red-800">*</span>
+                        )}
                       </Typography>
                     </th>
                   ))}
@@ -372,28 +456,13 @@ export default function AddPrescriptionForm() {
                 {dataArray.map((data, index) => (
                   <tr className="even:bg-blue-gray">
                     <td className="p-4">
-                      {/* <Select
-                        className="w-full"
-
-                        options={[
-                          { label: "Medicine 1", value: "Medicine 1" },
-                          { label: "Medicine 2", value: "Medicine 2" },
-                          { label: "Medicine 3", value: "Medicine 3" },
-                        ]}
-                        isClearable={true}
-                        placeholder="Select Medicine"
-                        onChange={(value) => {
-                          const newMedicines = [...medicines];
-                          newMedicines[index].name = value;
-                          setMedicines(newMedicines);
-                        }
-                        }
-                      /> */}
+                      
                       <Select
                         id="medicine"
-                        options={medicines.map((medicine) => ({
-                          value: medicine.id,
-                          label: medicine.brandName,
+                        options={medicines.map((stock) => ({
+                          value: stock?.medicineId,
+                          netQuantity: stock?.netQuantity,
+                          label: stock?.medicineName,
                         }))}
                         value={data["name"]}
                         onChange={(selectedMedicine) =>
@@ -417,34 +486,27 @@ export default function AddPrescriptionForm() {
                     </td>
                     <td className="p-4">
                       <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-                        <MaterialSelect
-                          id="frequency"
-                          size="md"
-                          label="Frequency"
-                          name="frequency"
-                          className="w-full"
-                          value={data["frequency"]}
-                          onChange={(value) =>
-                            handleInputChange("frequency", index, value)
-                          }
-                        >
-                          {frequencyList.map((frequency) => (
-                            <Option key={frequency} value={frequency}>
-                              {frequency}
-                            </Option>
-                          ))}
-                        </MaterialSelect>
-                      </div>
-
-                      {/* <input
+                      <input
                         type="number"
+                        min={1}
                         className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
-                        placeholder="Frequency"
-                        value={data["frequency"]}
+                        placeholder="Quantity"
+                        value={data["quantity"]}
                         onChange={(e) =>
-                          handleInputChange('frequency', index,  e.target.value)
+                          handleInputChange("quantity", index, e.target.value)
                         }
-                      /> */}
+                      />
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex-col md:flex md:flex-row items-center justify-start p-1 min-w-[200px]">
+                      <Input
+                      type="number"
+                      min={1}
+                      value={selectedMedicine?.netQuantity || ""}
+                      disabled
+                    />
+                      </div>
                     </td>
                     <td className="p-4">
                       <Tooltip content="Delete">

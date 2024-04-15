@@ -7,7 +7,6 @@ const ExpressError = require("../utils/ExpressError");
 // route    GET /api/schedule
 // @access  Private (Admin)
 const getScheduleList = async (req, res, next) => {
-  try {
     const scheduleList = await prisma.schedule.findMany({
       include: {
         Staff: true
@@ -16,12 +15,14 @@ const getScheduleList = async (req, res, next) => {
     // console.log("Schedule list : ", scheduleList);
 
     const sendScheduleList = scheduleList.map((schedule) => ({
+      id: schedule.id,
       staffId: schedule.staffId,
       day: schedule.day,
       shift: schedule.shift,
       name: schedule.Staff.name,
       department: schedule.Staff.department,
-      email: schedule.Staff.email
+      email: schedule.Staff.email,
+      role: schedule.Staff.role
     }));
 
     return res.status(200).json({
@@ -29,48 +30,41 @@ const getScheduleList = async (req, res, next) => {
       data: sendScheduleList,
       message: "Schedule List retrieved successfully",
     });
-  } catch (err) {
-    console.log(`Schedule List Fetching Error : ${err.message}`);
 
-    return res.status(500).json({
-      ok: false,
-      data: [],
-      message: "Fetching Schedule List failed, Please try again later",
-    });
-  }
 };
 
 // @desc    Create Schedule Records
 // route    POST /api/schedule
 // @access  Private (Admin)
 const createSchedule = async (req, res, next) => {
-  try {
-    console.log(req.body);
-    const { staffId, day, shift } = req.body;
-    const createdRecord = await prisma.schedule.create({
-      data: {
-        staffId,
-        day,
-        shift,
-      },
-    });
+  console.log(req.body);
+  const { email, staffId, day, shift } = req.body;
 
-    // console.log(createdRecord);
-
-    return res.status(200).json({
-      ok: true,
-      data: createdRecord,
-      message: "Schedule record created successfully",
-    });
-  } catch (err) {
-    console.log(`Schedule Creating Error : ${err.message}`);
-
-    return res.status(500).json({
-      ok: false,
-      data: [],
-      message: `Creating Schedule record failed, Please try again later`,
-    });
+  //to avoid duplicate schedules in schedule table
+  const scheduleRecord = await prisma.schedule.findFirst({
+    where: {
+      staffId,
+      day,
+      shift
+    },
+  });
+  if (scheduleRecord) {
+    throw new ExpressError("This schedule already exists", 400);
   }
+  const createdRecord = await prisma.schedule.create({
+    data: {
+      staffId,
+      day,
+      shift,
+    },
+  });
+  console.log(createdRecord);
+
+  return res.status(200).json({
+    ok: true,
+    data: createdRecord,
+    message: "Schedule record created successfully",
+  });
 };
 
 // @desc    Update Schedule List Record

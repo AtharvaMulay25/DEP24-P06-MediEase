@@ -10,6 +10,13 @@ const {
     updateSupplier
 } = require('../controllers/supplierController');
 
+const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
+
+const roles = ["PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles), profileMiddleware(true));
+
 router.get('/', catchAsync(getSupplierList));
 router.post('/', validateSupplier, catchAsync(createSupplier));
 router.put('/:id', validateSupplier, catchAsync(updateSupplier));

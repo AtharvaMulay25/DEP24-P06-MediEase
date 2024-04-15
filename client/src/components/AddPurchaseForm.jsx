@@ -34,15 +34,17 @@ export function AddPurchaseForm() {
   const [suppliers, setSuppliers] = useState([]);
   const [medicines, setMedicines] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => async () =>{
     // Fetch suppliers list when the component mounts
-    fetchSuppliers();
-    fetchMedicines();
+    await fetchSuppliers();
+    await fetchMedicines();
   }, []);
 
   const fetchSuppliers = async () => {
     try {
-      const response = await axios.get(apiRoutes.supplier);
+      const response = await axios.get(apiRoutes.supplier, {
+        withCredentials: true
+      });
       // console.log(response.data);
       setSuppliers(response.data.data); // Assuming the response is an array of suppliers
     } catch (error) {
@@ -57,7 +59,9 @@ export function AddPurchaseForm() {
 
   const fetchMedicines = async () => {
     try {
-      const response = await axios.get(apiRoutes.medicine);
+      const response = await axios.get(apiRoutes.medicine, {
+        withCredentials: true
+      });
       // console.log(response.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
@@ -138,40 +142,48 @@ export function AddPurchaseForm() {
       return updatedArray;
     });
   };
-
+  //this is required for handling TypeError: Don't know how to serialize BigInt
+  BigInt.prototype.toJSON = function () {
+    return this.toString();
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     /* ALSO CLEAR THE PURCHASE LIST DATA ON SUBMITTING THE FORM ****** */
 
     const purchaseListEntry = {
-      purchaseDate: formData.purchaseDate + "T00:00:00Z",
-      invoiceNo: formData.invoiceNo,
+      purchaseDate: formData.purchaseDate,
+      invoiceNo: BigInt(formData.invoiceNo) || 0,
       supplierId: formData?.supplier?.value, // Assuming supplier object has a unique identifier 'value'  //will be passing supplier id to backend
     };
     if (formData.purchaseDetails)
       purchaseListEntry.purchaseDetails = formData.purchaseDetails; //optional
+    
     const purchaseItems = dataArray.map((data) => {
       const purchaseItem = {
         medicineId: data.medicine.value, // Assuming medicine object has a unique identifier 'value'  //will be passing medicine id to backend
-        batchNo: data.batchNo,
-        expiryDate: data.expDate + "T00:00:00Z",
+        batchNo: BigInt(data.batchNo) || 0,
+        expiryDate: data.expDate,
         quantity: parseInt(data.quantity) || 0, // Assuming quantity is a number
       };
-      if (data.mfgDate) purchaseItem.mfgDate = data.mfgDate + "T00:00:00Z"; //optional
+      if (data.mfgDate) purchaseItem.mfgDate = data.mfgDate ; //optional
       return purchaseItem;
     });
 
     // Here you can handle the submission of the form
     const data = { ...purchaseListEntry, purchaseItems };
+    console.log(data);
     //***DON'T LET THE FORM SUBMIT IF ANY OF MANDATORY ITEMS IS MISSING OR ANY LIST ROW FIELD IS EMPTY */
     try {
-      const response = await axios.post(apiRoutes.purchase, data);
+      const response = await axios.post(apiRoutes.purchase, data, {
+        withCredentials: true
+      });
       console.log("add purchase submit response = ", response);
       toast.success("Purchase added successfully");
       setTimeout(() => {
         navigate("/purchase");
       }, 1000);
     } catch (error) {
+      console.log(error);
       console.error(`ERROR (add-purchase): ${error?.response?.data?.message}`);
       toast.error(error?.response?.data?.message || "Failed to add Purchase");
     }
@@ -234,6 +246,8 @@ export function AddPurchaseForm() {
               </div>
               <Input
                 id="invoiceNo"
+                type="number"
+                min={1}
                 size="md"
                 label="Invoice No."
                 name="invoiceNo"

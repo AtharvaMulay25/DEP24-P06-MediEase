@@ -22,7 +22,9 @@ import { apiRoutes } from "../utils/apiRoutes";
 
 const getScheduleData = async () => {
   try {
-    const response = await axios.get(apiRoutes.schedule);
+    const response = await axios.get(apiRoutes.schedule, {
+      withCredentials: true
+    });
     console.log("response : ", response);
     toast.success("Schedule List fetched successfully");
     return response.data.data;
@@ -51,7 +53,9 @@ export default function ScheduleList() {
 
   const handleScheduleDelete = async (e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.schedule}/${id}`);
+      const res = await axios.delete(`${apiRoutes.schedule}/${id}`, {
+        withCredentials: true
+      });
       const { data } = res;
 
       if (data?.ok) {
@@ -62,7 +66,7 @@ export default function ScheduleList() {
       } else {
         console.log(`ERROR (schedule_list_delete): ${data.message}`);
         toast.error(
-          err?.response?.data?.message || "Failed to delete Schedule Category"
+          "Failed to delete Schedule Category"
         );
       }
     } catch (err) {

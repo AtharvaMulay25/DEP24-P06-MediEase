@@ -10,9 +10,15 @@ const {
     deleteStaff
 } = require('../controllers/staffController');
 
+const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
 
-router.get('/', catchAsync(getStaffList));
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles), profileMiddleware(true));
+
 router.post('/', validateStaff, catchAsync(createStaff));
+router.get('/', catchAsync(getStaffList));
 router.put('/:id', validateStaff, catchAsync(updateStaff));
 router.delete('/:id', catchAsync(deleteStaff));
 

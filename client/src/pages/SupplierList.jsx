@@ -18,7 +18,9 @@ const TABLE_HEAD = {
 
 const getSuppliersData = async () => {
   try {
-    const response = await axios.get(apiRoutes.supplier);
+    const response = await axios.get(apiRoutes.supplier, {
+      withCredentials: true
+    });
     toast.success('Supplier List fetched successfully')
     return response.data.data;
   } catch (error) {
@@ -47,7 +49,9 @@ export default function SupplierList() {
 
   const handleSupplierDelete = async(e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.supplier}/${id}`);
+      const res = await axios.delete(`${apiRoutes.supplier}/${id}`, {
+        withCredentials: true
+      });
 
       const { data } = res;
       

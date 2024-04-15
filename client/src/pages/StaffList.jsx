@@ -20,7 +20,9 @@ const TABLE_HEAD = {
 
 const getStaffData = async () => {
   try {
-    const response = await axios.get(apiRoutes.staff);
+    const response = await axios.get(apiRoutes.staff, {
+      withCredentials: true
+    });
     console.log("staffs: ", response.data.data);
     toast.success("Staff List fetched successfully");
     return response.data.data;
@@ -49,7 +51,9 @@ export default function StaffList() {
 
   const handleStaffDelete = async (e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.staff}/${id}`);
+      const res = await axios.delete(`${apiRoutes.staff}/${id}`, {
+        withCredentials: true
+      });
       console.log(res);
       if (res) {
         const data = res?.data;

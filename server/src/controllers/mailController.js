@@ -19,16 +19,42 @@ const approveRequestController = async (req, res, next) => {
   if (!request) {
     throw new ExpressError("Request not found", 404);
   }
-  const newUser = await prisma.user.create({
-    data: {
-      name: request.name,
+
+  const userExists = await prisma.user.findUnique({
+    where: {
       email: request.email,
-      role: request.role,
     },
   });
-  if (!newUser) {
-    throw new ExpressError("Error in creating new user", 500);
+
+  if(userExists && userExists.status === "INACTIVE"){
+    const restoredUser = await prisma.user.update({
+      where: {
+        email: request.email,
+      },
+      data: {
+        name: request.name,
+        email: request.email,
+        role: request.role,
+        status: "ACTIVE",
+      },
+    });
+    if (!restoredUser) {
+      throw new ExpressError("Error in restoring user", 500);
+    }
   }
+  if(!userExists){
+    const newUser = await prisma.user.create({
+      data: {
+        name: request.name,
+        email: request.email,
+        role: request.role,
+      },
+    });
+    if (!newUser) {
+      throw new ExpressError("Error in creating new user", 500);
+    }  
+  }
+
 
   const approvedRequest = await prisma.requests.delete({
     where: {

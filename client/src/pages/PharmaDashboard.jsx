@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../index.css";
-import { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 import {
   Card,
@@ -17,6 +16,11 @@ import {
 import { GiMedicines } from "react-icons/gi";
 import Layout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
+import {
+  SyncLoadingScreen,
+} from "../components/UI/LoadingScreen";
+import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -41,6 +45,60 @@ function useWindowDimensions() {
 }
 
 const PharmaDashboard = () => {
+  const [loading, setLoading] = useState();
+
+  const [checkupStat, setCheckupStat] = useState([]);
+  const [topMedicineStat, setTopMedicineStat] = useState([]);
+  const [totalMedicines, setTotalMedicine] = useState(0);
+  const [totalStock, setTotalStock] = useState(0);
+
+  useEffect(() => {
+    setLoading(true);
+
+    const fetchCheckupData = async () => {
+      try {
+        const res = await axios.get(`${apiRoutes.dashboard}/checkup`, {
+          withCredentials: true
+        });
+        const { data } = res;
+        if (data.ok) {
+          // console.log(data.data.message);
+          // console.log("dashboard-checkup-stats: ", data.data.checkup)
+          setCheckupStat(data.data.checkup);
+        } else {
+          console.log("dashboard stats checkup fetch failed, Error: ", data.error);
+        }
+      } catch (err) {
+        console.log("dashboard stats checkup fetch failed, Error: " + err.message);
+      }
+    };
+
+    const fetchMedicineData = async () => {
+      try {
+        const res = await axios.get(`${apiRoutes.dashboard}/medicine`, {
+          withCredentials: true
+        });
+        const { data } = res;
+        if (data.ok) {
+          // console.log(data.data.message);
+          // console.log("dashboard-medicine-stats: ", data.data.medicine);
+          setTopMedicineStat(data.data.medicine);
+          setTotalMedicine(data.data.totalM);
+          setTotalStock(data.data.totalS);
+        } else {
+          console.log("dashboard top medicine stats fetch failed");
+        }
+      } catch (err) {
+        console.log("dashboard top medicine stats fetch failed, Error: " + err.message);
+      }
+    };
+
+
+    fetchCheckupData();
+    fetchMedicineData();
+    setLoading(false);
+  }, []);
+
   const { height, width } = useWindowDimensions();
   const navigate = useNavigate();
 
@@ -51,15 +109,12 @@ const PharmaDashboard = () => {
       width < 720
         ? width * (18 / 24)
         : (width >= 720) & (width <= 1200)
-        ? width * (16 / 24)
-        : width * (10 / 24),
+          ? width * (16 / 24)
+          : width * (10 / 24),
     series: [
       {
         name: "Checkups",
-        data: [
-          50, 40, 30, 32, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-          0, 0, 0, 0, 0, 0, 0, 0, 0,
-        ],
+        data: checkupStat.map(it => it.total),
       },
     ],
     options: {
@@ -96,39 +151,7 @@ const PharmaDashboard = () => {
             fontWeight: 500,
           },
         },
-        categories: [
-          "01/03/2024",
-          "02/03/2024",
-          "03/03/2024",
-          "04/03/2024",
-          "05/03/2024",
-          "06/03/2024",
-          "07/03/2024",
-          "08/03/2024",
-          "09/03/2024",
-          "10/03/2024",
-          "11/03/2024",
-          "12/03/2024",
-          "13/03/2024",
-          "14/03/2024",
-          "15/03/2024",
-          "16/03/2024",
-          "17/03/2024",
-          "18/03/2024",
-          "19/03/2024",
-          "20/03/2024",
-          "21/03/2024",
-          "22/03/2024",
-          "23/03/2024",
-          "24/03/2024",
-          "25/03/2024",
-          "26/03/2024",
-          "27/03/2024",
-          "28/03/2024",
-          "29/03/2024",
-          "30/03/2024",
-          "31/03/2024",
-        ],
+        categories: checkupStat.map(it => it.date),
       },
       yaxis: {
         labels: {
@@ -167,7 +190,7 @@ const PharmaDashboard = () => {
     type: "pie",
     width: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
     height: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
-    series: [44, 55, 13, 43, 22],
+    series: topMedicineStat.map(it => it.qty),
     options: {
       chart: {
         toolbar: {
@@ -180,8 +203,8 @@ const PharmaDashboard = () => {
       dataLabels: {
         enabled: false,
       },
-      labels: ["Dolo", "Crocin", "Combiflam", "Ibuprofen", "Omeprazole"],
-      colors: ["#020617", "#ff8f00", "#00897b", "#1e88e5", "#d81b60"],
+      labels: topMedicineStat.map(it => it.saltName),
+      colors: ["#020617", "#ff8f00", "#00897b", "#1e88e5", "#d81b60"].slice(0, topMedicineStat.length),
       legend: {
         show: true,
       },
@@ -190,7 +213,8 @@ const PharmaDashboard = () => {
 
   return (
     <>
-      <Layout>
+      {loading && <SyncLoadingScreen />}
+      {!loading && <Layout>
         <div>
           <div className="grid-container -mt-7">
             <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
@@ -203,7 +227,7 @@ const PharmaDashboard = () => {
                   Total Medicines
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                  350
+                  {totalMedicines}
                 </p>
               </div>
               <div className="p-6 pt-0">
@@ -223,7 +247,7 @@ const PharmaDashboard = () => {
                   Current Stock
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                  350
+                  {totalStock}
                 </p>
               </div>
               <div className="p-6 pt-0">
@@ -336,7 +360,7 @@ const PharmaDashboard = () => {
             </Card>
           </div>
         </div>
-      </Layout>
+      </Layout>}
     </>
   );
 };

@@ -5,13 +5,22 @@ const catchAsync = require('../utils/catchAsync');
 
 //controllers 
 const { 
-    getStockList, 
-    deleteStockList, 
+    getTotalStock, 
+    getAvailableStock,
+    getOutOfStock,
     updateStockList, 
-    createStockList 
 } = require('../controllers/stockController');
 
-router.get('/', catchAsync(getStockList));
+const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
+
+const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+
+router.use(authMiddleware(roles), profileMiddleware(true));
+
+router.get('/', catchAsync(getTotalStock));
+router.get('/available', catchAsync(getAvailableStock));
+router.get('/out', catchAsync(getOutOfStock));
 // router.post('/create', createStockList);
 // router.put('/', updateStockList);
 // router.delete('/', deleteStockList);

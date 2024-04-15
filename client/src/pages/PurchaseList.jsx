@@ -5,6 +5,7 @@ import axios from "axios";
 import {
   SyncLoadingScreen,
 } from "../components/UI/LoadingScreen";
+import { useNavigate } from "react-router-dom";
 
 const TABLE_HEAD = {
   id: "#",
@@ -12,13 +13,14 @@ const TABLE_HEAD = {
   supplierName: "Supplier",
   purchaseDate: "Date",
   details: "Details",
-  purchaseItems: "Medicines",
   action: "Action",
 };
 
 const getPurchaseData = async () => {
   try {
-    const response = await axios.get(apiRoutes.purchase);
+    const response = await axios.get(apiRoutes.purchase, {
+      withCredentials: true
+    });
     console.log("response", response.data.data)
     toast.success('Purchase List fetched successfully')
     return response.data.data;
@@ -31,6 +33,7 @@ const getPurchaseData = async () => {
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 export default function PurchaseList() {
+  const navigate = useNavigate();
   const [purchase, setPurchase] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -45,7 +48,9 @@ export default function PurchaseList() {
 
   const handlePurchaseDelete = async(e, id) => {
     try {
-      const res = await axios.delete(`${apiRoutes.purchase}/${id}`);
+      const res = await axios.delete(`${apiRoutes.purchase}/${id}`, {
+        withCredentials: true
+      });
 
       const { data } = res;
       console.log(data)
@@ -63,6 +68,12 @@ export default function PurchaseList() {
       toast.error(err?.response?.data?.message || 'Failed to delete Purchase');
     }
   };
+
+  const handlePurchaseDetail = async(e, id, idx) => {
+    console.log("Purchase Detail", id);
+    navigate(`/purchase/${id}`);
+  }
+
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -77,6 +88,8 @@ export default function PurchaseList() {
             addLink="/purchase/add"
 			      handleDelete={handlePurchaseDelete}
             searchKey="supplierName"
+            handleDetail={handlePurchaseDetail}
+            detailsFlag={true}
           />
         </Layout>
       )}
