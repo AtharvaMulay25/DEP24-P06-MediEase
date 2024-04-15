@@ -5,8 +5,12 @@ const router = express.Router();
 const {approveRequestController, rejectRequestController, pendingRequestController} = require("../controllers/mailController.js");
 const catchAsync = require('../utils/catchAsync');
 
-router.post("/approve", catchAsync(approveRequestController));
-router.post("/reject", catchAsync(rejectRequestController));
+const authMiddleware = require("../middlewares/authMiddleware");
+
+const roles = ["ADMIN"];
+
+router.post("/approve", authMiddleware(roles), catchAsync(approveRequestController));
+router.post("/reject", authMiddleware(roles), catchAsync(rejectRequestController));
 router.post("/pending", catchAsync(pendingRequestController));
 
 module.exports = router;

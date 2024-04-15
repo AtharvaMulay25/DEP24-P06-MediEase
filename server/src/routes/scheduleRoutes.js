@@ -11,13 +11,16 @@ const {
 //schedule routes
 
 const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
+
 const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 
 router.get('/',
     authMiddleware(["PATIENT", "DOCTOR", "PARAMEDICAL", "ADMIN"]),
+    profileMiddleware(true),
     catchAsync(getScheduleList));
 
-router.use(authMiddleware(roles));
+router.use(authMiddleware(roles), profileMiddleware(true));
 
 router.post('/', validateSchedule, catchAsync(createSchedule));
 router.put('/:id', validateSchedule, catchAsync(updateSchedule));

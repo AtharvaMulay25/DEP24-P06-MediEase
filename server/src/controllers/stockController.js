@@ -76,6 +76,7 @@ const getAvailableStock = async(req, res, next) => {
           // Restructure the data to have `medicineName` outside the `Medicine` object
           const restructuredStockList = stockList.filter(stock => stock.stock > 0).map(stock => ({
             id: stock.id,
+            medicineId: stock.medicineId,
             netQuantity: stock.stock,
             category: stock.Medicine.Category.categoryName,
             inQuantity: stock.inQuantity,

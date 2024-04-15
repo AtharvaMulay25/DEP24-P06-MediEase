@@ -60,14 +60,15 @@ export function DialogDefault({
     <>
       <Dialog open={open}>
         <DialogHeader className="text-1xl">
-        {`Are you sure you want to delete this ` + title + `?`}
-                
-          
+          {`Are you sure you want to delete this ` + title + `?`}
         </DialogHeader>
         <DialogBody>
-        {(title === "Admin" || title === "Staff" || title === "Patient") && `
-          Deleting this ` + title + ` will also delete the associated user account.
-          `} 
+          {(title === "Admin" || title === "Staff" || title === "Patient") &&
+            `
+          Deleting this ` +
+              title +
+              ` will also delete the associated user account.
+          `}
         </DialogBody>
         <DialogFooter>
           <Button
@@ -106,7 +107,7 @@ export function SortableTable({
   handleReject,
   handleDetail = () => {},
   detailsFlag = false,
-  actionFlag = 'true',
+  actionFlag = "true",
   showAddBtn = true,
 }) {
   const [open, setOpen] = useState(false);
@@ -147,7 +148,7 @@ export function SortableTable({
   }, [currentPage, itemsPerPage, searchList]);
 
   const handleDialogDelete = (e, id) => {
-    console.log("id : ", id);  
+    console.log("id : ", id);
     setDeletedRecordId(id);
     setOpen(!open);
   };
@@ -497,43 +498,55 @@ export function SortableTable({
                         </td>
                       );
                   })}
-                  { actionFlag == 'true' && 
+                  {actionFlag == "true" && (
                     <td className={("", classes)}>
                       <div className="flex gap-0.5">
                         {title !== "Pending Request List" ? (
                           <>
                             {detailsFlag == true && (
-                            <Tooltip content="View">
-                              <IconButton
-                                variant="text"
-                                onClick={(e) => handleDetail(e, rowData["id"], (currentPage - 1) * itemsPerPage + index + 1)}
-                              >
-                                <EyeIcon className="h-4 w-4" />
-                              </IconButton>
-                            </Tooltip>
-                          )}
-                          <Tooltip content="Edit">
-                              <IconButton variant="text">
-                                <PencilIcon className="h-4 w-4" />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip content="Delete">
-                              <IconButton
-                                variant="text"
-                                onClick={(e) => {
-                                console.log("rowData: ", rowData);
-                                handleDialogDelete(e, rowData["id"])
-                              }}
-                              >
-                                <TrashIcon className="h-4 w-4" />
-                              </IconButton>
-                            </Tooltip>
+                              <Tooltip content="View">
+                                <IconButton
+                                  variant="text"
+                                  onClick={(e) =>
+                                    handleDetail(
+                                      e,
+                                      rowData["id"],
+                                      (currentPage - 1) * itemsPerPage +
+                                        index +
+                                        1
+                                    )
+                                  }
+                                >
+                                  <EyeIcon className="h-4 w-4" />
+                                </IconButton>
+                              </Tooltip>
+                            )}
+                            {title !== "Medical History List" && (
+                              <>
+                                <Tooltip content="Edit">
+                                  <IconButton variant="text">
+                                    <PencilIcon className="h-4 w-4" />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip content="Delete">
+                                  <IconButton
+                                    variant="text"
+                                    onClick={(e) => {
+                                      console.log("rowData: ", rowData);
+                                      handleDialogDelete(e, rowData["id"]);
+                                    }}
+                                  >
+                                    <TrashIcon className="h-4 w-4" />
+                                  </IconButton>
+                                </Tooltip>
+                              </>
+                            )}
                           </>
                         ) : (
                           <>
                             <Tooltip content="Approve">
                               <IconButton
-                              variant="text"
+                                variant="text"
                                 onClick={(e) => handleApprove(e, rowData["id"])}
                               >
                                 <CheckCircleIcon
@@ -544,9 +557,9 @@ export function SortableTable({
                             </Tooltip>
                             <Tooltip content="Reject">
                               <IconButton
-                              variant="text"
-                               onClick={(e) => handleReject(e, rowData["id"])}
-                             >
+                                variant="text"
+                                onClick={(e) => handleReject(e, rowData["id"])}
+                              >
                                 <XCircleIcon
                                   className="h-6 w-6"
                                   style={{ color: "red" }}
@@ -557,7 +570,7 @@ export function SortableTable({
                         )}
                       </div>
                     </td>
-                  }
+                  )}
                 </tr>
               );
             })}

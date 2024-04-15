@@ -27,8 +27,9 @@ const dashboardRoutes = require('./src/routes/dashboardRoutes.js');
 const checkupRoutes = require("./src/routes/checkupRoutes.js");
 const ExpressError = require("./src/utils/ExpressError.js");
 
-app.use("/api/auth", authRoutes);
 app.use("/api/otp", otpRoutes);
+app.use("/api/auth", authRoutes);
+
 app.use("/api/mail", mailRoutes);
 app.use("/api/requests", requestRoutes);
 app.use("/api/purchase", purchaseRoutes);

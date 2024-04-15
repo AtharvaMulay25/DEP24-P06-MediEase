@@ -10,9 +10,10 @@ const {
 } = require("../controllers/adminController");
 
 const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
 const roles = ["ADMIN"];
 
-router.use(authMiddleware(roles));
+router.use(authMiddleware(roles), profileMiddleware(true));
 
 //admin routes
 router.get("/", catchAsync(getAdminList));

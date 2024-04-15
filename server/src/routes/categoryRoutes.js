@@ -9,9 +9,11 @@ const { getCategory,
     deleteCategory } = require('../controllers/categoryController');
 
 const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
+
 const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 
-router.use(authMiddleware(roles));
+router.use(authMiddleware(roles), profileMiddleware(true));
 
 //category routes
 router.get('/', catchAsync(getCategoryList));

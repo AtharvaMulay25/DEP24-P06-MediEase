@@ -17,6 +17,8 @@ export const useLogout = () => {
                 Cookies.remove('user-role');
                 Cookies.remove('user-email');
                 Cookies.remove('user-name');
+                Cookies.remove('user-profile-complete');
+                
                 authDispatch({ type: "LOGOUT" });
 
                 console.log("httpOnly cookies deleted successfully");
