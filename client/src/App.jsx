@@ -36,6 +36,7 @@ import PrescriptionDetail from "./pages/PrescriptionDetail";
 import PurchaseDetail from "./pages/PurchaseDetail";
 import StaffProfile from "./pages/StaffProfile";
 import PatientProfile from "./pages/PatientProfile";
+import AdminProfile from "./pages/AdminProfile";
 import ProtectedRoute from "./components/Protection/ProtectedRoute";
 import DoctorScheduleList from "./pages/DoctorScheduleList";
 
@@ -65,6 +66,15 @@ function App() {
           } />
           <Route path="/profile/patient" element={
             <PatientProfile />
+          } />
+          <Route path="/profile/patient/edit" element={
+            <PatientProfile edit={true} />
+          } />
+          <Route path="/profile/admin" element={
+            <AdminProfile />
+          } />
+          <Route path="/profile/admin/edit" element={
+            <AdminProfile edit={true} />
           } />
           <Route path="/pharmadashboard" element={
             <ProtectedRoute routeName="PHARMA_DASHBOARD">

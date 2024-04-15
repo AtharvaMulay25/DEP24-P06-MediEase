@@ -1,133 +1,352 @@
-	import { useState } from "react";
-	import {
-		Card,
-		CardBody,
-		CardHeader,
-		Typography,
-		Accordion,
-		AccordionHeader,
-		AccordionBody,
-		CardFooter,
-		Button,
-	} from "@material-tailwind/react";
-	import Layout from "../layouts/PageLayout";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import {toast} from 'sonner';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Typography,
+  Input,
+  CardFooter,
+  Button,
+} from "@material-tailwind/react";
 
-	export default function PatientProfile() {
-		const [staffDetail, setStaffDetail] = useState({
-			name: "John Doe",
-			role: "Student",
-			department: "Computer Science",
-			phoneNumber: "+91 9876543210",
-			email: "john@gmail.com",
+import { useAuthContext } from "../hooks/useAuthContext";
+import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
+import Layout from "../layouts/PageLayout";
+
+const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+const getPatientData = async (userEmail) => {
+	try{
+		const response = await axios.get(`${apiRoutes.profile}/patient/${userEmail}`, {
+			withCredentials: true
 		});
 
-		const [scheduleData, setScheduleData] = useState([
-			{ day: "Sunday", shift: "9:00 AM - 5:00 PM" },
-			{ day: "Monday", shift: "9:00 AM - 5:00 PM" },
-			{ day: "Tuesday", shift: "9:00 AM - 5:00 PM" },
-			{ day: "Wednesday", shift: "9:00 AM - 5:00 PM" },
-			{ day: "Thursday", shift: "9:00 AM - 5:00 PM" },
-			{ day: "Friday", shift: "9:00 AM - 5:00 PM" },
-			{ day: "Saturday", shift: "9:00 AM - 5:00 PM" },
-		]);
-		const [loading, setLoading] = useState(false);
-
-		return (
-			<Layout>
-				<Card className="flex w-full">
-					<CardHeader floated={false} shadow={false} className="rounded-none">
-						<Typography variant="h3" color="blue-gray" className="text-center ">
-							Patient Profile
-						</Typography>
-					</CardHeader>
-					<CardBody className="flex flex-col md:flex-row justify-between">
-						<div className="flex flex-col sm:w-2/5 w-full min-w-fit justify-center gap-8 p-4 border border-blue-gray-100">
-							<div className="flex justify-center">
-								<img
-									src="/src/assets/img/patient.png"
-									alt="staff"
-									className="rounded-full w-48 h-48 "
-								/>
-							</div>
-							<div className="content-center text-center grid sm:grid-cols-2 gap-y-3">
-              <Typography variant="h6" className="text-start sm:text-center">
-                Name:{" "}
-              </Typography>
-              <Typography color="blue-gray" className="text-start">
-                {staffDetail.name}
-              </Typography>
-              <Typography variant="h6" className=" text-start sm:text-center">
-                Designation:{" "}
-              </Typography>
-              <Typography color="blue-gray" className="text-start">
-                {staffDetail.role}
-              </Typography>
-              <Typography variant="h6" className=" text-start sm:text-center">
-                Department:{" "}
-              </Typography>
-              <Typography color="blue-gray" className="text-start">
-                {staffDetail.department}
-              </Typography>
-              <Typography variant="h6" className=" text-start sm:text-center">
-                Mobile:{" "}
-              </Typography>
-              <Typography color="blue-gray" className="text-start">
-                {staffDetail.phoneNumber}
-              </Typography>
-              <Typography variant="h6" className=" text-start sm:text-center">
-                Email:{" "}
-              </Typography>
-              <Typography color="blue-gray" className="text-start">
-                {staffDetail.email}
-              </Typography>
-            </div>
-						</div>
-						<div className="px-4">
-								<Accordion open={true}>
-									<AccordionHeader className="pb-1 text-gray-700">
-										Other Details
-									</AccordionHeader>
-									<AccordionBody>
-										We&apos;re not always in the position that we want to be at.
-										We&apos;re constantly growing. We&apos;re constantly making
-										mistakes. We&apos;re constantly trying to express ourselves
-										and actualize our dreams.
-									</AccordionBody>
-								</Accordion>
-								<Accordion open={true}>
-									<AccordionHeader className="pb-1 text-gray-700">
-										Experience
-									</AccordionHeader>
-									<AccordionBody>
-										We&apos;re not always in the position that we want to be at.
-										We&apos;re constantly growing. We&apos;re constantly making
-										mistakes. We&apos;re constantly trying to express ourselves
-										and actualize our dreams.
-									</AccordionBody>
-								</Accordion>
-								<Accordion open={true}>
-									<AccordionHeader className="pb-1 text-gray-700">
-										Education
-									</AccordionHeader>
-									<AccordionBody>
-										We&apos;re not always in the position that we want to be at.
-										We&apos;re constantly growing. We&apos;re constantly making
-										mistakes. We&apos;re constantly trying to express ourselves
-										and actualize our dreams.
-									</AccordionBody>
-								</Accordion>
-						</div>
-					</CardBody>
-					<CardFooter className="flex justify-end">
-						<Button
-							className="flex items-center gap-3"
-							size="md"
-							onClick={() => {}}
-						>
-							Edit Profile
-						</Button>
-					</CardFooter>
-				</Card>
-			</Layout>
-		);
+		console.log(response.data.data);
+		toast.success('Patient Profile fetched successfully');
+		return response.data.data;
+	} catch (error) {
+		console.error(`ERROR (get-profile-patient): ${error?.response?.data?.message}`);
+		toast.error('Failed to fetch Patient Profile');
 	}
+};
+
+export default function PatientProfile({ edit = false }) {
+  const {userEmail} = useAuthContext();	
+
+	const [patientDetail, setPatientDetail] = useState({
+    name: "John Doe",
+    category: "Student",
+    department: "Computer Science",
+    program: "Btech",
+    email: "john@gmail.com",
+    age: "25",
+    gender: "Male",
+    bloodGroup: "O+",
+    relativeName: "Jane Doe",
+    allergies: "None",
+  });
+  const [loading, setLoading] = useState(false);
+
+	useEffect(() => {
+		const fetchPatientData = async () => {
+			const data = await getPatientData(userEmail);
+
+			const patientData = {
+				name: data.name,
+				category: data.category,
+				department: data.department,
+				program: data.program,
+				email: data.email,
+				age: data.age,
+				gender: data.gender,
+				bloodGroup: data.bloodGroup,
+				relativeName: data.fatherOrSpouseName,
+				allergies: data.allergy
+			}
+
+			setPatientDetail(patientData);
+			setLoading(false);
+		}
+
+		fetchPatientData();
+	} ,[]);
+
+  return (
+    <>
+      {loading && <SyncLoadingScreen />}
+      {!loading && (
+        <Layout>
+          <Card className="flex w-full">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+              <Typography
+                variant="h3"
+                color="blue-gray"
+                className="text-center "
+              >
+                Patient Profile
+              </Typography>
+            </CardHeader>
+            <CardBody className="flex justify-center">
+              <div className="flex flex-col sm:w-2/5 w-full min-w-fit justify-center gap-8 p-4 border border-blue-gray-100">
+                <div className="flex justify-center">
+                  <img
+                    src="/src/assets/img/patient.png"
+                    alt="staff"
+                    className="rounded-full w-48 h-48 "
+                  />
+                </div>
+                <div className="content-center text-center grid sm:grid-cols-2 gap-y-3">
+                  <Typography
+                    variant="h6"
+                    className="text-start sm:text-center"
+                  >
+                    Name:{" "}
+                  </Typography>
+                  {edit ? (
+                    <input
+                      placeholder="Full Name"
+                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                      value={patientDetail.name}
+                      onChange={(e) =>
+                        setStaffDetail({ ...patientDetail, name: e.target.value })
+                      }
+                    />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {patientDetail.name}
+                    </Typography>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className=" text-start sm:text-center"
+                  >
+                    Category:{" "}
+                  </Typography>
+                  {edit ? (
+                    <Input disabled value={patientDetail.category} />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {patientDetail.category}
+                    </Typography>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className=" text-start sm:text-center"
+                  >
+                    Department:{" "}
+                  </Typography>
+                  {edit ? (
+                    <input
+                      placeholder="Department"
+                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                      value={patientDetail.department}
+                      onChange={(e) =>
+                        setStaffDetail({
+                          ...patientDetail,
+                          department: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {patientDetail.department}
+                    </Typography>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className=" text-start sm:text-center"
+                  >
+                    Age:{" "}
+                  </Typography>
+                  {edit ? (
+                    <input
+                      type="number"
+                      min={1}
+                      placeholder="Age"
+                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                      value={patientDetail.age}
+                      onChange={(e) =>
+                        setStaffDetail({ ...patientDetail, age: e.target.value })
+                      }
+                    />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {patientDetail.age}
+                    </Typography>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className=" text-start sm:text-center"
+                  >
+                    Gender:{" "}
+                  </Typography>
+                  {edit ? (
+                    <input
+                      placeholder="Gender"
+                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                      value={patientDetail.gender}
+                      onChange={(e) =>
+                        setStaffDetail({
+                          ...patientDetail,
+                          gender: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {patientDetail.gender}
+                    </Typography>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className=" text-start sm:text-center"
+                  >
+                    Program:{" "}
+                  </Typography>
+                  {edit ? (
+                    <input
+                      placeholder="Program"
+                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                      value={patientDetail.program}
+                      onChange={(e) =>
+                        setStaffDetail({
+                          ...patientDetail,
+                          program: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {patientDetail.program}
+                    </Typography>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className=" text-start sm:text-center"
+                  >
+                    Email:{" "}
+                  </Typography>
+                  {edit ? (
+                    <Input disabled value={patientDetail.email} />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {patientDetail.email}
+                    </Typography>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className=" text-start sm:text-center"
+                  >
+                    Blood Group:{" "}
+                  </Typography>
+                  {edit ? (
+                    <select
+                      id="bloodGroup"
+                      name="bloodGroup"
+                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                      value={patientDetail.bloodGroup}
+                      onChange={(e) =>
+                        setStaffDetail({
+                          ...patientDetail,
+                          bloodGroup: e.target.value,
+                        })
+                      }
+                    >
+                      {bloodGroups.map((group) => (
+                        <option key={group} value={group}>
+                          {group}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {patientDetail.bloodGroup}
+                    </Typography>
+                  )}
+                  {edit && (
+                    <>
+                      <Typography
+                        variant="h6"
+                        className=" text-start sm:text-center"
+                      >
+                        Father's/Spouse's Name:{" "}
+                      </Typography>
+                      <input
+                        placeholder="Name"
+                        className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                        value={patientDetail.relativeName}
+                        onChange={(e) =>
+                          setStaffDetail({
+                            ...patientDetail,
+                            relativeName: e.target.value,
+                          })
+                        }
+                      />
+                    </>
+                  )}
+                  {patientDetail.relativeName !== "" && !edit && (
+                    <>
+                      <Typography
+                        variant="h6"
+                        className=" text-start sm:text-center"
+                      >
+                        Father's/Spouse's Name:{" "}
+                      </Typography>
+                      <Typography color="blue-gray" className="text-start">
+                        {patientDetail.relativeName}
+                      </Typography>
+                    </>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className=" text-start sm:text-center"
+                  >
+                    Allergies:{" "}
+                  </Typography>
+                  {edit ? (
+                    <input
+                      placeholder="Allergies"
+                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                      value={patientDetail.allergies}
+                      onChange={(e) =>
+                        setStaffDetail({
+                          ...patientDetail,
+                          allergies: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {patientDetail.allergies}
+                    </Typography>
+                  )}
+                </div>
+              </div>
+            </CardBody>
+            <CardFooter className="flex justify-end">
+							{!edit ? (
+								<Button
+									className="flex items-center gap-3"
+									size="md"
+									onClick={() => {}}
+								>
+									Edit Profile
+								</Button>
+							) : (
+								<Button
+									className="flex items-center gap-3"
+									size="md"
+									onClick={() => {handleSave()}}
+								>
+									Save
+								</Button>
+							)}
+            </CardFooter>
+          </Card>
+        </Layout>
+      )}
+    </>
+  );
+}
