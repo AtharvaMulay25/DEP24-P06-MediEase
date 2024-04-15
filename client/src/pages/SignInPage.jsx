@@ -85,7 +85,7 @@ export default function SignInPage() {
       setToastTimeout("success", response.data.message, 1500);
       
       const profileCompleteAssert = resData.data.user.profileComplete;
-      const userRoleAssert = resData.data.user.profileComplete;
+      const userRoleAssert = resData.data.user.role;
       
       if (userRoleAssert === "ADMIN" || profileCompleteAssert) {
         await asyncTimeout(0, resData.data.user.role);
