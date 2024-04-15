@@ -21,7 +21,9 @@ import Layout from "../layouts/PageLayout";
 
 const getMedicalHistory = async (email) => {
   try {
-    const response = await axios.get(`${apiRoutes.checkup}?patientEmail=${email}`);
+    const response = await axios.get(`${apiRoutes.checkup}/patient/${email}`, {
+      withCredentials: true,
+    });
     console.log("response", response.data.data);
     toast.success("Medical History fetched successfully");
     return response.data.data;
@@ -29,7 +31,7 @@ const getMedicalHistory = async (email) => {
     console.error(
       `ERROR (get-medical-history): ${error?.response?.data?.message}`
     );
-    toast.error("Failed to fetch Medical History");
+    toast.error(error?.response?.data?.message || "Failed to fetch Medical History");
   }
 };
 
@@ -48,29 +50,10 @@ export default function MedicalHistory() {
     fetchData();
   }, []);
 
-  const handleHistoryDelete = async (e, id) => {
-    try {
-      const res = await axios.delete(`${apiRoutes.checkup}/${id}`);
-      const { data } = res;
-
-      if (data?.ok) {
-        console.log(`MESSAGE : ${data?.message}`);
-        toast.success(data?.message);
-        setHistory((prev) => prev.filter((p) => p.id !== id));
-      } else {
-        // TODO: show an error message
-        console.log(`ERROR (history_list_delete): ${data.message}`);
-        toast.error("Failed to delete history data");
-      }
-    } catch (err) {
-      console.error(
-        `ERROR (history_list_delete): ${err?.response?.data?.message}`
-      );
-    }
-  };
+  const handleHistoryDelete = async (e, id) => {};
   const handleHistoryDetail = async (e, id, idx) => {
     console.log("History Detail", id);
-    navigate(`/history/${id}^${idx}`);
+    navigate(`/prescription/${id}^${idx}`);
   };
   return (
     <>
@@ -79,7 +62,7 @@ export default function MedicalHistory() {
         <Layout>
           <SortableTable
             tableHead={TABLE_HEAD}
-            title="Medical History"
+            title="Medical History List"
             data={history}
             detail="See information about all previous checkups."
             text=""

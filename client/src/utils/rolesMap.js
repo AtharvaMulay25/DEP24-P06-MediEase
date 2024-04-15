@@ -15,6 +15,8 @@ const roleMapping = new Map([
     [14, "DOCTOR_SCHEDULE"],
     [15, "STAFF_PROFILE"],
     [16, "PATIENT_PROFILE"],
+    [17, "MEDICAL_HISTORY"],
+    [18, "PRESCRIPTION_DETAIL"]
 ]);
 
 const roleMap = (role) => {
@@ -22,7 +24,7 @@ const roleMap = (role) => {
         return [];
     }
     const admin = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-    const patient = [14, 16];
+    const patient = [14, 16, 17, 18];
     const paramedical = [2, 4, 5, 6, 7, 8, 9, 10, 11, 15];
     const doctor = [1, 4, 5, 8, 9, 10, 11, 15];
 

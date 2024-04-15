@@ -14,13 +14,13 @@ const {
 const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
 
+
+router.get('/patient/:patientEmail', authMiddleware(["PATIENT"]), profileMiddleware(true), catchAsync(getMedicalHistory));
+router.get('/:id', authMiddleware(["DOCTOR", "PARAMEDICAL", "ADMIN", "PATIENT"]), profileMiddleware(true), catchAsync(getCheckupDetails));
+
 const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
-
 router.use(authMiddleware(roles), profileMiddleware(true));
-
-router.get('/:id', catchAsync(getCheckupDetails));
 router.get('/', catchAsync(getCheckupList));
-router.get('/', catchAsync(getMedicalHistory));
 router.post('/', validateCheckup, catchAsync(createCheckup));
 // router.put('/:id', validateCheckup, catchAsync(updatePurchaseList));
 router.delete('/:id', catchAsync(deleteCheckup));

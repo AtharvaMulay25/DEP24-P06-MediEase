@@ -9,7 +9,6 @@ import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
 import { LuLogOut } from "react-icons/lu";
 import { FaUserCog, FaExclamation, FaUserEdit, FaNotesMedical } from "react-icons/fa";
-import { FaUserCog, FaExclamation, FaUserEdit } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import {
   Typography,
@@ -263,6 +262,18 @@ const Layout = ({ children }) => {
                 </li>
               </a>}
 
+              {roleArr.includes("MEDICAL_HISTORY") && <a href="/prescription/patient">
+                <li
+                  className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
+                         hover:bg-blue-gray-50 hover:bg-opacity-80 cursor-pointer h-full"
+                >
+                  <FaNotesMedical className="h-5 w-5 mr-4" />
+                  {!(isCollapsed & !isHovered) && (
+                    <Typography className="font-normal">Med History</Typography>
+                  )}
+                </li>
+              </a>}
+              
               {/* doctor schedule only for patient */}
               {roleArr.includes("DOCTOR_SCHEDULE") && <a href="/schedule/doctor">
                 <li
@@ -275,6 +286,8 @@ const Layout = ({ children }) => {
                   )}
                 </li>
               </a>}
+             
+
               {roleArr.includes("STOCK") && <Accordion
                 open={open === 9}
                 icon={

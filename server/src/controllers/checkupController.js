@@ -122,7 +122,7 @@ const getCheckupList = async (req, res, next) => {
 
 const getMedicalHistory = async (req, res, next) => {
   const { patientEmail } = req.params; // Assuming patientId is passed in request params
-
+  console.log("here :", patientEmail);
   try {
     const patient = await prisma.patient.findUnique({
       where: {

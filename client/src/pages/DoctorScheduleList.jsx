@@ -13,7 +13,6 @@ const TABLE_HEAD = {
     name: "Doctor Name",
     department: "Department",
     email: "Email",
-    action: "Action",
 };
 
 import Layout from "../layouts/PageLayout";

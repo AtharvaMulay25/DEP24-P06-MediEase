@@ -29,8 +29,8 @@ import AdminList from "./pages/AdminList";
 import { useAuthContext } from "./hooks/useAuthContext";
 import RequestList from "./pages/RequestList";
 import AdminDashboard from "./pages/AdminDashboard";
-import MedicalHistory from "./pages/MedicalHistory";
-import OutOfStock from "./pages/OutOfStock";
+import MedicalHistory from "./pages/MedicalHistoryList";
+import OutOfStock from "./pages/OutOfStockList";
 import ExpiredMedicineList from "./pages/ExpiredMedicineList";
 import PrescriptionDetail from "./pages/PrescriptionDetail";
 import PurchaseDetail from "./pages/PurchaseDetail";
@@ -164,8 +164,13 @@ function App() {
               <AddPrescription />
             </ProtectedRoute>
           } />
+          <Route path="/prescription/patient" element={
+            <ProtectedRoute routeName="MEDICAL_HISTORY">
+              <MedicalHistory />
+            </ProtectedRoute>
+          } />
           <Route path="/prescription/:id" element={
-            <ProtectedRoute routeName="PRESCRIPTION">
+            <ProtectedRoute routeName="PRESCRIPTION_DETAIL">
               <PrescriptionDetail />
             </ProtectedRoute>
           } />
