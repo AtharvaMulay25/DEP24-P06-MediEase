@@ -15,16 +15,17 @@ const {
 } = require('../controllers/profileController');
 
 const authMiddleware = require("../middlewares/authMiddleware");
+const profileMiddleware = require("../middlewares/profileMiddleware");
 
-router.get('/patient/:email', authMiddleware(["PATIENT"]), catchAsync(getPatientProfile));
-router.put('/patient/:email', authMiddleware(["PATIENT"]), validatePatient, catchAsync(updatePatientProfile));
-router.delete('/patient/:email', authMiddleware(["PATIENT"]), catchAsync(deletePatientProfile));
+router.get('/patient/:email', authMiddleware(["PATIENT"]), profileMiddleware(true), catchAsync(getPatientProfile));
+router.put('/patient/:email', authMiddleware(["PATIENT"]), profileMiddleware(true), validatePatient, catchAsync(updatePatientProfile));
+router.delete('/patient/:email', authMiddleware(["PATIENT"]), profileMiddleware(true), catchAsync(deletePatientProfile));
 
-router.get('/staff/:email', authMiddleware(["DOCTOR", "PARAMEDICAL"]), catchAsync(getStaffProfile));
-router.put('/staff/:email', authMiddleware(["DOCTOR", "PARAMEDICAL"]), validateStaff, catchAsync(updateStaffProfile));
-router.delete('/staff/:email', authMiddleware(["DOCTOR", "PARAMEDICAL"]), catchAsync(deleteStaffProfile));
+router.get('/staff/:email', authMiddleware(["DOCTOR", "PARAMEDICAL"]), profileMiddleware(true), catchAsync(getStaffProfile));
+router.put('/staff/:email', authMiddleware(["DOCTOR", "PARAMEDICAL"]), profileMiddleware(true), validateStaff, catchAsync(updateStaffProfile));
+router.delete('/staff/:email', authMiddleware(["DOCTOR", "PARAMEDICAL"]), profileMiddleware(true), catchAsync(deleteStaffProfile));
 
-router.get('/admin/:email', authMiddleware(["ADMIN"]), catchAsync(getAdminProfile));
-router.put('/admin/:email', authMiddleware(["ADMIN"]), catchAsync(updateAdminProfile));
+router.get('/admin/:email', authMiddleware(["ADMIN"]), profileMiddleware(true), catchAsync(getAdminProfile));
+router.put('/admin/:email', authMiddleware(["ADMIN"]), profileMiddleware(true),  catchAsync(updateAdminProfile));
 
 module.exports = router;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {toast} from 'sonner';
 import {
   Card,
@@ -28,11 +29,12 @@ const getPatientData = async (userEmail) => {
 		return response.data.data;
 	} catch (error) {
 		console.error(`ERROR (get-profile-patient): ${error?.response?.data?.message}`);
-		toast.error('Failed to fetch Patient Profile');
+		toast.error(error?.response?.data?.message || 'Failed to fetch Patient Profile');
 	}
 };
 
 export default function PatientProfile({ edit = false }) {
+  const navigate = useNavigate();
   const {userEmail} = useAuthContext();	
 
 	const [patientDetail, setPatientDetail] = useState({
@@ -330,7 +332,7 @@ export default function PatientProfile({ edit = false }) {
 								<Button
 									className="flex items-center gap-3"
 									size="md"
-									onClick={() => {}}
+									onClick={() => {navigate("/profile/patient/edit")}}
 								>
 									Edit Profile
 								</Button>

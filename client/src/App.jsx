@@ -65,13 +65,17 @@ function App() {
             <StaffProfile />
           } />
           <Route path="/profile/patient" element={
-            <PatientProfile />
-          } />
-          <Route path="/profile/patient/edit" element={
-            <PatientProfile edit={true} />
+            <ProtectedRoute routeName="PATIENT_PROFILE">
+              <PatientProfile />
+            </ProtectedRoute>
           } />
           <Route path="/profile/admin" element={
             <AdminProfile />
+          } />
+          <Route path="/profile/patient/edit" element={
+            <ProtectedRoute routeName="PATIENT_PROFILE">
+            <PatientProfile edit={true} />
+            </ProtectedRoute>
           } />
           <Route path="/profile/admin/edit" element={
             <AdminProfile edit={true} />
