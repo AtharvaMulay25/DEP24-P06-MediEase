@@ -25,6 +25,7 @@ const staffRoutes = require("./src/routes/staffRoutes.js");
 const scheduleRoutes = require('./src/routes/scheduleRoutes.js');
 const dashboardRoutes = require('./src/routes/dashboardRoutes.js');
 const checkupRoutes = require("./src/routes/checkupRoutes.js");
+const profileRoutes = require("./src/routes/profileRoutes.js");
 const ExpressError = require("./src/utils/ExpressError.js");
 
 app.use("/api/otp", otpRoutes);
@@ -43,6 +44,7 @@ app.use("/api/admin", adminRoutes);
 app.use('/api/schedule',scheduleRoutes);
 app.use("/api/staff", staffRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/profile", profileRoutes);
 
 app.all("*", (req, res) => {
   throw new ExpressError("Page Not Found", 404);

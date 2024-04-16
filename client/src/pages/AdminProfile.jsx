@@ -1,112 +1,203 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "sonner";
 import {
   Card,
   CardBody,
   CardHeader,
   Typography,
-	Input,
+  Input,
   CardFooter,
   Button,
 } from "@material-tailwind/react";
+
 import Layout from "../layouts/PageLayout";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { apiRoutes } from "../utils/apiRoutes";
+import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
-export default function AdminProfile({ edit=false }) {
-  const [staffDetail, setStaffDetail] = useState({
-    name: "John Doe",
-    role: "Admin",
-    phoneNumber: "+91 9876543210",
-    email: "john@gmail.com",
-    age: "25",
-  });
+const getAdminData = async (userEmail) => {
+  try {
+    const response = await axios.get(
+      `${apiRoutes.profile}/admin/${userEmail}`,
+      {
+        withCredentials: true,
+      }
+    );
 
+
+    toast.success("Admin profile fetched successfully");
+    return response.data.data;
+  } catch (error) {
+    console.error(`ERROR: ${error?.response?.data?.message}`);
+    toast.error(
+      error?.response?.data?.message || "Failed to fetch Admin Profile"
+    );
+  }
+};
+
+export default function AdminProfile({ edit = false }) {
+  const { userEmail } = useAuthContext();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-	const handleSave = () => {
-		setLoading(true);
-	}
+  const [adminDetail, setAdminDetail] = useState({
+    name: "John Doe",
+    role: "Admin",
+    email: "john@gmail.com",
+  });
+
+  useEffect(() => {
+    const fetchAdminData = async () => {
+      if (userEmail) {
+        setLoading(true);
+        const data = await getAdminData(userEmail);
+
+        const adminData = {
+          name: data.name,
+          role: data.role,
+          email: data.email,
+        };
+
+        setAdminDetail(adminData);
+        setLoading(false);
+      }
+    };
+
+    fetchAdminData();
+  }, [userEmail]);
+
+	const handleSave = async () => {
+		try {
+			setLoading(true);
+			const response = await axios.put(
+				`${apiRoutes.profile}/admin/${userEmail}`,
+				adminDetail,
+				{
+					withCredentials: true,
+				}
+			);
+			toast.success(response.data.message);
+			navigate("/profile/admin");
+		} catch (error) {
+			console.error(`ERROR: ${error?.response?.data?.message}`);
+			toast.error(
+				error?.response?.data?.message || "Failed to update Admin Profile"
+			);
+		}
+		setLoading(false);
+	};
 
   return (
-    <Layout>
-      <Card className="flex w-full">
-        <CardHeader floated={false} shadow={false} className="rounded-none">
-          <Typography variant="h3" color="blue-gray" className="text-center ">
-            Admin Profile
-          </Typography>
-        </CardHeader>
-        <CardBody className="flex justify-center">
-          <div className="flex flex-col sm:w-2/5 w-full min-w-fit justify-center gap-8 p-4 border border-blue-gray-100">
-            <div className="flex justify-center">
-              <img
-                src="/src/assets/img/patient.png"
-                alt="staff"
-                className="rounded-full w-48 h-48 "
-              />
-            </div>
-            <div className="content-center text-center grid sm:grid-cols-2 gap-y-3">
-              <Typography variant="h6" className="text-start sm:text-center">
-                Name:{" "}
+    <>
+      {loading && <SyncLoadingScreen />}
+      {!loading && (
+        <Layout>
+          <Card className="flex w-full">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+              <Typography
+                variant="h3"
+                color="blue-gray"
+                className="text-center "
+              >
+                {edit && "Update"} Admin Profile
               </Typography>
-							{ edit ? (
-								<input 
-									placeholder="Full Name"
-									className="px-2 py-1 border border-blue-gray-200 rounded-md"	
-									value={staffDetail.name}
-									onChange={(e) => setStaffDetail({...staffDetail, name: e.target.value})}
-								/>
-							) : (
-								<Typography color="blue-gray" className="text-start">
-									{staffDetail.name}
-								</Typography>
-							)}
-              <Typography variant="h6" className="text-start sm:text-center">
-                Email:{" "}
-              </Typography>
-							{ edit ? (
-								<Input 
-									disabled
-									value={staffDetail.email}
-								/>
-							) : (
-								<Typography color="blue-gray" className="text-start">
-									{staffDetail.email}
-								</Typography>
-							)}
-              <Typography variant="h6" className="text-start sm:text-center">
-                Role:{" "}
-              </Typography>
-							{ edit ? (
-								<Input 
-									disabled
-									value={staffDetail.role}
-								/>
-							) : (
-								<Typography color="blue-gray" className="text-start">
-									{staffDetail.role}
-								</Typography>
-							)}
-            </div>
-          </div>
-        </CardBody>
-        <CardFooter className="flex justify-end">
-					{!edit ? (
-						<Button
-							className="flex items-center gap-3"
-							size="md"
-							onClick={() => {}}
-						>
-							Edit Profile
-						</Button>
-					) : (
-						<Button
-							className="flex items-center gap-3"
-							size="md"
-							onClick={() => {handleSave()}}
-						>
-							Save
-						</Button>
-					)}
-        </CardFooter>
-      </Card>
-    </Layout>
+            </CardHeader>
+            <CardBody className="flex justify-center">
+              <div className="flex flex-col sm:w-2/5 w-full min-w-fit justify-center gap-8 p-4 border border-blue-gray-100">
+                <div className="flex justify-center">
+                  <img
+                    src="/src/assets/img/patient.png"
+                    alt="admin"
+                    className="rounded-full w-48 h-48 "
+                  />
+                </div>
+                <div className="content-center text-center grid sm:grid-cols-2 gap-y-3">
+                  <Typography
+                    variant="h6"
+                    className="text-start sm:text-center"
+                  >
+                    Name:{" "}
+                  </Typography>
+                  {edit ? (
+                    <input
+                      placeholder="Full Name"
+                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                      value={adminDetail.name}
+                      onChange={(e) =>
+                        setAdminDetail({ ...adminDetail, name: e.target.value })
+                      }
+                    />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {adminDetail.name}
+                    </Typography>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className="text-start sm:text-center"
+                  >
+                    Email:{" "}
+                  </Typography>
+                  {edit ? (
+                    <Input disabled value={adminDetail.email} />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {adminDetail.email}
+                    </Typography>
+                  )}
+                  <Typography
+                    variant="h6"
+                    className="text-start sm:text-center"
+                  >
+                    Role:{" "}
+                  </Typography>
+                  {edit ? (
+                    <Input disabled value={adminDetail.role} />
+                  ) : (
+                    <Typography color="blue-gray" className="text-start">
+                      {adminDetail.role}
+                    </Typography>
+                  )}
+                </div>
+              </div>
+            </CardBody>
+            <CardFooter className="flex justify-end">
+              {!edit ? (
+                <Button
+                  className="flex items-center gap-3"
+                  size="md"
+                  onClick={() => {
+                    navigate("/profile/admin/edit");
+                  }}
+                >
+                  Edit Profile
+                </Button>
+              ) : (
+                <div className="flex justify-between w-full">
+                  <Button
+                    className="flex items-center gap-3"
+                    size="md"
+                    onClick={() => {
+                      navigate("/profile/admin");
+                    }}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    className="flex items-center gap-3"
+                    size="md"
+                    onClick={handleSave}
+                  >
+                    Save
+                  </Button>
+                </div>
+              )}
+            </CardFooter>
+          </Card>
+        </Layout>
+      )}
+    </>
   );
 }
