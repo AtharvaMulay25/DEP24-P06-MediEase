@@ -79,7 +79,7 @@ export default function CompleteProfilePatient() {
         })
 
         setTimeout(() => {
-          navigate("/schedule/doctor");
+          navigate("/prescription/patient");
         }, 1000);
       } else {
         console.error(
