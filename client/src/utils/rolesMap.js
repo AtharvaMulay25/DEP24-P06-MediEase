@@ -23,10 +23,10 @@ const roleMap = (role) => {
     if (role !== "ADMIN" && role !== "DOCTOR" && role !== "PARAMEDICAL" && role !== "PATIENT") {
         return [];
     }
-    const admin = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    const admin = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 18];
     const patient = [14, 16, 17, 18];
-    const paramedical = [2, 4, 5, 6, 7, 8, 9, 10, 11, 15];
-    const doctor = [1, 4, 5, 8, 9, 10, 11, 15];
+    const paramedical = [2, 4, 5, 6, 7, 8, 9, 10, 11, 15, 18];
+    const doctor = [1, 4, 5, 8, 9, 10, 11, 15, 18];
 
     let roleArr = [];
 
