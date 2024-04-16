@@ -1,34 +1,89 @@
-import React from "react";
-import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import React, { useState } from "react";
+import feedbackimg from "../assets/img/feedback.png";
+import {
+  Card,
+  Input,
+  Button,
+  Typography,
+  Textarea,
+} from "@material-tailwind/react";
+import axios from "axios";
+import { apiRoutes } from "../utils/apiRoutes";
+import { toast } from "sonner";
 
 const Feedback = () => {
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   function autoResize(textarea) {
     textarea.height = "auto";
     // textarea.style.height = textarea.height + "px";
+  }
+
+  async function handleFeedbackSubmit() {
+    try {
+      const data = {
+        subject,
+        message,
+      };
+      const response = await axios.post(`${apiRoutes.mail}/feedback`, data, {
+        withCredentials: true,
+      });
+      const resData = response.data;
+      if (resData.ok) {
+        toast.success(resData.message);
+        console.log(resData.message);
+      }
+    } catch (error) {
+      console.error(
+        `ERROR (feedback-sumbit): ${error?.response?.data?.message}`
+      );
+      toast.error(
+        error?.response?.data?.message || "Failed to submit feedback"
+      );
+    }
   }
 
   return (
     <Card
       color="transparent"
       shadow={false}
-      className="flex flex-col items-center justify-center"
+      className="flex flex-col items-center justify-center min-h-screen bg-blue-50"
     >
       <div className="bg-white m-4 p-8 rounded-xl shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]">
         <Typography variant="h2" color="black">
           Feedback
         </Typography>
-        <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+        <form className="mt-8 mb-2 w-96 max-w-screen-lg">
           <div className="mb-1 flex flex-col gap-3">
-            <Typography variant="h6" color="black" className="-mb-3">
-              Message
+            <img
+              className=" h-64 w-full rounded-lg mb-3"
+              src={feedbackimg}
+              alt="img"
+            />
+            <Typography variant="h6" color="black">
+              Subject
             </Typography>
             <Input
+              id="subject"
+              name="subject"
               size="lg"
-              placeholder="Message"
-              className=" !border-t-black-200 focus:!border-t-gray-900"
+              placeholder="Subject"
+              // className=" !border-t-black-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+            />
+            <Textarea
+              id="message"
+              size="md"
+              label="Message"
+              name="message"
+              type="text"
+              className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             />
 
             {/* <textarea
@@ -49,7 +104,11 @@ const Feedback = () => {
               }}
             /> */}
           </div>
-          <Button className="mt-6 mb-6" fullWidth>
+          <Button
+            className="mt-6 mb-6"
+            fullWidth
+            onClick={handleFeedbackSubmit}
+          >
             send
           </Button>
         </form>

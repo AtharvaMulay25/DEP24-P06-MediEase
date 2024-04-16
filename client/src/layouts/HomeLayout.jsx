@@ -177,7 +177,7 @@ const HomeLayout = ({ children }) => {
               >
                 Blog
               </Link>
-              {userRole && (
+              {userRole && userRole !== "ADMIN" && (
                 <Link
                   to="#blogs"
                   spy={true}

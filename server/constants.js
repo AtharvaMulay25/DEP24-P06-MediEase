@@ -1,5 +1,5 @@
 const OTP_EXPIRY_TIME = 10;
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173'; // Set a default value if CLIENT_URL is not defined
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173"; // Set a default value if CLIENT_URL is not defined
 const OTP_MAIL_TEMPLATE = (otp) => {
   return `<h2>Hi!</h2><h1>Welcome to <span style="color:blue;">Mediease</span>.</h1><p>Your OTP is: <strong>${otp}</strong>.</p><p>Please use this OTP to verify your email address.</p><p>The OTP is valid for <strong>10 minutes</strong>.<br></p>Regards,<h4>DEP_P06_2024</h4>`;
 };
@@ -22,15 +22,18 @@ const ACCOUNT_CREATED_MAIL_TEMPLATE = () => {
 
 const ACCOUNT_DELETED_MAIL_TEMPLATE = () => {
   return `<h2>Hello <span style="color:blue;">Mediease</span> User,</h2><p>Your account has been deleted by MediEase Admin.</p><br></p>Regards,<h4>DEP_P06_2024</h4>`;
-}
-
+};
+const FEEDBACK_SUBMIT_TEMPLATE = (name, email, role, subject, message) => {
+  return `<h2>Hello <span style="color:blue;">Mediease</span> ADMIN,</h2><p>The following user ${name} (${email}) with role <b>${role}</b> has send the following feedback.<br><h2>Subject: ${subject}</h2>Message: ${message}`;
+};
 module.exports = {
   OTP_EXPIRY_TIME,
-  OTP_MAIL_TEMPLATE, 
+  OTP_MAIL_TEMPLATE,
   PENDING_MAIL_TEMPLATE_USER,
   PENDING_MAIL_TEMPLATE_ADMIN,
   APPROVED_MAIL_TEMPLATE,
   REJECTED_MAIL_TEMPLATE,
   ACCOUNT_CREATED_MAIL_TEMPLATE,
-  ACCOUNT_DELETED_MAIL_TEMPLATE
-}
+  ACCOUNT_DELETED_MAIL_TEMPLATE,
+  FEEDBACK_SUBMIT_TEMPLATE,
+};

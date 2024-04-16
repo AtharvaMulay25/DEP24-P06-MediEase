@@ -30,7 +30,7 @@ const Home = () => {
             <Blogs />
           </Element>
 
-          {userRole && (
+          {userRole && userRole !== "ADMIN" && (
             <Element id="feedback">
               <Feedback />
             </Element>
