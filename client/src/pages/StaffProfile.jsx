@@ -18,6 +18,7 @@ import { apiRoutes } from "../utils/apiRoutes";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
 const DEPARTMENTS = ["AYURVEDIC", "GYNECOLOGY", "HOMEOPATHY", "OTHERS"];
+const DAYS = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
 
 const getStaffData = async (userEmail) => {
   try {
@@ -93,7 +94,15 @@ export default function StaffProfile({ edit = false }) {
         setStaffDetail(staffData);
 
         const schedule = await getScheduleData(userEmail);
-        setScheduleData(schedule);
+
+        const scheduleData = DAYS.map((day) => {
+          const daySchedule = schedule.find((item) => item.day === day);
+          return {
+            day,
+            shift: daySchedule ? daySchedule.shift : "-",
+          };
+        });
+        setScheduleData(scheduleData);
         setLoading(false);
       }
     };
