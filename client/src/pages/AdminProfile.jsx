@@ -118,7 +118,7 @@ export default function AdminProfile({ edit = false }) {
                     variant="h6"
                     className="text-start sm:text-center"
                   >
-                    Name:{" "}
+                    Name<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <input
@@ -138,7 +138,7 @@ export default function AdminProfile({ edit = false }) {
                     variant="h6"
                     className="text-start sm:text-center"
                   >
-                    Email:{" "}
+                    Email<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={adminDetail.email} />
@@ -151,7 +151,7 @@ export default function AdminProfile({ edit = false }) {
                     variant="h6"
                     className="text-start sm:text-center"
                   >
-                    Role:{" "}
+                    Role<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={adminDetail.role} />

@@ -137,7 +137,7 @@ export default function PatientProfile({ edit = false }) {
                   <Typography
                     variant="h6"
                   >
-                    Name:{" "}
+                    Name<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <input
@@ -156,7 +156,7 @@ export default function PatientProfile({ edit = false }) {
                   <Typography
                     variant="h6"
                   >
-                    Category:{" "}
+                    Category<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={patientDetail.category} />
@@ -190,7 +190,7 @@ export default function PatientProfile({ edit = false }) {
                   <Typography
                     variant="h6"
                   >
-                    Age:{" "}
+                    Age<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <input
@@ -211,7 +211,7 @@ export default function PatientProfile({ edit = false }) {
                   <Typography
                     variant="h6"
                   >
-                    Gender:{" "}
+                    Gender<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <select
@@ -258,7 +258,7 @@ export default function PatientProfile({ edit = false }) {
                   <Typography
                     variant="h6"
                   >
-                    Email:{" "}
+                    Email<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={patientDetail.email} />
@@ -270,7 +270,7 @@ export default function PatientProfile({ edit = false }) {
                   <Typography
                     variant="h6"
                   >
-                    Blood Group:{" "}
+                    Blood Group<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <select

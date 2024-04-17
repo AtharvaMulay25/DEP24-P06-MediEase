@@ -17,6 +17,8 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { apiRoutes } from "../utils/apiRoutes";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
+const DEPARTMENTS = ["Ayurvedic", "Gynecology", "Homeopathy"];
+
 const getStaffData = async (userEmail) => {
   try {
     const response = await axios.get(`${apiRoutes.profile}/staff/${userEmail}`, {
@@ -37,15 +39,14 @@ export default function StaffProfile({ edit = false }) {
   const [loading, setLoading] = useState(false);
 
   const [staffDetail, setStaffDetail] = useState({
-    name: "Dr. John Doe",
-    role: "Doctor",
-    mobileNumber: "9876543210",
-    email: "john@gmail.com",
-    gender: "Male",
-    department: "General Medicine",
-    specialisation: "Surgeon",
-    checkupCount: 100,
-    appointments: 10,
+    name: "-",
+    role: "-",
+    mobileNumber: "-",
+    email: "-",
+    gender: "-",
+    department: "-",
+    specialisation: "-",
+    checkupCount: "-",
   });
 
   const [scheduleData, setScheduleData] = useState([
@@ -65,14 +66,14 @@ export default function StaffProfile({ edit = false }) {
         const data = await getStaffData(userEmail);
 
         const staffData = {
-          name: data.name,
-          role: data.role,
-          email: data.email,
-          mobileNumber: data.mobileNumber || "",
-          gender: data.gender,
-          department: data.department,
-          specialisation: data.specialisation || "Surgeon",
-          checkupCount: data.checkupCount,
+          name: data.name || "-",
+          role: data.role || "-",
+          email: data.email || "-",
+          mobileNumber: data.mobileNumber || "-",
+          gender: data.gender || "-",
+          department: data.department || "-",
+          specialisation: data.specialisation || "-",
+          checkupCount: data.checkupCount || "-",
         };
 
         setStaffDetail(staffData);
@@ -133,7 +134,7 @@ export default function StaffProfile({ edit = false }) {
                 </div>
                 <div className="content-center text-center grid sm:grid-cols-2 gap-y-3">
                   <Typography variant="h6" className=" sm:text-center">
-                    Name:{" "}
+                    Name<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <input
@@ -150,7 +151,7 @@ export default function StaffProfile({ edit = false }) {
                     </Typography>
                   )}
                   <Typography variant="h6" >
-                    Role:{" "}
+                    Role<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={staffDetail.email} />
@@ -177,7 +178,7 @@ export default function StaffProfile({ edit = false }) {
                     </Typography>
                   )}
                   <Typography variant="h6" >
-                    Email:{" "}
+                    Email<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={staffDetail.email} />
@@ -187,7 +188,7 @@ export default function StaffProfile({ edit = false }) {
                     </Typography>
                   )}
                   <Typography variant="h6" >
-                    Gender:{" "}
+                    Gender<span className="text-red-800">*</span>:{" "}
                   </Typography>
                   {edit ? (
                     <select
@@ -214,19 +215,28 @@ export default function StaffProfile({ edit = false }) {
                       <Typography variant="h6" >
                         Department:{" "}
                       </Typography>
-                      <input
-                        placeholder="Full Name"
+                      <select
+                        name="department"
                         className="px-2 py-1 border border-blue-gray-200 rounded-md"
                         value={staffDetail.department}
                         onChange={(e) =>
-                          setStaffDetail({ ...staffDetail, department: e.target.value })
+                          setStaffDetail({
+                            ...staffDetail,
+                            department: e.target.value,
+                          })
                         }
-                      />
+                      >
+                        {DEPARTMENTS.map((group) => (
+                          <option key={group} value={group}>
+                            {group}
+                          </option>
+                        ))}
+                      </select>
                       <Typography variant="h6" >
                         Specialisation:{" "}
                       </Typography>
                       <input
-                        placeholder="Full Name"
+                        placeholder="Specialisation"
                         className="px-2 py-1 border border-blue-gray-200 rounded-md"
                         value={staffDetail.specialisation}
                         onChange={(e) =>
