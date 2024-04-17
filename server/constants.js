@@ -23,8 +23,8 @@ const ACCOUNT_CREATED_MAIL_TEMPLATE = () => {
 const ACCOUNT_DELETED_MAIL_TEMPLATE = () => {
   return `<h2>Hello <span style="color:blue;">Mediease</span> User,</h2><p>Your account has been deleted by MediEase Admin.</p><br></p>Regards,<h4>DEP_P06_2024</h4>`;
 };
-const FEEDBACK_SUBMIT_TEMPLATE = (name, email, role, subject, message) => {
-  return `<h2>Hello <span style="color:blue;">Mediease</span> ADMIN,</h2><p>The following user ${name} (${email}) with role <b>${role}</b> has send the following feedback.<br><h2>Subject: ${subject}</h2>Message: ${message}`;
+const FEEDBACK_SUBMIT_TEMPLATE = (name, email, role, message) => {
+  return `<h2>Hello <span style="color:blue;">Mediease</span> ADMIN,</h2><p>The following user ${name} (${email}) with role <b>${role}</b> has send the following feedback.<br>${message}`;
 };
 module.exports = {
   OTP_EXPIRY_TIME,
