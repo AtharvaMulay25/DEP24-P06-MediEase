@@ -33,6 +33,44 @@ const getScheduleList = async (req, res, next) => {
 
 };
 
+// @desc    Get Schedule
+// route    GET /api/schedule/:email
+// @access  Private (Admin)
+const getSchedule = async (req, res, next) => {
+  try {
+    const staff = await prisma.staff.findUnique({
+      where: {
+        email: req.params?.email,
+      },
+    });
+
+    const schedule = await prisma.schedule.findMany({
+      where: {
+        staffId: staff.id,
+      },
+    });
+
+    const sendScheduleData = schedule.map((schedule) => ({
+      day: schedule.day,
+      shift: schedule.shift,
+    }));
+
+    return res.status(200).json({
+      ok: true,
+      data: sendScheduleData,
+      message: "Schedule retrieved successfully",
+    });
+  } catch (error) {
+    console.log(`Error in fetching schedule: ${error.message}`);
+
+    return res.status(500).json({
+      ok: false,
+      data: [],
+      message: "Fetching data failed, Please try again later",
+    });      
+  }
+}
+
 // @desc    Create Schedule Records
 // route    POST /api/schedule
 // @access  Private (Admin)
@@ -152,6 +190,7 @@ const deleteSchedule = async (req, res, next) => {
 
 module.exports = {
   getScheduleList,
+  getSchedule,
   createSchedule,
   updateSchedule,
   deleteSchedule,

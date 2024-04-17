@@ -17,7 +17,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { apiRoutes } from "../utils/apiRoutes";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 
-const DEPARTMENTS = ["Ayurvedic", "Gynecology", "Homeopathy"];
+const DEPARTMENTS = ["AYURVEDIC", "GYNECOLOGY", "HOMEOPATHY", "OTHERS"];
 
 const getStaffData = async (userEmail) => {
   try {
@@ -30,6 +30,20 @@ const getStaffData = async (userEmail) => {
   } catch (error) {
     console.error(`ERROR: ${error?.response?.data?.message}`);
     toast.error(error?.response?.data?.message || "Failed to fetch Staff Profile");
+  }
+};
+
+const getScheduleData = async (userEmail) => {
+  try {
+    const response = await axios.get(`${apiRoutes.schedule}/${userEmail}`, {
+      withCredentials: true,
+    });
+
+    toast.success("Schedule fetched successfully");
+    return response.data.data;
+  } catch (error) {
+    console.error(`ERROR: ${error?.response?.data?.message}`);
+    toast.error(error?.response?.data?.message || "Failed to fetch Schedule");
   }
 };
 
@@ -77,6 +91,9 @@ export default function StaffProfile({ edit = false }) {
         };
 
         setStaffDetail(staffData);
+
+        const schedule = await getScheduleData(userEmail);
+        setScheduleData(schedule);
         setLoading(false);
       }
     };

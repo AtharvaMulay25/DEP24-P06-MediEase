@@ -187,7 +187,7 @@ const Layout = ({ children }) => {
                         onClick={() => {
                           {userRole === "PATIENT" && navigate("/profile/patient")}
                           {userRole === "ADMIN" && navigate("/profile/admin")}
-                          {userRole === "PARAMEDICAL" || userRole === "DOCTOR" && navigate("/profile/staff")}
+                          {(userRole === "PARAMEDICAL" || userRole === "DOCTOR") && navigate("/profile/staff")}
                         }} 
                         className="flex gap-2"
                       >
@@ -198,7 +198,7 @@ const Layout = ({ children }) => {
                         onClick={() => {
                             {userRole === "PATIENT" && navigate("/profile/patient/edit")}
                             {userRole === "ADMIN" && navigate("/profile/admin/edit")}
-                            {userRole === "PARAMEDICAL" || userRole === "DOCTOR" && navigate("/profile/staff/edit")}
+                            {(userRole === "PARAMEDICAL" || userRole === "DOCTOR") && navigate("/profile/staff/edit")}
                         }} 
                         className="flex gap-2"
                       >
