@@ -205,7 +205,7 @@ const feedbackSubmitController = async (req, res, next) => {
     const mailOptionsAdmin = {
       from: "dep2024.p06@gmail.com",
       to: adminEmail,
-      subject: `Feedback Received from ${name}`,
+      subject: `Feedback: ${subject}`,
       html: mailTemplateAdmin,
       text: "",
     };
