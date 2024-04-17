@@ -100,7 +100,7 @@ const VerifyOTP = ({ email, setIsOtpSent, handler, otpSubmitHandler }) => {
                 OTP<span className="text-red-800">*</span> :
               </Typography>
               <Input
-                label="Enter your Otp"
+                label="Enter your OTP"
                 size="lg"
                 type="number"
                 name="otp"

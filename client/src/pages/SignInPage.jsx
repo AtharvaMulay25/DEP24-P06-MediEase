@@ -162,9 +162,6 @@ export default function SignInPage() {
                       handleChange(e.target.name, e.target.value);
                     }}
                   />
-                  <div className="-ml-2.5">
-                    <Checkbox label="Remember Me" />
-                  </div>
                 </CardBody>
                 <CardFooter className="pt-0">
                   <Button variant="gradient" fullWidth onClick={handleSubmit}>

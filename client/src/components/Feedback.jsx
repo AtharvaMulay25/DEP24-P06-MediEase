@@ -60,18 +60,12 @@ const Feedback = () => {
               src={feedbackimg}
               alt="img"
             />
-            <Typography variant="h6" color="black">
-              Subject
-            </Typography>
             <Input
               id="subject"
               name="subject"
+              label="Subject"
               size="lg"
-              placeholder="Subject"
-              // className=" !border-t-black-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
+              className="w-full border-blue-gray-200 border h-5 px-3 rounded-lg min-w-[200px]"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             />
