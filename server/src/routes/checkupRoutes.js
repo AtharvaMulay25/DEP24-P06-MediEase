@@ -7,6 +7,7 @@ const {
     getCheckupList, 
     getCheckupDetails,
     createCheckup,
+    updateCheckup,
     deleteCheckup
 } = require('../controllers/checkupController');
 
@@ -18,7 +19,7 @@ router.use(authMiddleware(roles));
 router.get('/:id', catchAsync(getCheckupDetails));
 router.get('/', catchAsync(getCheckupList));
 router.post('/', validateCheckup, catchAsync(createCheckup));
-// router.put('/:id', validateCheckup, catchAsync(updatePurchaseList));
+router.put('/:id', validateCheckup, catchAsync(updateCheckup));
 router.delete('/:id', catchAsync(deleteCheckup));
 
 module.exports = router;
