@@ -56,6 +56,7 @@ export default function StaffProfile({ edit = false }) {
   const [loading, setLoading] = useState(false);
   const { logout } = useLogout();
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(false);
 
   const [staffDetail, setStaffDetail] = useState({
     name: "-",
@@ -95,7 +96,7 @@ export default function StaffProfile({ edit = false }) {
           checkupCount: data.checkupCount || "-",
         };
 
-        setStaffDetail(staffData);
+        {edit ? setStaffDetail(data) : setStaffDetail(staffData)}
 
         const schedule = await getScheduleData(userEmail);
 
@@ -112,7 +113,7 @@ export default function StaffProfile({ edit = false }) {
     };
 
     fetchStaffData();
-  }, [userEmail]);
+  }, [page]);
 
   const handleSave = async () => {
     const sendData = {
@@ -133,6 +134,7 @@ export default function StaffProfile({ edit = false }) {
         }
       );
       toast.success(response.data.message);
+      setPage(!page);
       navigate("/profile/staff");
     } catch (error) {
       console.error(`ERROR: ${error?.response?.data?.message}`);
@@ -209,7 +211,7 @@ export default function StaffProfile({ edit = false }) {
                     Role{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
-                    <Input disabled value={staffDetail.email} />
+                    <Input disabled value={staffDetail.role} />
                   ) : (
                     <Typography color="blue-gray">
                       {staffDetail.role}
@@ -405,7 +407,10 @@ export default function StaffProfile({ edit = false }) {
                   <Button
                     className="flex items-center gap-3"
                     size="md"
-                    onClick={() => {navigate("/profile/staff");}}
+                    onClick={() => {
+                      setPage(!page);
+                      navigate("/profile/staff");
+                    }}
                   >
                     Back
                   </Button>
@@ -429,7 +434,10 @@ export default function StaffProfile({ edit = false }) {
                   <Button
                     className="flex items-center gap-3"
                     size="md"
-                    onClick={() => {navigate("/profile/staff/edit")}}
+                    onClick={() => {
+                      setPage(!page);
+                      navigate("/profile/staff/edit");
+                    }}
                   >
                     Edit Profile
                   </Button>

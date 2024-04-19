@@ -46,6 +46,7 @@ export default function PatientProfile({ edit = false }) {
   const [loading, setLoading] = useState(false);
   const { logout } = useLogout();
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(false);
 
   const [patientDetail, setPatientDetail] = useState({
     name: "John Doe",
@@ -78,12 +79,12 @@ export default function PatientProfile({ edit = false }) {
         allergies: data.allergy || "-",
       };
 
-      setPatientDetail(patientData);
+      {edit ? setPatientDetail(data) : setPatientDetail(patientData)}
       setLoading(false);
     };
 
     fetchPatientData();
-  }, [userEmail]);
+  }, [page]);
 
   const handleSave = async () => {
     const sendData = {
@@ -111,6 +112,7 @@ export default function PatientProfile({ edit = false }) {
       );
       console.log(response.data.message);
       toast.success(response.data.message);
+      setPage(!page);
       navigate("/profile/patient");
     } catch (error) {
       console.error(`ERROR: ${error?.response?.data?.message}`);
@@ -416,6 +418,7 @@ export default function PatientProfile({ edit = false }) {
                     className="flex items-center gap-3"
                     size="md"
                     onClick={() => {
+                      setPage(!page);
                       navigate("/profile/patient/edit");
                     }}
                   >
@@ -428,6 +431,7 @@ export default function PatientProfile({ edit = false }) {
                     className="flex items-center gap-3"
                     size="md"
                     onClick={() => {
+                      setPage(!page);
                       navigate("/profile/patient");
                     }}
                   >

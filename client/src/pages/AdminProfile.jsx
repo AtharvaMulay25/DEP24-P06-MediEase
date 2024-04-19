@@ -45,6 +45,7 @@ export default function AdminProfile({ edit = false }) {
   const [loading, setLoading] = useState(false);
   const { logout } = useLogout();
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(false);
 
   const [adminDetail, setAdminDetail] = useState({
     name: "John Doe",
@@ -64,13 +65,13 @@ export default function AdminProfile({ edit = false }) {
           email: data.email || "-",
         };
 
-        setAdminDetail(adminData);
+        {edit ? setAdminDetail(data) : setAdminDetail(adminData)}
         setLoading(false);
       }
     };
 
     fetchAdminData();
-  }, [userEmail]);
+  }, [page]);
 
 	const handleSave = async () => {
 		try {
@@ -83,6 +84,7 @@ export default function AdminProfile({ edit = false }) {
 				}
 			);
 			toast.success(response.data.message);
+      setPage(!page);
 			navigate("/profile/admin");
 		} catch (error) {
 			console.error(`ERROR: ${error?.response?.data?.message}`);
@@ -207,6 +209,7 @@ export default function AdminProfile({ edit = false }) {
                     className="flex items-center gap-3"
                     size="md"
                     onClick={() => {
+                      setPage(!page);
                       navigate("/profile/admin/edit");
                     }}
                   >
@@ -219,6 +222,7 @@ export default function AdminProfile({ edit = false }) {
                     className="flex items-center gap-3"
                     size="md"
                     onClick={() => {
+                      setPage(!page);
                       navigate("/profile/admin");
                     }}
                   >
