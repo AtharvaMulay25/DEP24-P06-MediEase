@@ -42,6 +42,7 @@ import UpdateSupplier from "./pages/UpdateSupplier";
 import UpdateSchedule from "./pages/UpdateSchedule";
 import UpdatePatient from "./pages/UpdatePatient";
 import UpdateStaff from "./pages/UpdateStaff";
+import UpdateMedicine from "./pages/UpdateMedicine";
 import UpdatePurchase from "./pages/UpdatePurchase";
 import UpdatePrescription from "./pages/UpdatePrescription";
 // import Toaster from "./components/UI/Toaster";
@@ -232,6 +233,11 @@ function App() {
           <Route path="/staff/update/:id" element={
             <ProtectedRoute routeName="STAFF">
               <UpdateStaff />
+            </ProtectedRoute>
+          } />
+          <Route path="/medicine/update/:id" element={
+            <ProtectedRoute routeName="MEDICINE">
+              <UpdateMedicine />
             </ProtectedRoute>
           } />
           <Route path="/purchase/update/:id" element={
