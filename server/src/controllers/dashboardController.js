@@ -36,10 +36,40 @@ const getCheckupStat = async (req, res, next) => {
         daysList[day].total++; 
     }
 
+    //finding the checkups 
+    const user = req.user;
+    if (!user) {
+        throw new ExpressError("User not authorized, Please login again", 401);
+    }
+
+    let checkupCount = 0, userEmail = user.email;
+    if (user.role === "ADMIN") {
+        const checkups = await prisma.checkup.findMany({});
+        checkupCount = checkups.length;
+    } else if (user.role === "DOCTOR" || user.role === "PARAMEDICAL") {
+        //getting the staffid 
+        const staffId = (await prisma.staff.findUnique({
+            where: {
+                email: userEmail,
+            },
+            select: {
+                id: true,
+            }
+        })).id;
+
+        const checkups = await prisma.checkup.findMany({
+            where: {
+                [user.role === "DOCTOR" ? "doctorId" : "staffId"]: staffId,
+            },
+        });
+        checkupCount = checkups.length;
+    }
+
     return res.json({
         ok: true,
         data: {
-            checkup: daysList
+            checkup: daysList,
+            checkupCount
         },
         message: "Checkup Stat for current month retrieved successfully"
     });
@@ -50,6 +80,11 @@ const getCheckupStat = async (req, res, next) => {
 // @access  Private (Admin)
 const getTopMedicineStat = async (req, res, next) => {
     const stocks = await prisma.stock.findMany({
+        where: {
+            stock: {
+                gt: 0
+            }
+        },
         select: {
             id: true,
             medicineId: true,
@@ -58,6 +93,8 @@ const getTopMedicineStat = async (req, res, next) => {
             Medicine: true, 
         },
     });
+
+    const pendingRequests = await prisma.requests.findMany({});
 
     // console.log("stocks : ", stocks);
     
@@ -75,15 +112,14 @@ const getTopMedicineStat = async (req, res, next) => {
         data: {
             medicine: sortedStocks,
             totalS,
-            totalM
+            totalM,
+            pendingRequestsCount: pendingRequests.length
         },
-        message: "Checkup Stat for current month retrieved successfully"
+        message: "Pending requests and checkup stats for current month retrieved successfully"
     });
 };
 
-
-
 module.exports = {
     getCheckupStat,
-    getTopMedicineStat
+    getTopMedicineStat,
 };

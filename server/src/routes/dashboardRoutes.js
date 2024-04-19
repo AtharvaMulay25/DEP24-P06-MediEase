@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 
 const {
     getCheckupStat,
-    getTopMedicineStat
+    getTopMedicineStat,
 } = require("../controllers/dashboardController");
 
 const authMiddleware = require("../middlewares/authMiddleware");

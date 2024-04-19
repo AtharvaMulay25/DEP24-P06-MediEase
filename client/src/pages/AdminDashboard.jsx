@@ -52,6 +52,8 @@ const AdminDashboard = () => {
   const [topMedicineStat, setTopMedicineStat] = useState([]);
   const [totalMedicines, setTotalMedicine] = useState(0);
   const [totalStock, setTotalStock] = useState(0);
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0);
+  const [checkupCount, setCheckupCount] = useState(0);
 
   useEffect(() => {
     setLoading(true);
@@ -66,6 +68,7 @@ const AdminDashboard = () => {
           // console.log(data.data.message);
           // console.log("dashboard-checkup-stats: ", data.data.checkup)
           setCheckupStat(data.data.checkup);
+          setCheckupCount(data.data.checkupCount);
         } else {
           console.log("dashboard stats checkup fetch failed, Error: ", data.error);
         }
@@ -82,10 +85,11 @@ const AdminDashboard = () => {
         const { data } = res;
         if (data.ok) {
           // console.log(data.data.message);
-          // console.log("dashboard-medicine-stats: ", data.data.medicine);
+          // console.log("dashboard-medicine-stats: ", data.data);
           setTopMedicineStat(data.data.medicine);
           setTotalMedicine(data.data.totalM);
           setTotalStock(data.data.totalS);
+          setPendingRequestsCount(data.data.pendingRequestsCount);
         } else {
           console.log("dashboard top medicine stats fetch failed");
         }
@@ -314,7 +318,7 @@ const AdminDashboard = () => {
                   Pending Requests
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                  350
+                  {pendingRequestsCount}
                 </p>
               </div>
               <div className="p-6 pt-0">
@@ -334,7 +338,7 @@ const AdminDashboard = () => {
                   Checkups Done
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                  350
+                  {checkupCount}
                 </p>
               </div>
               <div className="p-6 pt-0">

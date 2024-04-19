@@ -49,12 +49,11 @@ const DoctorDashboard = () => {
   const [checkupStat, setCheckupStat] = useState([]);
   const [topMedicineStat, setTopMedicineStat] = useState([]);
   const [totalMedicines, setTotalMedicine] = useState(0);
-  const [totalStock, setTotalStock] = useState(0);
+  const [checkupCount, setCheckupCount] = useState(0);
 
   useEffect(() => {
-    setLoading(true);
-
     const fetchCheckupData = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(`${apiRoutes.dashboard}/checkup`, {
           withCredentials: true
@@ -64,15 +63,19 @@ const DoctorDashboard = () => {
           // console.log(data.data.message);
           // console.log("dashboard-checkup-stats: ", data.data.checkup)
           setCheckupStat(data.data.checkup);
+          setCheckupCount(data.data.checkupCount);
         } else {
           console.log("dashboard stats checkup fetch failed, Error: ", data.error);
         }
       } catch (err) {
         console.log("dashboard stats checkup fetch failed, Error: " + err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     const fetchMedicineData = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(`${apiRoutes.dashboard}/medicine`, {
           withCredentials: true
@@ -83,12 +86,13 @@ const DoctorDashboard = () => {
           // console.log("dashboard-medicine-stats: ", data.data.medicine);
           setTopMedicineStat(data.data.medicine);
           setTotalMedicine(data.data.totalM);
-          setTotalStock(data.data.totalS);
         } else {
           console.log("dashboard top medicine stats fetch failed");
         }
       } catch (err) {
         console.log("dashboard top medicine stats fetch failed, Error: " + err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -246,7 +250,7 @@ const DoctorDashboard = () => {
                   Checkups Done
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-                350
+                {checkupCount}
                 </p>
               </div>
               <div className="p-6 pt-0">
