@@ -56,9 +56,8 @@ const AdminDashboard = () => {
   const [checkupCount, setCheckupCount] = useState(0);
 
   useEffect(() => {
-    setLoading(true);
-
     const fetchCheckupData = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(`${apiRoutes.dashboard}/checkup`, {
           withCredentials: true
@@ -74,10 +73,13 @@ const AdminDashboard = () => {
         }
       } catch (err) {
         console.log("dashboard stats checkup fetch failed, Error: " + err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     const fetchMedicineData = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(`${apiRoutes.dashboard}/medicine`, {
           withCredentials: true
@@ -95,6 +97,8 @@ const AdminDashboard = () => {
         }
       } catch (err) {
         console.log("dashboard top medicine stats fetch failed, Error: " + err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
