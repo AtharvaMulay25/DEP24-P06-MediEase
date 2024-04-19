@@ -12,10 +12,12 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
+import DialogBox from "../components/DialogBox";
 import Layout from "../layouts/PageLayout";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { apiRoutes } from "../utils/apiRoutes";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
+import { useLogout } from "../hooks/useLogout";
 
 const DEPARTMENTS = ["AYURVEDIC", "GYNECOLOGY", "HOMEOPATHY", "OTHERS"];
 const DAYS = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
@@ -52,6 +54,8 @@ export default function StaffProfile({ edit = false }) {
   const { userEmail } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { logout } = useLogout();
+  const [open, setOpen] = useState(false);
 
   const [staffDetail, setStaffDetail] = useState({
     name: "-",
@@ -138,6 +142,31 @@ export default function StaffProfile({ edit = false }) {
     }
     setLoading(false);
   }
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`${apiRoutes.profile}/staff/${userEmail}`, {
+        withCredentials: true
+      });
+
+      console.log(response);
+      if(response) {
+        const data = response?.data;
+        if(data && data.ok) {
+          await logout();
+          navigate("/signin");
+          console.log(data?.message);
+          toast.success(data?.message);
+        } else {
+          console.log(`ERROR: ${data?.message || "NO DATA"}`)
+        }
+      }
+    } catch (error) {
+      console.error(`ERROR (delete-profile): ${error?.response?.data?.message}`);
+      toast.error(error?.response?.data?.message || 'Failed to delete Profile');
+    }
+  }
+
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -160,7 +189,7 @@ export default function StaffProfile({ edit = false }) {
                 </div>
                 <div className="content-center text-center grid sm:grid-cols-2 gap-y-3">
                   <Typography variant="h6" className=" sm:text-center">
-                    Name<span className="text-red-800">*</span>:{" "}
+                    Name{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <input
@@ -177,7 +206,7 @@ export default function StaffProfile({ edit = false }) {
                     </Typography>
                   )}
                   <Typography variant="h6" >
-                    Role<span className="text-red-800">*</span>:{" "}
+                    Role{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={staffDetail.email} />
@@ -204,7 +233,7 @@ export default function StaffProfile({ edit = false }) {
                     </Typography>
                   )}
                   <Typography variant="h6" >
-                    Email<span className="text-red-800">*</span>:{" "}
+                    Email{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={staffDetail.email} />
@@ -214,7 +243,7 @@ export default function StaffProfile({ edit = false }) {
                     </Typography>
                   )}
                   <Typography variant="h6" >
-                    Gender<span className="text-red-800">*</span>:{" "}
+                    Gender{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <select
@@ -389,15 +418,30 @@ export default function StaffProfile({ edit = false }) {
                   </Button>
                 </div>
               ) : (
-                <Button
-                  className="flex items-center gap-3"
-                  size="md"
-                  onClick={() => {navigate("/profile/staff/edit")}}
-                >
-                  Edit Profile
-                </Button>
+                <div className="flex w-full justify-between">
+                  <Button
+                    className="flex items-center gap-3"
+                    size="md"
+                    onClick={() => {setOpen(!open)}}
+                  >
+                    Delete Account
+                  </Button>
+                  <Button
+                    className="flex items-center gap-3"
+                    size="md"
+                    onClick={() => {navigate("/profile/staff/edit")}}
+                  >
+                    Edit Profile
+                  </Button>
+                </div>
               )}
             </CardFooter>
+            <DialogBox
+              title="Account"
+              open={open}
+              setOpen={setOpen}
+              handleDelete={handleDelete}
+            />
           </Card>
         </Layout>
       )}

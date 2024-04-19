@@ -2,7 +2,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const sendMail = require("../utils/sendMail");
-const { ACCOUNT_CREATED_MAIL_TEMPLATE, ACCOUNT_DELETED_MAIL_TEMPLATE} = require("../../constants");
+const { ACCOUNT_DELETED_MAIL_TEMPLATE } = require("../../constants");
 const ExpressError = require("../utils/ExpressError");
 
 // @desc    Get Patient Profile
@@ -80,7 +80,66 @@ const updatePatientProfile = async (req, res, next) => {
 // @desc    Delete Patient Profile
 // route    DELETE /api/profile/patient/:email
 // @access  Private (Admin)
-const deletePatientProfile = async (req, res, next) => {}
+const deletePatientProfile = async (req, res, next) => {
+	try{
+		const deletedPatient = await prisma.patient.update({
+			where: {
+				email: req.params?.email,
+			},
+			data: {
+				status: "INACTIVE",
+			},
+		});
+
+		const deletedUser = await prisma.user.update({
+			where: {
+				email: req.params?.email,
+			},
+			data: {
+				status: "INACTIVE",
+			},
+		});
+
+		//send mail to the patient
+    const mailTemplate = ACCOUNT_DELETED_MAIL_TEMPLATE();
+    const mailOptions = {
+      from: "dep2024.p06@gmail.com",
+      to: deletedPatient.email,
+      subject: "Mediease - Account Deleted",
+      html: mailTemplate,
+      text: "",
+    };
+
+		const info = await sendMail(mailOptions);
+		if (!info) {
+      throw new ExpressError("Error in sending mail to the patient", 500);
+    }
+
+		return res.status(200).json({
+			ok: true,
+			data: deletedPatient,
+			message: "Profile deleted successfully",
+		});
+	} catch (error) {
+		console.log(error);
+		console.log(`Profile deleting error: ${error.message}`);
+
+		let errMsg = "Deleting account failed, Please try again later";
+    let errCode = 500;
+
+    //record does not exist
+    if (error.code === "P2025") {
+      errMsg = "Profile does not exist";
+      errCode = 404;
+    }
+
+    return res.status(errCode).json({
+      ok: false,
+      data: [],
+      message: errMsg,
+    });
+	}
+};
 
 
 // @desc    Get Staff Profile
@@ -167,7 +226,66 @@ const updateStaffProfile = async (req, res, next) => {
 // @desc    Delete Staff Profile
 // route    DELETE /api/profile/staff/:email
 // @access  Private (Admin)
-const deleteStaffProfile = async (req, res, next) => {}
+const deleteStaffProfile = async (req, res, next) => {
+	try{
+		const deletedStaff = await prisma.staff.update({
+			where: {
+				email: req.params?.email,
+			},
+			data: {
+				status: "INACTIVE",
+			},
+		});
+
+		const deletedUser = await prisma.user.update({
+			where: {
+				email: req.params?.email,
+			},
+			data: {
+				status: "INACTIVE",
+			},
+		});
+
+		//send mail to the Staff
+    const mailTemplate = ACCOUNT_DELETED_MAIL_TEMPLATE();
+    const mailOptions = {
+      from: "dep2024.p06@gmail.com",
+      to: deletedStaff.email,
+      subject: "Mediease - Account Deleted",
+      html: mailTemplate,
+      text: "",
+    };
+
+		const info = await sendMail(mailOptions);
+		if (!info) {
+      throw new ExpressError("Error in sending mail to the Staff", 500);
+    }
+
+		return res.status(200).json({
+			ok: true,
+			data: deletedStaff,
+			message: "Profile deleted successfully",
+		});
+	} catch (error) {
+		console.log(error);
+		console.log(`Profile deleting error: ${error.message}`);
+
+		let errMsg = "Deleting account failed, Please try again later";
+    let errCode = 500;
+
+    //record does not exist
+    if (error.code === "P2025") {
+      errMsg = "Profile does not exist";
+      errCode = 404;
+    }
+
+    return res.status(errCode).json({
+      ok: false,
+      data: [],
+      message: errMsg,
+    });
+	}
+}
 
 // @desc    Get Admin Profile
 // route    GET /api/profile/admin/:email
@@ -233,6 +351,61 @@ const updateAdminProfile = async (req, res, next) => {
 	}
 }
 
+// @desc    Delete Staff Profile
+// route    DELETE /api/profile/staff/:email
+// @access  Private (Admin)
+const deleteAdminProfile = async (req, res, next) => {
+	try{
+		const deletedUser = await prisma.user.update({
+			where: {
+				email: req.params?.email,
+			},
+			data: {
+				status: "INACTIVE",
+			},
+		});
+
+		//send mail to the Staff
+    const mailTemplate = ACCOUNT_DELETED_MAIL_TEMPLATE();
+    const mailOptions = {
+      from: "dep2024.p06@gmail.com",
+      to: deletedUser.email,
+      subject: "Mediease - Account Deleted",
+      html: mailTemplate,
+      text: "",
+    };
+
+		const info = await sendMail(mailOptions);
+		if (!info) {
+      throw new ExpressError("Error in sending mail to the Staff", 500);
+    }
+
+		return res.status(200).json({
+			ok: true,
+			data: deletedUser,
+			message: "Profile deleted successfully",
+		});
+	} catch (error) {
+		console.log(error);
+		console.log(`Profile deleting error: ${error.message}`);
+
+		let errMsg = "Deleting account failed, Please try again later";
+    let errCode = 500;
+
+    //record does not exist
+    if (error.code === "P2025") {
+      errMsg = "Profile does not exist";
+      errCode = 404;
+    }
+
+    return res.status(errCode).json({
+      ok: false,
+      data: [],
+      message: errMsg,
+    });
+	}
+}
+
 
 module.exports = {
 	getPatientProfile,
@@ -243,5 +416,6 @@ module.exports = {
 	deleteStaffProfile,
 	getAdminProfile,
 	updateAdminProfile,
+	deleteAdminProfile,
 };
 

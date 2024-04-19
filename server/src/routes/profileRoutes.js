@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {validatePatient, validateStaff} = require('../middlewares');
+const {validatePatient, validateStaff, validateUser} = require('../middlewares');
 const catchAsync = require('../utils/catchAsync');
 
 const {
@@ -12,6 +12,7 @@ const {
     deleteStaffProfile,
     getAdminProfile,
     updateAdminProfile,
+    deleteAdminProfile,
 } = require('../controllers/profileController');
 
 const authMiddleware = require("../middlewares/authMiddleware");
@@ -26,6 +27,7 @@ router.put('/staff/:email', authMiddleware(["DOCTOR", "PARAMEDICAL"]), profileMi
 router.delete('/staff/:email', authMiddleware(["DOCTOR", "PARAMEDICAL"]), profileMiddleware(true), catchAsync(deleteStaffProfile));
 
 router.get('/admin/:email', authMiddleware(["ADMIN"]), profileMiddleware(true), catchAsync(getAdminProfile));
-router.put('/admin/:email', authMiddleware(["ADMIN"]), profileMiddleware(true),  catchAsync(updateAdminProfile));
+router.put('/admin/:email', authMiddleware(["ADMIN"]), profileMiddleware(true), validateUser, catchAsync(updateAdminProfile));
+router.delete('/admin/:email', authMiddleware(["ADMIN"]), profileMiddleware(true), catchAsync(deleteAdminProfile));
 
 module.exports = router;

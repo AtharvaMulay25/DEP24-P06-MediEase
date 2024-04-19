@@ -12,10 +12,12 @@ import {
   Button,
 } from "@material-tailwind/react";
 
+import DialogBox from "../components/DialogBox";
 import Layout from "../layouts/PageLayout";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { apiRoutes } from "../utils/apiRoutes";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
+import { useLogout } from "../hooks/useLogout";
 
 const getAdminData = async (userEmail) => {
   try {
@@ -41,6 +43,8 @@ export default function AdminProfile({ edit = false }) {
   const { userEmail } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { logout } = useLogout();
+  const [open, setOpen] = useState(false);
 
   const [adminDetail, setAdminDetail] = useState({
     name: "John Doe",
@@ -55,9 +59,9 @@ export default function AdminProfile({ edit = false }) {
         const data = await getAdminData(userEmail);
 
         const adminData = {
-          name: data.name,
-          role: data.role,
-          email: data.email,
+          name: data.name || "-",
+          role: data.role || "-",
+          email: data.email || "-",
         };
 
         setAdminDetail(adminData);
@@ -89,6 +93,32 @@ export default function AdminProfile({ edit = false }) {
 		setLoading(false);
 	};
 
+  const handleDelete = async () => {
+    try {
+      setLoading(true)
+      const response = await axios.delete(`${apiRoutes.profile}/admin/${userEmail}`, {
+        withCredentials: true
+      });
+
+      console.log(response);
+      if(response) {
+        const data = response?.data;
+        if(data && data.ok) {
+          await logout();
+          navigate("/signin");
+          console.log(data?.message);
+          toast.success(data?.message);
+        } else {
+          console.log(`ERROR: ${data?.message || "NO DATA"}`)
+        }
+      }
+    } catch (error) {
+      console.error(`ERROR (delete-profile): ${error?.response?.data?.message}`);
+      toast.error(error?.response?.data?.message || 'Failed to delete Profile');
+    }
+    setLoading(false);
+  }
+
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -118,7 +148,7 @@ export default function AdminProfile({ edit = false }) {
                     variant="h6"
                     className="text-start sm:text-center"
                   >
-                    Name<span className="text-red-800">*</span>:{" "}
+                    Name{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <input
@@ -138,7 +168,7 @@ export default function AdminProfile({ edit = false }) {
                     variant="h6"
                     className="text-start sm:text-center"
                   >
-                    Email<span className="text-red-800">*</span>:{" "}
+                    Email{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={adminDetail.email} />
@@ -151,7 +181,7 @@ export default function AdminProfile({ edit = false }) {
                     variant="h6"
                     className="text-start sm:text-center"
                   >
-                    Role<span className="text-red-800">*</span>:{" "}
+                    Role{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={adminDetail.role} />
@@ -165,15 +195,24 @@ export default function AdminProfile({ edit = false }) {
             </CardBody>
             <CardFooter className="flex justify-end">
               {!edit ? (
-                <Button
-                  className="flex items-center gap-3"
-                  size="md"
-                  onClick={() => {
-                    navigate("/profile/admin/edit");
-                  }}
-                >
-                  Edit Profile
-                </Button>
+                <div className="flex w-full justify-between">
+                  <Button
+                    className="flex items-center gap-3"
+                    size="md"
+                    onClick={() => {setOpen(!open)}}
+                  >
+                    Delete Account
+                  </Button>
+                  <Button
+                    className="flex items-center gap-3"
+                    size="md"
+                    onClick={() => {
+                      navigate("/profile/admin/edit");
+                    }}
+                  >
+                    Edit Profile
+                  </Button>
+                </div>
               ) : (
                 <div className="flex justify-between w-full">
                   <Button
@@ -195,6 +234,12 @@ export default function AdminProfile({ edit = false }) {
                 </div>
               )}
             </CardFooter>
+            <DialogBox
+              title="Account"
+              open={open}
+              setOpen={setOpen}
+              handleDelete={handleDelete}
+            />
           </Card>
         </Layout>
       )}

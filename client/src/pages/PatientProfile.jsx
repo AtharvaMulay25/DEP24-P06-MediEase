@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {toast} from 'sonner';
+import { toast } from "sonner";
 import {
   Card,
   CardBody,
@@ -12,33 +12,42 @@ import {
   Button,
 } from "@material-tailwind/react";
 
+import DialogBox from "../components/DialogBox";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
+import { useLogout } from "../hooks/useLogout";
 
 const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 const getPatientData = async (userEmail) => {
-	try{
-		const response = await axios.get(`${apiRoutes.profile}/patient/${userEmail}`, {
-			withCredentials: true
-		});
+  try {
+    const response = await axios.get(
+      `${apiRoutes.profile}/patient/${userEmail}`,
+      {
+        withCredentials: true,
+      }
+    );
 
-		toast.success('Patient Profile fetched successfully');
-		return response.data.data;
-	} catch (error) {
-		console.error(`ERROR: ${error?.response?.data?.message}`);
-		toast.error(error?.response?.data?.message || 'Failed to fetch Patient Profile');
-	}
+    toast.success("Patient Profile fetched successfully");
+    return response.data.data;
+  } catch (error) {
+    console.error(`ERROR: ${error}`);
+    toast.error(
+      error?.response?.data?.message || "Failed to fetch Patient Profile"
+    );
+  }
 };
 
 export default function PatientProfile({ edit = false }) {
   const navigate = useNavigate();
-  const {userEmail} = useAuthContext();	
+  const { userEmail } = useAuthContext();
   const [loading, setLoading] = useState(false);
+  const { logout } = useLogout();
+  const [open, setOpen] = useState(false);
 
-	const [patientDetail, setPatientDetail] = useState({
+  const [patientDetail, setPatientDetail] = useState({
     name: "John Doe",
     category: "Student",
     department: "Computer Science",
@@ -51,33 +60,32 @@ export default function PatientProfile({ edit = false }) {
     allergies: "None",
   });
 
-	useEffect(() => {
-		const fetchPatientData = async () => {
+  useEffect(() => {
+    const fetchPatientData = async () => {
       setLoading(true);
-			const data = await getPatientData(userEmail);
+      const data = await getPatientData(userEmail);
 
-			const patientData = {
-				name: data.name || "",
-				category: data.category || "",
-				department: data.department,
-				program: data.program || "",
-				email: data.email,
-				age: data.age,
-				gender: data.gender,
-				bloodGroup: data.bloodGroup,
-				fatherOrSpouseName: data.fatherOrSpouseName || "",
-				allergies: data.allergy || "",
-			}
+      const patientData = {
+        name: data.name || "-",
+        category: data.category || "-",
+        department: data.department || "-",
+        program: data.program || "-",
+        email: data.email || "-",
+        age: data.age || "-",
+        gender: data.gender || "-",
+        bloodGroup: data.bloodGroup || "-",
+        fatherOrSpouseName: data.fatherOrSpouseName || "-",
+        allergies: data.allergy || "-",
+      };
 
-			setPatientDetail(patientData);
-			setLoading(false);
-		}
+      setPatientDetail(patientData);
+      setLoading(false);
+    };
 
-		fetchPatientData();
-	} ,[]);
+    fetchPatientData();
+  }, [userEmail]);
 
   const handleSave = async () => {
-
     const sendData = {
       name: patientDetail.name,
       age: parseInt(patientDetail.age),
@@ -86,10 +94,12 @@ export default function PatientProfile({ edit = false }) {
       category: patientDetail.category.toUpperCase(),
       gender: patientDetail.gender.toUpperCase(),
     };
-    if(patientDetail.department) sendData.department = patientDetail.department;
-    if(patientDetail.allergy) sendData.allergy = patientDetail.allergy;
-    if(patientDetail.program) sendData.program = patientDetail.program;
-    if(patientDetail.fatherOrSpouseName) sendData.fatherOrSpouseName = patientDetail.fatherOrSpouseName;
+    if (patientDetail.department)
+      sendData.department = patientDetail.department;
+    if (patientDetail.allergy) sendData.allergy = patientDetail.allergy;
+    if (patientDetail.program) sendData.program = patientDetail.program;
+    if (patientDetail.fatherOrSpouseName)
+      sendData.fatherOrSpouseName = patientDetail.fatherOrSpouseName;
     try {
       setLoading(true);
       const response = await axios.put(
@@ -104,10 +114,43 @@ export default function PatientProfile({ edit = false }) {
       navigate("/profile/patient");
     } catch (error) {
       console.error(`ERROR: ${error?.response?.data?.message}`);
-      toast.error(error?.response?.data?.message || 'Failed to update Patient Profile');
+      toast.error(
+        error?.response?.data?.message || "Failed to update Patient Profile"
+      );
     }
     setLoading(false);
-  }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.delete(
+        `${apiRoutes.profile}/patient/${userEmail}`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log(response);
+      if (response) {
+        const data = response?.data;
+        if (data && data.ok) {
+          await logout();
+          navigate("/signin");
+          console.log(data?.message);
+          toast.success(data?.message);
+        } else {
+          console.log(`ERROR: ${data?.message || "NO DATA"}`);
+        }
+      }
+    } catch (error) {
+      console.error(
+        `ERROR (delete-profile): ${error?.response?.data?.message}`
+      );
+      toast.error(error?.response?.data?.message || "Failed to delete Profile");
+    }
+    setLoading(false);
+  };
 
   return (
     <>
@@ -134,10 +177,8 @@ export default function PatientProfile({ edit = false }) {
                   />
                 </div>
                 <div className="content-center text-center grid sm:grid-cols-2 gap-y-3">
-                  <Typography
-                    variant="h6"
-                  >
-                    Name<span className="text-red-800">*</span>:{" "}
+                  <Typography variant="h6">
+                    Name{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <input
@@ -145,7 +186,10 @@ export default function PatientProfile({ edit = false }) {
                       className="px-2 py-1 border border-blue-gray-200 rounded-md"
                       value={patientDetail.name}
                       onChange={(e) =>
-                        setPatientDetail({ ...patientDetail, name: e.target.value })
+                        setPatientDetail({
+                          ...patientDetail,
+                          name: e.target.value,
+                        })
                       }
                     />
                   ) : (
@@ -153,10 +197,8 @@ export default function PatientProfile({ edit = false }) {
                       {patientDetail.name}
                     </Typography>
                   )}
-                  <Typography
-                    variant="h6"
-                  >
-                    Category<span className="text-red-800">*</span>:{" "}
+                  <Typography variant="h6">
+                    Category{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={patientDetail.category} />
@@ -165,13 +207,9 @@ export default function PatientProfile({ edit = false }) {
                       {patientDetail.category}
                     </Typography>
                   )}
-                  <Typography
-                    variant="h6"
-                  >
-                    Department:{" "}
-                  </Typography>
+                  <Typography variant="h6">Department: </Typography>
                   {edit ? (
-                    <input
+                    <select
                       placeholder="Department"
                       className="px-2 py-1 border border-blue-gray-200 rounded-md"
                       value={patientDetail.department}
@@ -181,16 +219,32 @@ export default function PatientProfile({ edit = false }) {
                           department: e.target.value,
                         })
                       }
-                    />
+                    >
+                      <option value="COMPUTER_SCIENCE">Computer Science</option>
+                      <option value="ELECTRICAL">Electrical</option>
+                      <option value="MECHANICAL">Mechanical</option>
+                      <option value="MATHEMATICS_COMPUTING">
+                        Mathematics & Computing
+                      </option>
+                      <option value="CHEMICAL">Chemical</option>
+                      <option value="CIVIL">Civil</option>
+                      <option value="METALLURGY">Metallurgy</option>
+                      <option value="ENGINEERING_PHYSICS">
+                        Engineering Physics
+                      </option>
+                      <option value="PHYSICS">Physics</option>
+                      <option value="CHEMISTRY">Chemistry</option>
+                      <option value="BIOLOGY">Biology</option>
+                      <option value="MATHEMATICS">Mathematics</option>
+                      <option value="HUMANITIES">Humanities</option>
+                    </select>
                   ) : (
                     <Typography color="blue-gray">
                       {patientDetail.department}
                     </Typography>
                   )}
-                  <Typography
-                    variant="h6"
-                  >
-                    Age<span className="text-red-800">*</span>:{" "}
+                  <Typography variant="h6">
+                    Age{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <input
@@ -200,7 +254,10 @@ export default function PatientProfile({ edit = false }) {
                       className="px-2 py-1 border border-blue-gray-200 rounded-md"
                       value={patientDetail.age}
                       onChange={(e) =>
-                        setPatientDetail({ ...patientDetail, age: e.target.value })
+                        setPatientDetail({
+                          ...patientDetail,
+                          age: e.target.value,
+                        })
                       }
                     />
                   ) : (
@@ -208,10 +265,8 @@ export default function PatientProfile({ edit = false }) {
                       {patientDetail.age}
                     </Typography>
                   )}
-                  <Typography
-                    variant="h6"
-                  >
-                    Gender<span className="text-red-800">*</span>:{" "}
+                  <Typography variant="h6">
+                    Gender{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <select
@@ -225,21 +280,21 @@ export default function PatientProfile({ edit = false }) {
                         })
                       }
                     >
-                      <option key="Male" value="MALE">MALE</option>
-                      <option key="Female" value="FEMALE">FEMALE</option>
+                      <option key="Male" value="MALE">
+                        MALE
+                      </option>
+                      <option key="Female" value="FEMALE">
+                        FEMALE
+                      </option>
                     </select>
                   ) : (
                     <Typography color="blue-gray">
                       {patientDetail.gender}
                     </Typography>
                   )}
-                  <Typography
-                    variant="h6"
-                  >
-                    Program:{" "}
-                  </Typography>
+                  <Typography variant="h6">Program: </Typography>
                   {edit ? (
-                    <input
+                    <select
                       placeholder="Program"
                       className="px-2 py-1 border border-blue-gray-200 rounded-md"
                       value={patientDetail.program}
@@ -249,16 +304,19 @@ export default function PatientProfile({ edit = false }) {
                           program: e.target.value,
                         })
                       }
-                    />
+                    >
+                      <option value="BTECH">BTech</option>
+                      <option value="MTECH">MTech</option>
+                      <option value="DUAL DEGREE">Dual Degree</option>
+                      <option value="PHD">PHD</option>
+                    </select>
                   ) : (
                     <Typography color="blue-gray">
                       {patientDetail.program}
                     </Typography>
                   )}
-                  <Typography
-                    variant="h6"
-                  >
-                    Email<span className="text-red-800">*</span>:{" "}
+                  <Typography variant="h6">
+                    Email{edit && <span className="text-red-800">*</span>}:{" "}
                   </Typography>
                   {edit ? (
                     <Input disabled value={patientDetail.email} />
@@ -267,10 +325,9 @@ export default function PatientProfile({ edit = false }) {
                       {patientDetail.email}
                     </Typography>
                   )}
-                  <Typography
-                    variant="h6"
-                  >
-                    Blood Group<span className="text-red-800">*</span>:{" "}
+                  <Typography variant="h6">
+                    Blood Group{edit && <span className="text-red-800">*</span>}
+                    :{" "}
                   </Typography>
                   {edit ? (
                     <select
@@ -298,9 +355,7 @@ export default function PatientProfile({ edit = false }) {
                   )}
                   {edit && (
                     <>
-                      <Typography
-                        variant="h6"
-                      >
+                      <Typography variant="h6">
                         Father's/Spouse's Name:{" "}
                       </Typography>
                       <input
@@ -318,9 +373,7 @@ export default function PatientProfile({ edit = false }) {
                   )}
                   {patientDetail.fatherOrSpouseName !== "" && !edit && (
                     <>
-                      <Typography
-                        variant="h6"
-                      >
+                      <Typography variant="h6">
                         Father's/Spouse's Name:{" "}
                       </Typography>
                       <Typography color="blue-gray">
@@ -328,11 +381,7 @@ export default function PatientProfile({ edit = false }) {
                       </Typography>
                     </>
                   )}
-                  <Typography
-                    variant="h6"
-                  >
-                    Allergies:{" "}
-                  </Typography>
+                  <Typography variant="h6">Allergies: </Typography>
                   {edit ? (
                     <input
                       placeholder="Allergies"
@@ -354,20 +403,33 @@ export default function PatientProfile({ edit = false }) {
               </div>
             </CardBody>
             <CardFooter className="flex justify-end">
-							{!edit ? (
-								<Button
-									className="flex items-center gap-3"
-									size="md"
-									onClick={() => {navigate("/profile/patient/edit")}}
-								>
-									Edit Profile
-								</Button>
-							) : (
+              {!edit ? (
                 <div className="flex w-full justify-between">
                   <Button
                     className="flex items-center gap-3"
                     size="md"
-                    onClick={() => {navigate("/profile/patient")}}
+                    onClick={() => {setOpen(!open)}}
+                  >
+                    Delete Account
+                  </Button>
+                  <Button
+                    className="flex items-center gap-3"
+                    size="md"
+                    onClick={() => {
+                      navigate("/profile/patient/edit");
+                    }}
+                  >
+                    Edit Profile
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex w-full justify-between">
+                  <Button
+                    className="flex items-center gap-3"
+                    size="md"
+                    onClick={() => {
+                      navigate("/profile/patient");
+                    }}
                   >
                     Back
                   </Button>
@@ -379,8 +441,14 @@ export default function PatientProfile({ edit = false }) {
                     Save
                   </Button>
                 </div>
-							)}
+              )}
             </CardFooter>
+            <DialogBox
+              title="Account"
+              open={open}
+              setOpen={setOpen}
+              handleDelete={handleDelete}
+            />
           </Card>
         </Layout>
       )}

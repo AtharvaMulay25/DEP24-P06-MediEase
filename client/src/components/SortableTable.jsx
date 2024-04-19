@@ -27,10 +27,6 @@ import {
   Tooltip,
   Select,
   Option,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
 } from "@material-tailwind/react";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
@@ -43,56 +39,7 @@ import { useEffect, useState, useRef } from "react";
 import Pagination from "./Pagination";
 import { useNavigate } from "react-router-dom";
 
-export function DialogDefault({
-  title,
-  open,
-  setOpen,
-  handleDelete,
-  deletedRecordId,
-  setDeletedRecordId,
-}) {
-  const handleDialogResponse = () => {
-    setOpen(false);
-    setDeletedRecordId(null);
-  };
-
-  return (
-    <>
-      <Dialog open={open}>
-        <DialogHeader className="text-1xl">
-          {`Are you sure you want to delete this ` + title + `?`}
-        </DialogHeader>
-        <DialogBody>
-          {(title === "Admin" || title === "Staff" || title === "Patient") &&
-            `
-          Deleting this ` +
-              title +
-              ` will also delete the associated user account.
-          `}
-        </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="green"
-            onClick={() => handleDialogResponse()}
-            className="mr-1"
-          >
-            <span>Cancel</span>
-          </Button>
-          <Button
-            variant="gradient"
-            onClick={(e) => {
-              handleDelete(e, deletedRecordId);
-              setOpen(false);
-            }}
-          >
-            <span>Confirm</span>
-          </Button>
-        </DialogFooter>
-      </Dialog>
-    </>
-  );
-}
+import DialogBox from "./DialogBox";
 
 export function SortableTable({
   tableHead,
@@ -601,7 +548,7 @@ export function SortableTable({
           </div>
         </div>
       </CardFooter>
-      <DialogDefault
+      <DialogBox
         title={title.split(" ")[0]}
         open={open}
         setOpen={setOpen}
