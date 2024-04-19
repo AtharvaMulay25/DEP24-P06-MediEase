@@ -113,7 +113,7 @@ export default function StaffProfile({ edit = false }) {
     };
 
     fetchStaffData();
-  }, [page]);
+  }, [page, edit]);
 
   const handleSave = async () => {
     const sendData = {

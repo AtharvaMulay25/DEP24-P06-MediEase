@@ -84,7 +84,7 @@ export default function PatientProfile({ edit = false }) {
     };
 
     fetchPatientData();
-  }, [page]);
+  }, [page, edit]);
 
   const handleSave = async () => {
     const sendData = {

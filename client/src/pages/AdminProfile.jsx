@@ -71,7 +71,7 @@ export default function AdminProfile({ edit = false }) {
     };
 
     fetchAdminData();
-  }, [page]);
+  }, [page, edit]);
 
 	const handleSave = async () => {
 		try {
