@@ -227,7 +227,7 @@ const DoctorDashboard = () => {
                     className="h-8 w-8 mr-2"
                     style={{ color: "black" }}
                   />
-                  Medicines Provided
+                  Total Medicines 
                 </h5>
                 <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
                 {totalMedicines}
@@ -352,7 +352,7 @@ const DoctorDashboard = () => {
                     color="gray"
                     className="max-w-sm font-normal"
                   >
-                    Top medicines provided by you.
+                    Top medicines currently present in our stock.
                   </Typography>
                 </div>
               </CardHeader>

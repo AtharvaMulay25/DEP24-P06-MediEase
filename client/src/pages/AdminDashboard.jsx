@@ -444,7 +444,7 @@ const AdminDashboard = () => {
                     color="gray"
                     className="max-w-sm font-normal"
                   >
-                    Top medicines provided by you.
+                    Top medicine currently present in our stock.
                   </Typography>
                 </div>
               </CardHeader>

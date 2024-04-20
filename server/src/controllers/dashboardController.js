@@ -93,13 +93,13 @@ const getTopMedicineStat = async (req, res, next) => {
             Medicine: true, 
         },
     });
-
+    
+    let totalS = 0, totalM = stocks.length;
     const pendingRequests = await prisma.requests.findMany({});
+    totalM = (await prisma.medicine.findMany({})).length;
 
     // console.log("stocks : ", stocks);
     
-    
-    let totalS = 0, totalM = stocks.length;
     const sortedStocks = stocks.map(stock => {
         totalS += stock.inQuantity - stock.outQuantity;
         return {
