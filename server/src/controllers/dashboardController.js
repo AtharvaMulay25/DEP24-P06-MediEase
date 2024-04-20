@@ -96,7 +96,11 @@ const getTopMedicineStat = async (req, res, next) => {
     
     let totalS = 0, totalM = stocks.length;
     const pendingRequests = await prisma.requests.findMany({});
-    totalM = (await prisma.medicine.findMany({})).length;
+    totalM = (await prisma.medicine.findMany({
+        where:{
+            status: "ACTIVE"
+        }
+    })).length;
 
     // console.log("stocks : ", stocks);
     
