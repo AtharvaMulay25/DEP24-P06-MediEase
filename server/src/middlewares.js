@@ -13,6 +13,7 @@ const {
   verifyOtpSchema,
   userSchema,
   checkupSchema,
+  feedbackSchema,
 } = require("./schemas");
 
 module.exports.validateMedicine = (req, res, next) => {
@@ -159,6 +160,18 @@ module.exports.validateVerifyOtp = (req, res, next) => {
 
 module.exports.validateUser = (req, res, next) => {
   const { error } = userSchema.validate(req.body);
+
+  if (error) {
+    const msg = error.details.map((e) => e.message).join(",");
+    throw new ExpressError(msg, 400);
+  } else {
+    next();
+  }
+};
+
+
+module.exports.validateFeedback = (req, res, next) => {
+  const { error } = feedbackSchema.validate(req.body);
 
   if (error) {
     const msg = error.details.map((e) => e.message).join(",");

@@ -173,6 +173,12 @@ const userSchema = Joi.object({
     .required()
     .valid("DOCTOR", "PATIENT", "ADMIN", "PARAMEDICAL"),
 });
+
+const feedbackSchema = Joi.object({
+  subject: Joi.string().required(),
+  message: Joi.string().required().min(10).max(300)
+});
+
 module.exports = {
   medicineSchema,
   supplierSchema,
@@ -187,5 +193,6 @@ module.exports = {
   sendOtpSchema,
   verifyOtpSchema,
   userSchema,
-  checkupSchema
+  checkupSchema,
+  feedbackSchema
 };

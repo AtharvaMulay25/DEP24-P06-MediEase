@@ -177,9 +177,6 @@ export default function SignUpPage() {
                     <Option value="PARAMEDICAL">Paramedical Staff</Option>
                     <Option value="PATIENT">Patient</Option>
                   </Select>
-                  <div className="-ml-2.5">
-                    <Checkbox label="Remember Me" />
-                  </div>
                 </CardBody>
                 <CardFooter className="pt-0">
                   <Button variant="gradient" fullWidth onClick={handleSubmit}>

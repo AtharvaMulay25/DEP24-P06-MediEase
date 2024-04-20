@@ -7,6 +7,7 @@ const {
   PENDING_MAIL_TEMPLATE_USER,
   APPROVED_MAIL_TEMPLATE,
   REJECTED_MAIL_TEMPLATE,
+  FEEDBACK_SUBMIT_TEMPLATE,
 } = require("../../constants.js");
 
 const approveRequestController = async (req, res, next) => {
@@ -26,7 +27,7 @@ const approveRequestController = async (req, res, next) => {
     },
   });
 
-  if(userExists && userExists.status === "INACTIVE"){
+  if (userExists && userExists.status === "INACTIVE") {
     const restoredUser = await prisma.user.update({
       where: {
         email: request.email,
@@ -42,7 +43,7 @@ const approveRequestController = async (req, res, next) => {
       throw new ExpressError("Error in restoring user", 500);
     }
   }
-  if(!userExists){
+  if (!userExists) {
     const newUser = await prisma.user.create({
       data: {
         name: request.name,
@@ -52,9 +53,8 @@ const approveRequestController = async (req, res, next) => {
     });
     if (!newUser) {
       throw new ExpressError("Error in creating new user", 500);
-    }  
+    }
   }
-
 
   const approvedRequest = await prisma.requests.delete({
     where: {
@@ -184,8 +184,47 @@ const pendingRequestController = async (req, res, next) => {
   });
 };
 
+const feedbackSubmitController = async (req, res, next) => {
+  const { name, email, role } = req.user;
+  const { subject, message } = req.body;
+  const admins = await prisma.user.findMany({
+    where: {
+      role: "ADMIN",
+    },
+  });
+  const mailTemplateAdmin = FEEDBACK_SUBMIT_TEMPLATE(
+    name,
+    email,
+    role,
+    subject,
+    message
+  );
+  for (let i = 0; i < admins.length; i++) {
+    adminEmail = admins[i].email;
+
+    const mailOptionsAdmin = {
+      from: "dep2024.p06@gmail.com",
+      to: adminEmail,
+      subject: `Feedback: ${subject}`,
+      html: mailTemplateAdmin,
+      text: "",
+    };
+    const infoAdmin = await sendMail(mailOptionsAdmin);
+    if (!infoAdmin) {
+      throw new ExpressError("Error in sending feedback", 500);
+    }
+  }
+
+  return res.status(200).json({
+    ok: true,
+    data: [],
+    message: "Feedback sent successfully.",
+  });
+};
+
 module.exports = {
   approveRequestController,
   rejectRequestController,
   pendingRequestController,
+  feedbackSubmitController,
 };

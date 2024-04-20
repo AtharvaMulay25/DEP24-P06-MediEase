@@ -14,12 +14,9 @@ import { GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
 import Layout from "../layouts/PageLayout";
 import { useNavigate } from "react-router-dom";
-import {
-  SyncLoadingScreen,
-} from "../components/UI/LoadingScreen";
+import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
-
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -56,7 +53,7 @@ const DoctorDashboard = () => {
       setLoading(true);
       try {
         const res = await axios.get(`${apiRoutes.dashboard}/checkup`, {
-          withCredentials: true
+          withCredentials: true,
         });
         const { data } = res;
         if (data.ok) {
@@ -65,7 +62,10 @@ const DoctorDashboard = () => {
           setCheckupStat(data.data.checkup);
           setCheckupCount(data.data.checkupCount);
         } else {
-          console.log("dashboard stats checkup fetch failed, Error: ", data.error);
+          console.log(
+            "dashboard stats checkup fetch failed, Error: ",
+            data.error
+          );
         }
       } catch (err) {
         console.log("dashboard stats checkup fetch failed, Error: " + err.message);
@@ -78,7 +78,7 @@ const DoctorDashboard = () => {
       setLoading(true);
       try {
         const res = await axios.get(`${apiRoutes.dashboard}/medicine`, {
-          withCredentials: true
+          withCredentials: true,
         });
         const { data } = res;
         if (data.ok) {
@@ -101,7 +101,6 @@ const DoctorDashboard = () => {
     setLoading(false);
   }, []);
 
-  
   const { height, width } = useWindowDimensions();
   const navigate = useNavigate();
 
@@ -117,7 +116,7 @@ const DoctorDashboard = () => {
     series: [
       {
         name: "Checkups",
-        data: checkupStat.map(it => it.total),
+        data: checkupStat.map((it) => it.total),
       },
     ],
     options: {
@@ -154,7 +153,7 @@ const DoctorDashboard = () => {
             fontWeight: 500,
           },
         },
-        categories: checkupStat.map(it => it.date),
+        categories: checkupStat.map((it) => it.date),
       },
       yaxis: {
         labels: {
@@ -193,7 +192,7 @@ const DoctorDashboard = () => {
     type: "pie",
     width: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
     height: width < 720 ? 330 : (width >= 720) & (width <= 1200) ? 400 : 340,
-    series: topMedicineStat.map(it => it.qty),
+    series: topMedicineStat.map((it) => it.qty),
     options: {
       chart: {
         toolbar: {
@@ -206,8 +205,11 @@ const DoctorDashboard = () => {
       dataLabels: {
         enabled: false,
       },
-      labels: topMedicineStat.map(it => it.saltName),
-      colors: ["#020617", "#ff8f00", "#00897b", "#1e88e5", "#d81b60"].slice(0, topMedicineStat.length),
+      labels: topMedicineStat.map((it) => it.saltName),
+      colors: ["#020617", "#ff8f00", "#00897b", "#1e88e5", "#d81b60"].slice(
+        0,
+        topMedicineStat.length
+      ),
       legend: {
         show: true,
       },
