@@ -71,6 +71,7 @@ export default function MedicalHistory() {
             searchKey="doctorName"
             handleDetail={handleHistoryDetail}
             detailsFlag={true}
+            defaultSortOrder="date"
           />
         </Layout>
       )}

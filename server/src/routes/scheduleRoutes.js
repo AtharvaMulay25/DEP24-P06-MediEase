@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const { validateSchedule } = require('../middlewares');
 const {
     getScheduleList,
+    getSchedule,
     createSchedule,
     updateSchedule,
     deleteSchedule
@@ -19,6 +20,11 @@ router.get('/',
     authMiddleware(["PATIENT", "DOCTOR", "PARAMEDICAL", "ADMIN"]),
     profileMiddleware(true),
     catchAsync(getScheduleList));
+
+router.get('/:email', 
+    authMiddleware(["DOCTOR", "PARAMEDICAL"]),
+    profileMiddleware(true),
+    catchAsync(getSchedule));
 
 router.use(authMiddleware(roles), profileMiddleware(true));
 

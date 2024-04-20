@@ -90,6 +90,7 @@ export default function PurchaseList() {
             searchKey="supplierName"
             handleDetail={handlePurchaseDetail}
             detailsFlag={true}
+            defaultSortOrder="purchaseDate"
           />
         </Layout>
       )}

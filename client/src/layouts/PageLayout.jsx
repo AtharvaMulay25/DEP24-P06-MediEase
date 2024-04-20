@@ -183,11 +183,25 @@ const Layout = ({ children }) => {
                       </div>
                     </MenuHandler>
                     <MenuList { ... triggers }>
-                      <MenuItem onClick={() => navigate("/profile")} className="flex gap-2">
+                      <MenuItem 
+                        onClick={() => {
+                          {userRole === "PATIENT" && navigate("/profile/patient")}
+                          {userRole === "ADMIN" && navigate("/profile/admin")}
+                          {(userRole === "PARAMEDICAL" || userRole === "DOCTOR") && navigate("/profile/staff")}
+                        }} 
+                        className="flex gap-2"
+                      >
                         <UserCircleIcon className="w-4 h-4" />
                         My Profile
                       </MenuItem>
-                      <MenuItem onClick={() => navigate("/profile")} className="flex gap-2">
+                      <MenuItem 
+                        onClick={() => {
+                            {userRole === "PATIENT" && navigate("/profile/patient/edit")}
+                            {userRole === "ADMIN" && navigate("/profile/admin/edit")}
+                            {(userRole === "PARAMEDICAL" || userRole === "DOCTOR") && navigate("/profile/staff/edit")}
+                        }} 
+                        className="flex gap-2"
+                      >
                         <FaUserEdit className="w-4 h-4" />
                         Edit Profile
                       </MenuItem>

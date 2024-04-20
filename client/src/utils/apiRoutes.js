@@ -16,4 +16,5 @@ export const apiRoutes = {
   staff: `${baseUrl}/staff`,
   schedule: `${baseUrl}/schedule`,
   dashboard: `${baseUrl}/dashboard`,
+  profile: `${baseUrl}/profile`,
 };

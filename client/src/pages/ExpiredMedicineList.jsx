@@ -6,6 +6,8 @@ import {toast} from 'sonner';
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 
+import MOCK_DATA from '../assets/MOCK_DATA_expired.json';
+
 const TABLE_HEAD = {
   id: "#",
   brandName: "Brand Name",
@@ -58,6 +60,7 @@ export default function ExpiredMedicineList() {
             handleDelete={handleMedicineDelete}
             searchKey={"brandName"}
             actionFlag="false"
+            defaultSortOrder="expiryDate"
           />
         </Layout>
       )}
