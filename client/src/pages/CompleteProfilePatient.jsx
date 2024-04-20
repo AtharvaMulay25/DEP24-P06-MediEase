@@ -286,7 +286,7 @@ export default function CompleteProfilePatient() {
                   >
                     <Option value="BTECH">BTech</Option>
                     <Option value="MTECH">MTech</Option>
-                    <Option value="DUAL DEGREE">Dual Degree</Option>
+                    <Option value="DUAL_DEGREE">Dual Degree</Option>
                     <Option value="PHD">PHD</Option>
                   </Select>
                 </div>

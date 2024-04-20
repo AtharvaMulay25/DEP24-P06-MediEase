@@ -56,6 +56,7 @@ export function SortableTable({
   detailsFlag = false,
   actionFlag = "true",
   showAddBtn = true,
+  defaultSortOrder = "action",
 }) {
   const [open, setOpen] = useState(false);
   const [deletedRecordId, setDeletedRecordId] = useState(null);
@@ -197,7 +198,7 @@ export function SortableTable({
       item[searchKey].toLowerCase().includes(str.toLowerCase())
     );
     setSearchList(filteredArray);
-    sorting("action");
+    sorting(defaultSortOrder);
   };
 
   const paginate = (act) => {
@@ -213,13 +214,7 @@ export function SortableTable({
     }
   };
 
-  const [sort, setSort] = useState(() => {
-    const initialSortState = {};
-    Object.keys(tableHead).forEach((key, index) => {
-      if (key !== "action") initialSortState[key] = index === 0 ? "asc" : "";
-    });
-    return initialSortState;
-  });
+  const [sort, setSort] = useState({});
 
   const sorting = (col) => {
     if (col === "action") {

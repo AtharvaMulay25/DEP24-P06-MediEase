@@ -58,7 +58,7 @@ export default function PatientProfile({ edit = false }) {
     gender: "Male",
     bloodGroup: "O+",
     fatherOrSpouseName: "Jane Doe",
-    allergies: "None",
+    allergy: "None",
   });
 
   useEffect(() => {
@@ -67,19 +67,19 @@ export default function PatientProfile({ edit = false }) {
       const data = await getPatientData(userEmail);
 
       const patientData = {
-        name: data.name || "-",
-        category: data.category || "-",
-        department: data.department || "-",
-        program: data.program || "-",
-        email: data.email || "-",
-        age: data.age || "-",
-        gender: data.gender || "-",
-        bloodGroup: data.bloodGroup || "-",
-        fatherOrSpouseName: data.fatherOrSpouseName || "-",
-        allergies: data.allergy || "-",
+        name: data.name,
+        category: data.category,
+        department: data.department,
+        program: data.program,
+        email: data.email,
+        age: data.age,
+        gender: data.gender,
+        bloodGroup: data.bloodGroup,
+        fatherOrSpouseName: data.fatherOrSpouseName,
+        allergy: data.allergy,
       };
 
-      {edit ? setPatientDetail(data) : setPatientDetail(patientData)}
+      setPatientDetail(patientData);
       setLoading(false);
     };
 
@@ -94,13 +94,13 @@ export default function PatientProfile({ edit = false }) {
       bloodGroup: patientDetail.bloodGroup,
       category: patientDetail.category.toUpperCase(),
       gender: patientDetail.gender.toUpperCase(),
+      department: patientDetail.department,
+      allergy: patientDetail.allergy,
+      program: patientDetail.program,
+      fatherOrSpouseName: patientDetail.fatherOrSpouseName,
     };
-    if (patientDetail.department)
-      sendData.department = patientDetail.department;
-    if (patientDetail.allergy) sendData.allergy = patientDetail.allergy;
-    if (patientDetail.program) sendData.program = patientDetail.program;
-    if (patientDetail.fatherOrSpouseName)
-      sendData.fatherOrSpouseName = patientDetail.fatherOrSpouseName;
+
+    console.log(sendData);
     try {
       setLoading(true);
       const response = await axios.put(
@@ -196,7 +196,7 @@ export default function PatientProfile({ edit = false }) {
                     />
                   ) : (
                     <Typography color="blue-gray">
-                      {patientDetail.name}
+                      {patientDetail.name || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6">
@@ -206,7 +206,7 @@ export default function PatientProfile({ edit = false }) {
                     <Input disabled value={patientDetail.category} />
                   ) : (
                     <Typography color="blue-gray">
-                      {patientDetail.category}
+                      {patientDetail.category || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6">Department: </Typography>
@@ -242,7 +242,7 @@ export default function PatientProfile({ edit = false }) {
                     </select>
                   ) : (
                     <Typography color="blue-gray">
-                      {patientDetail.department}
+                      {patientDetail.department || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6">
@@ -264,7 +264,7 @@ export default function PatientProfile({ edit = false }) {
                     />
                   ) : (
                     <Typography color="blue-gray">
-                      {patientDetail.age}
+                      {patientDetail.age || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6">
@@ -291,7 +291,7 @@ export default function PatientProfile({ edit = false }) {
                     </select>
                   ) : (
                     <Typography color="blue-gray">
-                      {patientDetail.gender}
+                      {patientDetail.gender || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6">Program: </Typography>
@@ -309,12 +309,12 @@ export default function PatientProfile({ edit = false }) {
                     >
                       <option value="BTECH">BTech</option>
                       <option value="MTECH">MTech</option>
-                      <option value="DUAL DEGREE">Dual Degree</option>
+                      <option value="DUAL_DEGREE">Dual Degree</option>
                       <option value="PHD">PHD</option>
                     </select>
                   ) : (
                     <Typography color="blue-gray">
-                      {patientDetail.program}
+                      {patientDetail.program || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6">
@@ -324,7 +324,7 @@ export default function PatientProfile({ edit = false }) {
                     <Input disabled value={patientDetail.email} />
                   ) : (
                     <Typography color="blue-gray">
-                      {patientDetail.email}
+                      {patientDetail.email || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6">
@@ -352,53 +352,43 @@ export default function PatientProfile({ edit = false }) {
                     </select>
                   ) : (
                     <Typography color="blue-gray">
-                      {patientDetail.bloodGroup}
+                      {patientDetail.bloodGroup || "-"}
                     </Typography>
                   )}
-                  {edit && (
-                    <>
-                      <Typography variant="h6">
-                        Father's/Spouse's Name:{" "}
-                      </Typography>
-                      <input
-                        placeholder="Name"
-                        className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                        value={patientDetail.fatherOrSpouseName}
-                        onChange={(e) =>
-                          setPatientDetail({
-                            ...patientDetail,
-                            fatherOrSpouseName: e.target.value,
-                          })
-                        }
-                      />
-                    </>
-                  )}
-                  {patientDetail.fatherOrSpouseName !== "" && !edit && (
-                    <>
-                      <Typography variant="h6">
-                        Father's/Spouse's Name:{" "}
-                      </Typography>
-                      <Typography color="blue-gray">
-                        {patientDetail.fatherOrSpouseName}
-                      </Typography>
-                    </>
+                  <Typography variant="h6">Father's/Spouse's Name: </Typography>
+                  {edit ? (
+                    <input
+                      placeholder="Name"
+                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                      value={patientDetail.fatherOrSpouseName}
+                      onChange={(e) =>
+                        setPatientDetail({
+                          ...patientDetail,
+                          fatherOrSpouseName: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <Typography color="blue-gray">
+                      {patientDetail.fatherOrSpouseName || "-"}
+                    </Typography>
                   )}
                   <Typography variant="h6">Allergies: </Typography>
                   {edit ? (
                     <input
                       placeholder="Allergies"
                       className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                      value={patientDetail.allergies}
+                      value={patientDetail.allergy}
                       onChange={(e) =>
                         setPatientDetail({
                           ...patientDetail,
-                          allergies: e.target.value,
+                          allergy: e.target.value,
                         })
                       }
                     />
                   ) : (
                     <Typography color="blue-gray">
-                      {patientDetail.allergies}
+                      {patientDetail.allergy || "-"}
                     </Typography>
                   )}
                 </div>
@@ -410,7 +400,9 @@ export default function PatientProfile({ edit = false }) {
                   <Button
                     className="flex items-center gap-3"
                     size="md"
-                    onClick={() => {setOpen(!open)}}
+                    onClick={() => {
+                      setOpen(!open);
+                    }}
                   >
                     Delete Account
                   </Button>

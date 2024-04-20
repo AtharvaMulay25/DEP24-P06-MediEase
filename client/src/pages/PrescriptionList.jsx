@@ -95,6 +95,7 @@ export default function PrescriptionList() {
             searchKey="patientName"
             handleDetail={handlePrescriptionDetail}
             detailsFlag={true}
+            defaultSortOrder="date"
           />
         </Layout>
       )}

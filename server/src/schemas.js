@@ -17,12 +17,12 @@ const medicineSchema = Joi.object({
 const supplierSchema = Joi.object({
   name: Joi.string().required().min(3).max(30),
   address1: Joi.string().required(),
-  address2: Joi.string().optional(),
-  city: Joi.string().optional(),
+  address2: Joi.string().allow(null).allow('').optional(),
+  city: Joi.string().allow(null).allow('').optional(),
   state: Joi.string().required(),
-  pinCode: Joi.number().integer().min(10 ** 5).max(10 ** 6 - 1).optional(),
+  pinCode: Joi.number().integer().min(10 ** 5).max(10 ** 6 - 1).allow(null).allow('').optional(),
   mobileNumber: Joi.string().length(10).pattern(/^[0-9]+$/).required(),
-  email: Joi.string().email().optional(),
+  email: Joi.string().email().allow(null).allow('').optional(),
   //   PurchaseList: Joi.array().items(Joi.object()),
 });
 
@@ -30,11 +30,11 @@ const supplierSchema = Joi.object({
 const staffSchema = Joi.object({
   name: Joi.string().required().min(3).max(30),
   email: Joi.string().email().required(),
-  mobileNumber: Joi.string().length(10).pattern(/^[0-9]+$/).optional(),
+  mobileNumber: Joi.string().length(10).pattern(/^[0-9]+$/).allow(null).allow('').optional(),
   role: Joi.string().valid("DOCTOR", "PARAMEDICAL").required(),
   department: Joi.string()
     .valid("AYURVEDIC", "GYNECOLOGY", "HOMEOPATHY", "OTHERS")
-    .optional(),
+    .allow(null).allow('').optional(),
   gender: Joi.string().valid("MALE", "FEMALE").required(),
   // shiftSchedule: Joi.string().required(),
   //   DoctorCheckups: Joi.array().items(Joi.object()),
@@ -71,7 +71,7 @@ const stockSchema = Joi.object({
 const purchaseSchema = Joi.object({
   // purchaseListId: Joi.string().required(),
   medicineId: Joi.string().required(),
-  mfgDate: Joi.date().optional(),
+  mfgDate: Joi.date().allow(null).allow('').optional(),
   expiryDate: Joi.date().required(),
   batchNo: Joi.number().integer().min(1).required(),
   quantity: Joi.number().integer().min(1).required(),
@@ -83,7 +83,7 @@ const purchaseListSchema = Joi.object({
   supplierId: Joi.string().required(),
   purchaseDate: Joi.date().required(),
   invoiceNo: Joi.number().integer().min(1).required(),
-  purchaseDetails: Joi.string().optional(),
+  purchaseDetails: Joi.string().allow(null).allow('').optional(),
   purchaseItems: Joi.array().items(purchaseSchema).required(),
   // Supplier: Joi.object().required(),
   //   Purchase: Joi.array().items(Joi.object()),
@@ -117,16 +117,16 @@ const patientSchema = Joi.object({
       "MATHEMATICS",
       "HUMANITIES"
     )
-    .optional(),
+    .allow(null).allow('').optional(),
   // dob: Joi.date().iso().required(),
   age: Joi.number().integer().min(1).max(100).required(),
   email: Joi.string().email().required(),
-  allergy: Joi.string().optional(),
+  allergy: Joi.string().allow(null).allow('').optional(),
   bloodGroup: Joi.string().required(),
   program: Joi.string()
-    .valid("BTECH", "MTECH", "DUAL DEGREE", "PHD")
-    .optional(),
-  fatherOrSpouseName: Joi.string().min(3).max(30).optional(),
+    .valid("BTECH", "MTECH", "DUAL_DEGREE", "PHD")
+    .allow(null).allow('').optional(),
+  fatherOrSpouseName: Joi.string().min(3).max(30).allow(null).allow('').optional(),
   category: Joi.string()
     .valid("STUDENT", "FACULTY", "STAFF", "VISITOR")
     .required(),
@@ -136,7 +136,7 @@ const patientSchema = Joi.object({
 
 const checkupMedicinesSchema = Joi.object({
   medicineId: Joi.string().required(),
-  dosage: Joi.string().optional(),
+  dosage: Joi.string().allow(null).allow('').optional(),
   quantity: Joi.number().integer().min(1).required(),
   // frequency: Joi.string().valid('OD', 'BD', 'SOS', 'TDS').required()
 });
@@ -145,13 +145,13 @@ const checkupMedicinesSchema = Joi.object({
 const checkupSchema = Joi.object({
   patientId: Joi.string().required(),
   staffEmail: Joi.string().email().required(),
-  temperature: Joi.number().optional(),
-  pulseRate : Joi.number().integer().optional(),
-  spO2: Joi.number().min(0).max(100).optional(),  //is a percentage value
-  bloodPressure: Joi.string().optional(), //mm Hg
+  temperature: Joi.number().allow(null).allow('').optional(),
+  pulseRate : Joi.number().integer().allow(null).allow('').optional(),
+  spO2: Joi.number().min(0).max(100).allow(null).allow('').optional(),  //is a percentage value
+  bloodPressure: Joi.string().allow(null).allow('').optional(), //mm Hg
   date: Joi.date().required(),
-  doctorId: Joi.string().optional(),
-  symptoms: Joi.string().optional(),
+  doctorId: Joi.string().allow(null).allow('').optional(),
+  symptoms: Joi.string().allow(null).allow('').optional(),
   diagnosis: Joi.string().required(),
   checkupMedicines: Joi.array().items(checkupMedicinesSchema).required()
 });

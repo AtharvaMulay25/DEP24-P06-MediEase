@@ -64,7 +64,7 @@ const updatePatientProfile = async (req, res, next) => {
     let errCode = 500;
 
     //record does not exist
-    if (err.code === "P2025") {
+    if (error.code === "P2025") {
       errMsg = "Profile does not exist";
       errCode = 404;
     }
@@ -210,7 +210,7 @@ const updateStaffProfile = async (req, res, next) => {
 		let errCode = 500;
 
 		//record does not exist
-		if (err.code === "P2025") {
+		if (error.code === "P2025") {
 			errMsg = "Profile does not exist";
 			errCode = 404;
 		}
@@ -338,7 +338,7 @@ const updateAdminProfile = async (req, res, next) => {
 		let errCode = 500;
 
 		//record does not exist
-		if (err.code === "P2025") {
+		if (error.code === "P2025") {
 			errMsg = "Profile does not exist";
 			errCode = 404;
 		}

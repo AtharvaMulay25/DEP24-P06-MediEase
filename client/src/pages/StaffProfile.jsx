@@ -86,14 +86,14 @@ export default function StaffProfile({ edit = false }) {
         const data = await getStaffData(userEmail);
 
         const staffData = {
-          name: data.name || "-",
-          role: data.role || "-",
-          email: data.email || "-",
-          mobileNumber: data.mobileNumber || "-",
-          gender: data.gender || "-",
-          department: data.department || "-",
-          specialisation: data.specialisation || "-",
-          checkupCount: data.checkupCount || "-",
+          name: data.name,
+          role: data.role,
+          email: data.email,
+          mobileNumber: data.mobileNumber,
+          gender: data.gender,
+          department: data.department,
+          specialisation: data.specialisation,
+          checkupCount: data.checkupCount,
         };
 
         {edit ? setStaffDetail(data) : setStaffDetail(staffData)}
@@ -121,9 +121,9 @@ export default function StaffProfile({ edit = false }) {
       email: staffDetail.email,
       role: staffDetail.role,
       gender: staffDetail.gender,
+      mobileNumber: staffDetail.mobileNumber,
+      department: staffDetail.department,
     }
-    if (staffDetail.mobileNumber) sendData.mobileNumber = staffDetail.mobileNumber;
-    if (staffDetail.department) sendData.department = staffDetail.department;
     try {
       setLoading(true);
       const response = await axios.put(
@@ -147,6 +147,7 @@ export default function StaffProfile({ edit = false }) {
 
   const handleDelete = async () => {
     try {
+      setLoading(true);
       const response = await axios.delete(`${apiRoutes.profile}/staff/${userEmail}`, {
         withCredentials: true
       });
@@ -167,6 +168,7 @@ export default function StaffProfile({ edit = false }) {
       console.error(`ERROR (delete-profile): ${error?.response?.data?.message}`);
       toast.error(error?.response?.data?.message || 'Failed to delete Profile');
     }
+    setLoading(false);
   }
 
   return (
@@ -204,7 +206,7 @@ export default function StaffProfile({ edit = false }) {
                     />
                   ) : (
                     <Typography color="blue-gray">
-                      {staffDetail.name}
+                      {staffDetail.name || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6" >
@@ -214,7 +216,7 @@ export default function StaffProfile({ edit = false }) {
                     <Input disabled value={staffDetail.role} />
                   ) : (
                     <Typography color="blue-gray">
-                      {staffDetail.role}
+                      {staffDetail.role || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6" >
@@ -231,7 +233,7 @@ export default function StaffProfile({ edit = false }) {
                     />
                   ) : (
                     <Typography color="blue-gray">
-                      {staffDetail.mobileNumber}
+                      {staffDetail.mobileNumber || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6" >
@@ -241,7 +243,7 @@ export default function StaffProfile({ edit = false }) {
                     <Input disabled value={staffDetail.email} />
                   ) : (
                     <Typography color="blue-gray">
-                      {staffDetail.email}
+                      {staffDetail.email || "-"}
                     </Typography>
                   )}
                   <Typography variant="h6" >
@@ -264,7 +266,7 @@ export default function StaffProfile({ edit = false }) {
                     </select>
                   ) : (
                     <Typography color="blue-gray">
-                      {staffDetail.gender}
+                      {staffDetail.gender || "-"}
                     </Typography>
                   )}
                   {edit && (
@@ -312,7 +314,7 @@ export default function StaffProfile({ edit = false }) {
                       Department
                     </Typography>
                     <Typography variant="h4" color="blue-gray">
-                      {staffDetail.department}
+                      {staffDetail.department || "-"}
                     </Typography>
                   </div>
                   <div className="flex flex-col border border-blue-gray-100 p-4 w-full rounded-xl text-center">
@@ -320,7 +322,7 @@ export default function StaffProfile({ edit = false }) {
                       Specialisation
                     </Typography>
                     <Typography variant="h4" color="blue-gray">
-                      {staffDetail.specialisation}
+                      {staffDetail.specialisation || "-"}
                     </Typography>
                   </div>
                   <div className="flex flex-col border border-blue-gray-100 p-4 w-full rounded-xl text-center">
@@ -328,7 +330,7 @@ export default function StaffProfile({ edit = false }) {
                       No. of Checkups
                     </Typography>
                     <Typography variant="h4" color="blue-gray">
-                      {staffDetail.checkupCount}
+                      {staffDetail.checkupCount || "-"}
                     </Typography>
                   </div>
                 </div>

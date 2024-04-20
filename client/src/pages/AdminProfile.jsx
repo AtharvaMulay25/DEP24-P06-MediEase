@@ -60,12 +60,12 @@ export default function AdminProfile({ edit = false }) {
         const data = await getAdminData(userEmail);
 
         const adminData = {
-          name: data.name || "-",
-          role: data.role || "-",
-          email: data.email || "-",
+          name: data.name,
+          role: data.role,
+          email: data.email,
         };
 
-        {edit ? setAdminDetail(data) : setAdminDetail(adminData)}
+        setAdminDetail(adminData);
         setLoading(false);
       }
     };
@@ -76,6 +76,7 @@ export default function AdminProfile({ edit = false }) {
 	const handleSave = async () => {
 		try {
 			setLoading(true);
+      console.log(adminDetail);
 			const response = await axios.put(
 				`${apiRoutes.profile}/admin/${userEmail}`,
 				adminDetail,
@@ -97,7 +98,7 @@ export default function AdminProfile({ edit = false }) {
 
   const handleDelete = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await axios.delete(`${apiRoutes.profile}/admin/${userEmail}`, {
         withCredentials: true
       });
@@ -163,7 +164,7 @@ export default function AdminProfile({ edit = false }) {
                     />
                   ) : (
                     <Typography color="blue-gray" className="text-start">
-                      {adminDetail.name}
+                      {adminDetail.name || "-"}
                     </Typography>
                   )}
                   <Typography
@@ -176,7 +177,7 @@ export default function AdminProfile({ edit = false }) {
                     <Input disabled value={adminDetail.email} />
                   ) : (
                     <Typography color="blue-gray" className="text-start">
-                      {adminDetail.email}
+                      {adminDetail.email || "-"}
                     </Typography>
                   )}
                   <Typography
@@ -189,7 +190,7 @@ export default function AdminProfile({ edit = false }) {
                     <Input disabled value={adminDetail.role} />
                   ) : (
                     <Typography color="blue-gray" className="text-start">
-                      {adminDetail.role}
+                      {adminDetail.role || "-"}
                     </Typography>
                   )}
                 </div>
