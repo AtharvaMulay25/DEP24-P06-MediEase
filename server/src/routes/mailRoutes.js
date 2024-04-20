@@ -11,6 +11,7 @@ const {
 const catchAsync = require("../utils/catchAsync");
 
 const authMiddleware = require("../middlewares/authMiddleware");
+const { validateFeedback } = require("../middlewares.js");
 
 const roles = ["ADMIN"];
 
@@ -27,7 +28,8 @@ router.post(
 router.post("/pending", catchAsync(pendingRequestController));
 router.post(
   "/feedback",
-  authMiddleware(["DOCTOR", "PARAMEDICAL", "PATIENT"]),
+  authMiddleware(["DOCTOR", "PARAMEDICAL", "PATIENT"]), 
+  validateFeedback,
   catchAsync(feedbackSubmitController)
 );
 module.exports = router;
