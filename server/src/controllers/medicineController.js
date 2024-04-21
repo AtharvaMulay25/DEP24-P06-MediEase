@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require("uuid");
 const ExpressError = require("../utils/ExpressError");
 
 // @desc    Get Medicine List
-// route    GET /api/medicine/list
+// route    GET /api/medicine
 // @access  Private (Admin)
 const getMedicineList = async (req, res, next) => {
   const medicineList = await prisma.medicine.findMany({
@@ -29,6 +29,27 @@ const getMedicineList = async (req, res, next) => {
     ok: true,
     data: responseData,
     message: "Medicine List retrieved successfully",
+  });
+};
+
+// @desc    Get a single medicine 
+// route    GET /api/medicine/:id
+// @access  Private (Admin)
+const getMedicine = async (req, res, next) => {
+  const {id} = req.params;
+  const medicine = await prisma.medicine.findUnique({
+    where: {
+      id
+    },
+    include: {
+      Category: true, 
+    },
+  });
+
+  return res.status(200).json({
+    ok: true,
+    data: medicine,
+    message: "Medicine retrieved successfully",
   });
 };
 
@@ -62,7 +83,7 @@ const getExpiredMedicines = async (req, res, next) => {
 };
 
 // @desc    Create Medicine List Records
-// route    POST /api/medicine/create
+// route    POST /api/medicine
 // @access  Private (Admin)
 const createMedicineList = async (req, res, next) => {
   // console.log(req.body);
@@ -125,7 +146,7 @@ const createMedicineList = async (req, res, next) => {
 };
 
 // @desc    Update Medicine List Record
-// route    PUT /api/medicine/update
+// route    PUT /api/medicine
 // @access  Private (Admin)
 const updateMedicineList = async (req, res, next) => {
   try {
@@ -167,7 +188,7 @@ const updateMedicineList = async (req, res, next) => {
 };
 
 // @desc    Delete Medicine List Record
-// route    DELETE /api/medicine/delete
+// route    DELETE /api/medicine
 // @access  Private (Admin)
 const deleteMedicineList = async (req, res, next) => {
   try {
@@ -209,6 +230,7 @@ const deleteMedicineList = async (req, res, next) => {
 
 module.exports = {
   getMedicineList,
+  getMedicine,
   getExpiredMedicines,
   createMedicineList,
   updateMedicineList,

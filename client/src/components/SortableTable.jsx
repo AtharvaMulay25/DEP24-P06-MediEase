@@ -52,10 +52,11 @@ export function SortableTable({
   searchKey,
   handleApprove,
   handleReject,
-  handleDetail = () => {},
+  handleDetail = () => { },
   detailsFlag = false,
   actionFlag = "true",
   showAddBtn = true,
+  handleUpdate = () => { }
   defaultSortOrder = "action",
 }) {
   const [open, setOpen] = useState(false);
@@ -446,10 +447,10 @@ export function SortableTable({
                         {title !== "Pending Request List" ? (
                           <>
                             {detailsFlag == true && (
-                              <Tooltip content="View">
-                                <IconButton
-                                  variant="text"
-                                  onClick={(e) =>
+                                <Tooltip content="View">
+                                  <IconButton
+                                    variant="text"
+                                    onClick={(e) =>
                                     handleDetail(
                                       e,
                                       rowData["id"],
@@ -458,15 +459,20 @@ export function SortableTable({
                                         1
                                     )
                                   }
-                                >
-                                  <EyeIcon className="h-4 w-4" />
-                                </IconButton>
-                              </Tooltip>
-                            )}
+                                  >
+                                    <EyeIcon className="h-4 w-4" />
+                                  </IconButton>
+                                </Tooltip>
+                              )}
                             {title !== "Medical History List" && (
                               <>
-                                <Tooltip content="Edit">
-                                  <IconButton variant="text">
+                                  <Tooltip content="Edit">
+                                  <IconButton variant="text"
+                                onClick={(e) => {
+                                  console.log("rowData: ", rowData);
+                                  handleUpdate(rowData["id"]);
+                                }}
+                              >
                                     <PencilIcon className="h-4 w-4" />
                                   </IconButton>
                                 </Tooltip>
@@ -474,9 +480,9 @@ export function SortableTable({
                                   <IconButton
                                     variant="text"
                                     onClick={(e) => {
-                                      console.log("rowData: ", rowData);
-                                      handleDialogDelete(e, rowData["id"]);
-                                    }}
+                                        console.log("rowData: ", rowData);
+                                        handleDialogDelete(e, rowData["id"]);
+                                      }}
                                   >
                                     <TrashIcon className="h-4 w-4" />
                                   </IconButton>

@@ -1,6 +1,7 @@
 import { SortableTable } from "../components/SortableTable";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   SyncLoadingScreen,
 } from "../components/UI/LoadingScreen";
@@ -38,6 +39,8 @@ const getScheduleData = async () => {
 };
 
 export default function ScheduleList() {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(true);
   const [schedules, setSchedules] = useState([]);
 
@@ -50,6 +53,11 @@ export default function ScheduleList() {
     };
     fetchData();
   }, []);
+
+  const handleScheduleUpdate = (id) => {
+    console.log("id : ", id);
+    if (id) navigate(`/schedule/update/${id}`);
+  };
 
   const handleScheduleDelete = async (e, id) => {
     try {
@@ -80,18 +88,19 @@ export default function ScheduleList() {
     <>
       {loading && <SyncLoadingScreen />}
       {!loading && (
-      <Layout>
-        <SortableTable
-          tableHead={TABLE_HEAD}
-          title="Schedule"
-          data={schedules}
-          detail="See the current schedule of staff."
-          text="Add Schedule"
-          addLink="/schedule/add"
-          searchKey="day"
-          handleDelete={handleScheduleDelete}
-        />
-      </Layout>
+        <Layout>
+          <SortableTable
+            tableHead={TABLE_HEAD}
+            title="Schedule"
+            data={schedules}
+            detail="See the current schedule of staff."
+            text="Add Schedule"
+            addLink="/schedule/add"
+            searchKey="day"
+            handleDelete={handleScheduleDelete}
+            handleUpdate={handleScheduleUpdate}
+          />
+        </Layout>
       )}
     </>
   );

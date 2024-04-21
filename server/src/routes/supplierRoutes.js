@@ -5,6 +5,7 @@ const {validateSupplier} = require('../middlewares');
 //controllers 
 const { 
     getSupplierList, 
+    getSupplier,
     deleteSupplier,
     createSupplier, 
     updateSupplier
@@ -18,6 +19,7 @@ const roles = ["PARAMEDICAL", "ADMIN"];
 router.use(authMiddleware(roles), profileMiddleware(true));
 
 router.get('/', catchAsync(getSupplierList));
+router.get('/:id', catchAsync(getSupplier));
 router.post('/', validateSupplier, catchAsync(createSupplier));
 router.put('/:id', validateSupplier, catchAsync(updateSupplier));
 router.delete('/:id', catchAsync(deleteSupplier));

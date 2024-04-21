@@ -33,43 +33,48 @@ const getScheduleList = async (req, res, next) => {
 
 };
 
-// @desc    Get Schedule
-// route    GET /api/schedule/:email
+// @desc    Get Single Schedule
+// route    GET /api/schedule/:id
 // @access  Private (Admin)
 const getSchedule = async (req, res, next) => {
   try {
-    const staff = await prisma.staff.findUnique({
+    const { id } = req.params;
+    const schedule = await prisma.schedule.findUnique({
       where: {
-        email: req.params?.email,
+        id: id,
       },
+      include: {
+        Staff: true
+      }
     });
 
-    const schedule = await prisma.schedule.findMany({
-      where: {
-        staffId: staff.id,
-      },
-    });
-
-    const sendScheduleData = schedule.map((schedule) => ({
+    const sendSchedule = {
+      id: schedule.id,
+      staffId: schedule.staffId,
       day: schedule.day,
       shift: schedule.shift,
-    }));
+      name: schedule.Staff.name,
+      department: schedule.Staff.department,
+      email: schedule.Staff.email,
+      role: schedule.Staff.role
+    };
+    // console.log(schedule);
 
     return res.status(200).json({
       ok: true,
-      data: sendScheduleData,
+      data: sendSchedule,
       message: "Schedule retrieved successfully",
     });
-  } catch (error) {
-    console.log(`Error in fetching schedule: ${error.message}`);
+  } catch (err) {
+    console.log(`Schedule Fetching Error : ${err.message}`);
 
     return res.status(500).json({
       ok: false,
       data: [],
-      message: "Fetching data failed, Please try again later",
-    });      
+      message: "Fetching Schedule failed, Please try again later",
+    });
   }
-}
+};
 
 // @desc    Create Schedule Records
 // route    POST /api/schedule
@@ -116,11 +121,13 @@ const updateSchedule = async (req, res, next) => {
         id,
       },
       data: {
-        ...req.body,
+        day: req.body.day,
+        shift: req.body.shift,
+        staffId: req.body.staffId,
       },
     });
 
-    // console.log(updatedRecord);
+    console.log(updatedRecord);
 
     return res.status(200).json({
       ok: true,

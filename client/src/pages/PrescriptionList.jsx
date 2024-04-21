@@ -79,6 +79,10 @@ export default function PrescriptionList() {
     console.log("Prescription Detail", id);
     navigate(`/prescription/${id}^${idx}`);
   };
+  const handlePrescriptionUpdate = async (id) => {
+    console.log("Prescription Edit", id);
+    navigate(`/prescription/update/${id}`);
+  };
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -95,6 +99,7 @@ export default function PrescriptionList() {
             searchKey="patientName"
             handleDetail={handlePrescriptionDetail}
             detailsFlag={true}
+            handleUpdate={handlePrescriptionUpdate}
             defaultSortOrder="date"
           />
         </Layout>

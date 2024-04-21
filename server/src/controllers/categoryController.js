@@ -89,7 +89,7 @@ const createCategory = async (req, res, next) => {
           status: "ACTIVE",
         },
       });
-        newCategory = restoredCategory;
+      newCategory = restoredCategory;
     }
 
     if (!categoryExists) {
@@ -99,7 +99,7 @@ const createCategory = async (req, res, next) => {
           strengthType,
         },
       });
-        newCategory = createdRecord;
+      newCategory = createdRecord;
     }
     return res.status(200).json({
       ok: true,
@@ -118,11 +118,12 @@ const createCategory = async (req, res, next) => {
 };
 
 // @desc    Update Category List Record
-// route    PUT /api/medicine/category/update
+// route    PUT /api/medicine/category/
 // @access  Private (Admin)
 const updateCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
+
     const updatedRecord = await prisma.category.update({
       where: {
         id,

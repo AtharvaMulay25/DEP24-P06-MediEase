@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const { validateStaff } = require('../middlewares');
 const { 
     getStaffList,
+    getStaff,
     createStaff,
     updateStaff,
     deleteStaff
@@ -17,8 +18,9 @@ const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 
 router.use(authMiddleware(roles), profileMiddleware(true));
 
-router.post('/', validateStaff, catchAsync(createStaff));
 router.get('/', catchAsync(getStaffList));
+router.get('/:id', catchAsync(getStaff));
+router.post('/', validateStaff, catchAsync(createStaff));
 router.put('/:id', validateStaff, catchAsync(updateStaff));
 router.delete('/:id', catchAsync(deleteStaff));
 

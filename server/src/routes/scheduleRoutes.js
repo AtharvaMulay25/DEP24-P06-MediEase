@@ -28,6 +28,8 @@ router.get('/:email',
 
 router.use(authMiddleware(roles), profileMiddleware(true));
 
+router.get("/:id", catchAsync(getSchedule));
+
 router.post('/', validateSchedule, catchAsync(createSchedule));
 router.put('/:id', validateSchedule, catchAsync(updateSchedule));
 router.delete('/:id', catchAsync(deleteSchedule));

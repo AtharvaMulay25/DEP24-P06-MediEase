@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 //controllers 
 const {
     getPatientList,
+    getPatient,
     createPatient,
     updatePatient,
     deletePatient 
@@ -19,6 +20,7 @@ router.post('/', authMiddleware(["PATIENT", "DOCTOR", "PARAMEDICAL", "ADMIN"]), 
 
 router.use(authMiddleware(roles), profileMiddleware(true));
 router.get('/', catchAsync(getPatientList));
+router.get('/:id', catchAsync(getPatient));
 router.put('/:id', validatePatient, catchAsync(updatePatient));
 router.delete('/:id', catchAsync(deletePatient));
 

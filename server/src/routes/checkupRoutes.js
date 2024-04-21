@@ -8,6 +8,7 @@ const {
     getCheckupDetails,
     getMedicalHistory,
     createCheckup,
+    updateCheckup,
     deleteCheckup
 } = require('../controllers/checkupController');
 
@@ -22,7 +23,7 @@ const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
 router.use(authMiddleware(roles), profileMiddleware(true));
 router.get('/', catchAsync(getCheckupList));
 router.post('/', validateCheckup, catchAsync(createCheckup));
-// router.put('/:id', validateCheckup, catchAsync(updatePurchaseList));
+router.put('/:id', validateCheckup, catchAsync(updateCheckup));
 router.delete('/:id', catchAsync(deleteCheckup));
 
 module.exports = router;

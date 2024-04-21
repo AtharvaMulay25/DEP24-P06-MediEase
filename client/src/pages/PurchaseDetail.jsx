@@ -83,7 +83,7 @@ const PurchaseDetail = () => {
                 </Typography>
               </div>
               <div className="flex gap-x-2 h-10">
-                <Button size="md" ripple={true}>
+                <Button size="md" ripple={true} onClick={()=>navigate(`/purchase/update/${id}`)}>
                   Edit
                 </Button>
                 <Button size="md" ripple={true} className="flex gap-x-1 px-4" onClick={handlePrint}>

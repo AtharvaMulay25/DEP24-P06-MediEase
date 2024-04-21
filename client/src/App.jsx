@@ -39,6 +39,14 @@ import PatientProfile from "./pages/PatientProfile";
 import AdminProfile from "./pages/AdminProfile";
 import ProtectedRoute from "./components/Protection/ProtectedRoute";
 import DoctorScheduleList from "./pages/DoctorScheduleList";
+import UpdateCategory from "./pages/UpdateCategory";
+import UpdateSupplier from "./pages/UpdateSupplier";
+import UpdateSchedule from "./pages/UpdateSchedule";
+import UpdatePatient from "./pages/UpdatePatient";
+import UpdateStaff from "./pages/UpdateStaff";
+import UpdateMedicine from "./pages/UpdateMedicine";
+import UpdatePurchase from "./pages/UpdatePurchase";
+import UpdatePrescription from "./pages/UpdatePrescription";
 
 function App() {
   const { userRole } = useAuthContext();
@@ -250,6 +258,47 @@ function App() {
           <Route path="/admindashboard" element={
             <ProtectedRoute routeName="ADMIN">
               <AdminDashboard />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/medicine/category/update/:id" element={
+            <ProtectedRoute routeName="MEDICINE">
+              <UpdateCategory />
+            </ProtectedRoute>
+          } />
+          <Route path="/supplier/update/:id" element={
+            <ProtectedRoute routeName="SUPPLIER">
+              <UpdateSupplier />
+            </ProtectedRoute>
+          } />
+          <Route path="/schedule/update/:id" element={
+            <ProtectedRoute routeName="SCHEDULE">
+              <UpdateSchedule />
+            </ProtectedRoute>
+          } />
+          <Route path="/patient/update/:id" element={
+            <ProtectedRoute routeName="PATIENT">
+              <UpdatePatient />
+            </ProtectedRoute>
+          } />
+          <Route path="/staff/update/:id" element={
+            <ProtectedRoute routeName="STAFF">
+              <UpdateStaff />
+            </ProtectedRoute>
+          } />
+          <Route path="/medicine/update/:id" element={
+            <ProtectedRoute routeName="MEDICINE">
+              <UpdateMedicine />
+            </ProtectedRoute>
+          } />
+          <Route path="/purchase/update/:id" element={
+            <ProtectedRoute routeName="PURCHASE">
+              <UpdatePurchase />
+            </ProtectedRoute>
+          } />
+          <Route path="/prescription/update/:id" element={
+            <ProtectedRoute routeName="PRESCRIPTION">
+              <UpdatePrescription />
             </ProtectedRoute>
           } />
         </Routes>

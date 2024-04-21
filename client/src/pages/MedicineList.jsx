@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import {toast} from 'sonner';
+import { useNavigate } from "react-router-dom";
 
 const TABLE_HEAD = {
   id: "#",
@@ -30,6 +31,8 @@ const getMedicinesData = async () => {
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 export default function MedicineList() {
+  const navigate = useNavigate();
+
   const [medicines, setMedicines] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -64,6 +67,11 @@ export default function MedicineList() {
     }
   };
 
+  const handleMedicineUpdate = (id) => {
+    console.log("id : ", id);
+    if (id) navigate(`/medicine/update/${id}`);
+  };
+
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -77,6 +85,7 @@ export default function MedicineList() {
             text="Add Medicine"
             addLink="/medicine/add"
             handleDelete={handleMedicineDelete}
+            handleUpdate={handleMedicineUpdate}
             searchKey={"brandName"}
           />
         </Layout>

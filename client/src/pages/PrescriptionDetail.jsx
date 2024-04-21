@@ -105,7 +105,7 @@ const PrescriptionDetail = () => {
                 </Typography>
               </div>
               <div className="flex gap-x-2 h-10">
-                <Button size="md" ripple={true}>
+                <Button size="md" ripple={true} onClick={()=>navigate(`/prescription/update/${prescriptionId}`)}>
                   Edit
                 </Button>
                 <Button

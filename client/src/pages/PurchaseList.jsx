@@ -74,6 +74,10 @@ export default function PurchaseList() {
     navigate(`/purchase/${id}`);
   }
 
+  const handlePurchaseUpdate = (id) => {
+    console.log("id : ", id);
+    if (id) navigate(`/purchase/update/${id}`);
+  };
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -89,6 +93,7 @@ export default function PurchaseList() {
 			      handleDelete={handlePurchaseDelete}
             searchKey="supplierName"
             handleDetail={handlePurchaseDetail}
+            handleUpdate={handlePurchaseUpdate}
             detailsFlag={true}
             defaultSortOrder="purchaseDate"
           />
