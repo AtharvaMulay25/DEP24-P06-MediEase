@@ -1,0 +1,9 @@
+@media print {
+    /* Define styles for printing */
+    #prescriptionDetail {
+      /* Specify styles for the prescription detail card */
+      /* For example, you might want to ensure the card takes up the full width */
+      width: 100%;
+    }
+  }
+  
