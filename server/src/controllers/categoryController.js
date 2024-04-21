@@ -65,7 +65,6 @@ const getCategory = async (req, res, next) => {
 // route    POST /api/medicine/category/create
 // @access  Private (Admin)
 const createCategory = async (req, res, next) => {
-  try {
     console.log(req.body);
     const { categoryName, strengthType } = req.body;
     const categoryExists = await prisma.category.findFirst({
@@ -106,15 +105,6 @@ const createCategory = async (req, res, next) => {
       data: newCategory,
       message: "Category record created successfully",
     });
-  } catch (err) {
-    console.log(`Category Creating Error : ${err.message}`);
-
-    return res.status(500).json({
-      ok: false,
-      data: [],
-      message: `Creating Category record failed, Please try again later`,
-    });
-  }
 };
 
 // @desc    Update Category List Record

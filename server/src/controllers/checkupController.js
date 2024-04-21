@@ -245,6 +245,7 @@ const createCheckup = async (req, res, next) => {
     throw new ExpressError("Logged in Staff does not exist", 404);
   }
 
+  let stockRecords = [];
   //handle validations on each medicine item in checkupMedicines
   for (const [idx, medicine] of checkupMedicines.entries()) {
     if (medicine.quantity < 1) {
@@ -268,6 +269,9 @@ const createCheckup = async (req, res, next) => {
         404
       );
     }
+    else{
+      stockRecords.push(stockRecord);
+    }
     if (stockRecord.stock < medicine.quantity) {
       throw new ExpressError(
         `Stock not sufficient for medicine with ID ${
@@ -278,65 +282,102 @@ const createCheckup = async (req, res, next) => {
     }
   }
 
-  for (const [idx, medicine] of checkupMedicines.entries()) {
-    const medicineRecord = await prisma.medicine.findUnique({
-      where: {
-        id: medicine.medicineId,
-      },
-    });
-    //updateMany is used but the entrires are unique by medicineId
-    const updateStock = await prisma.stock.updateMany({
-      where: {
-        medicineId: medicine.medicineId,
-      },
-      data: {
-        outQuantity: {
-          increment: parseInt(medicine.quantity),
-        },
-        stock: {
-          decrement: parseInt(medicine.quantity),
-        },
-      },
-    });
+  // for (const [idx, medicine] of checkupMedicines.entries()) {
+  //   const medicineRecord = await prisma.medicine.findUnique({
+  //     where: {
+  //       id: medicine.medicineId,
+  //     },
+  //   });
+  //   //updateMany is used but the entrires are unique by medicineId
+  //   const updateStock = await prisma.stock.updateMany({
+  //     where: {
+  //       medicineId: medicine.medicineId,
+  //     },
+  //     data: {
+  //       outQuantity: {
+  //         increment: parseInt(medicine.quantity),
+  //       },
+  //       stock: {
+  //         decrement: parseInt(medicine.quantity),
+  //       },
+  //     },
+  //   });
 
-    //if at any point, stock update fails, then rollback all the previous stock updates
-    if (!updateStock) {
-      for (let i = 0; i < idx; i++) {
-        const previousMedicine = checkupMedicines[i];
-        const previousMedicineRecord = await prisma.medicine.findUnique({
-          where: {
-            id: previousMedicine.medicineId,
+  //   //if at any point, stock update fails, then rollback all the previous stock updates
+  //   if (!updateStock) {
+  //     for (let i = 0; i < idx; i++) {
+  //       const previousMedicine = checkupMedicines[i];
+  //       const previousMedicineRecord = await prisma.medicine.findUnique({
+  //         where: {
+  //           id: previousMedicine.medicineId,
+  //         },
+  //       });
+  //       const previousStock = await prisma.stock.updateMany({
+  //         where: {
+  //           medicineId: previousMedicine.medicineId,
+  //         },
+  //         data: {
+  //           outQuantity: {
+  //             decrement: parseInt(previousMedicine.quantity),
+  //           },
+  //           stock: {
+  //             increment: parseInt(previousMedicine.quantity),
+  //           },
+  //         },
+  //       });
+  //       if (!previousStock) {
+  //         //give understandable error msg like 'stock partially updated, correct it manually' ****  (stock updated till this incex)
+  //         throw new ExpressError(
+  //           `Failed to rollback stock update for medicine ${
+  //             previousMedicineRecord.brandName
+  //           } with ID ${previousMedicine.medicineId} in ITEM ${i + 1}`,
+  //           500
+  //         );
+  //       }
+  //     }
+  //     throw new ExpressError(`Failed to update stock for medicines`, 404);
+  //   }
+  // }
+
+
+  const updateTransaction = await prisma.$transaction([
+    // Iterate over each checkup medicine and prepare updates
+    ...checkupMedicines.map((medicine, idx) => {
+  
+      // Prepare update for current medicine
+      const updateStock = prisma.stock.update({
+        where: {
+          id: stockRecords[idx].id,
+        },
+        data: {
+          outQuantity: {
+            increment: parseInt(medicine.quantity),
           },
-        });
-        const previousStock = await prisma.stock.updateMany({
-          where: {
-            medicineId: previousMedicine.medicineId,
+          stock: {
+            decrement: parseInt(medicine.quantity),
           },
-          data: {
-            outQuantity: {
-              decrement: parseInt(previousMedicine.quantity),
-            },
-            stock: {
-              increment: parseInt(previousMedicine.quantity),
-            },
-          },
-        });
-        if (!previousStock) {
-          //give understandable error msg like 'stock partially updated, correct it manually' ****  (stock updated till this incex)
-          throw new ExpressError(
-            `Failed to rollback stock update for medicine ${
-              previousMedicineRecord.brandName
-            } with ID ${previousMedicine.medicineId} in ITEM ${i + 1}`,
-            500
-          );
-        }
+        },
+      });
+  
+      // If current update fails, throw error
+      if (!updateStock) {
+        throw new ExpressError(
+          `Failed to update stock for medicine ${medicineRecord.brandName} with ID ${medicine.medicineId}`,
+          404
+        );
       }
-      throw new ExpressError(
-        `Failed to update stock for medicines`,
-        404
-      );
-    }
+  
+      return updateStock;
+    }),
+  ]);
+  if(!updateTransaction){
+    throw new ExpressError(`Failed to update stock for medicines`, 404);
   }
+
+  // Commit the transaction
+  await updateTransaction;
+
+
 
   const createdCheckup = await prisma.checkup.create({
     data: {
@@ -551,8 +592,117 @@ const updateCheckup = async (req, res, next) => {
 // route    DELETE /api/checkup
 // @access  Private (Admin)
 const deleteCheckup = async (req, res, next) => {
-  try {
+  // try {
     const { id } = req.params;
+
+    const checkupRecord = await prisma.checkup.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!checkupRecord) {
+      throw new ExpressError("Prescription Record doesn't exist", 404);
+    }
+
+    const checkupMedicines = await prisma.checkupMedicine.findMany({
+      where: {
+        checkupId: id,
+      },
+    });
+
+
+    //handle validations on each medicine item in checkupMedicines
+    let stockRecords = [];
+    for (const [idx, medicine] of checkupMedicines.entries()) {
+      const stockRecord = await prisma.stock.findFirst({
+        where: {
+          medicineId: medicine.medicineId,
+        },
+      });
+      if (!stockRecord) {
+        throw new ExpressError(
+          `Stock record not found for medicine with ID ${
+            medicine.medicineId
+          } in ITEM ${idx + 1}`,
+          404
+        );
+      }
+      else{
+        stockRecords.push(stockRecord);
+      }
+
+      if (stockRecord.outQuantity - medicine.quantity < 0) {
+        throw new ExpressError(
+          `Cannot Update Stock for medicine item ${
+            idx + 1
+          } on deleting the Purchase`,
+          401
+        );
+      }
+    }
+
+    // //update the stock records
+    // for (const [idx, medicine] of checkupMedicines.entries()) {
+    //   const stockRecord = await prisma.stock.findFirst({
+    //     where: {
+    //       medicineId: medicine.medicineId,
+    //     },
+    //   });
+    //   const updateStockRecord = await prisma.stock.update({
+    //     where: {
+    //       id: stockRecord.id,
+    //     },
+    //     data: {
+    //       outQuantity: {
+    //         decrement: medicine.quantity,
+    //       },
+    //       stock: {
+    //         decrement: medicine.quantity,
+    //       },
+    //     },
+    //   });
+
+    //   //to rollback when error occurs at any point *******
+    // }
+
+    const updateTransaction = await prisma.$transaction([
+      // Iterate over each checkup medicine and prepare updates
+      ...checkupMedicines.map((medicine, idx) => {
+                        
+          // Prepare update for current medicine
+          const updateStock = prisma.stock.update({
+            where: {
+              id: stockRecords[idx].id,
+            },
+            data: {
+              outQuantity: {
+                decrement: parseInt(medicine.quantity),
+              },
+              stock: {
+                increment: parseInt(medicine.quantity),
+              },
+            },
+          });
+      
+          // If current update fails, throw error
+          if (!updateStock) {
+            throw new ExpressError(
+              `Failed to update stock for medicine ${medicineRecord.brandName} with ID ${medicine.medicineId}`,
+              404
+            );
+          }
+      
+          return updateStock;           
+      })]);
+
+    if(!updateTransaction){
+      throw new ExpressError(`Failed to update stock for medicines`, 404);
+    }
+
+    // Commit the transaction
+    await updateTransaction;
+
 
     const deletedRecords = await prisma.checkupMedicine.deleteMany({
       where: {
@@ -571,25 +721,25 @@ const deleteCheckup = async (req, res, next) => {
       data: deletedRecords,
       message: "Prescription Record deleted successfully",
     });
-  } catch (err) {
-    console.log(`Prescription List Deletion Error : ${err.message}`);
+  // } catch (err) {
+  //   console.log(`Prescription List Deletion Error : ${err.message}`);
 
-    let errMsg =
-      "Deleting Prescription list record failed, Please try again later";
-    let errCode = 500;
+  //   let errMsg =
+  //     "Deleting Prescription list record failed, Please try again later";
+  //   let errCode = 500;
 
-    //record does not exist
-    if (err.code === "P2025") {
-      errMsg = "Record does not exist";
-      errCode = 404;
-    }
+  //   //record does not exist
+  //   if (err.code === "P2025") {
+  //     errMsg = "Record does not exist";
+  //     errCode = 404;
+  //   }
 
-    return res.status(errCode).json({
-      ok: false,
-      data: [],
-      message: errMsg,
-    });
-  }
+  //   return res.status(errCode).json({
+  //     ok: false,
+  //     data: [],
+  //     message: errMsg,
+  //   });
+  // }
 };
 
 module.exports = {
