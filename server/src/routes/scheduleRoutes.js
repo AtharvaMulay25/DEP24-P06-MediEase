@@ -21,11 +21,6 @@ router.get('/',
     profileMiddleware(true),
     catchAsync(getScheduleList));
 
-router.get('/:email', 
-    authMiddleware(["DOCTOR", "PARAMEDICAL"]),
-    profileMiddleware(true),
-    catchAsync(getSchedule));
-
 router.use(authMiddleware(roles), profileMiddleware(true));
 
 router.get("/:id", catchAsync(getSchedule));

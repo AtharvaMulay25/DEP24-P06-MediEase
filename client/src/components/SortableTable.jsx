@@ -52,11 +52,11 @@ export function SortableTable({
   searchKey,
   handleApprove,
   handleReject,
-  handleDetail = () => { },
+  handleDetail = () => {},
   detailsFlag = false,
   actionFlag = "true",
   showAddBtn = true,
-  handleUpdate = () => { }
+  handleUpdate = () => {},
   defaultSortOrder = "action",
 }) {
   const [open, setOpen] = useState(false);

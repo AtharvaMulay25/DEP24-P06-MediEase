@@ -21,7 +21,7 @@ export function UpdateStaffForm() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const departments = ["Ayurvedic", "Gynecology", "Homeopathy"];
+    const departments = ["AYURVEDIC", "GYNECOLOGY", "HOMEOPATHY"];
     const roles = ["Doctor", "Paramedical"];
 
     const [loading, setLoading] = useState(false);
@@ -54,7 +54,7 @@ export function UpdateStaffForm() {
                         email: data.email,
                         mobileNumber: data.mobileNumber,
                     });
-
+                    
                     console.log("Staff details fetched successfully");
                 } else {
                     console.log("ERROR (fetch-staff-details): ", resData.error);
@@ -82,18 +82,18 @@ export function UpdateStaffForm() {
 
         // await fn();
 
-        const data = {
-            name: formData.staffName,
-            role: formData.role.toUpperCase(),
-            email: formData.email,
-            gender: formData.gender.toUpperCase(),
-        };
-        if (formData.department)
-            data.department = formData.department.toUpperCase();
-        if (formData.mobileNumber) data.mobileNumber = formData.mobileNumber;
+        // const data = {
+        //     name: formData.staffName,
+        //     role: formData.role.toUpperCase(),
+        //     email: formData.email,
+        //     gender: formData.gender.toUpperCase(),
+        // };
+        // if (formData.department)
+        //     data.department = formData.department.toUpperCase();
+        // if (formData.mobileNumber) data.mobileNumber = formData.mobileNumber;
         setLoading(true);
         try {
-            const response = await axios.put(`${apiRoutes.staff}/${id}`, data, {
+            const response = await axios.put(`${apiRoutes.staff}/${id}`, formData, {
                 withCredentials: true
             });
             setToastTimeout("success", "Staff updated successfully", 200);
@@ -186,7 +186,7 @@ export function UpdateStaffForm() {
                                             className="w-full"
                                             name="role"
                                             value={formData.role}
-                                            onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                            disabled
                                         />
                                     </div>
                                     {formData.role === "Doctor" && (
@@ -239,8 +239,8 @@ export function UpdateStaffForm() {
                                             value={formData.gender}
                                             onChange={(value) => handleChange("gender", value)}
                                         >
-                                            <Option value="Male">Male</Option>
-                                            <Option value="Female">Female</Option>
+                                            <Option value="MALE">Male</Option>
+                                            <Option value="FEMALE">Female</Option>
                                         </MaterialSelect>
                                     </div>
                                     <div className="flex-col md:flex md:flex-row items-center justify-around p-1">

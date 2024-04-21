@@ -117,8 +117,7 @@ const login = async (req, res, next) => {
           }
         });
 
-        //TODO: Add the inactive condition also
-        if (!staffExists) {
+        if (!staffExists || staffExists.status === "INACTIVE") {
           profileIsComplete = false;
         }
     } else if (user.role === "PATIENT") {
@@ -128,8 +127,7 @@ const login = async (req, res, next) => {
           }
         });
 
-        //TODO: Add the inactive condition also
-        if (!patientExists) {
+        if (!patientExists || patientExists.status === "INACTIVE") {
           profileIsComplete = false;
         }
     }

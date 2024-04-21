@@ -85,22 +85,22 @@ export function UpdateSupplierForm() {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    const data = {
-      name: formData.supplierName,
-      mobileNumber: formData.mobileNo,
-      state: formData.state,
-      address1: formData.address1,
-    };
+    // const data = {
+    //   name: formData.supplierName,
+    //   mobileNumber: formData.mobileNo,
+    //   state: formData.state,
+    //   address1: formData.address1,
+    // };
 
-    if (formData.email) data["email"] = formData.email;
-    if (formData.city) data["city"] = formData.city;
-    if (formData.zip) data["pinCode"] = parseInt(formData.zip) || 0;
-    if (formData.address2) data["address2"] = formData.address2;
+    // if (formData.email) data["email"] = formData.email;
+    // if (formData.city) data["city"] = formData.city;
+    // if (formData.zip) data["pinCode"] = parseInt(formData.zip) || 0;
+    // if (formData.address2) data["address2"] = formData.address2;
 
     // Here you can handle the submission of the form
     // console.log(data);
     try {
-      const response = await axios.put(`${apiRoutes.supplier}/${id}`, data, {
+      const response = await axios.put(`${apiRoutes.supplier}/${id}`, formData, {
         withCredentials: true,
       });
       // console.log(response);

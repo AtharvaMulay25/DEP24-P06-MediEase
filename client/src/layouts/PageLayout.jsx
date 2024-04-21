@@ -121,7 +121,7 @@ const Layout = ({ children }) => {
 
   return (
     <div className="h-screen flex">
-      {roleArr.length !== 0 && <div className="fixed h-screen z-10 top-0 left-0">
+      {roleArr.length !== 0 && (<div className="fixed h-screen z-10 top-0 left-0">
         <div className="flex">
           <div
             className={`transition-width duration-300 h-screen overflow-x-hidden`}

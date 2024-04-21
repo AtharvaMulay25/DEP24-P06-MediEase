@@ -38,7 +38,7 @@ const getStaffData = async (userEmail) => {
 
 const getScheduleData = async (userEmail) => {
   try {
-    const response = await axios.get(`${apiRoutes.schedule}/${userEmail}`, {
+    const response = await axios.get(`${apiRoutes.profile}/staff/schedule/${userEmail}`, {
       withCredentials: true,
     });
 

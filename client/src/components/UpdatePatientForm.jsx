@@ -36,7 +36,7 @@ export default function UpdatePatientForm() {
     });
 
     const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
-    const categories = ["Student", "Faculty", "Staff", "Visitor"];
+    const categories = ["STUDENT", "FACULTY", "STAFF", "VISITOR"];
 
     useEffect(() => {
         const fetchPatientDetails = async () => {
@@ -282,8 +282,8 @@ export default function UpdatePatientForm() {
                                             onChange={(value) => handleChange("gender", value)}
                                             defaultValue={formData.gender}
                                         >
-                                            <Option defaultChecked value="Male">Male</Option>
-                                            <Option value="Female">Female</Option>
+                                            <Option value="MALE">Male</Option>
+                                            <Option value="FEMALE">Female</Option>
                                             {/* <Option value="Other">Other</Option> */}
                                         </Select>
                                     </div>
@@ -322,10 +322,10 @@ export default function UpdatePatientForm() {
                                             onChange={(value) => handleChange("category", value)}
                                             defaultValue={formData.category}
                                         >
-                                            <Option value="Student">Student</Option>
-                                            <Option value="Faculty">Faculty</Option>
-                                            <Option value="Staff">Staff</Option>
-                                            <Option value="Visitor">Visitor</Option>
+                                            <Option value="STUDENT">Student</Option>
+                                            <Option value="FACULTY">Faculty</Option>
+                                            <Option value="STAFF">Staff</Option>
+                                            <Option value="VISITOR">Visitor</Option>
                                         </Select>
                                     </div>
                                     <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
@@ -341,7 +341,7 @@ export default function UpdatePatientForm() {
                                         >
                                             <Option value="BTECH">BTech</Option>
                                             <Option value="MTECH">MTech</Option>
-                                            <Option value="DUAL DEGREE">Dual Degree</Option>
+                                            <Option value="DUAL_DEGREE">Dual Degree</Option>
                                             <Option value="PHD">PHD</Option>
                                         </Select>
                                     </div>

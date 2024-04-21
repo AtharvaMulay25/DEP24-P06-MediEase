@@ -186,7 +186,7 @@ export function AddMedicineForm() {
               />
             </div>
            
-            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+            {/* <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
               <div className="flex mr-2 w-full md:w-72 justify-end">
                 <label htmlFor="medicineDetails">Medicine Details:</label>
               </div>
@@ -211,7 +211,7 @@ export function AddMedicineForm() {
                 <Option value="Injection">Injection</Option>
                 <Option value="Surgicals">Surgicals</Option>
               </MaterialSelect>
-            </div>
+            </div> */}
           
           </div>
         </form>
