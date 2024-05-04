@@ -5,7 +5,6 @@ import axios from "axios";
 import {
   SyncLoadingScreen,
 } from "../components/UI/LoadingScreen";
-import MockData from "../assets/MOCK_DATA_outofstock.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 

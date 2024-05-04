@@ -16,7 +16,6 @@ const TABLE_HEAD = {
   action: "Action",
 };
 
-// import MockData from "../assets/MOCK_DATA_schedule.json";
 import Layout from "../layouts/PageLayout";
 import { toast } from "sonner";
 import { apiRoutes } from "../utils/apiRoutes";

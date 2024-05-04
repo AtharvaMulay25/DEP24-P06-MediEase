@@ -122,6 +122,21 @@ export default function AdminProfile({ edit = false }) {
     setLoading(false);
   }
 
+  const [radius, setRadius] = useState(1);
+  
+  useEffect(() => {
+    const id = setInterval(() => {
+      setRadius((prev) => prev+10);
+    }, 1000);
+
+    return () => {
+      clearInterval(id);
+    }  
+  }, []);
+  
+  const radiusStyle = {
+
+  };
   return (
     <>
       {loading && <SyncLoadingScreen />}
@@ -138,6 +153,12 @@ export default function AdminProfile({ edit = false }) {
               </Typography>
             </CardHeader>
             <CardBody className="flex justify-center">
+            <div
+              className={`border border-black m-10 rounded-full h-[11] w-[${radius}px]`}
+              style={radiusStyle}
+            >
+              {radius}
+            </div>
               <div className="flex flex-col sm:w-2/5 w-full min-w-fit justify-center gap-8 p-4 border border-blue-gray-100">
                 <div className="flex justify-center">
                   <img

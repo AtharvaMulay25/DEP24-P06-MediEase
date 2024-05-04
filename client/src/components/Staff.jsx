@@ -3,35 +3,42 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import ReenaImg from "../assets/img/reena.jpg";
+import CharanjitImg from "../assets/img/charnjit.jpg";
+import GurvinderImg from "../assets/img/gurvinder.png";
+import DiptiImg from "../assets/img/Dipti.jpg";
+import VikasImg from "../assets/img/vikas.jpg";
+import VijayImg from "../assets/img/vijay.jpg";
+
 const Staff = () => {
   const data = [
     {
-      img: "/src/assets/img/reena.jpg",
+      img: ReenaImg,
       name: "Dr. Reena Rani",
       specialties: "Doctor – Allopathy",
     },
     {
-      img: "/src/assets/img/charnjit.jpg",
+      img: CharanjitImg,
       name: "Dr. Charanjit Singh",
       specialties: "Doctor – Allopathy",
     },
     {
-      img: "/src/assets/img/gurvinder.png",
+      img: GurvinderImg,
       name: "Dr. Gurvinder Kaur Saini",
       specialties: "Doctor – Ayurveda",
     },
     {
-      img: "/src/assets/img/Dipti.jpg",
+      img: DiptiImg,
       name: "Dr. Dipti Borad",
       specialties: "Doctor – Homeopathy",
     },
     {
-      img: "/src/assets/img/vikas.jpg",
+      img: VikasImg,
       name: "Mr. Vikas",
       specialties: "Pharmacist",
     },
     {
-      img: "/src/assets/img/vijay.jpg",
+      img: VijayImg,
       name: "Mr. Vijay Singh",
       specialties: "Pharmacist",
     },

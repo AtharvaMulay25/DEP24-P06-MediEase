@@ -7,6 +7,7 @@ import Contact from "../models/Contact";
 import { useLogout } from "../hooks/useLogout";
 import Footer from "../components/Footer";
 import { toast } from "sonner";
+import Logo from "../assets/img/logo.png";
 
 const HomeLayout = ({ children }) => {
   const { userRole } = useAuthContext();
@@ -82,7 +83,7 @@ const HomeLayout = ({ children }) => {
               <div className="h-12 w-12 flex-shrink-0">
                 <a href="/">
                   <img
-                    src="/src/assets/img/logo.png"
+                    src={Logo}
                     alt="Logo"
                     className="-ml-3 -mr-2 cursor-pointer"
                     style={{ width: "100%", height: "100%" }}

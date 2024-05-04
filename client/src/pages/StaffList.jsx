@@ -33,7 +33,6 @@ const getStaffData = async () => {
   }
 };
 
-// import MockData from "../assets/MOCK_DATA_staff.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 
