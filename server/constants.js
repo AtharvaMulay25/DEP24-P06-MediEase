@@ -1,5 +1,5 @@
 const OTP_EXPIRY_TIME = 10;
-const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173"; // Set a default value if CLIENT_URL is not defined
+const CLIENT_URL = process.env.CLIENT_URL; // Set a default value if CLIENT_URL is not defined
 const OTP_MAIL_TEMPLATE = (otp) => {
   return `<h2>Hi!</h2><h1>Welcome to <span style="color:blue;">Mediease</span>.</h1><p>Your OTP is: <strong>${otp}</strong>.</p><p>Please use this OTP to verify your email address.</p><p>The OTP is valid for <strong>10 minutes</strong>.<br></p>Regards,<h4>DEP_P06_2024</h4>`;
 };

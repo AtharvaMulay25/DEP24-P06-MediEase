@@ -58,17 +58,17 @@ const signup = async (req, res, next) => {
       res.cookie("token", token, {
         maxAge: 2 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: true
+        // secure: true
       });
       res.cookie("role", role, {
         maxAge: 2 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: true
+        // secure: true
       });
       res.cookie("name", newUser.name, {
         maxAge: 2 * 60 * 60 * 1000,
         httpOnly: true,
-        secure: true
+        // secure: true
       });
 
       return res.status(201).json({
@@ -142,17 +142,17 @@ const login = async (req, res, next) => {
     res.cookie("token", token, {
       maxAge: 2 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: true
+      // secure: true
     });
     res.cookie("role", user.role, {
       maxAge: 2 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: true
+      // secure: true
     });
     res.cookie("name", user.name, {
       maxAge: 2 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: true
+      // secure: true
     });
 
     return res.status(200).json({
@@ -181,15 +181,15 @@ const logout = async (req, res, next) => {
 
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true,
+      // secure: true,
     });
     res.clearCookie("role", {
       httpOnly: true,
-      secure: true
+      // secure: true
     });
     res.clearCookie("name", {
       httpOnly: true,
-      secure: true
+      // secure: true
     });
 
     return res.status(200).json({
