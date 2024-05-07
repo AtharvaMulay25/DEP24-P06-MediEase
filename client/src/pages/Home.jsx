@@ -26,9 +26,9 @@ const Home = () => {
             <Staff />
           </Element>
 
-          <Element id="blogs">
+          {/* <Element id="blogs">
             <Blogs />
-          </Element>
+          </Element> */}
 
           {userRole && userRole !== "ADMIN" && (
             <Element id="feedback">

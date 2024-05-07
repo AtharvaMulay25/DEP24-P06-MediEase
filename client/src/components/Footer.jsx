@@ -13,7 +13,7 @@ const Footer = () => {
         "Medical Center, IIT ROPAR,",
         " Punjab - 140001, India,",
         "support@care.com,", //Yet to get an email ID
-        "+91-1881-242124, +91-1881-242279",
+        "+91-1881-235193",
         "",
       ],
     },

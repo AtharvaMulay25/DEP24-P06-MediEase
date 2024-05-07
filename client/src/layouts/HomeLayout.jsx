@@ -142,7 +142,7 @@ const HomeLayout = ({ children }) => {
               >
                 Staff
               </Link>
-              <Link
+              {/* <Link
                 to="#blogs"
                 spy={true}
                 smooth={true}
@@ -151,7 +151,7 @@ const HomeLayout = ({ children }) => {
                 onClick={() => scrollToSection("blogs")}
               >
                 Blog
-              </Link>
+              </Link> */}
               {userRole && userRole !== "ADMIN" && (
                 <Link
                   to="#blogs"
