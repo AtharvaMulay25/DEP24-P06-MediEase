@@ -75,21 +75,21 @@ export default function MedicineList() {
   return (
     <>
       {loading && <SyncLoadingScreen />}
-      {!loading && (
+      {!loading &&
         <Layout>
-          <SortableTable
-            tableHead={TABLE_HEAD}
-            title="Medicine List"
-            data={medicines}
-            detail="See information about all medicines."
-            text="Add Medicine"
-            addLink="/medicine/add"
-            handleDelete={handleMedicineDelete}
-            handleUpdate={handleMedicineUpdate}
-            searchKey={"brandName"}
-          />
+        <SortableTable
+          tableHead={TABLE_HEAD}
+          title="Medicine List"
+          data={medicines}
+          detail="See information about all medicines."
+          text="Add Medicine"
+          addLink="/medicine/add"
+          handleDelete={handleMedicineDelete}
+          handleUpdate={handleMedicineUpdate}
+          searchKey={"brandName"}
+        />
         </Layout>
-      )}
+      }
     </>
   );
 }

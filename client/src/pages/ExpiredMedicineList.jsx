@@ -47,9 +47,7 @@ export default function ExpiredMedicineList() {
 
   return (
     <>
-      {loading && <SyncLoadingScreen />}
-      {!loading && (
-        <Layout>
+    
           <SortableTable
             tableHead={TABLE_HEAD}
             title="Expired Medicines"
@@ -62,8 +60,7 @@ export default function ExpiredMedicineList() {
             actionFlag="false"
             defaultSortOrder="expiryDate"
           />
-        </Layout>
-      )}
+       
     </>
   );
 }

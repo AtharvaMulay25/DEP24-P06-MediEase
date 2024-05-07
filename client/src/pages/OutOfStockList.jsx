@@ -48,9 +48,7 @@ export default function OutOfStock() {
 
   return (
     <>
-      {loading && <SyncLoadingScreen />}
-      {!loading && (
-        <Layout>
+    
           <SortableTable
             tableHead={TABLE_HEAD}
             title="Out of Stock"
@@ -61,8 +59,7 @@ export default function OutOfStock() {
             searchKey="medicineName"
             actionFlag="false"
           />
-        </Layout>
-      )}
+       
     </>
   );
 }

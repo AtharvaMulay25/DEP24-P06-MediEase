@@ -57,9 +57,7 @@ export default function MedicalHistory() {
   };
   return (
     <>
-      {loading && <SyncLoadingScreen />}
-      {!loading && (
-        <Layout>
+     
           <SortableTable
             tableHead={TABLE_HEAD}
             title="Medical History List"
@@ -73,8 +71,7 @@ export default function MedicalHistory() {
             detailsFlag={true}
             defaultSortOrder="date"
           />
-        </Layout>
-      )}
+        
     </>
   );
 }

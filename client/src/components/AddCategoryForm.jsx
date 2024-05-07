@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CardBody,
   Input,
@@ -14,11 +14,13 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
-import { SyncLoadingScreen } from "./UI/LoadingScreen";
-import Layout from "../layouts/PageLayout";
-export function AddCategoryForm() {
+export function AddCategoryForm({loading, setLoading}) {
+  // useEffect(() => { 
+  //   setLoading(true);
+  // }, []);
+  console.log("loading : ", loading);
+  console.log("setLoading : ", setLoading);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     categoryName: "",
     strengthType: "",
@@ -69,9 +71,6 @@ export function AddCategoryForm() {
 
   return (
     <>
-      {loading && <SyncLoadingScreen />}
-      {!loading && (
-        <Layout>
           <Card className="h-max w-full">
             <CardHeader
               floated={false}
@@ -188,8 +187,7 @@ export function AddCategoryForm() {
               </div>
             </CardFooter>
           </Card>
-        </Layout>
-      )}
+
     </>
   );
 }

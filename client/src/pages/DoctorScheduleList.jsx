@@ -52,9 +52,7 @@ const DoctorScheduleList = () => {
 
     return (
         <>
-            {loading && <SyncLoadingScreen />}
-            {!loading && (
-                <Layout>
+          
                     <SortableTable
                         tableHead={TABLE_HEAD}
                         title="Schedule"
@@ -67,8 +65,7 @@ const DoctorScheduleList = () => {
                         actionFlag='false'
                         showAddBtn={false}
                     />
-                </Layout>
-            )}
+               
         </>
     );
 }

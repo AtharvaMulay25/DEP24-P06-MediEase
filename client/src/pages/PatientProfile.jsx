@@ -156,298 +156,295 @@ export default function PatientProfile({ edit = false }) {
 
   return (
     <>
-      {loading && <SyncLoadingScreen />}
-      {!loading && (
-        <Layout>
-          <Card className="flex w-full">
-            <CardHeader floated={false} shadow={false} className="rounded-none">
-              <Typography
-                variant="h3"
-                color="blue-gray"
-                className="text-center "
-              >
-                {edit && "Update "}Patient Profile
+     
+      <Card className="flex w-full">
+        <CardHeader floated={false} shadow={false} className="rounded-none">
+          <Typography
+            variant="h3"
+            color="blue-gray"
+            className="text-center "
+          >
+            {edit && "Update "}Patient Profile
+          </Typography>
+        </CardHeader>
+        <CardBody className="flex justify-center">
+          <div className="flex flex-col sm:w-2/5 w-full min-w-fit justify-center gap-8 p-4 border border-blue-gray-100">
+            <div className="flex justify-center">
+              <img
+                src="/src/assets/img/patient.png"
+                alt="Patient"
+                className="rounded-full w-48 h-48 "
+              />
+            </div>
+            <div className="content-center text-center grid sm:grid-cols-2 gap-y-3">
+              <Typography variant="h6">
+                Name{edit && <span className="text-red-800">*</span>}:{" "}
               </Typography>
-            </CardHeader>
-            <CardBody className="flex justify-center">
-              <div className="flex flex-col sm:w-2/5 w-full min-w-fit justify-center gap-8 p-4 border border-blue-gray-100">
-                <div className="flex justify-center">
-                  <img
-                    src="/src/assets/img/patient.png"
-                    alt="Patient"
-                    className="rounded-full w-48 h-48 "
-                  />
-                </div>
-                <div className="content-center text-center grid sm:grid-cols-2 gap-y-3">
-                  <Typography variant="h6">
-                    Name{edit && <span className="text-red-800">*</span>}:{" "}
-                  </Typography>
-                  {edit ? (
-                    <input
-                      placeholder="Full Name"
-                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                      value={patientDetail.name}
-                      onChange={(e) =>
-                        setPatientDetail({
-                          ...patientDetail,
-                          name: e.target.value,
-                        })
-                      }
-                    />
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.name || "-"}
-                    </Typography>
-                  )}
-                  <Typography variant="h6">
-                    Category{edit && <span className="text-red-800">*</span>}:{" "}
-                  </Typography>
-                  {edit ? (
-                    <Input disabled value={patientDetail.category} />
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.category || "-"}
-                    </Typography>
-                  )}
-                  <Typography variant="h6">Department: </Typography>
-                  {edit ? (
-                    <select
-                      placeholder="Department"
-                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                      value={patientDetail.department}
-                      onChange={(e) =>
-                        setPatientDetail({
-                          ...patientDetail,
-                          department: e.target.value,
-                        })
-                      }
-                    >
-                      <option value="COMPUTER_SCIENCE">Computer Science</option>
-                      <option value="ELECTRICAL">Electrical</option>
-                      <option value="MECHANICAL">Mechanical</option>
-                      <option value="MATHEMATICS_COMPUTING">
-                        Mathematics & Computing
-                      </option>
-                      <option value="CHEMICAL">Chemical</option>
-                      <option value="CIVIL">Civil</option>
-                      <option value="METALLURGY">Metallurgy</option>
-                      <option value="ENGINEERING_PHYSICS">
-                        Engineering Physics
-                      </option>
-                      <option value="PHYSICS">Physics</option>
-                      <option value="CHEMISTRY">Chemistry</option>
-                      <option value="BIOLOGY">Biology</option>
-                      <option value="MATHEMATICS">Mathematics</option>
-                      <option value="HUMANITIES">Humanities</option>
-                    </select>
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.department || "-"}
-                    </Typography>
-                  )}
-                  <Typography variant="h6">
-                    Age{edit && <span className="text-red-800">*</span>}:{" "}
-                  </Typography>
-                  {edit ? (
-                    <input
-                      type="number"
-                      min={1}
-                      placeholder="Age"
-                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                      value={patientDetail.age}
-                      onChange={(e) =>
-                        setPatientDetail({
-                          ...patientDetail,
-                          age: e.target.value,
-                        })
-                      }
-                    />
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.age || "-"}
-                    </Typography>
-                  )}
-                  <Typography variant="h6">
-                    Gender{edit && <span className="text-red-800">*</span>}:{" "}
-                  </Typography>
-                  {edit ? (
-                    <select
-                      name="gender"
-                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                      value={patientDetail.gender}
-                      onChange={(e) =>
-                        setPatientDetail({
-                          ...patientDetail,
-                          gender: e.target.value,
-                        })
-                      }
-                    >
-                      <option key="Male" value="MALE">
-                        MALE
-                      </option>
-                      <option key="Female" value="FEMALE">
-                        FEMALE
-                      </option>
-                    </select>
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.gender || "-"}
-                    </Typography>
-                  )}
-                  <Typography variant="h6">Program: </Typography>
-                  {edit ? (
-                    <select
-                      placeholder="Program"
-                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                      value={patientDetail.program}
-                      onChange={(e) =>
-                        setPatientDetail({
-                          ...patientDetail,
-                          program: e.target.value,
-                        })
-                      }
-                    >
-                      <option value="BTECH">BTech</option>
-                      <option value="MTECH">MTech</option>
-                      <option value="DUAL_DEGREE">Dual Degree</option>
-                      <option value="PHD">PHD</option>
-                    </select>
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.program || "-"}
-                    </Typography>
-                  )}
-                  <Typography variant="h6">
-                    Email{edit && <span className="text-red-800">*</span>}:{" "}
-                  </Typography>
-                  {edit ? (
-                    <Input disabled value={patientDetail.email} />
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.email || "-"}
-                    </Typography>
-                  )}
-                  <Typography variant="h6">
-                    Blood Group{edit && <span className="text-red-800">*</span>}
-                    :{" "}
-                  </Typography>
-                  {edit ? (
-                    <select
-                      id="bloodGroup"
-                      name="bloodGroup"
-                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                      value={patientDetail.bloodGroup}
-                      onChange={(e) =>
-                        setPatientDetail({
-                          ...patientDetail,
-                          bloodGroup: e.target.value,
-                        })
-                      }
-                    >
-                      {bloodGroups.map((group) => (
-                        <option key={group} value={group}>
-                          {group}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.bloodGroup || "-"}
-                    </Typography>
-                  )}
-                  <Typography variant="h6">Father's/Spouse's Name: </Typography>
-                  {edit ? (
-                    <input
-                      placeholder="Name"
-                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                      value={patientDetail.fatherOrSpouseName}
-                      onChange={(e) =>
-                        setPatientDetail({
-                          ...patientDetail,
-                          fatherOrSpouseName: e.target.value,
-                        })
-                      }
-                    />
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.fatherOrSpouseName || "-"}
-                    </Typography>
-                  )}
-                  <Typography variant="h6">Allergies: </Typography>
-                  {edit ? (
-                    <input
-                      placeholder="Allergies"
-                      className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                      value={patientDetail.allergy}
-                      onChange={(e) =>
-                        setPatientDetail({
-                          ...patientDetail,
-                          allergy: e.target.value,
-                        })
-                      }
-                    />
-                  ) : (
-                    <Typography color="blue-gray">
-                      {patientDetail.allergy || "-"}
-                    </Typography>
-                  )}
-                </div>
-              </div>
-            </CardBody>
-            <CardFooter className="flex justify-end">
-              {!edit ? (
-                <div className="flex w-full justify-between">
-                  <Button
-                    className="flex items-center gap-3"
-                    size="md"
-                    onClick={() => {
-                      setOpen(!open);
-                    }}
-                  >
-                    Delete Account
-                  </Button>
-                  <Button
-                    className="flex items-center gap-3"
-                    size="md"
-                    onClick={() => {
-                      setPage(!page);
-                      navigate("/profile/patient/edit");
-                    }}
-                  >
-                    Edit Profile
-                  </Button>
-                </div>
+              {edit ? (
+                <input
+                  placeholder="Full Name"
+                  className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                  value={patientDetail.name}
+                  onChange={(e) =>
+                    setPatientDetail({
+                      ...patientDetail,
+                      name: e.target.value,
+                    })
+                  }
+                />
               ) : (
-                <div className="flex w-full justify-between">
-                  <Button
-                    className="flex items-center gap-3"
-                    size="md"
-                    onClick={() => {
-                      setPage(!page);
-                      navigate("/profile/patient");
-                    }}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    className="flex items-center gap-3"
-                    size="md"
-                    onClick={handleSave}
-                  >
-                    Save
-                  </Button>
-                </div>
+                <Typography color="blue-gray">
+                  {patientDetail.name || "-"}
+                </Typography>
               )}
-            </CardFooter>
-            <DialogBox
-              title="Account"
-              open={open}
-              setOpen={setOpen}
-              handleDelete={handleDelete}
-            />
-          </Card>
-        </Layout>
-      )}
+              <Typography variant="h6">
+                Category{edit && <span className="text-red-800">*</span>}:{" "}
+              </Typography>
+              {edit ? (
+                <Input disabled value={patientDetail.category} />
+              ) : (
+                <Typography color="blue-gray">
+                  {patientDetail.category || "-"}
+                </Typography>
+              )}
+              <Typography variant="h6">Department: </Typography>
+              {edit ? (
+                <select
+                  placeholder="Department"
+                  className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                  value={patientDetail.department}
+                  onChange={(e) =>
+                    setPatientDetail({
+                      ...patientDetail,
+                      department: e.target.value,
+                    })
+                  }
+                >
+                  <option value="COMPUTER_SCIENCE">Computer Science</option>
+                  <option value="ELECTRICAL">Electrical</option>
+                  <option value="MECHANICAL">Mechanical</option>
+                  <option value="MATHEMATICS_COMPUTING">
+                    Mathematics & Computing
+                  </option>
+                  <option value="CHEMICAL">Chemical</option>
+                  <option value="CIVIL">Civil</option>
+                  <option value="METALLURGY">Metallurgy</option>
+                  <option value="ENGINEERING_PHYSICS">
+                    Engineering Physics
+                  </option>
+                  <option value="PHYSICS">Physics</option>
+                  <option value="CHEMISTRY">Chemistry</option>
+                  <option value="BIOLOGY">Biology</option>
+                  <option value="MATHEMATICS">Mathematics</option>
+                  <option value="HUMANITIES">Humanities</option>
+                </select>
+              ) : (
+                <Typography color="blue-gray">
+                  {patientDetail.department || "-"}
+                </Typography>
+              )}
+              <Typography variant="h6">
+                Age{edit && <span className="text-red-800">*</span>}:{" "}
+              </Typography>
+              {edit ? (
+                <input
+                  type="number"
+                  min={1}
+                  placeholder="Age"
+                  className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                  value={patientDetail.age}
+                  onChange={(e) =>
+                    setPatientDetail({
+                      ...patientDetail,
+                      age: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <Typography color="blue-gray">
+                  {patientDetail.age || "-"}
+                </Typography>
+              )}
+              <Typography variant="h6">
+                Gender{edit && <span className="text-red-800">*</span>}:{" "}
+              </Typography>
+              {edit ? (
+                <select
+                  name="gender"
+                  className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                  value={patientDetail.gender}
+                  onChange={(e) =>
+                    setPatientDetail({
+                      ...patientDetail,
+                      gender: e.target.value,
+                    })
+                  }
+                >
+                  <option key="Male" value="MALE">
+                    MALE
+                  </option>
+                  <option key="Female" value="FEMALE">
+                    FEMALE
+                  </option>
+                </select>
+              ) : (
+                <Typography color="blue-gray">
+                  {patientDetail.gender || "-"}
+                </Typography>
+              )}
+              <Typography variant="h6">Program: </Typography>
+              {edit ? (
+                <select
+                  placeholder="Program"
+                  className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                  value={patientDetail.program}
+                  onChange={(e) =>
+                    setPatientDetail({
+                      ...patientDetail,
+                      program: e.target.value,
+                    })
+                  }
+                >
+                  <option value="BTECH">BTech</option>
+                  <option value="MTECH">MTech</option>
+                  <option value="DUAL_DEGREE">Dual Degree</option>
+                  <option value="PHD">PHD</option>
+                </select>
+              ) : (
+                <Typography color="blue-gray">
+                  {patientDetail.program || "-"}
+                </Typography>
+              )}
+              <Typography variant="h6">
+                Email{edit && <span className="text-red-800">*</span>}:{" "}
+              </Typography>
+              {edit ? (
+                <Input disabled value={patientDetail.email} />
+              ) : (
+                <Typography color="blue-gray">
+                  {patientDetail.email || "-"}
+                </Typography>
+              )}
+              <Typography variant="h6">
+                Blood Group{edit && <span className="text-red-800">*</span>}
+                :{" "}
+              </Typography>
+              {edit ? (
+                <select
+                  id="bloodGroup"
+                  name="bloodGroup"
+                  className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                  value={patientDetail.bloodGroup}
+                  onChange={(e) =>
+                    setPatientDetail({
+                      ...patientDetail,
+                      bloodGroup: e.target.value,
+                    })
+                  }
+                >
+                  {bloodGroups.map((group) => (
+                    <option key={group} value={group}>
+                      {group}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <Typography color="blue-gray">
+                  {patientDetail.bloodGroup || "-"}
+                </Typography>
+              )}
+              <Typography variant="h6">Father's/Spouse's Name: </Typography>
+              {edit ? (
+                <input
+                  placeholder="Name"
+                  className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                  value={patientDetail.fatherOrSpouseName}
+                  onChange={(e) =>
+                    setPatientDetail({
+                      ...patientDetail,
+                      fatherOrSpouseName: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <Typography color="blue-gray">
+                  {patientDetail.fatherOrSpouseName || "-"}
+                </Typography>
+              )}
+              <Typography variant="h6">Allergies: </Typography>
+              {edit ? (
+                <input
+                  placeholder="Allergies"
+                  className="px-2 py-1 border border-blue-gray-200 rounded-md"
+                  value={patientDetail.allergy}
+                  onChange={(e) =>
+                    setPatientDetail({
+                      ...patientDetail,
+                      allergy: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <Typography color="blue-gray">
+                  {patientDetail.allergy || "-"}
+                </Typography>
+              )}
+            </div>
+          </div>
+        </CardBody>
+        <CardFooter className="flex justify-end">
+          {!edit ? (
+            <div className="flex w-full justify-between">
+              <Button
+                className="flex items-center gap-3"
+                size="md"
+                onClick={() => {
+                  setOpen(!open);
+                }}
+              >
+                Delete Account
+              </Button>
+              <Button
+                className="flex items-center gap-3"
+                size="md"
+                onClick={() => {
+                  setPage(!page);
+                  navigate("/profile/patient/edit");
+                }}
+              >
+                Edit Profile
+              </Button>
+            </div>
+          ) : (
+            <div className="flex w-full justify-between">
+              <Button
+                className="flex items-center gap-3"
+                size="md"
+                onClick={() => {
+                  setPage(!page);
+                  navigate("/profile/patient");
+                }}
+              >
+                Back
+              </Button>
+              <Button
+                className="flex items-center gap-3"
+                size="md"
+                onClick={handleSave}
+              >
+                Save
+              </Button>
+            </div>
+          )}
+        </CardFooter>
+        <DialogBox
+          title="Account"
+          open={open}
+          setOpen={setOpen}
+          handleDelete={handleDelete}
+        />
+      </Card>
+       
     </>
   );
 }

@@ -85,9 +85,7 @@ export default function PatientList() {
   };
   return (
     <>
-      {loading && <SyncLoadingScreen />}
-      {!loading && (
-        <Layout>
+     
           <SortableTable
             tableHead={TABLE_HEAD}
             title="Patient List"
@@ -99,8 +97,7 @@ export default function PatientList() {
             searchKey="name"
             handleUpdate={handlePatientUpdate}
           />
-        </Layout>
-      )}
+       
     </>
   );
 }

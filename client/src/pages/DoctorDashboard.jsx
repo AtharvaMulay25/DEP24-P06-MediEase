@@ -218,8 +218,6 @@ const DoctorDashboard = () => {
 
   return (
     <>
-      {loading && <SyncLoadingScreen />}
-      {!loading && <Layout>
         <div>
           <div className="grid-container -mt-7">
             <div className="mt-6 ml-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl grid-item">
@@ -368,7 +366,6 @@ const DoctorDashboard = () => {
             <Card></Card>
           </div>
         </div>
-      </Layout>}
     </>
   );
 };

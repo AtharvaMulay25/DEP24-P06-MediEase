@@ -30,19 +30,22 @@ const getCategoriesData = async () => {
 import MOCK_DATA from "../assets/MOCK_DATA_category.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
-export default function CategoryList() {
+export default function CategoryList({loading, setLoading}) {
   const navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  // const [loading, setLoading] = useState(true); 
+  console.log("loading : ", loading);
+  console.log("setLoading : ", setLoading);
   useEffect(() => {
     const fetchData = async () => {
       const data = await getCategoriesData();
-      // console.log("data out", data);
+      console.log("data out", data);
       setCategories(data);
       setLoading(false);
     };
+    // setLoading(true);
+    // setLoading(loading);
     fetchData();
   }, []);
 
@@ -80,9 +83,9 @@ export default function CategoryList() {
 
   return (
     <>
-      {loading && <SyncLoadingScreen />}
+      {/* {loading && <SyncLoadingScreen />}
       {!loading && (
-        <Layout>
+        <Layout> */}
           <SortableTable
             tableHead={TABLE_HEAD}
             title="Category List"
@@ -94,8 +97,8 @@ export default function CategoryList() {
             handleDelete={handleCategoryDelete}
             handleUpdate={handleCategoryUpdate}
           />
-        </Layout>
-      )}
+        {/* </Layout>
+      )} */}
     </>
   );
 }
