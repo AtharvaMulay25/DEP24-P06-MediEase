@@ -64,7 +64,7 @@ export default function UpdatePrescriptionForm() {
       // Fetch doctors list when the component mounts
       // fetchDoctors();
       setLoading(true);
-      await fetchAvailableStock();
+      await fetchUpdatedAvailableStock();
       await fetchDoctors();
       await fetchPatients();
      await fetchPrescriptionData();
@@ -160,12 +160,12 @@ export default function UpdatePrescriptionForm() {
     }
   };
 
-  const fetchAvailableStock = async () => {
+  const fetchUpdatedAvailableStock = async () => {
     try {
-      const response = await axios.get(apiRoutes.stock + "/available", {
+      const response = await axios.get(`${apiRoutes.stock}/available/${id}` , {
         withCredentials: true,
       });
-      // console.log(response.data.data);
+      console.log(response.data.data);
       setMedicines(response.data.data); // Assuming the response is an array of medicines
     } catch (error) {
       console.error(

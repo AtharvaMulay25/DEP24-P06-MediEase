@@ -8,6 +8,7 @@ const {
     getTotalStock, 
     getAvailableStock,
     getOutOfStock,
+    getUpdatedAvailableStock,
     updateStockList, 
 } = require('../controllers/stockController');
 
@@ -20,6 +21,7 @@ router.use(authMiddleware(roles), profileMiddleware(true));
 
 router.get('/', catchAsync(getTotalStock));
 router.get('/available', catchAsync(getAvailableStock));
+router.get('/available/:checkupId', catchAsync(getUpdatedAvailableStock));
 router.get('/out', catchAsync(getOutOfStock));
 // router.post('/create', createStockList);
 // router.put('/', updateStockList);

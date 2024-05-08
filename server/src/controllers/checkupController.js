@@ -7,8 +7,6 @@ const ExpressError = require("../utils/ExpressError");
 // @access  Private (Admin)
 const getCheckupDetails = async (req, res, next) => {
   const { id } = req.params;
-  console.log(id);
-  console.log("inside");
   const checkup = await prisma.checkup.findUnique({
     where: {
       id: id,
@@ -74,7 +72,7 @@ const getCheckupDetails = async (req, res, next) => {
       stock: medicine.Medicine?.Stock?.stock,
     })),
   };
-  console.log("restructuredCheckup : ", restructuredCheckup);
+  // console.log("restructuredCheckup : ", restructuredCheckup);
   return res.status(200).json({
     ok: true,
     data: restructuredCheckup,
@@ -452,7 +450,12 @@ const updateCheckup = async (req, res, next) => {
     throw new ExpressError("Logged in Staff does not exist", 404);
   }
 
-  let stockRecords = [];
+  let stockCheckupMedicinesRecords = [];
+  const pastCheckupMedicines = await prisma.checkupMedicine.findMany({
+    where: {
+      checkupId: id,
+    },
+  });
   //handle validations on each medicine item in checkupMedicines
   for (const [idx, medicine] of checkupMedicines.entries()) {
     if (medicine.quantity < 1) {
@@ -476,9 +479,13 @@ const updateCheckup = async (req, res, next) => {
         404
       );
     } else {
-      stockRecords.push(stockRecord);
+      stockCheckupMedicinesRecords.push(stockRecord);
     }
-    if (stockRecord.stock < medicine.quantity) {
+    const pastCheckupMedicine = pastCheckupMedicines.find(
+      (pastMedicine) => pastMedicine.medicineId === medicine.medicineId
+    );
+    //i.e if it was added newly on editing prescription
+    if (!pastCheckupMedicine && stockRecord.stock < medicine.quantity) {
       throw new ExpressError(
         `Stock not sufficient for medicine with ID ${
           medicine.medicineId
@@ -487,43 +494,86 @@ const updateCheckup = async (req, res, next) => {
       );
     }
   }
-
-  const updateTransaction = await prisma.$transaction([
-    // Iterate over each checkup medicine and prepare updates
-    ...checkupMedicines.map((medicine, idx) => {
-      // Prepare update for current medicine
-      const updateStock = prisma.stock.update({
-        where: {
-          id: stockRecords[idx].id,
-        },
-        data: {
-          outQuantity: {
-            increment: parseInt(medicine.quantity),
-          },
-          stock: {
-            decrement: parseInt(medicine.quantity),
-          },
-        },
-      });
-
-      // If current update fails, throw error
-      if (!updateStock) {
-        throw new ExpressError(
-          `Failed to update stock for medicine ${medicineRecord.brandName} with ID ${medicine.medicineId}`,
-          404
-        );
+  
+  
+  //handling stock update validations
+  let stockPastCheckupMedicinesRecords = [];
+  for(const [idx, checkupMedicine] of pastCheckupMedicines.entries()){
+    const newCheckupMedicine = checkupMedicines.find((medicine) => medicine.medicineId === checkupMedicine.medicineId);
+    const currStock = await prisma.stock.findFirst({
+      where: {
+        medicineId: checkupMedicine.medicineId,
+      },
+    });
+    if(currStock){
+      stockPastCheckupMedicinesRecords.push(currStock);
+    }
+    if(newCheckupMedicine){
+      if(newCheckupMedicine.quantity > checkupMedicine.quantity){
+        const diff = newCheckupMedicine.quantity - checkupMedicine.quantity;
+        if(currStock.stock < diff){
+          throw new ExpressError(
+            `Stock not sufficient for medicine with ID ${
+              checkupMedicine.medicineId
+            } in ITEM ${idx + 1}`,
+            400
+          );
+        }
       }
+    }
+  
+  }
 
-      return updateStock;
-    }),
-  ]);
+
+  const updateDataCheckupMedicines = checkupMedicines.map((medicine, idx) => {
+    const pastCheckupMedicine = pastCheckupMedicines.find(
+      (pastMedicine) => pastMedicine.medicineId === medicine.medicineId 
+    );
+    const diff = pastCheckupMedicine ? medicine.quantity - pastCheckupMedicine.quantity : medicine.quantity;
+    return prisma.stock.update({
+      where: {
+        id: stockCheckupMedicinesRecords[idx].id,
+      },
+      data: {
+        outQuantity: {
+          increment: diff,
+        },
+        stock: {
+          decrement: diff,
+        },
+      },
+    });
+  }
+  );
+
+
+  const updateDataPastCheckupMedicines = pastCheckupMedicines.filter((pastMedicine) => {
+    const newCheckupMedicine = checkupMedicines.find((medicine) => medicine.medicineId === pastMedicine.medicineId);
+    return !newCheckupMedicine;
+  }).map((medicine, idx) => {
+    const diff = medicine.quantity;
+    return prisma.stock.update({
+      where: {
+        id: stockPastCheckupMedicinesRecords[idx].id,
+      },
+      data: {
+        outQuantity: {
+          decrement: diff,
+        },
+        stock: {
+          increment: diff,
+        },
+      },
+    });
+  }
+  );
+
+  const updateData = [...updateDataCheckupMedicines, ...updateDataPastCheckupMedicines];
+  const updateTransaction = await prisma.$transaction(updateData);
   if (!updateTransaction) {
     throw new ExpressError(`Failed to update stock for medicines`, 404);
   }
-
-  // Commit the transaction
-  await updateTransaction;
-
+  
   const updateCheckupMedicine = await prisma.checkupMedicine.deleteMany({
     where: {
       checkupId: id,

@@ -357,7 +357,7 @@ const updatePurchaseList = async (req, res, next) => {
   // }
 
   //handling validations on each purchase item
-  let stockRecords = [];
+  let stockPurchaseItemsRecords = [];
   for (const [idx, purchase] of purchaseItems.entries()) {
     const medicineRecord = await prisma.medicine.findUnique({
       where: {
@@ -390,15 +390,17 @@ const updatePurchaseList = async (req, res, next) => {
         medicineId: purchase.medicineId,
       },
     });
-    if (!stockRecord) {
-      throw new ExpressError(
-        `Stock record does not exist for medicine with ID ${
-          purchase.medicineId
-        } in ITEM ${idx + 1}`,
-        404
-      );
-    } else {
-      stockRecords.push(stockRecord);
+    //*** no need of this condition */
+    // if (!stockRecord) {
+    //   throw new ExpressError(
+    //     `Stock record does not exist for medicine with ID ${
+    //       purchase.medicineId
+    //     } in ITEM ${idx + 1}`,
+    //     404
+    //   );
+    // } 
+    if(stockRecord){ 
+      stockPurchaseItemsRecords.push(stockRecord);
     }
 
 
@@ -423,85 +425,47 @@ const updatePurchaseList = async (req, res, next) => {
     }
   }
 
-  //updating the stock
-  // //updating the stock
-  // for (const [idx, purchase] of purchaseItems.entries()) {
-  //   const stockRecord = await prisma.stock.findFirst({
-  //     where: {
-  //       medicineId: purchase.medicineId,
-  //     },
-  //   });
-  //   //using if else upserting the stock
-  //   let updateStock, newStock;
-  //   if (stockRecord) {
-  //     updateStock = await prisma.stock.update({
-  //       where: {
-  //         id: stockRecord.id,
-  //       },
-  //       data: {
-  //         inQuantity: {
-  //           increment: purchase.quantity,
-  //         },
-  //         stock: {
-  //           increment: purchase.quantity,
-  //         },
-  //       },
-  //     });
-  //   }
-  //   else {
-  //     newStock = await prisma.stock.create({
-  //       data: {
-  //         medicineId: purchase.medicineId,
-  //         stock: purchase.quantity,
-  //         inQuantity: purchase.quantity,
-  //         outQuantity: 0,
-  //       },
-  //     });
-  //     //if error in upserting stock
-  //   }
-  //   if ((stockRecord && !updateStock) || (!stockRecord && !newStock) ) {
-  //     //rollback all the previous stock updates
-  //     for (let i = 0; i < idx; i++) {
-  //       const previousPurchase = purchaseItems[i];
-  //       const previousStockRecord = await prisma.stock.findFirst({
-  //         where: {
-  //           medicineId: previousPurchase.medicineId,
-  //         },
-  //       });
-
-  //       const previousStock = await prisma.stock.update({
-  //         where: {
-  //           id: previousStockRecord.id,
-  //         },
-  //         data: {
-  //           inQuantity: {
-  //             decrement: previousPurchase.quantity,
-  //           },
-  //           stock: {
-  //             decrement: previousPurchase.quantity,
-  //           },
-  //         },
-  //       });
-
-  //       if (!previousStock) {
-  //         throw new ExpressError(
-  //           `Failed to rollback stock update for medicine with ID ${
-  //             previousPurchase.medicineId
-  //           } in ITEM ${i + 1}`,
-  //           500
-  //         );
-  //       }
-  //     }
-
-  //     throw new ExpressError(`Failed to update stock for medicines`, 404);
-  //   }
-  // }
-  const upsertData = purchaseItems.map((purchase, idx) => {
+  //handling stock update validations
+  let stockPastPurchaseItemsRecords = [];
+  const pastPurchaseItems = await prisma.purchase.findMany({  
+    where: {
+      purchaseListId: id,
+    },
+  });
+  for (const [idx, purchase] of pastPurchaseItems.entries()) 
+  {
+    const newPurchase = purchaseItems.find((item) => item.medicineId === purchase.medicineId);
+    const currStock = await prisma.stock.findFirst({
+      where: {
+        medicineId: purchase.medicineId,
+      },
+    });
+    if(currStock)
+      {
+        stockPastPurchaseItemsRecords.push(currStock);
+      }
+    if(newPurchase){
+      if(newPurchase.quantity < purchase.quantity){
+        const diff = purchase.quantity - newPurchase.quantity;
+        if(diff > currStock.stock){
+          throw new ExpressError(`Cannot Update Stock for medicine item ${idx + 1} on updating Purchase`, 401)
+        }
+      }
+    }
+    else{
+      if(purchase.quantity > currStock.stock){
+        throw new ExpressError(`Cannot Update Stock for medicine item ${idx + 1} on updating Purchase`, 401)
+      }    
+    }
+  }
+  const upsertDataPurchase = purchaseItems.map((purchase, idx) => {
+    const pastPurchase = pastPurchaseItems.find((item) => item.medicineId === purchase.medicineId);
+    const diff = pastPurchase ? purchase.quantity - pastPurchase.quantity : purchase.quantity;
     return prisma.stock.upsert({
-      where: { id: stockRecords[idx]?.id || "" }, //**** "" in case of creating when stock record doesn't exists */
+      where: { id: stockPurchaseItemsRecords[idx]?.id || "" }, //**** "" in case of creating when stock record doesn't exists */
       update: {
-        inQuantity: { increment: purchase.quantity },
-        stock: { increment: purchase.quantity },
+        inQuantity: { increment: diff },
+        stock: { increment: diff },
       },
       create: {
         medicineId: purchase.medicineId,
@@ -511,8 +475,30 @@ const updatePurchaseList = async (req, res, next) => {
       },
     });
   });
-  const updateStock = await prisma.$transaction(upsertData);
 
+  //entry exists in past purchase but not in current purchase
+  const upsertDataPastPurchase = pastPurchaseItems.filter((purchase, idx)=>{
+    const newPurchase = purchaseItems.find((item) => item.medicineId === purchase.medicineId);
+    return !newPurchase;
+  }).map((purchase, idx) => {
+    const diff =  purchase.quantity;  
+    return prisma.stock.upsert({
+      where: { id: stockPastPurchaseItemsRecords[idx]?.id || "" }, //**** "" in case of creating when stock record doesn't exists */
+      update: {
+        inQuantity: { decrement: diff },
+        stock: { decrement: diff },
+      },
+      create: {
+        medicineId: purchase.medicineId,
+        stock: purchase.quantity,
+        inQuantity: purchase.quantity,
+        outQuantity: 0,
+      },
+    });
+  });
+
+  const upsertData = [...upsertDataPurchase, ...upsertDataPastPurchase];
+  const updateStock = await prisma.$transaction(upsertData);
   if (!updateStock) {
     throw new ExpressError("Stock Update failed", 500);
   }
