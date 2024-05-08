@@ -153,7 +153,9 @@ const checkupSchema = Joi.object({
   doctorId: Joi.string().allow(null).allow('').optional(),
   symptoms: Joi.string().allow(null).allow('').optional(),
   diagnosis: Joi.string().required(),
-  checkupMedicines: Joi.array().items(checkupMedicinesSchema).required()
+  checkupMedicines: Joi.array().items(checkupMedicinesSchema).required(),
+  referredDoctor: Joi.string().allow(null).allow('').optional(),
+  referredHospital: Joi.string().allow(null).allow('').optional()
 });
 
 const sendOtpSchema = Joi.object({

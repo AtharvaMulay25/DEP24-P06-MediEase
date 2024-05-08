@@ -210,6 +210,8 @@ const createCheckup = async (req, res, next) => {
     pulseRate,
     spO2,
     checkupMedicines,
+    referredDoctor,
+    referredHospital
   } = req.body;
   console.log("req.body : ", req.body);
   const patient = await prisma.patient.findUnique({
@@ -384,6 +386,8 @@ const createCheckup = async (req, res, next) => {
       bloodPressure,
       pulseRate: parseInt(pulseRate),
       spO2: parseFloat(spO2),
+      referredDoctor,
+      referredHospital,
       CheckupMedicine: {
         create: checkupMedicines,
       },
@@ -417,6 +421,8 @@ const updateCheckup = async (req, res, next) => {
     pulseRate,
     spO2,
     checkupMedicines,
+    referredDoctor,
+    referredHospital
   } = req.body;
   console.log("req.body : ", req.body);
   const patient = await prisma.patient.findUnique({
@@ -595,6 +601,8 @@ const updateCheckup = async (req, res, next) => {
       bloodPressure,
       pulseRate: parseInt(pulseRate),
       spO2: parseFloat(spO2),
+      referredDoctor,
+      referredHospital,
       CheckupMedicine: {
         create: checkupMedicines,
       },
