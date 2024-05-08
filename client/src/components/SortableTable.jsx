@@ -75,7 +75,7 @@ export function SortableTable({
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const hasDataColumn = tableHead && (tableHead.date || tableHead.purchaseDate) ? true : false;
+  const hasDataColumn = tableHead && tableHead.date ? true : false;
 
   useEffect(() => {
     filterItems("");
@@ -222,7 +222,7 @@ export function SortableTable({
 
   const filterItemsByDate = (startDate, endDate) => {
     const filteredArray = data.filter((item) => {
-      const itemDate = new Date(item.date || item.purchaseDate);
+      const itemDate = new Date(item.date);
       const start = startDate ? new Date(startDate) : null;
       const end = endDate ? new Date(endDate) : null;
 
@@ -356,8 +356,8 @@ export function SortableTable({
             </div>
           )}
         </div>
-        <div className="flex flex-col items-center justify-start gap-4 lg:flex-row">
-          <div className="w-full lg:w-72">
+        <div className="flex flex-col items-center justify-start gap-4 md:flex-row">
+          <div className="w-full md:w-72">
             <Input
               label="Search"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
@@ -366,7 +366,7 @@ export function SortableTable({
             />
           </div>
           {title !== "Pending Request List" && (
-            <div className="flex justify-evenly lg:justify-normal w-full lg:w-72">
+            <div className="flex justify-evenly md:justify-normal w-full md:w-72">
               <Tooltip content="Copy to Clipboard">
                 <IconButton variant="text" onClick={copyToClipboard}>
                   <DocumentIcon className="h-4 w-4" />
@@ -396,7 +396,7 @@ export function SortableTable({
             </div>
           )}
           {hasDataColumn && (
-            <div className="flex flex-row gap-6 lg:gap-1 lg:ml-auto">
+            <div className="flex flex-row gap-1">
               <Input
                 id="startDate"
                 size="md"

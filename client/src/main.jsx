@@ -8,12 +8,12 @@ import Toaster from './components/UI/Toaster.jsx';
 import { AuthContextProvider } from './contexts/AuthContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <AuthContextProvider>
       <ThemeProvider>
       <Toaster richColors closeButton position="top-center" />
         <App />
       </ThemeProvider>
     </AuthContextProvider>
-  // </React.StrictMode>,
+  </React.StrictMode>,
 )
