@@ -200,7 +200,7 @@ export function SortableTable({
   const handleOverallSearch = (listByDate, listByKey) => {
     console.log(listByDate);
     console.log(listByKey);
-    const overallList = listByDate.filter((value) => listByKey.includes(value));
+    const overallList = listByDate;
     console.log(overallList);
     setSearchList(overallList);
   };
