@@ -75,6 +75,7 @@ model Staff {
   mobileNumber   String?
   role           Role
   department     String?
+  speciality     String?
   gender         Gender
   status         Status     @default(ACTIVE)
   DoctorCheckups Checkup[]  @relation("DoctorCheckups")

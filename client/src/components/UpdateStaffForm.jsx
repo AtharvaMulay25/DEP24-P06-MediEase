@@ -26,9 +26,10 @@ export function UpdateStaffForm() {
 
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
-        staffName: "",
+        name: "",
         role: "",
         department: "",
+        speciality: "",
         gender: "",
         email: "",
         mobileNumber: "",
@@ -47,12 +48,13 @@ export function UpdateStaffForm() {
                     console.log(data);
 
                     setFormData({
-                        staffName: data.name,
+                        name: data.name,
                         role: data.role,
                         department: data.department,
                         gender: data.gender,
                         email: data.email,
                         mobileNumber: data.mobileNumber,
+                        speciality: data.speciality
                     });
                     
                     console.log("Staff details fetched successfully");
@@ -83,7 +85,7 @@ export function UpdateStaffForm() {
         // await fn();
 
         // const data = {
-        //     name: formData.staffName,
+        //     name: formData.name,
         //     role: formData.role.toUpperCase(),
         //     email: formData.email,
         //     gender: formData.gender.toUpperCase(),
@@ -159,17 +161,17 @@ export function UpdateStaffForm() {
                                 <div className="grid  sm:grid-cols-2 gap-y-8 gap-x-4 w-full">
                                     <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                                         <div className="flex mr-4 md:w-72 w-full justify-end">
-                                            <label htmlFor="staffName">
+                                            <label htmlFor="name">
                                                 Staff Name <span className="text-red-800">*</span>:
                                             </label>
                                         </div>
                                         <Input
-                                            id="staffName"
+                                            id="name"
                                             size="md"
                                             label="Staff Name"
                                             className="w-full"
-                                            name="staffName"
-                                            value={formData.staffName}
+                                            name="name"
+                                            value={formData.name}
                                             onChange={(e) => handleChange(e.target.name, e.target.value)}
                                         />
                                     </div>
@@ -189,7 +191,7 @@ export function UpdateStaffForm() {
                                             disabled
                                         />
                                     </div>
-                                    {formData.role === "Doctor" && (
+                                    {formData.role === "DOCTOR" && (
                                         <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                                             <div className="flex mr-2 md:w-72 w-full justify-end">
                                                 <label htmlFor="department">Department :</label>
@@ -208,6 +210,23 @@ export function UpdateStaffForm() {
                                                     </Option>
                                                 ))}
                                             </MaterialSelect>
+
+                                            <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+                                                <div className="flex mr-2 w-full md:w-72 justify-end">
+                                                    <label htmlFor="speciality">
+                                                        Speciality :
+                                                    </label>
+                                                </div>
+                                                <Input
+                                                    id="speciality"
+                                                    size="md"
+                                                    label="Speciality"
+                                                    className="w-full"
+                                                    name="speciality"
+                                                    value={formData.speciality}
+                                                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                                                />
+                                            </div>
                                         </div>
                                     )}
                                     <div className="flex-col md:flex md:flex-row items-center justify-around p-1">

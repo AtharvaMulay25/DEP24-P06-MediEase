@@ -25,6 +25,7 @@ export default function AddStaffForm() {
     staffName: "",
     role: "",
     department: "",
+    speciality: "",
     gender: "",
     email: "",
     mobileNumber: "",
@@ -48,6 +49,7 @@ export default function AddStaffForm() {
       role: formData.role.toUpperCase(),
       email: formData.email,
       gender: formData.gender.toUpperCase(),
+      speciality: formData.speciality,
     };
     if (formData.department)
       data.department = formData.department.toUpperCase();
@@ -137,7 +139,7 @@ export default function AddStaffForm() {
               </div>
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                 <div className="flex mr-2 md:w-72 w-full justify-end">
-                  <label htmlFor="mobileNo">
+                  <label htmlFor="role">
                     Role <span className="text-red-800">*</span>:
                   </label>
                 </div>
@@ -159,7 +161,7 @@ export default function AddStaffForm() {
               {formData.role === "Doctor" && (
                 <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                   <div className="flex mr-2 md:w-72 w-full justify-end">
-                    <label htmlFor="mobileNo">Department :</label>
+                    <label htmlFor="department">Department :</label>
                   </div>
                   <MaterialSelect
                     id="department"
@@ -175,6 +177,23 @@ export default function AddStaffForm() {
                       </Option>
                     ))}
                   </MaterialSelect>
+
+                  <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+                    <div className="flex mr-2 w-full md:w-72 justify-end">
+                      <label htmlFor="speciality">
+                        Speciality <span className="text-red-800">*</span>:
+                      </label>
+                    </div>
+                    <Input
+                      id="speciality"
+                      size="md"
+                      label="Speciality"
+                      className="w-full"
+                      name="speciality"
+                      value={formData.speciality}
+                      onChange={(e) => handleChange(e.target.name, e.target.value)}
+                    />
+                  </div>
                 </div>
               )}
               <div className="flex-col md:flex md:flex-row items-center justify-around p-1">

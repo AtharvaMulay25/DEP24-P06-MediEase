@@ -35,6 +35,7 @@ const staffSchema = Joi.object({
   department: Joi.string()
     .valid("AYURVEDIC", "GYNECOLOGY", "HOMEOPATHY", "OTHERS")
     .allow(null).allow('').optional(),
+  speciality: Joi.string().allow(null).allow('').optional(),  
   gender: Joi.string().valid("MALE", "FEMALE").required(),
   // shiftSchedule: Joi.string().required(),
   //   DoctorCheckups: Joi.array().items(Joi.object()),

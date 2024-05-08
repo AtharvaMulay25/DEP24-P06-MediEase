@@ -13,6 +13,7 @@ const TABLE_HEAD = {
   name: "Name",
   role: "Role",
   department: "Department",
+  speciality: "Speciality",
   gender: "Gender",
   email: "Email",
   mobileNumber: "Mobile Number",
