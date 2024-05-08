@@ -48,14 +48,15 @@ export default function CompleteProfileStaff() {
       role: userRole,
       email: userEmail,
       gender: formData.gender.toUpperCase(),
-      speciality: formData.speciality
     };
-    if (formData.department) data.department = formData.department.toUpperCase();
+    if (formData.department)
+      data.department = formData.department.toUpperCase();
     if (formData.mobileNumber) data.mobileNumber = formData.mobileNumber;
+    if (formData.speciality) data.speciality = formData.speciality;
     console.log(data);
     try {
       const response = await axios.post(apiRoutes.staff, data, {
-        withCredentials: true
+        withCredentials: true,
       });
       console.log(response);
       if (response.data.ok) {
@@ -65,10 +66,14 @@ export default function CompleteProfileStaff() {
         Cookies.set("user-profile-complete", true, { expires: 2 / 24 });
         dispatch({
           type: "COMPLETE_PROFILE",
-        })
+        });
 
         setTimeout(() => {
-          navigate(`/${userRole === "PARAMEDICAL" ? "pharmadashboard" : "doctordashboard"}`);
+          navigate(
+            `/${
+              userRole === "PARAMEDICAL" ? "pharmadashboard" : "doctordashboard"
+            }`
+          );
         }, 1000);
       }
     } catch (error) {
@@ -76,13 +81,14 @@ export default function CompleteProfileStaff() {
       console.error(
         `ERROR (create-staff-record): ${error?.response?.data?.message}`
       );
-      toast.error(error?.response?.data?.message || "Failed to update Staff Profile");
+      toast.error(
+        error?.response?.data?.message || "Failed to update Staff Profile"
+      );
     }
   };
 
   return (
     <>
-
       <div className="bg-gray-50 min-h-screen flex justify-center items-center">
         <Card
           style={{
@@ -146,41 +152,7 @@ export default function CompleteProfileStaff() {
                     ))}
                   </MaterialSelect>
                 </div>
-                {userRole === "DOCTOR" && <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-                  <div className="flex mr-2 md:w-72 w-full justify-end">
-                    <label htmlFor="mobileNo">Department :</label>
-                  </div>
-                  <MaterialSelect
-                    id="department"
-                    size="md"
-                    name="department"
-                    label="Department"
-                    value={formData.department}
-                    onChange={(value) => handleChange("department", value)}
-                  >
-                    {departments.map((group) => (
-                      <Option key={group} value={group}>
-                        {group}
-                      </Option>
-                    ))}
-                  </MaterialSelect>
-                  <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
-                  <div className="flex mr-2 w-full md:w-72 justify-end">
-                    <label htmlFor="speciality">
-                      Speciality <span className="text-red-800">*</span>:
-                    </label>
-                  </div>
-                  <Input
-                    id="speciality"
-                    size="md"
-                    label="Speciality"
-                    className="w-full"
-                    name="speciality"
-                    value={formData.speciality}
-                    onChange={(e) => handleChange(e.target.name, e.target.value)}
-                  />
-                </div>
-                </div>}
+
                 <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                   <div className="flex mr-2 w-full md:w-72 justify-end">
                     <label htmlFor="day">
@@ -214,6 +186,45 @@ export default function CompleteProfileStaff() {
                     <Option value="Female">Female</Option>
                   </MaterialSelect>
                 </div>
+                {userRole === "DOCTOR" && (
+                  <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+                    <div className="flex mr-2 md:w-72 w-full justify-end">
+                      <label htmlFor="mobileNo">Department :</label>
+                    </div>
+                    <MaterialSelect
+                      id="department"
+                      size="md"
+                      name="department"
+                      label="Department"
+                      value={formData.department}
+                      onChange={(value) => handleChange("department", value)}
+                    >
+                      {departments.map((group) => (
+                        <Option key={group} value={group}>
+                          {group}
+                        </Option>
+                      ))}
+                    </MaterialSelect>
+                  </div>
+                )}
+                {userRole === "DOCTOR" && (
+                  <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
+                    <div className="flex mr-2 w-full md:w-72 justify-end">
+                      <label htmlFor="speciality">Speciality :</label>
+                    </div>
+                    <Input
+                      id="speciality"
+                      size="md"
+                      label="Speciality"
+                      className="w-full"
+                      name="speciality"
+                      value={formData.speciality}
+                      onChange={(e) =>
+                        handleChange(e.target.name, e.target.value)
+                      }
+                    />
+                  </div>
+                )}
                 <div className="flex-col md:flex md:flex-row items-center justify-around p-1">
                   <div className="flex mr-2 w-full md:w-72 justify-end">
                     <label htmlFor="day">Mobile Number:</label>
@@ -225,7 +236,9 @@ export default function CompleteProfileStaff() {
                     className="w-full"
                     name="mobileNumber"
                     value={formData.mobileNumber}
-                    onChange={(e) => handleChange(e.target.name, e.target.value)}
+                    onChange={(e) =>
+                      handleChange(e.target.name, e.target.value)
+                    }
                   />
                 </div>
               </div>

@@ -201,6 +201,7 @@ export default function AdminProfile({ edit = false }) {
                 <div className="flex w-full justify-between">
                   <Button
                     className="flex items-center gap-3"
+                    color="red"
                     size="md"
                     onClick={() => {setOpen(!open)}}
                   >
