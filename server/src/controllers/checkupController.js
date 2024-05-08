@@ -60,6 +60,8 @@ const getCheckupDetails = async (req, res, next) => {
     date: checkup.date.toISOString().split("T")[0],
     diagnosis: checkup?.diagnosis,
     symptoms: checkup?.symptoms,
+    referredDoctor: checkup?.referredDoctor,
+    referredHospital: checkup?.referredHospital,
     temperature: checkup?.temperature,
     bloodPressure: checkup?.bloodPressure,
     pulseRate: checkup?.pulseRate,
@@ -451,8 +453,8 @@ const updateCheckup = async (req, res, next) => {
       email: staffEmail,
     },
   });
-
-  if (!staff && req.user.role !== "ADMIN") {    //*******admin may be allowed to add prescription */
+  // console.log("role: ", req.user);
+  if (!staff) {    //*******admin may be allowed to add prescription */
     throw new ExpressError("Logged in Staff does not exist", 404);
   }
 

@@ -38,6 +38,8 @@ export default function AddPrescriptionForm() {
     spO2: "",
     symptoms: "",
     diagnosis: "",
+    referredHospital: "",
+    referredDoctor: ""
   });
 
   const [doctors, setDoctors] = useState([]);
@@ -196,6 +198,13 @@ export default function AddPrescriptionForm() {
     if (formData.symptoms) {
       checkupListEntry.symptoms = formData.symptoms;
     }
+    if(formData.referredDoctor){
+      checkupListEntry.referredDoctor = formData.referredDoctor;
+    }
+    if(formData.referredHospital){
+      checkupListEntry.referredHospital = formData.referredHospital;
+    }
+
 
     const checkupMedicines = dataArray.map((data) => {
       const medicines = {
@@ -457,6 +466,40 @@ export default function AddPrescriptionForm() {
                       type="text"
                       className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
                       value={formData.symptoms}
+                      onChange={(e) =>
+                        handleChange(e.target.name, e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="flex-col md:flex md:flex-row items-start justify-around p-1">
+                    <div className="flex mr-2 w-full md:w-72 justify-end">
+                      <label htmlFor="date">Referred Doctor:</label>
+                    </div>
+                    <Textarea
+                      id="referredDoctor"
+                      size="md"
+                      label="Referred Doctor"
+                      name="referredDoctor"
+                      type="text"
+                      className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
+                      value={formData.referredDoctor}
+                      onChange={(e) =>
+                        handleChange(e.target.name, e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="flex-col md:flex md:flex-row items-start justify-around p-1">
+                    <div className="flex mr-2 w-full md:w-72 justify-end">
+                      <label htmlFor="date">Referred Hospital:</label>
+                    </div>
+                    <Textarea
+                      id="referredHospital"
+                      size="md" 
+                      label="Referred Hospital"
+                      name="referredHospital"
+                      type="text"
+                      className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
+                      value={formData.referredHospital}
                       onChange={(e) =>
                         handleChange(e.target.name, e.target.value)
                       }

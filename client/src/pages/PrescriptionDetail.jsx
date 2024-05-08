@@ -36,6 +36,8 @@ const PrescriptionDetail = () => {
     pulseRate: "-",
     diagnosis: "-",
     symptoms: "-",
+    referredDoctor: "-",
+    referredHospital: "-",
     checkupMedicines: [],
   });
   const handlePrint = () => {
@@ -82,6 +84,8 @@ const PrescriptionDetail = () => {
         pulseRate: data.pulseRate || "-",
         diagnosis: data.diagnosis || "-",
         symptoms: data.symptoms || "-",
+        referredDoctor: data.referredDoctor || "-",
+        referredHospital: data.referredHospital || "-",
         checkupMedicines: data.checkupMedicines,
       }
       setPrescriptionData(data_);
@@ -227,6 +231,22 @@ const PrescriptionDetail = () => {
                       className="font-medium md:col-span-3"
                     >
                       {prescriptionData.symptoms}
+                    </Typography>
+                    <Typography variant="small">Referred Doctor</Typography>
+                    <Typography
+                      variant="paragraph"
+                      color="blue-gray"
+                      className="font-medium md:col-span-3"
+                    >
+                      {prescriptionData.referredDoctor}
+                    </Typography>
+                    <Typography variant="small">Referred Hospital</Typography>
+                    <Typography
+                      variant="paragraph"
+                      color="blue-gray"
+                      className="font-medium md:col-span-3"
+                    >
+                      {prescriptionData.referredHospital}
                     </Typography>
                 </div>
                 <div className="w-full pt-4">
