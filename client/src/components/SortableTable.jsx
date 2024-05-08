@@ -68,7 +68,14 @@ export function SortableTable({
   const [paginatedData, setPaginatedData] = useState([]);
 
   const [search, setSearch] = useState("");
+  const [searchListByDate, setSearchListByDate] = useState(data);
+  const [searchListByKey, setSearchListByKey] = useState(data);
   const [searchList, setSearchList] = useState(data);
+
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const hasDataColumn = tableHead && (tableHead.date || tableHead.purchaseDate) ? true : false;
 
   useEffect(() => {
     filterItems("");
@@ -189,6 +196,15 @@ export function SortableTable({
       /* ***** NEED TO SHOW AN ERROR MESSAGE HERE ****** */
     }
   };
+
+  const handleOverallSearch = (listByDate, listByKey) => {
+    console.log(listByDate);
+    console.log(listByKey);
+    const overallList = listByDate.filter((value) => listByKey.includes(value));
+    console.log(overallList);
+    setSearchList(overallList);
+  };
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
     filterItems(e.target.value);
@@ -198,8 +214,43 @@ export function SortableTable({
     const filteredArray = data.filter((item) =>
       item[searchKey].toLowerCase().includes(str.toLowerCase())
     );
-    setSearchList(filteredArray);
-    sorting(defaultSortOrder);
+    setSearchListByKey(filteredArray);
+    handleOverallSearch(searchListByDate, filteredArray);
+    // const dateFilteredArray = filterItemsByDate(filteredArray)
+    sorting("action");
+  };
+
+  const filterItemsByDate = (startDate, endDate) => {
+    const filteredArray = data.filter((item) => {
+      const itemDate = new Date(item.date || item.purchaseDate);
+      const start = startDate ? new Date(startDate) : null;
+      const end = endDate ? new Date(endDate) : null;
+
+      if (start && end) {
+        return itemDate >= start && itemDate <= end;
+      } else if (start) {
+        return itemDate >= start;
+      } else if (end) {
+        return itemDate <= end;
+      } else {
+        return true; // if both startDate and endDate are empty, return all items
+      }
+    });
+    setSearchListByDate(filteredArray);
+    handleOverallSearch(filteredArray, searchListByKey);
+  };
+
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+    filterItemsByDate(e.target.value, endDate);
+    console.log("Start date: ", e.target.value);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+    filterItemsByDate(startDate, e.target.value);
+    handleOverallSearch();
+    console.log("End date: ", e.target.value);
   };
 
   const paginate = (act) => {
@@ -305,8 +356,8 @@ export function SortableTable({
             </div>
           )}
         </div>
-        <div className="flex flex-col items-center justify-start gap-4 md:flex-row">
-          <div className="w-full md:w-72">
+        <div className="flex flex-col items-center justify-start gap-4 lg:flex-row">
+          <div className="w-full lg:w-72">
             <Input
               label="Search"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
@@ -315,7 +366,7 @@ export function SortableTable({
             />
           </div>
           {title !== "Pending Request List" && (
-            <div className="flex justify-evenly md:justify-normal w-full md:w-72">
+            <div className="flex justify-evenly lg:justify-normal w-full lg:w-72">
               <Tooltip content="Copy to Clipboard">
                 <IconButton variant="text" onClick={copyToClipboard}>
                   <DocumentIcon className="h-4 w-4" />
@@ -342,6 +393,30 @@ export function SortableTable({
                   <ArrowDownTrayIcon className="h-4 w-4" />
                 </IconButton>
               </Tooltip>
+            </div>
+          )}
+          {hasDataColumn && (
+            <div className="flex flex-row gap-6 lg:gap-1 lg:ml-auto">
+              <Input
+                id="startDate"
+                size="md"
+                label="Start Date"
+                name="startDate"
+                type="date"
+                className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
+                value={startDate}
+                onChange={handleStartDateChange}
+              />
+              <Input
+                id="endDate"
+                size="md"
+                label="End Date"
+                name="endDate"
+                type="date"
+                className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
+                value={endDate}
+                onChange={handleEndDateChange}
+              />
             </div>
           )}
         </div>
