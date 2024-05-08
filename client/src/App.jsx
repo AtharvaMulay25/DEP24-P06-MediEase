@@ -105,72 +105,72 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/medicine/expired" element={
-            <ProtectedRoute routeName="MEDICINE">
+            <ProtectedRoute routeName="EXPIRED_MEDICINE">
               <ExpiredMedicineList />
             </ProtectedRoute>
           } />
           <Route path="/medicine/add" element={
-            <ProtectedRoute routeName="MEDICINE">
+            <ProtectedRoute routeName="ADD_MEDICINE">
               <AddMedicine />
             </ProtectedRoute>
           } />
           <Route path="/medicine" element={
-            <ProtectedRoute routeName="MEDICINE">
+            <ProtectedRoute routeName="MEDICINE_LIST">
               <MedicineList />
             </ProtectedRoute>
           } />
           <Route path="/medicine/category/add" element={
-            <ProtectedRoute routeName="MEDICINE">
+            <ProtectedRoute routeName="ADD_CATEGORY">
               <AddCategory />
             </ProtectedRoute>
           } />
           <Route path="/medicine/category" element={
-            <ProtectedRoute routeName="MEDICINE">
+            <ProtectedRoute routeName="CATEGORY_LIST">
               <CategoryList />
             </ProtectedRoute>
           } />
           <Route path="/purchase/add" element={
-            <ProtectedRoute routeName="PURCHASE">
+            <ProtectedRoute routeName="ADD_PURCHASE">
               <AddPurchase />
             </ProtectedRoute>
           } />
           <Route path="/purchase" element={
-            <ProtectedRoute routeName="PURCHASE">
+            <ProtectedRoute routeName="PURCHASE_LIST">
               <PurchaseList />
             </ProtectedRoute>
           } />
           <Route path="/purchase/:id" element={
-            <ProtectedRoute routeName="PURCHASE">
+            <ProtectedRoute routeName="PURCHASE_LIST">
               <PurchaseDetail />
             </ProtectedRoute>
           } />
           <Route path="/supplier/add" element={
-            <ProtectedRoute routeName="SUPPLIER">
+            <ProtectedRoute routeName="ADD_SUPPLIER">
               <AddSupplier />
             </ProtectedRoute>
           } />
           <Route path="/supplier" element={
-            <ProtectedRoute routeName="SUPPLIER">
+            <ProtectedRoute routeName="SUPPLIER_LIST">
               <SupplierList />
             </ProtectedRoute>
           } />
           <Route path="/stock" element={
-            <ProtectedRoute routeName="STOCK">
+            <ProtectedRoute routeName="STOCK_LIST">
               <StockList />
             </ProtectedRoute>
           } />
           <Route path="/stock/out" element={
-            <ProtectedRoute routeName="STOCK">
+            <ProtectedRoute routeName="OUT_OF_STOCK">
               <OutOfStock />
             </ProtectedRoute>
           } />
           <Route path="/patient/add" element={
-            <ProtectedRoute routeName="PATIENT">
+            <ProtectedRoute routeName="ADD_PATIENT">
               <AddPatient />
             </ProtectedRoute>
           } />
           <Route path="/patient" element={
-            <ProtectedRoute routeName="PATIENT">
+            <ProtectedRoute routeName="PATIENT_LIST">
               <PatientList />
             </ProtectedRoute>
           } />
@@ -188,12 +188,12 @@ function App() {
             <CompleteProfilePatient />
           } />
           <Route path="/prescription" element={
-            <ProtectedRoute routeName="PRESCRIPTION">
+            <ProtectedRoute routeName="PRESCRIPTION_LIST">
               <PrescriptionList />
             </ProtectedRoute>
           } />
           <Route path="/prescription/add" element={
-            <ProtectedRoute routeName="PRESCRIPTION">
+            <ProtectedRoute routeName="ADD_PRESCRIPTION">
               <AddPrescription />
             </ProtectedRoute>
           } />
@@ -203,7 +203,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/prescription/:id" element={
-            <ProtectedRoute routeName="PRESCRIPTION_DETAIL">
+            <ProtectedRoute routeName="PRESCRIPTION_LIST">
               <PrescriptionDetail />
             </ProtectedRoute>
           } />
@@ -213,22 +213,22 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/schedule" element={
-            <ProtectedRoute routeName="SCHEDULE">
+            <ProtectedRoute routeName="SCHEDULE_LIST">
               <ScheduleList />
             </ProtectedRoute>
           } />
           <Route path="/schedule/add" element={
-            <ProtectedRoute routeName="SCHEDULE">
+            <ProtectedRoute routeName="ADD_SCHEDULE">
               <AddSchedule />
             </ProtectedRoute>
           } />
           <Route path="/staff" element={
-            <ProtectedRoute routeName="STAFF">
+            <ProtectedRoute routeName="STAFF_LIST">
               <StaffList />
             </ProtectedRoute>
           } />
           <Route path="/staff/add" element={
-            <ProtectedRoute routeName="STAFF">
+            <ProtectedRoute routeName="ADD_STAFF">
               <AddStaff />
             </ProtectedRoute>
           } />
@@ -241,63 +241,63 @@ function App() {
             <CompleteProfileStaff />
           } />
           <Route path="/admin" element={
-            <ProtectedRoute routeName="ADMIN">
+            <ProtectedRoute routeName="ADMIN_LIST">
               <AdminList />
             </ProtectedRoute>
           } />
           <Route path="/admin/add" element={
-            <ProtectedRoute routeName="ADMIN">
+            <ProtectedRoute routeName="ADD_ADMIN">
               <AddAdmin />
             </ProtectedRoute>
           } />
           <Route path="/requests" element={
-            <ProtectedRoute routeName="ADMIN">
+            <ProtectedRoute routeName="REQUESTS">
               <RequestList />
             </ProtectedRoute>
           } />
           <Route path="/admindashboard" element={
-            <ProtectedRoute routeName="ADMIN">
+            <ProtectedRoute routeName="ADMIN_DASHBOARD">
               <AdminDashboard />
             </ProtectedRoute>
           } />
 
           <Route path="/medicine/category/update/:id" element={
-            <ProtectedRoute routeName="MEDICINE">
+            <ProtectedRoute routeName="ADD_CATEGORY">
               <UpdateCategory />
             </ProtectedRoute>
           } />
           <Route path="/supplier/update/:id" element={
-            <ProtectedRoute routeName="SUPPLIER">
+            <ProtectedRoute routeName="ADD_SUPPLIER">
               <UpdateSupplier />
             </ProtectedRoute>
           } />
           <Route path="/schedule/update/:id" element={
-            <ProtectedRoute routeName="SCHEDULE">
+            <ProtectedRoute routeName="ADD_SCHEDULE">
               <UpdateSchedule />
             </ProtectedRoute>
           } />
           <Route path="/patient/update/:id" element={
-            <ProtectedRoute routeName="PATIENT">
+            <ProtectedRoute routeName="ADD_PATIENT">
               <UpdatePatient />
             </ProtectedRoute>
           } />
           <Route path="/staff/update/:id" element={
-            <ProtectedRoute routeName="STAFF">
+            <ProtectedRoute routeName="ADD_STAFF">
               <UpdateStaff />
             </ProtectedRoute>
           } />
           <Route path="/medicine/update/:id" element={
-            <ProtectedRoute routeName="MEDICINE">
+            <ProtectedRoute routeName="ADD_MEDICINE">
               <UpdateMedicine />
             </ProtectedRoute>
           } />
           <Route path="/purchase/update/:id" element={
-            <ProtectedRoute routeName="PURCHASE">
+            <ProtectedRoute routeName="ADD_PURCHASE">
               <UpdatePurchase />
             </ProtectedRoute>
           } />
           <Route path="/prescription/update/:id" element={
-            <ProtectedRoute routeName="PRESCRIPTION">
+            <ProtectedRoute routeName="ADD_PRESCRIPTION">
               <UpdatePrescription />
             </ProtectedRoute>
           } />

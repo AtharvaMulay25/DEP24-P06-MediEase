@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 const { verifyToken } = require("../utils/handleJWT");
 const ExpressError = require('../utils/ExpressError');
 
-const authMiddleware = (desiredRoles) => {
+const authMiddleware = (desiredRoles, flag=false) => {
     return async (req, res, next) => {
         try {
             const token = req.cookies.token;

@@ -11,14 +11,15 @@ const {
 
 const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
-const roles = ["ADMIN"];
 
-router.use(authMiddleware(roles), profileMiddleware(true));
+const roleMap = require("../utils/roleMap.js");
+
+router.use(profileMiddleware(true));
 
 //admin routes
-router.get("/", catchAsync(getAdminList));
-router.post("/", validateUser, catchAsync(createAdmin));
-router.put("/:id", validateUser, catchAsync(updateAdmin));
-router.delete("/:id", catchAsync(deleteAdmin));
+router.get("/", authMiddleware(roleMap("GET_ADMIN_LIST")), catchAsync(getAdminList));
+router.post("/", authMiddleware(roleMap("CREATE_ADMIN")), validateUser, catchAsync(createAdmin));
+router.put("/:id", authMiddleware(roleMap("UPDATE_ADMIN")), validateUser, catchAsync(updateAdmin));
+router.delete("/:id", authMiddleware(roleMap("DELETE_ADMIN")), catchAsync(deleteAdmin));
 
 module.exports = router;
