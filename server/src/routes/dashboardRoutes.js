@@ -12,7 +12,7 @@ const profileMiddleware = require("../middlewares/profileMiddleware");
 
 const roleMap = require("../utils/roleMap");
 
-router.use(profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 
 //dashboard routes
 router.get("/checkup", authMiddleware(roleMap("GET_CHECKUP_STAT")), catchAsync(getCheckupStat));

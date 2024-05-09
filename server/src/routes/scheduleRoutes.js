@@ -21,10 +21,9 @@ router.get('/',
     profileMiddleware(true),
     catchAsync(getScheduleList));
 
-router.use(authMiddleware(), profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 
 router.get("/:id", authMiddleware(roleMap("GET_SCHEDULE")), catchAsync(getSchedule));
-
 router.post('/', authMiddleware(roleMap("CREATE_SCHEDULE")), validateSchedule, catchAsync(createSchedule));
 router.put('/:id', authMiddleware(roleMap("UPDATE_SCHEDULE")), validateSchedule, catchAsync(updateSchedule));
 router.delete('/:id', authMiddleware(roleMap("DELETE_SCHEDULE")), catchAsync(deleteSchedule));

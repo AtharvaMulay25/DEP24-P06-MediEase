@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 const { verifyToken } = require("../utils/handleJWT");
 const ExpressError = require('../utils/ExpressError');
 
-const authMiddleware = (desiredRoles, flag=false) => {
+const authMiddleware = (desiredRoles, flag=true) => {
     return async (req, res, next) => {
         try {
             const token = req.cookies.token;
@@ -46,7 +46,7 @@ const authMiddleware = (desiredRoles, flag=false) => {
                 );
                 next(error);
                 return ;
-            } else if (!desiredRoles.includes(req.role)) {
+            } else if (!desiredRoles.includes(req.role) && flag) {
                 const error = new ExpressError(
                     "User is not authorized to access this route",
                     401

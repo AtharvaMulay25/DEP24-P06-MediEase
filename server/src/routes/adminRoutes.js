@@ -14,7 +14,7 @@ const profileMiddleware = require("../middlewares/profileMiddleware");
 
 const roleMap = require("../utils/roleMap.js");
 
-router.use(profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 
 //admin routes
 router.get("/", authMiddleware(roleMap("GET_ADMIN_LIST")), catchAsync(getAdminList));

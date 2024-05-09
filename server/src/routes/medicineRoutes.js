@@ -18,7 +18,7 @@ const profileMiddleware = require("../middlewares/profileMiddleware");
 
 const roleMap = require("../utils/roleMap");
 
-router.use(profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 //medicines routes
 
 router.get('/', authMiddleware(roleMap("GET_MEDICINE_LIST")), catchAsync(getMedicineList));

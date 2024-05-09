@@ -13,7 +13,7 @@ const profileMiddleware = require("../middlewares/profileMiddleware");
 
 const roleMap = require("../utils/roleMap.js");
 
-router.use(profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 
 //category routes
 router.get('/', authMiddleware(roleMap("GET_CATEGORY_LIST")), catchAsync(getCategoryList));

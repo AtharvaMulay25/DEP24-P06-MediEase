@@ -16,7 +16,7 @@ const profileMiddleware = require("../middlewares/profileMiddleware");
 
 const roleMap = require("../utils/roleMap");
 
-router.use(profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 
 router.get('/', authMiddleware(roleMap("GET_TOTAL_STOCK")), catchAsync(getTotalStock));
 router.get('/available', authMiddleware(roleMap("GET_AVAILABLE_STOCK")), catchAsync(getAvailableStock));

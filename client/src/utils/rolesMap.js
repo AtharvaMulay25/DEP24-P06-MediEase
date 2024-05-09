@@ -50,15 +50,14 @@ const roleMapping = new Map([
     [27, "PATIENT_PROFILE"],
     [28, "STAFF_PROFILE"],
     [29, "MEDICAL_HISTORY"],
-    [30, "PRESCRIPTION_DETAIL"],
-    [31, "ADMIN_PROFILE"],
+    [30, "ADMIN_PROFILE"],
 ]);
 
 const roleMap = (role) => {
     if (role !== "ADMIN" && role !== "DOCTOR" && role !== "PARAMEDICAL" && role !== "PATIENT") {
         return [];
     }
-    const admin = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 30, 31];
+    const admin = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 30];
     const paramedical = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 30];
     const doctor = [1, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 21, 22, 28, 30];
     const patient = [25, 27, 29, 30];

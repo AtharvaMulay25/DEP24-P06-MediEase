@@ -15,7 +15,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
 
 const roleMap = require("../utils/roleMap");
-router.use(profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 
 router.get('/:id', authMiddleware(roleMap("GET_PURCHASE_DETAILS")), catchAsync(getPurchaseDetails));
 router.get('/', authMiddleware(roleMap("GET_PURCHASE_LIST")),  catchAsync(getPurchaseList));

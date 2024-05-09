@@ -13,8 +13,9 @@ const roleMapping = new Map([
     ["DELETE_CATEGORY", ["D", "A", "PM"]],
     
     // checkup routes
+    ["GET_MEDICAL_HISTORY", ["P"]],
+    ["GET_CHECKUP_DETAILS", ["D", "A", "PM", "P"]],
     ["GET_CHECKUP_LIST", ["D", "A", "PM"]],
-    ["GET_CHECKUP_DETAILS", ["D", "A", "PM"]],
     ["CREATE_CHECKUP", ["D", "A", "PM"]],
     ["UPDATE_CHECKUP", ["D", "A", "PM"]],
     ["DELETE_CHECKUP", ["D", "A", "PM"]],
@@ -23,18 +24,40 @@ const roleMapping = new Map([
     ["GET_CHECKUP_STAT", ["D", "A", "PM"]],
     ["GET_TOP_MEDICINE_STAT", ["D", "A", "PM"]],
 
+    // mail routes
+    ["APPROVE_REQUEST_CONTROLLER", ["A"]],
+    ["REJECT_REQUEST_CONTROLLER", ["A"]],
+    ["PENDING_REQUEST_CONTROLLER", ["A"]],
+    ["FEEDBACK_SUBMIT_CONTROLLER", ["D", "A", "PM", "P"]],
+
     // medicine routes
     ["GET_MEDICINE_LIST", ["D", "A", "PM"]],
+    ["GET_MEDICINE", ["D", "A", "PM"]],
     ["GET_EXPIRED_MEDICINE", ["D", "A", "PM"]],
     ["CREATE_MEDICINE_LIST", ["D", "A", "PM"]],
     ["UPDATE_MEDICINE_LIST", ["D", "A", "PM"]],
     ["DELETE_MEDICINE_LIST", ["D", "A", "PM"]],
     
     // patient routes
-    ["GET_PATIENT_LIST", ["D", "A", "PM"]],
+    ["GET_PATIENT_LIST", ["D",  "A", "PM"]],
+    ["GET_PATIENT", ["D",  "A", "PM"]],
     ["CREATE_PATIENT", ["D", "A", "PM"]],
     ["UPDATE_PATIENT", ["D", "A", "PM"]],
     ["DELETE_PATIENT", ["D", "A", "PM"]],
+
+    // profile routes
+    ["GET_PATIENT_PROFILE", ["P"]],
+    ["UPDATE_PATIENT_PROFILE", ["P"]],
+    ["DELETE_PATIENT_PROFILE", ["P"]],
+    
+    ["GET_STAFF_SCHEDULE", ["D", "PM"]],
+    ["GET_STAFF_PROFILE", ["D", "PM"]],
+    ["UPDATE_STAFF_PROFILE", ["D", "PM"]],
+    ["DELETE_STAFF_PROFILE", ["D", "PM"]],
+
+    ["GET_ADMIN_PROFILE", ["A"]],
+    ["UPDATE_ADMIN_PROFILE", ["A"]],
+    ["DELETE_ADMIN_PROFILE", ["A"]],
 
     // purchase routes
     ["GET_PURCHASE_LIST", ["A", "PM"]],
@@ -49,12 +72,14 @@ const roleMapping = new Map([
 
     // schedule routes 
     ["GET_SCHEDULE_LIST", ["D", "A", "PM", "P"]],
+    ["GET_SCHEDULE", ["D", "A", "PM"]],
     ["CREATE_SCHEDULE", ["D", "A", "PM"]],
     ["UPDATE_SCHEDULE", ["D", "A", "PM"]],
     ["DELETE_SCHEDULE", ["D", "A", "PM"]],
     
     // staff routes 
     ["GET_STAFF_LIST", ["D", "A", "PM"]],
+    ["GET_STAFF", ["D", "A", "PM"]],
     ["CREATE_STAFF", ["D", "A", "PM"]],
     ["UPDATE_STAFF", ["D", "A", "PM"]],
     ["DELETE_STAFF", ["D", "A", "PM"]],
@@ -66,6 +91,7 @@ const roleMapping = new Map([
     
     // supplier routes 
     ["GET_SUPPLIER_LIST", ["A", "PM"]],
+    ["GET_SUPPLIER", ["A", "PM"]],
     ["CREATE_SUPPLIER", ["A", "PM"]],
     ["UPDATE_SUPPLIER", ["A", "PM"]],
     ["DELETE_SUPPLIER", ["A", "PM"]],
