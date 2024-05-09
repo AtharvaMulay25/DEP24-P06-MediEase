@@ -304,9 +304,10 @@ export default function UpdatePrescriptionForm() {
   };
 
   const handleDeleteRow = (index) => {
-    if (dataArray.length === 1) {
+    // *****condition for allowing no. of medicines considerint referal given
+    if (formData.referredDoctor === "" && formData.referredHospital === "" && dataArray.length === 1) {
       toast.error("Atleast one Medicine is required in the prescription");
-      return;
+      return;  
     }
     setDataArray((prev) => {
       const newData = [...prev];
