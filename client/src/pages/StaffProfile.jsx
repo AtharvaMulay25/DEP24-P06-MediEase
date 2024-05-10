@@ -65,7 +65,7 @@ export default function StaffProfile({ edit = false }) {
     email: "-",
     gender: "-",
     department: "-",
-    specialisation: "-",
+    speciality: "-",
     checkupCount: "-",
   });
 
@@ -92,7 +92,7 @@ export default function StaffProfile({ edit = false }) {
           mobileNumber: data.mobileNumber,
           gender: data.gender,
           department: data.department,
-          specialisation: data.specialisation,
+          speciality: data.speciality,
           checkupCount: data.checkupCount,
         };
 
@@ -123,6 +123,7 @@ export default function StaffProfile({ edit = false }) {
       gender: staffDetail.gender,
       mobileNumber: staffDetail.mobileNumber,
       department: staffDetail.department,
+      speciality: staffDetail.speciality,
     }
     try {
       setLoading(true);
@@ -297,9 +298,9 @@ export default function StaffProfile({ edit = false }) {
                       <input
                         placeholder="Specialisation"
                         className="px-2 py-1 border border-blue-gray-200 rounded-md"
-                        value={staffDetail.specialisation}
+                        value={staffDetail.speciality}
                         onChange={(e) =>
-                          setStaffDetail({ ...staffDetail, specialisation: e.target.value })
+                          setStaffDetail({ ...staffDetail, speciality: e.target.value })
                         }
                       />
                     </>
@@ -322,7 +323,7 @@ export default function StaffProfile({ edit = false }) {
                       Specialisation
                     </Typography>
                     <Typography variant="h4" color="blue-gray">
-                      {staffDetail.specialisation || "-"}
+                      {staffDetail.speciality || "-"}
                     </Typography>
                   </div>
                   <div className="flex flex-col border border-blue-gray-100 p-4 w-full rounded-xl text-center">
@@ -428,6 +429,7 @@ export default function StaffProfile({ edit = false }) {
                 <div className="flex w-full justify-between">
                   <Button
                     className="flex items-center gap-3"
+                    color="red"
                     size="md"
                     onClick={() => {setOpen(!open)}}
                   >

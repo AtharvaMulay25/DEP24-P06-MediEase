@@ -89,6 +89,8 @@ export default function UpdatePrescriptionForm() {
             spO2: prescriptionData.spO2,
             symptoms: prescriptionData.symptoms,
             diagnosis: prescriptionData.diagnosis,
+            referredDoctor: prescriptionData.referredDoctor,
+            referredHospital: prescriptionData.referredHospital,
         });
         setSelectedDoctor({
             value: prescriptionData.doctorId,
@@ -250,6 +252,13 @@ export default function UpdatePrescriptionForm() {
     if (formData.symptoms) {
       checkupListEntry.symptoms = formData.symptoms;
     }
+    if(formData.referredDoctor){
+      checkupListEntry.referredDoctor = formData.referredDoctor;
+    }
+    if(formData.referredHospital){
+      checkupListEntry.referredHospital = formData.referredHospital;
+    }
+
 
     const checkupMedicines = dataArray.map((data) => {
       const medicines = {
@@ -295,9 +304,10 @@ export default function UpdatePrescriptionForm() {
   };
 
   const handleDeleteRow = (index) => {
-    if (dataArray.length === 1) {
+    // *****condition for allowing no. of medicines considerint referal given
+    if (formData.referredDoctor === "" && formData.referredHospital === "" && dataArray.length === 1) {
       toast.error("Atleast one Medicine is required in the prescription");
-      return;
+      return;  
     }
     setDataArray((prev) => {
       const newData = [...prev];
@@ -512,6 +522,40 @@ export default function UpdatePrescriptionForm() {
                     type="text"
                     className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
                     value={formData.symptoms}
+                    onChange={(e) =>
+                      handleChange(e.target.name, e.target.value)
+                    }
+                  />
+                </div>
+                <div className="flex-col md:flex md:flex-row items-start justify-around p-1">
+                  <div className="flex mr-2 w-full md:w-72 justify-end">
+                    <label htmlFor="date">Referred Doctor:</label>
+                  </div>
+                  <Textarea
+                    id="referredDoctor"
+                    size="md"
+                    label="Referred Doctor"
+                    name="referredDoctor"
+                    type="text"
+                    className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
+                    value={formData.referredDoctor}
+                    onChange={(e) =>
+                      handleChange(e.target.name, e.target.value)
+                    }
+                  />
+                </div>
+                <div className="flex-col md:flex md:flex-row items-start justify-around p-1">
+                  <div className="flex mr-2 w-full md:w-72 justify-end">
+                    <label htmlFor="date">Referred Hospital:</label>
+                  </div>
+                  <Textarea
+                    id="referredHospital"
+                    size="md"
+                    label="Referred Hospital"
+                    name="referredHospital"
+                    type="text"
+                    className="w-full border-blue-gray-200 border h-10 px-3 rounded-lg min-w-[200px]"
+                    value={formData.referredHospital}
                     onChange={(e) =>
                       handleChange(e.target.name, e.target.value)
                     }

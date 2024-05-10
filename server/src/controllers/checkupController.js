@@ -62,6 +62,8 @@ const getCheckupDetails = async (req, res, next) => {
     time: formatTimeFromISO(checkup.date),
     diagnosis: checkup?.diagnosis,
     symptoms: checkup?.symptoms,
+    referredDoctor: checkup?.referredDoctor,
+    referredHospital: checkup?.referredHospital,
     temperature: checkup?.temperature,
     bloodPressure: checkup?.bloodPressure,
     pulseRate: checkup?.pulseRate,
@@ -219,6 +221,8 @@ const createCheckup = async (req, res, next) => {
     pulseRate,
     spO2,
     checkupMedicines,
+    referredDoctor,
+    referredHospital
   } = req.body;
   console.log("req.body : ", req.body);
   const patient = await prisma.patient.findUnique({
@@ -398,6 +402,8 @@ const createCheckup = async (req, res, next) => {
       bloodPressure,
       pulseRate: parseInt(pulseRate),
       spO2: parseFloat(spO2),
+      referredDoctor,
+      referredHospital,
       CheckupMedicine: {
         create: checkupMedicines,
       },
@@ -431,6 +437,8 @@ const updateCheckup = async (req, res, next) => {
     pulseRate,
     spO2,
     checkupMedicines,
+    referredDoctor,
+    referredHospital
   } = req.body;
   console.log("req.body : ", req.body);
   const patient = await prisma.patient.findUnique({
@@ -459,8 +467,8 @@ const updateCheckup = async (req, res, next) => {
       email: staffEmail,
     },
   });
-
-  if (!staff && req.user.role !== "ADMIN") {    //*******admin may be allowed to add prescription */
+  // console.log("role: ", req.user);
+  if (!staff) {    //*******admin may be allowed to add prescription */
     throw new ExpressError("Logged in Staff does not exist", 404);
   }
 
@@ -609,6 +617,8 @@ const updateCheckup = async (req, res, next) => {
       bloodPressure,
       pulseRate: parseInt(pulseRate),
       spO2: parseFloat(spO2),
+      referredDoctor,
+      referredHospital,
       CheckupMedicine: {
         create: checkupMedicines,
       },

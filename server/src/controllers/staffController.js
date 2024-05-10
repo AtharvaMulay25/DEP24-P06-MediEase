@@ -57,7 +57,8 @@ const getStaff = async (req, res, next) => {
 // route    POST /api/staff
 // @access  Private (Admin)
 const createStaff = async (req, res, next) => {
-  const { name, email, mobileNumber, role, department, gender } = req.body;
+  console.log(req.body);
+  const { name, email, mobileNumber, role, department, gender, speciality } = req.body;
 
   const userRecord = await prisma.user.findUnique({
     where: {
@@ -144,6 +145,7 @@ const createStaff = async (req, res, next) => {
         mobileNumber,
         role,
         department,
+        speciality,
         gender,
       },
     });
@@ -162,6 +164,7 @@ const createStaff = async (req, res, next) => {
         mobileNumber,
         role,
         department,
+        speciality,
         status: "ACTIVE",
       },
     });
