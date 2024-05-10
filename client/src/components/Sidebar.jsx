@@ -43,6 +43,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 import { toast } from "sonner";
 import roleMap from "../utils/rolesMap.js";
+import logoImg from "../assets/img/logo.png";
 const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
   const { isCollapsed, setIsCollapsed } = collapseSetter;
   const { isHovered, setIsHovered } = hoverSetter;
@@ -51,27 +52,13 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
   const { logout } = useLogout();
   const [roleArr, setRoleArr] = useState([]);
 
+  useEffect(() => {
+    setRoleArr(roleMap(userRole));
+  }, [userRole]);
+
   const [open, setOpen] = useState(0);
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {
-    setRoleArr(roleMap(userRole));
-  }, [userRole]);
-
-  useEffect(() => {
-    setRoleArr(roleMap(userRole));
-  }, [userRole]);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 890px)");
-    const handleResize = () => setIsLargeScreen(mediaQuery.matches);
-
-    mediaQuery.addEventListener("change", handleResize);
-
-    return () => {
-      mediaQuery.removeEventListener("change", handleResize);
-    };
-  }, []);
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
@@ -89,9 +76,30 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
     }, 1000);
   };
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 890px)");
+    const handleResize = () => setIsLargeScreen(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
+  }, []);
+
   const triggers = {
     onMouseEnter: () => setOpenMenu(true),
     onMouseLeave: () => setOpenMenu(false),
+  };
+
+  const hasRequiredRole = (routesArr, desiredRoutes) => {
+    let containsAtLeastOneRole = false;
+    desiredRoutes.forEach((role) => {
+      if (routesArr.includes(role)) {
+        containsAtLeastOneRole = true;
+      }
+    });
+    return containsAtLeastOneRole;
   };
 
   return (
@@ -117,7 +125,7 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                 <div className="h-12 w-12 flex-shrink-0">
                   <a href="/">
                     <img
-                      src="/src/assets/img/logo.png"
+                      src={logoImg}
                       alt="Logo"
                       className="-ml-3 -mr-2 cursor-pointer"
                       style={{ width: "100%", height: "100%" }}
@@ -153,8 +161,8 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                           <div>
                             {!(isCollapsed & !isHovered) && (
                               <Typography className="font-semibold text-lg">
-                                {userName.split(" ")[0] || ""}
-                              </Typography> 
+                                {userName || ""}
+                              </Typography>
                             )}
                             {!(isCollapsed & !isHovered) && (
                               <Typography className="font-normal text-xs">
@@ -278,7 +286,7 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     </li>
                   </a>
                 )}
-                {roleArr.includes("ADMIN") && (
+                {roleArr.includes("REQUESTS") && (
                   <a href="/requests">
                     <li
                       className="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all
@@ -327,7 +335,7 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                   </a>
                 )}
 
-                {roleArr.includes("STOCK") && (
+                {hasRequiredRole(roleArr, ["STOCK_LIST", "OUT_OF_STOCK"]) && (
                   <Accordion
                     open={open === 9}
                     icon={
@@ -366,24 +374,35 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     {!(isCollapsed & !isHovered) && (
                       <AccordionBody className="py-1">
                         <List className="p-0" style={{ color: "#f1ffea" }}>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/stock")}
-                          >
-                            Stock List
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/stock/out")}
-                          >
-                            Out of Stock
-                          </ListItem>
+                          {hasRequiredRole(roleArr, ["STOCK_LIST"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/stock")}
+                            >
+                              Stock List
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["OUT_OF_STOCK"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/stock/out")}
+                            >
+                              Out of Stock
+                            </ListItem>
+                          )}
                         </List>
                       </AccordionBody>
                     )}
                   </Accordion>
                 )}
-                {roleArr.includes("MEDICINE") && (
+
+                {hasRequiredRole(roleArr, [
+                  "ADD_CATEGORY",
+                  "CATEGORY_LIST",
+                  "ADD_MEDICINE",
+                  "MEDICINE_LIST",
+                  "EXPIRED_MEDICINE",
+                ]) && (
                   <Accordion
                     open={open === 1}
                     icon={
@@ -422,43 +441,56 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     {!(isCollapsed & !isHovered) && (
                       <AccordionBody className="py-1">
                         <List className="p-0" style={{ color: "#f1ffea" }}>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/medicine/category/add")}
-                          >
-                            Add Category
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/medicine/category")}
-                          >
-                            Category List
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/medicine/add")}
-                          >
-                            Add Medicine
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/medicine")}
-                          >
-                            Medicine List
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/medicine/expired")}
-                          >
-                            Expired Medicines
-                          </ListItem>
+                          {hasRequiredRole(roleArr, ["ADD_CATEGORY"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/medicine/category/add")}
+                            >
+                              Add Category
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["CATEGORY_LIST"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/medicine/category")}
+                            >
+                              Category List
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["ADD_MEDICINE"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/medicine/add")}
+                            >
+                              Add Medicine
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["MEDICINE_LIST"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/medicine")}
+                            >
+                              Medicine List
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["EXPIRED_MEDICINE"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/medicine/expired")}
+                            >
+                              Expired Medicines
+                            </ListItem>
+                          )}
                         </List>
                       </AccordionBody>
                     )}
                   </Accordion>
                 )}
 
-                {roleArr.includes("PURCHASE") && (
+                {hasRequiredRole(roleArr, [
+                  "ADD_PURCHASE",
+                  "PURCHASE_LIST",
+                ]) && (
                   <Accordion
                     open={open === 2}
                     icon={
@@ -497,24 +529,31 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     {!(isCollapsed & !isHovered) && (
                       <AccordionBody className="py-1">
                         <List className="p-0" style={{ color: "#f1ffea" }}>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/purchase/add")}
-                          >
-                            Add Purchase
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/purchase")}
-                          >
-                            Purchase List
-                          </ListItem>
+                          {hasRequiredRole(roleArr, ["ADD_PURCHASE"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/purchase/add")}
+                            >
+                              Add Purchase
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["PURCHASE_LIST"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/purchase")}
+                            >
+                              Purchase List
+                            </ListItem>
+                          )}
                         </List>
                       </AccordionBody>
                     )}
                   </Accordion>
                 )}
-                {roleArr.includes("SUPPLIER") && (
+                {hasRequiredRole(roleArr, [
+                  "ADD_SUPPLIER",
+                  "SUPPLIER_LIST",
+                ]) && (
                   <Accordion
                     open={open === 3}
                     icon={
@@ -553,24 +592,28 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     {!(isCollapsed & !isHovered) && (
                       <AccordionBody className="py-1">
                         <List className="p-0" style={{ color: "#f1ffea" }}>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/supplier/add")}
-                          >
-                            Add Supplier
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/supplier")}
-                          >
-                            Supplier List
-                          </ListItem>
+                          {hasRequiredRole(roleArr, ["ADD_SUPPLIER"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/supplier/add")}
+                            >
+                              Add Supplier
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["SUPPLIER_LIST"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/supplier")}
+                            >
+                              Supplier List
+                            </ListItem>
+                          )}
                         </List>
                       </AccordionBody>
                     )}
                   </Accordion>
                 )}
-                {roleArr.includes("PATIENT") && (
+                {hasRequiredRole(roleArr, ["ADD_PATIENT", "PATIENT_LIST"]) && (
                   <Accordion
                     open={open === 4}
                     icon={
@@ -609,24 +652,31 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     {!(isCollapsed & !isHovered) && (
                       <AccordionBody className="py-1">
                         <List className="p-0" style={{ color: "#f1ffea" }}>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/patient/add")}
-                          >
-                            Add Patient
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/patient")}
-                          >
-                            Patient List
-                          </ListItem>
+                          {hasRequiredRole(roleArr, ["ADD_PATIENT"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/patient/add")}
+                            >
+                              Add Patient
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["PATIENT_LIST"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/patient")}
+                            >
+                              Patient List
+                            </ListItem>
+                          )}
                         </List>
                       </AccordionBody>
                     )}
                   </Accordion>
                 )}
-                {roleArr.includes("PRESCRIPTION") && (
+                {hasRequiredRole(roleArr, [
+                  "ADD_PRESCRIPTION",
+                  "PRESCRIPTION_LIST",
+                ]) && (
                   <Accordion
                     open={open === 5}
                     icon={
@@ -665,24 +715,28 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     {!(isCollapsed & !isHovered) && (
                       <AccordionBody className="py-1">
                         <List className="p-0" style={{ color: "#f1ffea" }}>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/prescription/add")}
-                          >
-                            Add Prescription
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/prescription")}
-                          >
-                            Prescription List
-                          </ListItem>
+                          {hasRequiredRole(roleArr, ["ADD_PRESCRIPTION"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/prescription/add")}
+                            >
+                              Add Prescription
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["PRESCRIPTION_LIST"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/prescription")}
+                            >
+                              Prescription List
+                            </ListItem>
+                          )}
                         </List>
                       </AccordionBody>
                     )}
                   </Accordion>
                 )}
-                {roleArr.includes("STAFF") && (
+                {hasRequiredRole(roleArr, ["ADD_STAFF", "STAFF_LIST"]) && (
                   <Accordion
                     open={open === 6}
                     icon={
@@ -721,24 +775,31 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     {!(isCollapsed & !isHovered) && (
                       <AccordionBody className="py-1">
                         <List className="p-0" style={{ color: "#f1ffea" }}>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/staff/add")}
-                          >
-                            Add Staff
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/staff")}
-                          >
-                            Staff List
-                          </ListItem>
+                          {hasRequiredRole(roleArr, ["ADD_STAFF"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/staff/add")}
+                            >
+                              Add Staff
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["STAFF_LIST"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/staff")}
+                            >
+                              Staff List
+                            </ListItem>
+                          )}
                         </List>
                       </AccordionBody>
                     )}
                   </Accordion>
                 )}
-                {roleArr.includes("SCHEDULE") && (
+                {hasRequiredRole(roleArr, [
+                  "ADD_SCHEDULE",
+                  "SCHEDULE_LIST",
+                ]) && (
                   <Accordion
                     open={open === 7}
                     icon={
@@ -777,24 +838,28 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     {!(isCollapsed & !isHovered) && (
                       <AccordionBody className="py-1">
                         <List className="p-0" style={{ color: "#f1ffea" }}>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/schedule/add")}
-                          >
-                            Add Schedule
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/schedule")}
-                          >
-                            Schedule List
-                          </ListItem>
+                          {hasRequiredRole(roleArr, ["ADD_SCHEDULE"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/schedule/add")}
+                            >
+                              Add Schedule
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["SCHEDULE_LIST"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/schedule")}
+                            >
+                              Schedule List
+                            </ListItem>
+                          )}
                         </List>
                       </AccordionBody>
                     )}
                   </Accordion>
                 )}
-                {roleArr.includes("ADMIN") && (
+                {hasRequiredRole(roleArr, ["ADD_ADMIN", "ADMIN_LIST"]) && (
                   <Accordion
                     open={open === 8}
                     icon={
@@ -833,18 +898,22 @@ const Sidebar = ({ collapseSetter, hoverSetter, largeScreenSetter }) => {
                     {!(isCollapsed & !isHovered) && (
                       <AccordionBody className="py-1">
                         <List className="p-0" style={{ color: "#f1ffea" }}>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/admin/add")}
-                          >
-                            Add Admin
-                          </ListItem>
-                          <ListItem
-                            className="ml-9"
-                            onClick={() => navigate("/admin")}
-                          >
-                            Admin List
-                          </ListItem>
+                          {hasRequiredRole(roleArr, ["ADD_ADMIN"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/admin/add")}
+                            >
+                              Add Admin
+                            </ListItem>
+                          )}
+                          {hasRequiredRole(roleArr, ["ADD_ADMIN"]) && (
+                            <ListItem
+                              className="ml-9"
+                              onClick={() => navigate("/admin")}
+                            >
+                              Admin List
+                            </ListItem>
+                          )}
                         </List>
                       </AccordionBody>
                     )}

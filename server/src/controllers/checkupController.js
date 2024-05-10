@@ -109,10 +109,6 @@ const getCheckupList = async (req, res, next) => {
     },
   });
 
-  // console.log("checkupList : ", checkupList);
-  
-  console.log(formatTimeFromISO(checkupList[0].date));
-
   for (const checkup of checkupList) {
     console.log(formatTimeFromISO(checkup.date));
   }
