@@ -8,11 +8,10 @@ const catchAsync = require('../utils/catchAsync');
 const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
 
-const roles = ["ADMIN"];
+const roleMap = require("../utils/roleMap.js");
+router.use(authMiddleware([], false), profileMiddleware(true));
 
-router.use(authMiddleware(roles), profileMiddleware(true));
-
-router.get("/", catchAsync(getAllRequests));
-router.get("/:id", catchAsync(getRequest));
+router.get("/", authMiddleware(roleMap("GET_ALL_REQUESTS")), catchAsync(getAllRequests));
+router.get("/:id", authMiddleware(roleMap("GET_REQUEST")), catchAsync(getRequest));
 
 module.exports = router;

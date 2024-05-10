@@ -15,14 +15,14 @@ const {
 const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
 
-const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap");
 
-router.use(authMiddleware(roles), profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 
-router.get('/', catchAsync(getTotalStock));
-router.get('/available', catchAsync(getAvailableStock));
+router.get('/', authMiddleware(roleMap("GET_TOTAL_STOCK")), catchAsync(getTotalStock));
+router.get('/available', authMiddleware(roleMap("GET_AVAILABLE_STOCK")), catchAsync(getAvailableStock));
 router.get('/available/:checkupId', catchAsync(getUpdatedAvailableStock));
-router.get('/out', catchAsync(getOutOfStock));
+router.get('/out', authMiddleware(roleMap("GET_OUT_OF_STOCK")), catchAsync(getOutOfStock));
 // router.post('/create', createStockList);
 // router.put('/', updateStockList);
 // router.delete('/', deleteStockList);

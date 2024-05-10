@@ -14,6 +14,7 @@ const TABLE_HEAD = {
   doctorName: "Doctor",
   staffName: "ParaMedical Staff",
   date: "Date",
+  time: "Time",
   diagnosis: "Diagnosis",
   symptoms: "Symptoms",
   action: "Action",

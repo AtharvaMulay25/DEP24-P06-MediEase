@@ -10,12 +10,12 @@ const {
 const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
 
-const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap");
 
-router.use(authMiddleware(roles), profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 
 //dashboard routes
-router.get("/checkup", catchAsync(getCheckupStat));
-router.get("/medicine", catchAsync(getTopMedicineStat));
+router.get("/checkup", authMiddleware(roleMap("GET_CHECKUP_STAT")), catchAsync(getCheckupStat));
+router.get("/medicine", authMiddleware(roleMap("GET_TOP_MEDICINE_STAT")), catchAsync(getTopMedicineStat));
 
 module.exports = router;

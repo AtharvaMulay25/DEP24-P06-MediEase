@@ -13,22 +13,33 @@ const catchAsync = require("../utils/catchAsync");
 const authMiddleware = require("../middlewares/authMiddleware");
 const { validateFeedback } = require("../middlewares.js");
 
-const roles = ["ADMIN"];
+const roleMap = require("../utils/roleMap.js");
 
+//a
 router.post(
   "/approve",
-  authMiddleware(roles),
+  authMiddleware(roleMap("APPROVE_REQUEST_CONTROLLER")), 
   catchAsync(approveRequestController)
 );
+
+//a
 router.post(
   "/reject",
-  authMiddleware(roles),
+  authMiddleware(roleMap("REJECT_REQUEST_CONTROLLER")), 
   catchAsync(rejectRequestController)
 );
-router.post("/pending", catchAsync(pendingRequestController));
+
+//a
+router.post(
+  "/pending", 
+  authMiddleware(roleMap("PENDING_REQUEST_CONTROLLER")), 
+  catchAsync(pendingRequestController)
+);
+
+//all
 router.post(
   "/feedback",
-  authMiddleware(["DOCTOR", "PARAMEDICAL", "PATIENT"]), 
+  authMiddleware(roleMap("FEEDBACK_SUBMIT_CONTROLLER")), 
   validateFeedback,
   catchAsync(feedbackSubmitController)
 );

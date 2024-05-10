@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const ExpressError = require("../utils/ExpressError");
+const formatTimeFromISO = require("../utils/formatTimeFromISO");
 
 // @desc    Get Checkup Details
 // route    GET /api/checkup/:id
@@ -58,6 +59,7 @@ const getCheckupDetails = async (req, res, next) => {
     doctorId: checkup.Doctor?.id,
     staffName: checkup.Staff?.name,
     date: checkup.date.toISOString().split("T")[0],
+    time: formatTimeFromISO(checkup.date),
     diagnosis: checkup?.diagnosis,
     symptoms: checkup?.symptoms,
     temperature: checkup?.temperature,
@@ -106,6 +108,12 @@ const getCheckupList = async (req, res, next) => {
   });
 
   // console.log("checkupList : ", checkupList);
+  
+  console.log(formatTimeFromISO(checkupList[0].date));
+
+  for (const checkup of checkupList) {
+    console.log(formatTimeFromISO(checkup.date));
+  }
 
   const restructuredCheckupList = checkupList.map((checkup) => ({
     id: checkup?.id,
@@ -113,6 +121,7 @@ const getCheckupList = async (req, res, next) => {
     doctorName: checkup.Doctor?.name,
     staffName: checkup.Staff?.name,
     date: checkup.date.toISOString().split("T")[0],
+    time: formatTimeFromISO(checkup.date),
     diagnosis: checkup?.diagnosis,
     symptoms: checkup?.symptoms,
   }));
@@ -372,12 +381,17 @@ const createCheckup = async (req, res, next) => {
   // Commit the transaction
   await updateTransaction;
 
+
+  let timeInfo = new Date();
+  timeInfo = timeInfo.toISOString();
+  timeInfo = "T" + timeInfo.split('T')[1]; 
+
   const createdCheckup = await prisma.checkup.create({
     data: {
       patientId,
       doctorId,
       staffId: staff.id,
-      date: date + "T00:00:00Z",
+      date: date + timeInfo,
       diagnosis,
       symptoms,
       temperature: parseFloat(temperature),

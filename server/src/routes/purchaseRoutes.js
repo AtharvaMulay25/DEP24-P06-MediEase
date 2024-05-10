@@ -14,14 +14,13 @@ const {
 const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
 
-const roles = ["PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap");
+router.use(authMiddleware([], false), profileMiddleware(true));
 
-router.use(authMiddleware(roles), profileMiddleware(true));
-
-router.get('/:id', catchAsync(getPurchaseDetails));
-router.get('/', catchAsync(getPurchaseList));
-router.post('/', validatePurchaseList, catchAsync(createPurchaseList));
-router.put('/:id', validatePurchaseList, catchAsync(updatePurchaseList));
-router.delete('/:id', catchAsync(deletePurchaseList));
+router.get('/:id', authMiddleware(roleMap("GET_PURCHASE_DETAILS")), catchAsync(getPurchaseDetails));
+router.get('/', authMiddleware(roleMap("GET_PURCHASE_LIST")),  catchAsync(getPurchaseList));
+router.post('/', authMiddleware(roleMap("CREATE_PURCHASE_LIST")),  validatePurchaseList, catchAsync(createPurchaseList));
+router.put('/:id', authMiddleware(roleMap("UPDATE_PURCHASE_LIST")),  validatePurchaseList, catchAsync(updatePurchaseList));
+router.delete('/:id', authMiddleware(roleMap("DELETE_PURCHASE_LIST")),  catchAsync(deletePurchaseList));
 
 module.exports = router;

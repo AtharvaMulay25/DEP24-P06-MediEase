@@ -15,15 +15,16 @@ const {
 const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
 
+const roleMap = require("../utils/roleMap");
 
-router.get('/patient/:patientEmail', authMiddleware(["PATIENT"]), profileMiddleware(true), catchAsync(getMedicalHistory));
-router.get('/:id', authMiddleware(["DOCTOR", "PARAMEDICAL", "ADMIN", "PATIENT"]), profileMiddleware(true), catchAsync(getCheckupDetails));
+router.get('/patient/:patientEmail', authMiddleware(roleMap("GET_MEDICAL_HISTORY")), profileMiddleware(true), catchAsync(getMedicalHistory));
+router.get('/:id', authMiddleware(roleMap("GET_CHECKUP_DETAILS")), profileMiddleware(true), catchAsync(getCheckupDetails));
 
-const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
-router.use(authMiddleware(roles), profileMiddleware(true));
-router.get('/', catchAsync(getCheckupList));
-router.post('/', validateCheckup, catchAsync(createCheckup));
-router.put('/:id', validateCheckup, catchAsync(updateCheckup));
-router.delete('/:id', catchAsync(deleteCheckup));
+router.use(authMiddleware([], false), profileMiddleware(true));
+
+router.get('/',authMiddleware(roleMap("GET_CHECKUP_LIST")), catchAsync(getCheckupList));
+router.post('/',authMiddleware(roleMap("CREATE_CHECKUP")), validateCheckup, catchAsync(createCheckup));
+router.put('/:id',authMiddleware(roleMap("UPDATE_CHECKUP")), validateCheckup, catchAsync(updateCheckup));
+router.delete('/:id',authMiddleware(roleMap("DELETE_CHECKUP")), catchAsync(deleteCheckup));
 
 module.exports = router;

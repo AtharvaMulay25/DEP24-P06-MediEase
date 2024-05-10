@@ -30,6 +30,7 @@ const PrescriptionDetail = () => {
     patientName: "-",
     doctorName: "-",
     date: "-",
+    time: "-",
     temperature: "-",
     bloodPressure: "-",
     spO2: "-",
@@ -76,6 +77,7 @@ const PrescriptionDetail = () => {
         patientName: data.patientName || "-",
         doctorName: data.doctorName || "-",
         date: data.date || "-",
+        time: data.time || "-",
         temperature: data.temperature || "-",
         bloodPressure: data.bloodPressure || "-",
         spO2: data.spO2 || "-",
@@ -178,7 +180,7 @@ const PrescriptionDetail = () => {
                       color="blue-gray"
                       className="font-medium"
                     >
-                      {prescriptionData.date}
+                      {prescriptionData.date} ({prescriptionData.time})
                     </Typography>
                     <Typography variant="small">Temperature</Typography>
                     <Typography

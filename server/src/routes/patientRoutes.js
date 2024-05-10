@@ -14,14 +14,15 @@ const {
 const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
 
-const roles = ["DOCTOR", "PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap.js");
 
-router.post('/', authMiddleware(["PATIENT", "DOCTOR", "PARAMEDICAL", "ADMIN"]), validatePatient, catchAsync(createPatient));
+router.post('/', authMiddleware(roleMap("CREATE_PATIENT")), validatePatient, catchAsync(createPatient));
 
-router.use(authMiddleware(roles), profileMiddleware(true));
-router.get('/', catchAsync(getPatientList));
-router.get('/:id', catchAsync(getPatient));
-router.put('/:id', validatePatient, catchAsync(updatePatient));
-router.delete('/:id', catchAsync(deletePatient));
+router.use(authMiddleware([], false), profileMiddleware(true));
+
+router.get('/', authMiddleware(roleMap("GET_PATIENT_LIST")), catchAsync(getPatientList));
+router.get('/:id', authMiddleware(roleMap("GET_PATIENT")), catchAsync(getPatient));
+router.put('/:id', authMiddleware(roleMap("UPDATE_PATIENT")), validatePatient, catchAsync(updatePatient));
+router.delete('/:id', authMiddleware(roleMap("DELETE_PATIENT")), catchAsync(deletePatient));
 
 module.exports = router;

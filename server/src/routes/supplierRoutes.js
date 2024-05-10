@@ -14,14 +14,14 @@ const {
 const authMiddleware = require("../middlewares/authMiddleware");
 const profileMiddleware = require("../middlewares/profileMiddleware");
 
-const roles = ["PARAMEDICAL", "ADMIN"];
+const roleMap = require("../utils/roleMap");
 
-router.use(authMiddleware(roles), profileMiddleware(true));
+router.use(authMiddleware([], false), profileMiddleware(true));
 
-router.get('/', catchAsync(getSupplierList));
-router.get('/:id', catchAsync(getSupplier));
-router.post('/', validateSupplier, catchAsync(createSupplier));
-router.put('/:id', validateSupplier, catchAsync(updateSupplier));
-router.delete('/:id', catchAsync(deleteSupplier));
+router.get('/', authMiddleware(roleMap("GET_SUPPLIER_LIST")), catchAsync(getSupplierList));
+router.get('/:id', authMiddleware(roleMap("GET_SUPPLIER")), catchAsync(getSupplier));
+router.post('/',  authMiddleware(roleMap("CREATE_SUPPLIER")), validateSupplier, catchAsync(createSupplier));
+router.put('/:id',  authMiddleware(roleMap("UPDATE_SUPPLIER")), validateSupplier, catchAsync(updateSupplier));
+router.delete('/:id',  authMiddleware(roleMap("DELETE_SUPPLIER")), catchAsync(deleteSupplier));
 
 module.exports = router;
