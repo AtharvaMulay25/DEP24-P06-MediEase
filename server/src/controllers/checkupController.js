@@ -109,9 +109,9 @@ const getCheckupList = async (req, res, next) => {
     },
   });
 
-  for (const checkup of checkupList) {
-    console.log(formatTimeFromISO(checkup.date));
-  }
+  // for (const checkup of checkupList) {
+  //   console.log(formatTimeFromISO(checkup.date));
+  // }
 
   const restructuredCheckupList = checkupList.map((checkup) => ({
     id: checkup?.id,
@@ -182,6 +182,7 @@ const getMedicalHistory = async (req, res, next) => {
       doctorName: checkup.Doctor?.name,
       staffName: checkup.Staff?.name,
       date: checkup.date.toISOString().split("T")[0],
+      time: formatTimeFromISO(checkup?.date),
       diagnosis: checkup?.diagnosis,
       symptoms: checkup?.symptoms,
     }));

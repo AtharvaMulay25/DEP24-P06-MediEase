@@ -22,8 +22,8 @@ router.use(authMiddleware([], false), profileMiddleware(true));
 //medicines routes
 
 router.get('/', authMiddleware(roleMap("GET_MEDICINE_LIST")), catchAsync(getMedicineList));
-router.get('/:id', authMiddleware(roleMap("GET_MEDICINE")), catchAsync(getMedicine));
 router.get('/expired', authMiddleware(roleMap("GET_EXPIRED_MEDICINES")), catchAsync(getExpiredMedicines));
+router.get('/:id', authMiddleware(roleMap("GET_MEDICINE")), catchAsync(getMedicine));
 router.post('/', authMiddleware(roleMap("CREATE_MEDICINE_LIST")), validateMedicine, catchAsync(createMedicineList));
 router.put('/:id', authMiddleware(roleMap("UPDATE_MEDICINE_LIST")), validateMedicine, catchAsync(updateMedicineList));
 router.delete('/:id', authMiddleware(roleMap("DELETE_MEDICINE_LIST")), catchAsync(deleteMedicineList));
