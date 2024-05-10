@@ -182,6 +182,7 @@ const getMedicalHistory = async (req, res, next) => {
       doctorName: checkup.Doctor?.name,
       staffName: checkup.Staff?.name,
       date: checkup.date.toISOString().split("T")[0],
+      time: formatTimeFromISO(checkup.date),
       diagnosis: checkup?.diagnosis,
       symptoms: checkup?.symptoms,
     }));

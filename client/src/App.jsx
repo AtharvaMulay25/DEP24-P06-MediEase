@@ -140,7 +140,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/purchase/:id" element={
-            <ProtectedRoute routeName="PURCHASE_LIST">
+            <ProtectedRoute routeName="PURCHASE_DETAIL">
               <PurchaseDetail />
             </ProtectedRoute>
           } />
@@ -203,7 +203,7 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/prescription/:id" element={
-            <ProtectedRoute routeName="PRESCRIPTION_LIST">
+            <ProtectedRoute routeName="PRESCRIPTION_DETAIL">
               <PrescriptionDetail />
             </ProtectedRoute>
           } />

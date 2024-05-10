@@ -12,6 +12,7 @@ const TABLE_HEAD = {
   doctorName: "Doctor",
   staffName: "Paramedical Staff",
   date: "Date",
+  time: "Time",
   diagnosis: "Diagnosis",
   symptoms: "Symptoms",
   action: "Action",
@@ -68,7 +69,7 @@ export default function MedicalHistory() {
             text=""
             addLink=""
             handleDelete={handleHistoryDelete}
-            searchKey="doctorName"
+            searchKey="staffName"
             handleDetail={handleHistoryDetail}
             detailsFlag={true}
             defaultSortOrder="date"

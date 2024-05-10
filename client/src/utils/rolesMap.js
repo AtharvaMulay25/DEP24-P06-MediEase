@@ -51,16 +51,18 @@ const roleMapping = new Map([
     [28, "STAFF_PROFILE"],
     [29, "MEDICAL_HISTORY"],
     [30, "ADMIN_PROFILE"],
+    [31, "PRESCRIPTION_DETAIL"],
+    [32, "PURCHASE_DETAIL"],
 ]);
 
 const roleMap = (role) => {
     if (role !== "ADMIN" && role !== "DOCTOR" && role !== "PARAMEDICAL" && role !== "PATIENT") {
         return [];
     }
-    const admin = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 30];
-    const paramedical = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 30];
-    const doctor = [1, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 21, 22, 28, 30];
-    const patient = [25, 27, 29, 30];
+    const admin = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 30, 31, 32];
+    const paramedical = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 28, 30, 31, 32];
+    const doctor = [1, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 21, 22, 28, 30, 31, 32];
+    const patient = [25, 27, 29, 30, 31];
 
     let roleArr = [];
 
