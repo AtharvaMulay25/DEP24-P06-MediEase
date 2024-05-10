@@ -11,7 +11,7 @@ app.use(cookieParser());
 
 //TODO: Change the origin to deployed frontend URL
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: `${process.env.CLIENT_URL}`,
     credentials: true
 }));
 

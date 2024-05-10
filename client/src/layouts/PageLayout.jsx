@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import Footer from "../components/Footer.jsx";
 import Sidebar from "../components/Sidebar.jsx";
+import logoImg from "../assets/img/logo.png"
 const Layout = ({ children }) => {
   const [isLargeScreen, setIsLargeScreen] = useState(
     window.matchMedia("(min-width: 890px)").matches
   );
-
-  // useEffect(() => {
-  //   setRoleArr(roleMap(userRole));
-  // }, [userRole]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 890px)");
@@ -59,7 +56,7 @@ const Layout = ({ children }) => {
               <div className="h-12 w-12 flex-shrink-0">
                 <a href="/">
                   <img
-                    src="/src/assets/img/logo.png"
+                    src={logoImg}
                     alt="Logo"
                     className="-ml-3 -mr-2 cursor-pointer"
                     style={{ width: "100%", height: "100%" }}

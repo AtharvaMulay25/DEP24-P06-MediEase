@@ -29,7 +29,6 @@ const getPurchaseData = async () => {
     toast.error('Failed to fetch Purchase List')
   }
 };
-// import MockData from "../assets/MOCK_DATA_purchase.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 export default function PurchaseList() {

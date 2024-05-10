@@ -1,4 +1,5 @@
 import React, {useEffect, useState } from "react";
+import iitRoparLogoImg from "../assets/img/iitroparlogo.jpg";
 import { useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { apiRoutes } from "../utils/apiRoutes";
@@ -103,7 +104,7 @@ const PurchaseDetail = () => {
                   className="w-4/5 h-20 rounded-none"
                 /> */}
                   <img
-                    src="\src\assets\img\iitroparlogo0.jpg"
+                    src={iitRoparLogoImg}
                     alt="logo"
                     className="px-4 w-fit h-24 rounded-none"
                   />

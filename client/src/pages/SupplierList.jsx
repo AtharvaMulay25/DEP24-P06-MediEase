@@ -30,7 +30,6 @@ const getSuppliersData = async () => {
   }
 }
 
-// import MockData from "../assets/MOCK_DATA_supplier.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 export default function SupplierList() {

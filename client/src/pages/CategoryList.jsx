@@ -27,7 +27,6 @@ const getCategoriesData = async () => {
   }
 };
 
-import MOCK_DATA from "../assets/MOCK_DATA_category.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 export default function CategoryList() {
@@ -86,7 +85,7 @@ export default function CategoryList() {
           <SortableTable
             tableHead={TABLE_HEAD}
             title="Category List"
-            data={categories || MOCK_DATA}
+            data={categories}
             detail="See information about all medicines categories."
             text="Add Category"
             addLink="/medicine/category/add"

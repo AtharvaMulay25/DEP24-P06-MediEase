@@ -35,7 +35,7 @@ const Footer = () => {
             style={{ border: 0, marginBottom: "4%" }}
             allowfullscreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
+            referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
           <div className="grid grid-cols-2 col-span-2  gap-4 pl-2 lg:col-span-3 xl:col-span-2">
             {LINKS.map(({ title, items }) => (

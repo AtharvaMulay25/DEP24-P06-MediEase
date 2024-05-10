@@ -27,7 +27,6 @@ const getMedicinesData = async () => {
   }
 };
 
-// import MockData from "../assets/MOCK_DATA_medicine.json";
 import Layout from "../layouts/PageLayout";
 import { apiRoutes } from "../utils/apiRoutes";
 export default function MedicineList() {

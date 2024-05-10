@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import iitRoparLogoImg from "../assets/img/iitroparlogo.jpg";
 import { useParams, useNavigate } from "react-router-dom";
 import { apiRoutes } from "../utils/apiRoutes";
 import axios from "axios";
@@ -135,7 +136,7 @@ const PrescriptionDetail = () => {
               <CardBody>
                 <div className="flex flex-col sm:flex-row border-b border-black p-2 items-center w-full">
                   <img
-                    src="\src\assets\img\iitroparlogo0.jpg"
+                    src={iitRoparLogoImg}
                     alt="logo"
                     className="px-4 w-fit h-24 rounded-none"
                   />

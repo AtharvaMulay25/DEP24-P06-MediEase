@@ -35,7 +35,6 @@ const getPrescriptionData = async () => {
     toast.error('Failed to fetch Prescription List')
   }
 };
-// import MockData from "../assets/MOCK_DATA_prescription.json";
 
 
 export default function PrescriptionList() {
