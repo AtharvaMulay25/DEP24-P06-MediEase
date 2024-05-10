@@ -6,11 +6,12 @@ import { toast } from "sonner";
 import { apiRoutes } from "../utils/apiRoutes";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import { useAuthContext } from "../hooks/useAuthContext";
+import Layout from "../layouts/PageLayout";
 
 const TABLE_HEAD = {
   id: "#",
   doctorName: "Doctor",
-  staffName: "Paramedical Staff",
+  staffName: "ParaMedical Staff",
   date: "Date",
   time: "Time",
   diagnosis: "Diagnosis",
@@ -18,7 +19,6 @@ const TABLE_HEAD = {
   action: "Action",
 };
 
-import Layout from "../layouts/PageLayout";
 
 const getMedicalHistory = async (email) => {
   try {
@@ -69,7 +69,11 @@ export default function MedicalHistory() {
             text=""
             addLink=""
             handleDelete={handleHistoryDelete}
+<<<<<<< HEAD
+            searchKey="staffName"   //need to pass staffName as doctorName can be empty
+=======
             searchKey="staffName"
+>>>>>>> bd9b8de7e6b967e423cda3e153bd04ec7c9c7a87
             handleDetail={handleHistoryDetail}
             detailsFlag={true}
             defaultSortOrder="date"

@@ -33,7 +33,7 @@ const roleMapping = new Map([
     // medicine routes
     ["GET_MEDICINE_LIST", ["D", "A", "PM"]],
     ["GET_MEDICINE", ["D", "A", "PM"]],
-    ["GET_EXPIRED_MEDICINE", ["D", "A", "PM"]],
+    ["GET_EXPIRED_MEDICINES", ["D", "A", "PM"]],
     ["CREATE_MEDICINE_LIST", ["D", "A", "PM"]],
     ["UPDATE_MEDICINE_LIST", ["D", "A", "PM"]],
     ["DELETE_MEDICINE_LIST", ["D", "A", "PM"]],

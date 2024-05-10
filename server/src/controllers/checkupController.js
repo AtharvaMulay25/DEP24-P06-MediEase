@@ -109,9 +109,9 @@ const getCheckupList = async (req, res, next) => {
     },
   });
 
-  for (const checkup of checkupList) {
-    console.log(formatTimeFromISO(checkup.date));
-  }
+  // for (const checkup of checkupList) {
+  //   console.log(formatTimeFromISO(checkup.date));
+  // }
 
   const restructuredCheckupList = checkupList.map((checkup) => ({
     id: checkup?.id,

@@ -20,7 +20,8 @@ const TABLE_HEAD = {
 const getExpiredMedicinesData = async () => {
   try {
     const response = await axios.get(apiRoutes.medicine+"/expired", {withCredentials: true});
-    toast.success('Expired Medicines List fetched successfully')
+    toast.success('Expired Medicines List fetched successfully');
+    console.log(response.data.data)
     return response.data.data;
   } catch (error) {
     toast.error(error?.response?.data?.message || "Failed to fetch expired medicines data.");
@@ -58,7 +59,7 @@ export default function ExpiredMedicineList() {
             text=""
             addLink=""
             handleDelete={handleMedicineDelete}
-            searchKey={"brandName"}
+            searchKey="brandName"
             actionFlag="false"
             defaultSortOrder="expiryDate"
           />

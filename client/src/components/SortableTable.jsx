@@ -196,7 +196,7 @@ export function SortableTable({
 
   const filterItems = (str) => {
     const filteredArray = data.filter((item) =>
-      item[searchKey].toLowerCase().includes(str.toLowerCase())
+      item[searchKey]?.toLowerCase().includes(str?.toLowerCase())
     );
     setSearchList(filteredArray);
     sorting("action");
