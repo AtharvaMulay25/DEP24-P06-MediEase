@@ -8,11 +8,6 @@ const Home = () => {
         <h1 className="text-3xl font-bold leading-tight">
         Empowering Medical Centers: Simplifying Healthcare Management ..
         </h1>
-        {/* <p>
-          Reprehenderit incidunt expedita
-          molestiae impedit at sequi dolorem iste sit culpa, optio voluptates
-          fugiat vero consequatur?
-        </p> */}
         <div className="mt-18">
       
         {/* <Button  title="Get Started" /> */}
