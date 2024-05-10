@@ -60,7 +60,7 @@ model Supplier {
   city         String?
   state        String
   pinCode      Int?
-  mobileNumber String
+  mobileNumber String         @unique    
   email        String?
   status       Status         @default(ACTIVE)
   PurchaseList PurchaseList[]

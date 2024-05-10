@@ -1,7 +1,100 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  UserCircleIcon,
+  ClipboardDocumentListIcon,
+  DocumentTextIcon,
+} from "@heroicons/react/24/solid";
+import { GiMedicines } from "react-icons/gi";
+import { FaUserDoctor } from "react-icons/fa6";
+import { LuLogOut } from "react-icons/lu";
+import {
+  FaUserCog,
+  FaExclamation,
+  FaUserEdit,
+  FaNotesMedical,
+} from "react-icons/fa";
+import { MdSpaceDashboard } from "react-icons/md";
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemPrefix,
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+} from "@material-tailwind/react";
+import {
+  ShoppingCartIcon,
+  UserGroupIcon,
+  ChartBarIcon,
+  UserIcon,
+} from "@heroicons/react/24/solid";
+import {
+  ChevronDownIcon,
+  Bars3Icon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useLogout";
+import { toast } from "sonner";
 import Footer from "../components/Footer.jsx";
-import Sidebar from "../components/Sidebar.jsx";
+import roleMap from "../utils/rolesMap.js";
 const Layout = ({ children }) => {
+  const { userRole, userName } = useAuthContext();
+  const { logout } = useLogout();
+  const [roleArr, setRoleArr] = useState([]);
+
+  useEffect(() => {
+    setRoleArr(roleMap(userRole));
+  }, [userRole]);
+
+  const [open, setOpen] = useState(0);
+  const [openMenu, setOpenMenu] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+
+  const handleOpen = (value) => {
+    setOpen(open === value ? 0 : value);
+  };
+
+  const toggleCollapse = () => {
+    setIsCollapsed((prevState) => !prevState);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    toast.success("Logged Out Successfully");
+    setTimeout(() => {
+      navigate("/signin");
+    }, 1000);
+  };
+
+  const LINKS = [
+    {
+      title: "About Us",
+      items: ["Overview", "Servies", "Staff"],
+    },
+    {
+      title: "Services",
+      items: ["Lab Test", "Health Check", "Heart Check"],
+    },
+    {
+      title: "Contact us",
+      items: [
+        "Medical Center, IIT ROPAR, Punjab - 140001, India",
+        "support@care.com,",
+        "+91 1234567890",
+      ],
+    },
+  ];
+  const currentYear = new Date().getFullYear();
+
   const [isLargeScreen, setIsLargeScreen] = useState(
     window.matchMedia("(min-width: 890px)").matches
   );
@@ -784,6 +877,7 @@ const Layout = ({ children }) => {
       {/* Content of page */}
       <div
         className="flex-auto flex flex-col justify-between p-4 shadow-lg bg-gray-50 h-screen overflow-y-auto transition-all duration-300 ease-in-out"
+        // style={{ marginLeft: isCollapsed && !isHovered ? "60px" : "250px" }}
         style={{
           marginLeft: isLargeScreen
             ? isCollapsed && !isHovered
