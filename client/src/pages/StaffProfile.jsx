@@ -19,6 +19,7 @@ import { apiRoutes } from "../utils/apiRoutes";
 import { SyncLoadingScreen } from "../components/UI/LoadingScreen";
 import { useLogout } from "../hooks/useLogout";
 
+import doctorImg from "../assets/img/doctor.png";
 const DEPARTMENTS = ["AYURVEDIC", "GYNECOLOGY", "HOMEOPATHY", "OTHERS"];
 const DAYS = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
 
@@ -187,7 +188,7 @@ export default function StaffProfile({ edit = false }) {
               <div className="flex flex-col md:w-2/5 w-full min-w-fit justify-center gap-8 p-4 border border-blue-gray-100 ">
                 <div className="flex justify-center">
                   <img
-                    src="/src/assets/img/doctor.png"
+                    src={doctorImg}
                     alt="staff"
                     className="rounded-full w-48 h-48 "
                   />
