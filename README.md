@@ -8,6 +8,7 @@ Comprehensive solution designed to streamline the operations of medical centers.
 
 - [Features](#features)
 - [Technologies Used](#technologies-used)
+- [System Requirements and Setup](#system-requirements-and-setup)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -33,6 +34,36 @@ Comprehensive solution designed to streamline the operations of medical centers.
 - Prisma ORM
 - JsonWebToken (JWT)
 - Material Tailwind and Material UI
+
+## System Requirements and Setup
+
+### Operating System
+
+- **Windows 11**: The project is developed and tested on Windows 11.
+
+### Software Requirements
+
+While developing the project, the following softwares were used:
+
+- **Node.js**: Version 20.10.0.   
+[Download Node.js](https://nodejs.org/)
+- **PostgreSQL**: psql (PostgreSQL) 15.1   
+[Download PostgreSQL](https://www.postgresql.org/download/)
+- **Git**: git version 2.37.3.windows.1  
+[Download Git](https://git-scm.com/downloads)
+
+### Browser
+
+- **Google Chrome**: Version 124.0.6367.158 (64-bit). The application has been tested on this browser version for compatibility and performance. [Download Chrome](https://www.google.com/chrome/)
+
+### Additional Software
+
+- **Visual Studio Code** (recommended): As an Integrated Development Environment (IDE) for code editing, debugging, and running tasks. VS Code is optimized for JavaScript and React development. [Download VS Code](https://code.visualstudio.com/)
+
+### Environment Setup
+
+> NOTE: Before running the application, ensure the environment variables are correctly initialized
+
 
 ## Prerequisites
 
